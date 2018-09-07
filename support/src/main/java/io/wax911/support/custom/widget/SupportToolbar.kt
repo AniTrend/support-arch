@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.Toolbar
 import io.wax911.support.R
 import io.wax911.support.base.view.CustomView
-import io.wax911.support.util.SupportUtil
+import io.wax911.support.util.getColorFromAttr
 
 class SupportToolbar : Toolbar, CustomView {
 
@@ -20,7 +20,7 @@ class SupportToolbar : Toolbar, CustomView {
      * Optionally included when constructing custom views
      */
     override fun onInit() {
-        setBackgroundColor(SupportUtil.getColorFromAttr(context, R.attr.colorPrimary))
+        setBackgroundColor(context.getColorFromAttr(R.attr.colorPrimary))
         popupTheme = R.style.SupportThemeLight_PopupOverlay
     }
 

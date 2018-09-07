@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.annotation.StyleRes
 import io.wax911.support.R
+import io.wax911.support.util.swapTheme
 
 abstract class SupportPreference constructor(context: Context) {
 
@@ -47,11 +48,4 @@ abstract class SupportPreference constructor(context: Context) {
 
     @StyleRes
     fun getTheme(): Int = sharedPreferences.getInt(_isLightTheme, R.style.SupportThemeLight)
-
-    @StyleRes
-    fun Int.swapTheme() : Int =
-            if(this == R.style.SupportThemeLight)
-                R.style.SupportThemeDark
-            else
-                R.style.SupportThemeLight
 }
