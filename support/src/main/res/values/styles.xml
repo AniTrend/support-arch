@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light Application Theme -->
+    <style name="SupportThemeLight" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="cardColor">@color/colorPrimary</item>
+        <item name="drawerColor">@color/colorDark</item>
+
+        <item name="rootColor">@color/colorRootLight</item>
+        <item name="lineColor">@color/colorLineLight</item>
+        <item name="titleColor">@color/colorTextTitleLight</item>
+        <item name="subtitleColor">@color/colorTextSubtitleLight</item>
+        <item name="contentColor">@color/colorTextContentLight</item>
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="toolbarColor">@style/LightToolbarTheme</item>
+        <item name="android:textViewStyle">@style/TextFamily</item>
+
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:popupMenuStyle">@style/PopupThemeLight</item>
+    </style>
+
+    <style name="TextFamily" parent="android:Widget.TextView">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="SupportThemeLight.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <style name="SupportThemeLight.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <style name="PopupThemeLight" parent="@android:style/Widget.Holo.PopupMenu">
+        <item name="android:popupBackground">?attr/rootColor</item>
+    </style>
+
+    <style name="LightToolbarTheme" parent="SupportThemeLight">
+        <!-- android:textColorPrimary is the  color of the title text
+             in the Toolbar, in the Theme.AppCompat theme:  -->
+        <item name="android:textColorPrimary">?attr/titleColor</item>
+
+        <!-- android:textColorPrimaryInverse is the  color of the title
+             text in the Toolbar, in the Theme.AppCompat.Light theme:  -->
+        <!-- <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item> -->
+
+        <!-- android:actionMenuTextColor is the color of the text of
+              action (menu) items in the Toolbar, at least in the
+              Theme.AppCompat theme.
+              For some reason, they already get the textColorPrimary
+              when running on API 21, but not on older versions of
+              Android, so this is only necessary to support older
+              Android versions.-->
+        <item name="actionMenuTextColor">?attr/titleColor</item>
+        <!-- android:textColorSecondary is the color of the menu
+             overflow icon (three vertical dots) -->
+        <item name="android:textColorSecondary">?attr/subtitleColor</item>
+
+        <!-- This would set the toolbar's background color,
+              but setting this also changes the popup menu's background,
+              even if we define popupTheme for our <Toolbar> -->
+        <!-- <item name="android:background">@color/color_primary</item> -->
+    </style>
+
+    <!-- Dark Application Theme -->
+    <style name="SupportThemeDark" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorDarker</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarker</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+        <item name="cardColor">@color/colorDarker</item>
+        <item name="drawerColor">@color/colorLight</item>
+
+        <item name="rootColor">@color/colorRootDark</item>
+        <item name="lineColor">@color/colorLineDark</item>
+        <item name="titleColor">@color/colorTextTitleDark</item>
+        <item name="subtitleColor">@color/colorTextSubtitleDark</item>
+        <item name="contentColor">@color/colorTextContentDark</item>
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="toolbarColor">@style/DarkToolbarTheme</item>
+        <item name="android:textViewStyle">@style/TextFamily</item>
+
+        <item name="android:windowBackground">@color/colorPrimaryDarker</item>
+        <item name="android:popupMenuStyle">@style/PopupThemeDark</item>
+        <!--actionOverflowMenuStyle controls the state of the overflow popup window-->
+        <!--<item name="actionOverflowMenuStyle">@style/DarkOverflowMenu</item>-->
+    </style>
+
+    <!-- AMOLED Dark Application Theme -->
+    <style name="SupportThemeBlack" parent="Theme.MaterialComponents.NoActionBar">
+        !-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryBlack</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryBlack</item>
+        <item name="colorAccent">@color/colorAccentDark</item>
+
+        <item name="cardColor">@color/colorPrimaryBlack</item>
+        <item name="drawerColor">@color/colorLight</item>
+
+
+        <item name="rootColor">@color/colorPrimaryBlack</item>
+        <item name="lineColor">@color/colorPrimaryBlack</item>
+        <item name="titleColor">@color/colorTextTitleDark</item>
+        <item name="subtitleColor">@color/colorTextSubtitleDark</item>
+        <item name="contentColor">@color/colorTextContentDark</item>
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="toolbarColor">@style/BlackToolbarTheme</item>
+        <item name="android:textViewStyle">@style/TextFamily</item>
+
+        <item name="android:windowBackground">@color/colorPrimaryBlack</item>
+
+        <!--popupMenuStyle doesn't seem to be having any effect-->
+        <item name="android:popupMenuStyle">@style/PopupThemeDark</item>
+
+        <!--actionOverflowMenuStyle controls the state of the overflow popup window-->
+        <item name="actionOverflowMenuStyle">@style/DarkOverflowMenu</item>
+
+    </style>
+
+    <style name="DarkOverflowMenu" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <!--<item name="android:windowDisablePreview">true</item>-->
+        <!--<item name="overlapAnchor">false</item>-->
+        <item name="android:popupBackground">@color/colorBlack</item>
+    </style>
+
+    <style name="SupportThemeDark.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+
+    <style name="SupportThemeDark.PopupOverlay" parent="ThemeOverlay.MaterialComponents" />
+
+    <style name="PopupThemeDark" parent="@android:style/Widget.Holo.PopupMenu">
+        <item name="android:popupBackground">?attr/rootColor</item>
+    </style>
+
+    <style name="DarkToolbarTheme" parent="SupportThemeDark">
+        <!-- android:textColorPrimary is the  color of the title text
+             in the Toolbar, in the Theme.AppCompat theme:  -->
+        <item name="android:textColorPrimary">?attr/titleColor</item>
+
+        <!-- android:textColorPrimaryInverse is the  color of the title
+             text in the Toolbar, in the Theme.AppCompat.Light theme:  -->
+        <!-- <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item> -->
+
+        <!-- android:actionMenuTextColor is the color of the text of
+              action (menu) items in the Toolbar, at least in the
+              Theme.AppCompat theme.
+              For some reason, they already get the textColorPrimary
+              when running on API 21, but not on older versions of
+              Android, so this is only necessary to support older
+              Android versions.-->
+        <item name="actionMenuTextColor">?attr/titleColor</item>
+        <!-- android:textColorSecondary is the color of the menu
+             overflow icon (three vertical dots) -->
+        <item name="android:textColorSecondary">?attr/subtitleColor</item>
+
+        <!-- This would set the toolbar's background color,
+              but setting this also changes the popup menu's background,
+              even if we define popupTheme for our <Toolbar> -->
+        <!-- <item name="android:background">@color/color_primary</item> -->
+    </style>
+
+    <style name="BlackToolbarTheme" parent="SupportThemeBlack">
+        <!-- android:textColorPrimary is the  color of the title text
+             in the Toolbar, in the Theme.AppCompat theme:  -->
+        <item name="android:textColorPrimary">?attr/titleColor</item>
+        <item name="android:textColor">@color/colorTextContentDark</item>
+
+        <!-- android:textColorPrimaryInverse is the  color of the title
+             text in the Toolbar, in the Theme.AppCompat.Light theme:  -->
+        <!-- <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item> -->
+
+        <!-- android:actionMenuTextColor is the color of the text of
+              action (menu) items in the Toolbar, at least in the
+              Theme.AppCompat theme.
+              For some reason, they already get the textColorPrimary
+              when running on API 21, but not on older versions of
+              Android, so this is only necessary to support older
+              Android versions.-->
+        <item name="actionMenuTextColor">?attr/titleColor</item>
+        <!-- android:textColorSecondary is the color of the menu
+             overflow icon (three vertical dots) -->
+        <item name="android:textColorSecondary">?attr/subtitleColor</item>
+
+
+        <!-- This would set the toolbar's background color,
+              but setting this also changes the popup menu's background,
+              even if we define popupTheme for our <Toolbar> -->
+        <!--<item name="android:background">@color/colorPrimaryAMODark</item>-->
+
+        <item name="android:colorBackground">@color/colorPrimaryBlack</item>
+    </style>
+
+
+    <style name="SupportThemeDark.Translucent">
+        <item name="android:windowBackground">@color/scrim_transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <style name="SupportThemeLight.Translucent">
+        <item name="android:windowBackground">@color/scrim_transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <style name="MaterialTipButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/colorRootLight</item>
+    </style>
+
+</resources>

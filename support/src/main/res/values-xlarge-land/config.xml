@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="grid_list_size">8</integer>
+    <integer name="single_list_size">3</integer>
+</resources>

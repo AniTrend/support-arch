@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion rootProject.compileSdk
+    defaultConfig {
+        minSdkVersion rootProject.minSdk
+        targetSdkVersion rootProject.targetSdk
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+configurations.all {
+    resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.google.android.material:material:${rootProject.material}"
+
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.kotlin}"
+
+    /** Architecture Components */
+    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.anroidx}"
+    implementation "androidx.room:room-runtime:${rootProject.anroidx}"
+
+    /** Retrofit Libraries */
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.retrofit}"
+
+    /** Java Streams Port */
+    implementation 'com.annimon:stream:1.1.9'
+
+    /** Event Bus Library */
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+}
