@@ -11,15 +11,15 @@ import io.wax911.support.custom.viewmodel.SupportViewModel
 
 interface CompatView<VM> : Observer<VM>, SharedPreferences.OnSharedPreferenceChangeListener, ResponseCallback<VM> {
 
-    fun requestPermissionIfMissing(permission: String): Boolean
-
-    fun <T : Application> getApplicationBase(): T
+    fun initPresenter()
 
     fun updateUI()
-
     fun makeRequest()
 
     fun getViewName() : String
+
+    fun <T : Application> getApplicationBase(): T
+    fun requestPermissionIfMissing(permission: String): Boolean
 
     /**
      * Informs parent activity if on back can continue to super method or not

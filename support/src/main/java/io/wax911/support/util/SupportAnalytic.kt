@@ -1,13 +1,17 @@
 package io.wax911.support.util
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 
-abstract class SupportAnalytic {
+interface SupportAnalytic {
 
-    abstract fun logCurrentState(fragmentActivity: FragmentActivity, bundle: Bundle, tag: String)
-    abstract fun reportException(tag: String, message: String)
-    abstract fun clearSession()
-    abstract fun setCrashAnalyticsUser(context: Context, userName: String)
+    fun logCurrentScreen(fragmentActivity: FragmentActivity, fragmentActivityTag: String)
+    fun logCurrentState(tag: String, bundle: Bundle)
+    fun logException(throwable: Throwable)
+    fun log(tag: String, message: String)
+
+    fun clearUserSession()
+    fun setCrashAnalyticUser(userName: String)
+
+    fun resetAnalyticsData()
 }

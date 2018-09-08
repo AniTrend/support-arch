@@ -15,10 +15,10 @@ import retrofit2.Call
 
 abstract class CrudRepository<K, V> : RetroCallback<V> {
 
+    protected val model : MutableLiveData<V> by lazy { MutableLiveData<V>() }
     protected var responseCallback: ResponseCallback<V>? = null
-    protected var requestClient: SupportRequestClient<V>? = null
+    private var requestClient: SupportRequestClient<V>? = null
 
-    protected lateinit var model: MutableLiveData<V>
 
     protected var requestType: Int = 0
 
@@ -28,12 +28,11 @@ abstract class CrudRepository<K, V> : RetroCallback<V> {
     abstract fun findAll()
 
     abstract fun delete(model : V)
-    abstract fun deleteAll()
 
-    fun registerModel(context: LifecycleOwner, model : MutableLiveData<V>, observer: Observer<V>) {
-        if (!model.hasActiveObservers())
-            model.observe(context, observer)
-        this.model = model
+    abstract fun onCleared()
+
+    fun registerObserver(context: LifecycleOwner, observer: Observer<V>) {
+        when { !model.hasActiveObservers() -> model.observe(context, observer) }
     }
 
     /**

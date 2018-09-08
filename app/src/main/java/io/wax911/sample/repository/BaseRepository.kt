@@ -1,7 +1,9 @@
 package io.wax911.sample.repository
 
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import io.wax911.sample.api.NetworkClient
+import io.wax911.sample.dao.BaseModelDao
 import io.wax911.sample.dao.DatabaseHelper
 import io.wax911.sample.model.BaseModel
 import io.wax911.support.base.dao.CrudRepository
@@ -12,10 +14,10 @@ import retrofit2.Response
 
 class BaseRepository private constructor() : CrudRepository<Long, BaseModel>() {
 
-    private lateinit var databaseHelper: DatabaseHelper
+    private lateinit var modelDao: BaseModelDao
 
     override fun save(model: BaseModel) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        modelDao.insert(model)
     }
 
     override fun findOne(key: Long) {
@@ -23,15 +25,11 @@ class BaseRepository private constructor() : CrudRepository<Long, BaseModel>() {
     }
 
     override fun findAll() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        model.value = modelDao.get().value
     }
 
     override fun delete(model: BaseModel) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun deleteAll() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        modelDao.delete(model)
     }
 
     /**
@@ -73,9 +71,13 @@ class BaseRepository private constructor() : CrudRepository<Long, BaseModel>() {
     companion object {
         fun newInstance(responseCallback: ResponseCallback<BaseModel>?, databaseHelper: DatabaseHelper) : CrudRepository<Long, BaseModel> {
             val repository = BaseRepository()
-            repository.databaseHelper = databaseHelper
+            repository.modelDao = databaseHelper.baseModelDao()
             repository.responseCallback = responseCallback
             return repository
         }
+    }
+
+    override fun onCleared() {
+
     }
 }

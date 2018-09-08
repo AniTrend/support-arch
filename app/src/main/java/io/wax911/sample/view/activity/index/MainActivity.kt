@@ -41,8 +41,11 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
         false
     }
 
+    override fun initPresenter() {
+        presenter = BasePresenter.newInstance(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        presenter = BasePresenter(applicationContext)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -56,7 +59,6 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         bottomNavigation.setOnNavigationItemSelectedListener(this)
-        // bottomNavigation.setItemIconTintList(ColorStateList());
         navigationDrawer.setNavigationItemSelectedListener(navigationListener)
         updateUI()
     }
@@ -132,7 +134,7 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
             toolbar.setTitle(selectedTitle)
             val fragmentManager = supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.contentFrame, supportFragment!!, supportFragment!!.getTag())
+            fragmentTransaction.replace(R.id.contentFrame, supportFragment!!, supportFragment!!.tag)
             fragmentTransaction.commit()
         }
     }

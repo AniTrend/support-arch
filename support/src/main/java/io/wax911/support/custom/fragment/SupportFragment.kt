@@ -50,6 +50,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * a previous saved state, this is the state.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+        initPresenter()
         super.onCreate(savedInstanceState)
         retainInstance = true
         actionMode = ActionModeUtil(this, true)

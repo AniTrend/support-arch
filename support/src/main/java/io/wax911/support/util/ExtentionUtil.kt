@@ -40,6 +40,12 @@ fun Int.swapTheme() : Int =
         else
             R.style.SupportThemeLight
 
+fun String.Companion.empty(): String =
+        ""
+
+fun Any?.isNull() =
+        this == null
+
 fun FragmentActivity.hideKeyboard() {
     val inputMethodManager = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
     inputMethodManager.hideSoftInputFromWindow(this.window.decorView.windowToken, 0)
@@ -280,10 +286,8 @@ fun String?.capitalizeWords(exceptions: List<String>) : String {
             if (!TextUtils.isEmpty(word)) {
                 if (exceptions.contains(word))
                     result.append(word)
-                else {
-                    val starting = Character.toUpperCase(word[0])
-                    result.append(starting).append(word.substring(1).toLowerCase())
-                }
+                else
+                    result.append(word.capitalize())
             }
             if (index != word.length - 1)
                 result.append(" ")

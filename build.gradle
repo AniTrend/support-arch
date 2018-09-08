@@ -13,7 +13,7 @@ buildscript {
         material = '1.0.0-rc01'
         anroidx = '2.0.0-rc01'
         worker = '1.0.0-alpha08'
-        firebase = '16.0.1'
+        firebase = '16.0.3'
         kotlin = '1.2.61'
     }
     repositories {

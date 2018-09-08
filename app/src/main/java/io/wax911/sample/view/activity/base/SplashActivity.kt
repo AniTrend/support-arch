@@ -14,8 +14,11 @@ import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : SupportActivity<BaseModel, BasePresenter>() {
 
+    override fun initPresenter() {
+        presenter = BasePresenter.newInstance(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        presenter = BasePresenter(applicationContext)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         viewModel = BaseViewModel.newInstance(this, this)

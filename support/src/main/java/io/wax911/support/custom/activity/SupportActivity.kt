@@ -22,6 +22,7 @@ import io.wax911.support.base.view.CompatView
 import io.wax911.support.custom.fragment.SupportFragment
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.custom.viewmodel.SupportViewModel
+import io.wax911.support.util.isNull
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 
@@ -40,8 +41,30 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
 
     protected lateinit var presenter: P
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /**
+     * Some activities may have custom themes and if that's the case
+     * override this method and set your own theme style, also if you wish
+     * to apply the default navigation bar style for light themes
+     */
+    protected fun configureActivity() {
+        initPresenter()
         setThemeStyle()
+    }
+
+    /**
+     * Changes the navigation bar color depending on the selected theme
+     */
+    private fun setNavigationStyle() {
+        if (!disableNavigationStyle && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (presenter.supportPreference.getTheme() == R.style.SupportThemeLight)
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            else
+                window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        configureActivity()
         super.onCreate(savedInstanceState)
         actionBar = supportActionBar
     }
@@ -52,10 +75,18 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     }
 
     /**
-     * Changes the navigation bar color depending on the selected theme
+     * Changes the navigation bar color and theme style depending on the selected theme
+     * @see SupportActivity#setNavigationStyle()
      */
-    private fun setThemeStyle() = setTheme(presenter.supportPreference.getTheme())
-
+    private fun setThemeStyle() {
+        when (!presenter.isNull()) {
+            true -> {
+                setTheme(presenter.supportPreference.getTheme())
+                setNavigationStyle()
+            }
+            false -> setTheme(R.style.SupportThemeLight)
+        }
+    }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : Application> getApplicationBase(): T = application as T
@@ -112,7 +143,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * as appropriate.
      */
     override fun onBackPressed() {
-        if (supportFragment != null)
+        if (!supportFragment.isNull())
             if (supportFragment!!.hasBackPressableAction())
                 return
         return super.onBackPressed()
