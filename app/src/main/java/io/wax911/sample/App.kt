@@ -7,8 +7,6 @@ import org.greenrobot.eventbus.EventBus
 
 class App : Application() {
 
-    public lateinit var databaseHelper: DatabaseHelper
-
     init {
         EventBus.builder().logNoSubscriberMessages(BuildConfig.DEBUG)
                 .sendNoSubscriberEvent(BuildConfig.DEBUG)
@@ -17,14 +15,7 @@ class App : Application() {
                 .installDefaultEventBus()
     }
 
-    private fun configureApplication() {
-        databaseHelper = Room.databaseBuilder(applicationContext,
-                DatabaseHelper::class.java, getString(R.string.app_name))
-                .build()
-    }
-
     override fun onCreate() {
         super.onCreate()
-        configureApplication()
     }
 }

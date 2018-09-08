@@ -192,6 +192,7 @@ public class SupportUtil {
     public static int getColor(Context context, @ColorRes int color) {
         return ContextCompat.getColor(context, color);
     }
+    
     /**
      * Sorts a given map by the order of the of the keys in the map in descending order
      * @see ComparatorUtil#getKeyComparator() for logic on how comparator handles this

@@ -1,18 +1,92 @@
 package io.wax911.support.base.dao
 
-import androidx.lifecycle.LiveData
+import android.content.Context
+import android.os.AsyncTask
+import android.os.Bundle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import io.wax911.support.base.event.ResponseCallback
+import io.wax911.support.base.event.RetroCallback
+import io.wax911.support.custom.worker.SupportRequestClient
+import io.wax911.support.util.SupportUtil
+import io.wax911.support.util.isConnectedToNetwork
+import retrofit2.Call
 
-interface CrudRepository<K, V> {
+abstract class CrudRepository<K, V> : RetroCallback<V> {
 
-    fun count() : Long
+    protected var responseCallback: ResponseCallback<V>? = null
+    protected var requestClient: SupportRequestClient<V>? = null
 
-    fun save(model : V) : LiveData<V>
-    fun save(model : List<V>) : LiveData<List<V>>
+    protected lateinit var model: MutableLiveData<V>
 
-    fun findOne(key : K) : LiveData<V>
-    fun findAll() : LiveData<List<V>>
-    fun findAll(keys: List<K>) : LiveData<List<V>>
+    protected var requestType: Int = 0
 
-    fun delete(model : V)
-    fun deleteAll()
+    abstract fun save(model : V)
+
+    abstract fun findOne(key : K)
+    abstract fun findAll()
+
+    abstract fun delete(model : V)
+    abstract fun deleteAll()
+
+    fun registerModel(context: LifecycleOwner, model : MutableLiveData<V>, observer: Observer<V>) {
+        if (!model.hasActiveObservers())
+            model.observe(context, observer)
+        this.model = model
+    }
+
+    /**
+     * Creates the network client for implementing class
+     *
+     * @param parameters bundle of parameters for the request
+     */
+    abstract fun createNetworkClient(parameters: Bundle) : SupportRequestClient<V>
+
+    /**
+     * Handles dispatching of network requests to a background thread
+     *
+     * @param requestType type of request
+     * @param parameters bundle of parameters for the request
+     * @param context any valid context
+     */
+    fun requestFromNetwork(requestType: Int, parameters: Bundle, context: Context) {
+        this.requestType = requestType
+        when (context.isConnectedToNetwork()) {
+            true -> {
+                requestClient = createNetworkClient(parameters)
+                requestClient?.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, context)
+            }
+            false -> requestFromCache(parameters)
+        }
+    }
+
+    /**
+     * When the application is not connected to the internet this method is called to resolve the
+     * kind of content that needs to be fetched from the database
+     *
+     * @param parameters bundle of parameters for the request
+     */
+    protected abstract fun requestFromCache(parameters: Bundle)
+
+
+    fun isProcessStatus(status : AsyncTask.Status) : Boolean =
+            SupportUtil.equals(requestClient?.status, status)
+
+    fun cancelPendingRequests(interruptExecution : Boolean) {
+        if(!isProcessStatus(AsyncTask.Status.FINISHED))
+            requestClient?.cancel(interruptExecution)
+    }
+
+    /**
+     * Invoked when a network exception occurred talking to the server or when an unexpected
+     * exception occurred creating the request or processing the response.
+     *
+     * @param call the origination requesting object
+     * @param throwable contains information about the error
+     */
+    override fun onFailure(call: Call<V>, throwable: Throwable) {
+        throwable.printStackTrace()
+        responseCallback?.onResponseError(call, throwable)
+    }
 }

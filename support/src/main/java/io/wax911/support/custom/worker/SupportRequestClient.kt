@@ -7,9 +7,9 @@ import android.os.Bundle
 import retrofit2.Call
 import retrofit2.Callback
 
-abstract class SupportRequestEngine<T> : AsyncTask<Context, Void, Call<T>?>() {
+abstract class SupportRequestClient<T> : AsyncTask<Context, Void, Call<T>?>() {
 
-    lateinit var bundle: Bundle
+    protected lateinit var parameters: Bundle
     protected lateinit var callback: Callback<T>
 
     abstract override fun doInBackground(vararg contexts: Context): Call<T>

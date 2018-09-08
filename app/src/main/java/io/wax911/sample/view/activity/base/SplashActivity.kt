@@ -6,7 +6,6 @@ import android.os.Handler
 import io.wax911.sample.R
 import io.wax911.sample.model.BaseModel
 import io.wax911.sample.presenter.BasePresenter
-import io.wax911.sample.repository.BaseRepository
 import io.wax911.sample.view.activity.index.MainActivity
 import io.wax911.sample.viewmodel.BaseViewModel
 import io.wax911.support.custom.activity.SupportActivity
@@ -19,7 +18,8 @@ class SplashActivity : SupportActivity<BaseModel, BasePresenter>() {
         presenter = BasePresenter(applicationContext)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        viewModel = BaseViewModel.createInstance(this, this, this)
+        viewModel = BaseViewModel.newInstance(this, this)
+        viewModel!!.observeOn(this, this)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {

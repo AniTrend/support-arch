@@ -3,45 +3,30 @@ package io.wax911.support.custom.viewmodel
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import io.wax911.support.base.dao.CrudRepository
-import io.wax911.support.base.event.ResponseCallback
-import io.wax911.support.base.event.RetroCallback
-import io.wax911.support.custom.worker.SupportRequestEngine
-import io.wax911.support.util.SupportUtil
-import retrofit2.Call
 
-abstract class SupportViewModel<M, K> : ViewModel(), RetroCallback<M> {
+abstract class SupportViewModel<M, K> : ViewModel() {
 
-    var model : MutableLiveData<M> = MutableLiveData()
+    val model : MutableLiveData<M> by lazy { MutableLiveData<M>() }
     val bundle by lazy { Bundle() }
 
-    private lateinit var responseCallback: ResponseCallback<M>
-    private lateinit var requestEngine: SupportRequestEngine<M>
-    private lateinit var repository : CrudRepository<K, M>
+    protected lateinit var repository : CrudRepository<K, M>
 
-    protected fun initDependencies(responseCallback: ResponseCallback<M>,
-                                   requestEngine: SupportRequestEngine<M>,
-                                   repository: CrudRepository<K, M>) {
-        this.responseCallback = responseCallback
-        this.requestEngine = requestEngine
+    protected fun initDependencies(repository: CrudRepository<K, M>) {
         this.repository = repository
     }
 
-    abstract fun requestData(requestType: Int, context: Context)
-
     /**
-     * Invoked when a network exception occurred talking to the server or when an unexpected
-     * exception occurred creating the request or processing the response.
+     * Forwards queries to the repository
      *
-     * @param call the origination requesting object
-     * @param throwable contains information about the error
+     * @param requestType type of request
+     * @param context any valid application context
      */
-    override fun onFailure(call: Call<M>, throwable: Throwable) {
-        throwable.printStackTrace()
-        responseCallback.onResponseError(call, throwable)
-    }
+    abstract fun queryFor(requestType: Int, context: Context)
 
     /**
      * This method will be called when this ViewModel is no longer used and will be destroyed.
@@ -52,7 +37,12 @@ abstract class SupportViewModel<M, K> : ViewModel(), RetroCallback<M> {
      */
     override fun onCleared() {
         super.onCleared()
-        if (!SupportUtil.equals(requestEngine.status, AsyncTask.Status.FINISHED))
-            requestEngine.cancel(true)
+        if (!repository.isProcessStatus(AsyncTask.Status.FINISHED))
+            repository.cancelPendingRequests(true)
     }
+
+
+    fun observeOn(context: LifecycleOwner, observer: Observer<M>) =
+        repository.registerModel(context, model, observer)
+
 }
