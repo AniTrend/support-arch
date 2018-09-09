@@ -11,6 +11,7 @@ import io.wax911.support.base.event.ItemClickListener
 import io.wax911.support.base.event.RecyclerChangeListener
 import io.wax911.support.custom.animation.ScaleAnimation
 import io.wax911.support.custom.presenter.SupportPresenter
+import io.wax911.support.isEmptyOrNull
 import io.wax911.support.util.SupportActionUtil
 import io.wax911.support.isLowRamDevice
 import io.wax911.support.replaceWith
@@ -165,6 +166,8 @@ abstract class SupportViewAdapter<T>(private val context: Context) : RecyclerVie
             clone = ArrayList()
         notifyDataSetChanged()
     }
+
+    fun isEmpty() = data.isEmptyOrNull()
 
     /**
      * Initial implementation is only specific for group types of recyclers,

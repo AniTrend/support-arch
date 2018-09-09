@@ -18,9 +18,6 @@ import org.greenrobot.eventbus.EventBus
 
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, CompatView<VM>, ItemClickListener<M> {
 
-    protected var isMenuDisabled: Boolean = false
-    protected var hasSubscriber: Boolean = false
-
     @MenuRes
     protected var inflateMenu: Int = 0
     @IntegerRes
@@ -28,6 +25,8 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
 
     protected var supportAction: SupportActionUtil<M>? = null
     protected var snackbar: Snackbar? = null
+
+    protected lateinit var presenter: P
 
     /**
      * Called to do initial creation of a fragment.  This is called after
@@ -74,9 +73,11 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      */
     override fun onStart() {
         super.onStart()
-        if (!EventBus.getDefault().isRegistered(this) && hasSubscriber)
-            EventBus.getDefault().register(this)
-        if (!isMenuDisabled)
+        if (shouldSubscribe()) {
+            if (!EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().register(this)
+        }
+        if (!shouldDisableMenu())
             setHasOptionsMenu(true)
     }
 

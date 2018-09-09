@@ -38,6 +38,9 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
      */
     var currentOffset = 0
 
+    fun isNotFirstPage() : Boolean =
+            currentPage > 1
+
     fun initListener(gridLayoutManager: GridLayoutManager, mLoadListener: RecyclerLoadListener) {
         mGridLayoutManager = gridLayoutManager
         this.mLoadListener = mLoadListener

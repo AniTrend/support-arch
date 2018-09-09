@@ -15,8 +15,8 @@ import io.wax911.sample.presenter.BasePresenter
 import io.wax911.sample.util.StateUtil
 import io.wax911.support.custom.activity.SupportActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.support_toolbar.*
 
 class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.OnNavigationItemSelectedListener,
         BottomNavigationView.OnNavigationItemSelectedListener  {
@@ -48,8 +48,8 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-        mDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, toolbar,
+        setSupportActionBar(supportToolbar)
+        mDrawerToggle = ActionBarDrawerToggle(this, drawerLayout, supportToolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close)
 
         if (intent.hasExtra(StateUtil.arg_redirect))
@@ -131,7 +131,7 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
         }
 
         if (supportFragment != null) {
-            toolbar.setTitle(selectedTitle)
+            supportToolbar.setTitle(selectedTitle)
             val fragmentManager = supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.contentFrame, supportFragment!!, supportFragment!!.tag)

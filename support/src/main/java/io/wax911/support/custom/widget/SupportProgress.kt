@@ -12,7 +12,7 @@ import io.wax911.support.R
 import io.wax911.support.base.view.CustomView
 import io.wax911.support.getCompatColor
 
-class CustomProgress : ProgressBar, CustomView {
+class SupportProgress : ProgressBar, CustomView {
 
     private var mColorFilter: PorterDuffColorFilter? = null
 

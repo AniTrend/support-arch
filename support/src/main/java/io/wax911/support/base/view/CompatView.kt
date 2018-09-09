@@ -9,10 +9,16 @@ interface CompatView<VM> : Observer<VM>, SharedPreferences.OnSharedPreferenceCha
     val compatViewPermissionKey: Int
         get() = 110
 
+    var isPager : Boolean
+        get() = true
+
     /**
      * Mandatory presenter initialization
      */
     fun initPresenter()
+
+    fun shouldDisableMenu() : Boolean = false
+    fun shouldSubscribe() : Boolean = false
 
     /**
      * Update views or bind a mutableLiveData to them

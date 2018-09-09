@@ -209,6 +209,19 @@ fun Resources.getStatusBarHeight() : Int {
  * @author hamakn
  * https://gist.github.com/hamakn/8939eb68a920a6d7a498
  * */
+fun Resources.getNavigationBarHeight() : Int {
+    var navigationBarHeight = 0
+    val resourceId = this.getIdentifier("navigation_bar_height", "dimen", "android")
+    if (resourceId > 0)
+        navigationBarHeight = this.getDimensionPixelSize(resourceId)
+    return navigationBarHeight
+}
+
+/**
+ * Credits
+ * @author hamakn
+ * https://gist.github.com/hamakn/8939eb68a920a6d7a498
+ * */
 fun FragmentActivity.getActionBarHeight() : Int {
     val styledAttributes = this.theme.obtainStyledAttributes(
             intArrayOf(android.R.attr.actionBarSize)

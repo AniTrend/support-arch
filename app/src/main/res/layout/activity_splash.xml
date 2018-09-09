@@ -33,7 +33,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
 
-    <io.wax911.support.custom.widget.CustomProgress
+    <io.wax911.support.custom.widget.SupportProgress
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="@dimen/wide_image_md"

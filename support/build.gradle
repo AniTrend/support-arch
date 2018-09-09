@@ -49,6 +49,9 @@ dependencies {
     /** Event Bus Library */
     implementation 'org.greenrobot:eventbus:3.1.1'
 
+    /** State Layout Library */
+    implementation 'com.github.nguyenhoanglam:ProgressLayout:1.0.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
