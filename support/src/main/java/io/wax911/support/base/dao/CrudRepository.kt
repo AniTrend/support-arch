@@ -69,8 +69,6 @@ abstract class CrudRepository<K, V>(private val responseCallback: ResponseCallba
     /**
      * When the application is not connected to the internet this method is called to resolve the
      * kind of content that needs to be fetched from the database
-     *
-     * @param parameters bundle of parameters for the request
      */
     protected abstract fun requestFromCache()
 

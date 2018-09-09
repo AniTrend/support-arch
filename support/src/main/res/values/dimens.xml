@@ -12,7 +12,7 @@
     <dimen name="series_image_xl">185dp</dimen>
 
     <dimen name="wide_image">235dp</dimen>
-    <dimen name="wide_image_md">176dp</dimen>
+    <dimen name="wide_image_md">215dp</dimen>
 
     <!-- text sizes -->
     <dimen name="heading_text_size">16sp</dimen>
@@ -43,8 +43,8 @@
     <dimen name="avatar_size">48dp</dimen>
 
     <dimen name="avatar_size_md">36dp</dimen>
-    <dimen name="avatar_size_xl">60dp</dimen>
-    <dimen name="avatar_size_xx">70dp</dimen>
+    <dimen name="avatar_size_lg">60dp</dimen>
+    <dimen name="avatar_size_xl">70dp</dimen>
 
     <dimen name="spacing_xl">48dp</dimen>
     <dimen name="spacing_lg">40dp</dimen>
@@ -56,5 +56,4 @@
 
     <!-- Match Parent -->
     <dimen name="bottom_sheet_width">0dp</dimen>
-
 </resources>

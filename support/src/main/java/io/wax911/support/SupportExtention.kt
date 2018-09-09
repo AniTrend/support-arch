@@ -185,14 +185,8 @@ fun FragmentActivity.startSharedTransitionActivity(target : View, data : Intent)
     ActivityCompat.startActivity(this, data, transitionActivityOptions.toBundle())
 }
 
-
-fun Int.isLightTheme() : Boolean {
-    return this == R.style.SupportThemeLight
-}
-
-fun Context.isLightTheme(presenter: SupportPresenter<*>) : Boolean {
-    return presenter.supportPreference.getTheme().isLightTheme()
-}
+fun Int.isLightTheme() : Boolean =
+        this == R.style.SupportThemeLight
 
 fun Context.getLayoutInflater() : LayoutInflater =
         this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

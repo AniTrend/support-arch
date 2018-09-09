@@ -9,7 +9,6 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.ColorRes
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -20,6 +19,7 @@ import io.wax911.support.base.view.CompatView
 import io.wax911.support.custom.fragment.SupportFragment
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.custom.viewmodel.SupportViewModel
+import io.wax911.support.isLightTheme
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 
@@ -29,9 +29,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
 
     protected var id: Long = -1
     protected var offScreenLimit = 3
-    protected var disableNavigationStyle: Boolean = false
 
-    protected var actionBar: ActionBar? = null
     protected var viewModel: SupportViewModel<M, *>? = null
     protected var supportFragment : SupportFragment<*, *, *>? = null
 
@@ -47,37 +45,30 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         setThemeStyle()
     }
 
-    /**
-     * Changes the navigation bar color depending on the selected theme
-     */
-    private fun setNavigationStyle() = when (!disableNavigationStyle ) {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ->
-            if (presenter.supportPreference.getTheme() == R.style.SupportThemeLight)
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-        else
-            window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
-        else -> { }
-    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         configureActivity()
         super.onCreate(savedInstanceState)
-        actionBar = supportActionBar
     }
 
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     /**
-     * Changes the navigation bar color and theme style depending on the selected theme
-     * @see SupportActivity#setNavigationStyle()
+     * Changes the theme style depending on the selected theme
      */
     private fun setThemeStyle() {
-        setTheme(presenter.supportPreference.getTheme())
-        setNavigationStyle()
+        val currentTheme = presenter.supportPreference.getTheme()
+        when (!currentTheme.isLightTheme()) {
+            true -> when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
+                    window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+                Build.VERSION.SDK_INT > Build.VERSION_CODES.O ->
+                    window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
+            }
+        }
+        setTheme(currentTheme)
     }
 
     fun disableToolbarTitle() = actionBar?.setDisplayShowTitleEnabled(false)
