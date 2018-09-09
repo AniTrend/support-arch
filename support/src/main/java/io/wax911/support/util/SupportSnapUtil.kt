@@ -8,7 +8,7 @@ import io.wax911.support.base.view.CustomView
  * Created by max on 2018/08/11.
  */
 
-class CenterSnapUtil(private val positionChangeListener: PositionChangeListener?) : PagerSnapHelper(), CustomView {
+class SupportSnapUtil(private val positionChangeListener: PositionChangeListener?) : PagerSnapHelper(), CustomView {
 
     override fun findTargetSnapPosition(layoutManager: RecyclerView.LayoutManager, velocityX: Int, velocityY: Int): Int {
         val position = super.findTargetSnapPosition(layoutManager, velocityX, velocityY)

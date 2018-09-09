@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import io.wax911.support.base.view.CustomView
 
 /**
- * Class [StatefulRecyclerView] extends [RecyclerView] and adds position management on configuration changes.
+ * Class [SupportRecyclerView] extends [RecyclerView] and adds position management on configuration changes.
  *
  * @author FrantisekGazo
  * @version 2016-03-15
  * Modified by max
  */
 
-class StatefulRecyclerView : RecyclerView, CustomView {
+class SupportRecyclerView : RecyclerView, CustomView {
 
     private var isListenerPresent: Boolean = false
 

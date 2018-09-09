@@ -9,12 +9,11 @@ import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.annimon.stream.IntPair
 import com.google.android.material.snackbar.Snackbar
-import io.wax911.support.base.dao.CrudRepository
 import io.wax911.support.base.event.ActionModeListener
 import io.wax911.support.base.event.ItemClickListener
 import io.wax911.support.base.view.CompatView
 import io.wax911.support.custom.presenter.SupportPresenter
-import io.wax911.support.util.ActionModeUtil
+import io.wax911.support.util.SupportActionUtil
 import org.greenrobot.eventbus.EventBus
 
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, CompatView<VM>, ItemClickListener<M> {
@@ -27,7 +26,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     @IntegerRes
     protected var mColumnSize: Int = 0
 
-    protected var actionMode: ActionModeUtil<M>? = null
+    protected var supportAction: SupportActionUtil<M>? = null
     protected var snackbar: Snackbar? = null
 
     /**
@@ -53,7 +52,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
         initPresenter()
         super.onCreate(savedInstanceState)
         retainInstance = true
-        actionMode = ActionModeUtil(this, true)
+        supportAction = SupportActionUtil(this, true)
     }
 
     /**
@@ -113,9 +112,9 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     override fun hasBackPressableAction(): Boolean {
-        if (actionMode != null) {
-            if (actionMode!!.selectedItems.size > 0) {
-                actionMode!!.clearSelection()
+        if (supportAction != null) {
+            if (!supportAction!!.selectedItems.isEmpty()) {
+                supportAction!!.clearSelection()
                 return true
             }
         }
@@ -151,7 +150,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      *
      * @param mode The current ActionMode
      * @param item The item that was clicked
-     * @return true if this callback handled the event, false if the standard MenuItem
+     * @return true if this supportActionUtil handled the event, false if the standard MenuItem
      * invocation should continue.
      */
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
@@ -164,7 +163,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * @param mode The current ActionMode being destroyed
      */
     override fun onDestroyActionMode(mode: ActionMode) {
-        actionMode?.clearSelection()
+        supportAction?.clearSelection()
     }
 
     abstract override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String)
@@ -174,7 +173,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * is clicked from a view holder this method will be called
      *
      * @param target view that has been clicked
-     * @param data   the model that at the click index
+     * @param data   the mutableLiveData that at the click index
      */
     abstract override fun onItemClick(target: View, data: IntPair<M>)
 
@@ -183,7 +182,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * is clicked from a view holder this method will be called
      *
      * @param target view that has been long clicked
-     * @param data   the model that at the long click index
+     * @param data   the mutableLiveData that at the long click index
      */
     abstract override fun onItemLongClick(target: View, data: IntPair<M>)
 

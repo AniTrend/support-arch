@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.annotation.StyleRes
 import io.wax911.support.R
-import io.wax911.support.util.swapTheme
+import io.wax911.support.swapTheme
 
 abstract class SupportPreference constructor(context: Context) {
 

@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.Toolbar
 import io.wax911.support.R
 import io.wax911.support.base.view.CustomView
-import io.wax911.support.util.getColorFromAttr
+import io.wax911.support.getColorFromAttr
 
 class SupportToolbar : Toolbar, CustomView {
 

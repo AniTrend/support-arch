@@ -1,4 +1,4 @@
-package io.wax911.support.util
+package io.wax911.support
 
 import android.app.Activity
 import android.app.ActivityManager
@@ -27,24 +27,24 @@ import com.annimon.stream.IntPair
 import com.annimon.stream.Objects
 import com.annimon.stream.Optional
 import com.annimon.stream.Stream
-import io.wax911.support.R
 import io.wax911.support.custom.presenter.SupportPresenter
 import okhttp3.Cache
 import java.io.File
 import java.util.*
 
+object ComparatorUtil {
+    fun <T> getKeyComparator(): Comparator<Map.Entry<String, T>> =
+            kotlin.Comparator { o1, o2 -> o1.key.compareTo(o2.key)  }
+}
+
 @StyleRes
-fun Int.swapTheme() : Int =
-        if(this == R.style.SupportThemeLight)
-            R.style.SupportThemeDark
-        else
-            R.style.SupportThemeLight
+fun Int.swapTheme() : Int = when (this == R.style.SupportThemeLight) {
+    true -> R.style.SupportThemeDark
+    false -> R.style.SupportThemeLight
+}
 
 fun String.Companion.empty(): String =
         ""
-
-fun Any?.isNull() =
-        this == null
 
 fun FragmentActivity.hideKeyboard() {
     val inputMethodManager = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -239,27 +239,30 @@ fun Context.getStringList(@ArrayRes arrayRes : Int) : List<String> {
 fun <T> Array<T>.constructListFrom() : List<T> = Arrays.asList(*this)
 
 /**
- * Gets the index of any type of iterable guaranteed that an equals override for the class
+ * Gets the index of any type of iterable guaranteed that an equal override for the class
  * of type T is implemented.
  *
  * @param targetItem the item to search
  * @return 0 if no result was found
  */
-fun <A> Iterable<A>?.indexOf(targetItem: A?): Int {
-    if (this != null && targetItem != null) {
+fun <A> Iterable<A>?.indexOf(targetItem: A?): Int = when (this != null) {
+    targetItem != null -> {
         val pairOptional = Stream.of(this)
-                .findIndexed { _, value -> SupportUtil.equals(value, targetItem) }
-        if (pairOptional.isPresent)
-            return pairOptional.get().first
+                .findIndexed { _, value -> value.equal(targetItem) }
+        when {
+            pairOptional.isPresent -> pairOptional.get().first
+            else -> 0
+        }
     }
-    return 0
+    else -> 0
 }
+
 
 /**
  * Gets the index of any type of collection guaranteed that an
- * equals override for the class of type T is implemented.
+ * equal override for the class of type T is implemented.
  * <br/>
- * @see Object#equals(Object)
+ * @see Object#equal(Object)
  *
  * @param targetItem the item to search
  * @return Optional result object
@@ -268,23 +271,24 @@ fun <A> Iterable<A>?.indexOf(targetItem: A?): Int {
  * @see Optional<T> for information on how to handle return
  * @see IntPair
  */
-fun <E> Collection<E>?.indexOfIntPair(targetItem: E?): Optional<IntPair<E>> {
-    if (!this.isEmpty())
-        return Stream.of(this)
-                .findIndexed { _, value -> SupportUtil.equals(value, targetItem) }
-    return Optional.empty()
+fun <E> Collection<E>?.indexOfIntPair(targetItem: E?): Optional<IntPair<E>> = when {
+    !this.isEmptyOrNull() -> Stream.of(this).findIndexed { _, value ->
+        value.equal(targetItem)
+     }
+    else -> Optional.empty()
 }
+
 
 /**
  * Capitalize words for text view consumption
  */
-fun String?.capitalizeWords(exceptions: List<String>) : String {
-    if (!TextUtils.isEmpty(this)) {
+fun String?.capitalizeWords(exceptions: List<String>) : String = when {
+    !TextUtils.isEmpty(this) -> {
         val result = StringBuilder(this!!.length)
         val words = this.split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for ((index, word) in words.withIndex()) {
-            if (!TextUtils.isEmpty(word)) {
-                if (exceptions.contains(word))
+            when (!TextUtils.isEmpty(word)) {
+                true -> if (exceptions.contains(word))
                     result.append(word)
                 else
                     result.append(word.capitalize())
@@ -292,9 +296,9 @@ fun String?.capitalizeWords(exceptions: List<String>) : String {
             if (index != word.length - 1)
                 result.append(" ")
         }
-        return result.toString()
+        result.toString()
     }
-    return ""
+    else -> String.empty()
 }
 
 /**
@@ -306,10 +310,57 @@ fun  Array<String>.capitalizeWords() : List<String> =
              .map { s -> s.capitalizeWords(emptyList()) }
              .toList()
 
-fun Collection<*>?.isEmpty() : Boolean =
-    this == null || this.isEmpty()
+fun Collection<*>?.isEmptyOrNull() : Boolean =
+        this == null || this.isEmpty()
 
-fun Collection<*>?.sizeOf() : Int {
-    return if (this.isEmpty()) 0 else this!!.size
+fun Collection<*>?.sizeOf() : Int = when {
+    this.isEmptyOrNull() -> 0
+    else -> this!!.size
 }
 
+fun <C> MutableList<C>.replaceWith(collection :Collection<C>) {
+    this.clear()
+    this.addAll(collection)
+}
+
+/**
+ * Sorts a given map by the order of the of the keys in the map in descending order
+ * @see ComparatorUtil#getKeyComparator
+ */
+fun <T> Map<String, T>.getKeyFilteredMap() : List<Map.Entry<String, T>> =
+    Stream.of(this).sorted(ComparatorUtil.getKeyComparator()).toList()
+
+/**
+ * Checks if two objects are not null and equal
+ */
+fun Any?.equal(b : Any?) : Boolean =
+        this != null && b != null && this == b
+
+fun Float.dipToPx() : Int {
+    val scale = Resources.getSystem().displayMetrics.density
+    return (this * scale + 0.5f).toInt()
+}
+
+fun Float.pxToDip() : Int {
+    val scale = Resources.getSystem().displayMetrics.density
+    return (this / scale + 0.5f).toInt()
+}
+
+fun Float.spToPx() : Int {
+    val scaledDensity = Resources.getSystem().displayMetrics.scaledDensity
+    return Math.round(this * scaledDensity)
+}
+
+fun Float.isScreenSw() : Boolean {
+    val displayMetrics = Resources.getSystem().displayMetrics
+    val widthDp = displayMetrics.widthPixels / displayMetrics.density
+    val heightDp = displayMetrics.heightPixels / displayMetrics.density
+    val screenSw = Math.min(widthDp, heightDp)
+    return screenSw >= this
+}
+
+fun Float.isScreenW() : Boolean {
+    val displayMetrics = Resources.getSystem().displayMetrics
+    val screenWidth = displayMetrics.widthPixels / displayMetrics.density
+    return screenWidth >= this
+}

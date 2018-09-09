@@ -9,10 +9,10 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import io.fabric.sdk.android.BuildConfig
 import io.fabric.sdk.android.Fabric
 import io.wax911.support.util.SingletonUtil
-import io.wax911.support.util.SupportAnalytic
-import io.wax911.support.util.empty
+import io.wax911.support.util.SupportAnalyticUtil
+import io.wax911.support.empty
 
-class AnalyticsUtil private constructor(context: Context) : SupportAnalytic {
+class AnalyticsUtil private constructor(context: Context) : SupportAnalyticUtil {
 
     init {
         configureAnalytics(context)
@@ -81,7 +81,7 @@ class AnalyticsUtil private constructor(context: Context) : SupportAnalytic {
         analytics?.resetAnalyticsData()
     }
 
-    companion object : SingletonUtil<SupportAnalytic, Context> ({ AnalyticsUtil(it) })
+    companion object : SingletonUtil<SupportAnalyticUtil, Context> ({ AnalyticsUtil(it) })
 }
 
 

@@ -10,7 +10,7 @@ import android.util.AttributeSet
 import android.widget.ProgressBar
 import io.wax911.support.R
 import io.wax911.support.base.view.CustomView
-import io.wax911.support.util.getCompatColor
+import io.wax911.support.getCompatColor
 
 class CustomProgress : ProgressBar, CustomView {
 

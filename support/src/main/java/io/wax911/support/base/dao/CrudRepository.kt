@@ -9,38 +9,43 @@ import androidx.lifecycle.Observer
 import io.wax911.support.base.event.ResponseCallback
 import io.wax911.support.base.event.RetroCallback
 import io.wax911.support.custom.worker.SupportRequestClient
-import io.wax911.support.util.SupportUtil
-import io.wax911.support.util.isConnectedToNetwork
+import io.wax911.support.equal
+import io.wax911.support.isConnectedToNetwork
 import retrofit2.Call
 
-abstract class CrudRepository<K, V> : RetroCallback<V> {
+abstract class CrudRepository<K, V>(private val responseCallback: ResponseCallback<V>) : RetroCallback<V> {
 
-    protected val model : MutableLiveData<V> by lazy { MutableLiveData<V>() }
-    protected var responseCallback: ResponseCallback<V>? = null
+    lateinit var modelDao: QueryBase<V>
+
+    protected lateinit var parameters: Bundle
+
+    protected val mutableLiveData : MutableLiveData<V> by lazy { MutableLiveData<V>() }
+
     private var requestClient: SupportRequestClient<V>? = null
-
 
     protected var requestType: Int = 0
 
     abstract fun save(model : V)
 
-    abstract fun findOne(key : K)
-    abstract fun findAll()
+    abstract fun find(key : K)
+    open fun find() {
+        // optional implementation
+    }
 
     abstract fun delete(model : V)
 
-    abstract fun onCleared()
-
-    fun registerObserver(context: LifecycleOwner, observer: Observer<V>) {
-        when { !model.hasActiveObservers() -> model.observe(context, observer) }
+    fun registerObserver(context: LifecycleOwner, observer: Observer<V>) = when {
+        !mutableLiveData.hasActiveObservers() -> mutableLiveData.observe(context, observer)
+        else -> { }
     }
+
 
     /**
      * Creates the network client for implementing class
      *
      * @param parameters bundle of parameters for the request
      */
-    abstract fun createNetworkClient(parameters: Bundle) : SupportRequestClient<V>
+    abstract fun createNetworkClient() : SupportRequestClient<V>
 
     /**
      * Handles dispatching of network requests to a background thread
@@ -51,12 +56,13 @@ abstract class CrudRepository<K, V> : RetroCallback<V> {
      */
     fun requestFromNetwork(requestType: Int, parameters: Bundle, context: Context) {
         this.requestType = requestType
+        this.parameters = parameters
         when (context.isConnectedToNetwork()) {
             true -> {
-                requestClient = createNetworkClient(parameters)
+                requestClient = createNetworkClient()
                 requestClient?.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, context)
             }
-            false -> requestFromCache(parameters)
+            false -> requestFromCache()
         }
     }
 
@@ -66,13 +72,13 @@ abstract class CrudRepository<K, V> : RetroCallback<V> {
      *
      * @param parameters bundle of parameters for the request
      */
-    protected abstract fun requestFromCache(parameters: Bundle)
+    protected abstract fun requestFromCache()
 
 
-    fun isProcessStatus(status : AsyncTask.Status) : Boolean =
-            SupportUtil.equals(requestClient?.status, status)
+    private fun isProcessStatus(status : AsyncTask.Status) : Boolean =
+            requestClient?.status.equal(status)
 
-    fun cancelPendingRequests(interruptExecution : Boolean) {
+    private fun cancelPendingRequests(interruptExecution : Boolean) {
         if(!isProcessStatus(AsyncTask.Status.FINISHED))
             requestClient?.cancel(interruptExecution)
     }
@@ -86,6 +92,11 @@ abstract class CrudRepository<K, V> : RetroCallback<V> {
      */
     override fun onFailure(call: Call<V>, throwable: Throwable) {
         throwable.printStackTrace()
-        responseCallback?.onResponseError(call, throwable)
+        responseCallback.onResponseError(call, throwable)
+    }
+
+    open fun onCleared() {
+        if (!isProcessStatus(AsyncTask.Status.FINISHED))
+            cancelPendingRequests(true)
     }
 }

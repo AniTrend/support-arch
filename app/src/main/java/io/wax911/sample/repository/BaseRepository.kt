@@ -1,31 +1,23 @@
 package io.wax911.sample.repository
 
-import android.os.Bundle
-import androidx.lifecycle.Observer
 import io.wax911.sample.api.NetworkClient
-import io.wax911.sample.dao.BaseModelDao
-import io.wax911.sample.dao.DatabaseHelper
 import io.wax911.sample.model.BaseModel
 import io.wax911.support.base.dao.CrudRepository
 import io.wax911.support.base.event.ResponseCallback
 import io.wax911.support.custom.worker.SupportRequestClient
+import io.wax911.support.util.InstanceUtil
 import retrofit2.Call
 import retrofit2.Response
 
-class BaseRepository private constructor() : CrudRepository<Long, BaseModel>() {
-
-    private lateinit var modelDao: BaseModelDao
+class BaseRepository private constructor(responseCallback: ResponseCallback<BaseModel>) : CrudRepository<Long, BaseModel>(responseCallback) {
 
     override fun save(model: BaseModel) {
         modelDao.insert(model)
     }
 
-    override fun findOne(key: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun findAll() {
-        model.value = modelDao.get().value
+    override fun find(key: Long) {
+        val result = modelDao.get(key)
+        mutableLiveData.value = result
     }
 
     override fun delete(model: BaseModel) {
@@ -34,19 +26,15 @@ class BaseRepository private constructor() : CrudRepository<Long, BaseModel>() {
 
     /**
      * Creates the network client for implementing class
-     *
-     * @param parameters bundle of parameters for the request
      */
-    override fun createNetworkClient(parameters: Bundle): SupportRequestClient<BaseModel> =
+    override fun createNetworkClient(): SupportRequestClient<BaseModel> =
             NetworkClient.newInstance(this, parameters)
 
     /**
      * When the application is not connected to the internet this method is called to resolve the
      * kind of content that needs to be fetched from the database
-     *
-     * @param parameters bundle of parameters for the request
      */
-    override fun requestFromCache(parameters: Bundle) {
+    override fun requestFromCache() {
         when (requestType) {
 
         }
@@ -68,16 +56,7 @@ class BaseRepository private constructor() : CrudRepository<Long, BaseModel>() {
         }
     }
 
-    companion object {
-        fun newInstance(responseCallback: ResponseCallback<BaseModel>?, databaseHelper: DatabaseHelper) : CrudRepository<Long, BaseModel> {
-            val repository = BaseRepository()
-            repository.modelDao = databaseHelper.baseModelDao()
-            repository.responseCallback = responseCallback
-            return repository
-        }
-    }
-
-    override fun onCleared() {
-
-    }
+    companion object : InstanceUtil<CrudRepository<Long, BaseModel>, ResponseCallback<BaseModel>>({
+        BaseRepository(it)
+    })
 }

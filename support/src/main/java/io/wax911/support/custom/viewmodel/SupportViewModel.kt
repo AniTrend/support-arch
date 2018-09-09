@@ -1,7 +1,6 @@
 package io.wax911.support.custom.viewmodel
 
 import android.content.Context
-import android.os.AsyncTask
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -37,8 +36,6 @@ abstract class SupportViewModel<M, K> : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         repository.onCleared()
-        if (!repository.isProcessStatus(AsyncTask.Status.FINISHED))
-            repository.cancelPendingRequests(true)
     }
 
     fun observeOn(context: LifecycleOwner, observer: Observer<M>) =

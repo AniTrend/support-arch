@@ -1,7 +1,9 @@
 package io.wax911.support.base.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Update
 
 interface QueryBase<T> {
 
@@ -23,7 +25,7 @@ interface QueryBase<T> {
     @Delete
     fun delete(attributes:List<T>)
 
-    fun get() : LiveData<T>
-    fun get(id : Long) : LiveData<T>
-    fun get(offset : Int, limit : Int) : LiveData<List<T>>
+    fun get() : T
+    fun get(id : Long) : T
+    fun get(offset : Int, limit : Int) : List<T>
 }

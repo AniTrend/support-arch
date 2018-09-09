@@ -13,7 +13,9 @@ class BaseViewModel : SupportViewModel<BaseModel, Long>() {
     companion object {
         fun newInstance(context: FragmentActivity, responseCallback: ResponseCallback<BaseModel>) : BaseViewModel {
             val viewModel = ViewModelProviders.of(context).get(BaseViewModel::class.java)
-            viewModel.initDependencies(BaseRepository.newInstance(responseCallback, context.getDatabase()))
+            val repository = BaseRepository.newInstance(responseCallback)
+            repository.modelDao = context.getDatabase().baseModelDao()
+            viewModel.initDependencies(repository)
             return viewModel
         }
     }

@@ -3,7 +3,7 @@ package io.wax911.support.util
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 
-interface SupportAnalytic {
+interface SupportAnalyticUtil {
 
     fun logCurrentScreen(fragmentActivity: FragmentActivity, fragmentActivityTag: String)
     fun logCurrentState(tag: String, bundle: Bundle)

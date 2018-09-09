@@ -4,7 +4,7 @@ import retrofit2.Call
 
 /**
  * Created by max on 2017/10/15.
- * Callback for view model to communicate
+ * Callback for view mutableLiveData to communicate
  * with parent class or activity after a request
  */
 
