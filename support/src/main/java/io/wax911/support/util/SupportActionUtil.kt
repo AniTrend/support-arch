@@ -2,9 +2,6 @@ package io.wax911.support.util
 
 import android.view.ActionMode
 import android.widget.CheckBox
-
-import java.util.ArrayList
-
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import io.wax911.support.R
@@ -13,6 +10,7 @@ import io.wax911.support.custom.recycler.SupportViewHolder
 import io.wax911.support.getColorFromAttr
 import io.wax911.support.getCompatColor
 import io.wax911.support.replaceWith
+import java.util.*
 
 /**
  * Created by max on 2017/07/17.

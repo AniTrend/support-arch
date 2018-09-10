@@ -1,5 +1,6 @@
 package io.wax911.support.base.event
 
+import androidx.annotation.StringRes
 import retrofit2.Call
 
 /**
@@ -10,7 +11,7 @@ import retrofit2.Call
 
 interface ResponseCallback<T> {
 
-    fun onResponseError(call: Call<T>, throwable: Throwable)
+    fun onResponseError(call: Call<T>, throwable: Throwable, @StringRes message: Int)
 
-    fun onResponseSuccess(call: Call<T>, message: String)
+    fun onResponseSuccess(call: Call<T>, @StringRes message: Int)
 }

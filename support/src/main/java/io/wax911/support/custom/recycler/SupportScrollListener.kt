@@ -20,6 +20,9 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
         val pagingLimit = 15
     }
 
+    var isPagingLimit = false
+    var isPager = true
+
     private var mLoadListener: RecyclerLoadListener? = null
     private var mGridLayoutManager: GridLayoutManager? = null
     private var mStaggeredGridLayoutManager: StaggeredGridLayoutManager? = null
@@ -29,17 +32,20 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
     private val mVisibleThreshold = 3 //minimum allowed threshold before next page reload request
 
     /**
-     * @return Returns the current pagination page number
+     * @return the current pagination page number
      */
     var currentPage = 1
 
     /**
-     * @return Returns the current pagination offset
+     * @return the current pagination offset
      */
     var currentOffset = 0
 
-    fun isNotFirstPage() : Boolean =
-            currentPage > 1
+    /**
+     * @return true if this is the first page and also this is a paging fragment
+     */
+    fun isFirstPage() : Boolean =
+            currentPage == 1 && isPager
 
     fun initListener(gridLayoutManager: GridLayoutManager, mLoadListener: RecyclerLoadListener) {
         mGridLayoutManager = gridLayoutManager

@@ -1,7 +1,5 @@
 package io.wax911.support.util
 
-import android.app.ProgressDialog
-import android.content.Context
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
@@ -27,11 +25,5 @@ class SupportNotifyUtil {
 
         fun make(parent: View, @StringRes stringRes: Int, duration: Int): Snackbar =
                 make(parent, parent.context.getString(stringRes), duration)
-
-        fun createProgressDialog(context: Context, @StringRes stringRes: Int): ProgressDialog {
-            val progressDialog = ProgressDialog(context)
-            progressDialog.setMessage(context.getString(stringRes))
-            return progressDialog
-        }
     }
 }

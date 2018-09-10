@@ -6,6 +6,7 @@ interface SupportStateUtil {
         // Application State Keys
         val key_navigation_selected = "key_navigation_selected"
         val key_navigation_title = "key_navigation_title"
+        val key_pagination_limit = "key_pagination_limit"
         val key_recycler_state = "key_recycler_state"
         val key_bundle_param = "key_bundle_param"
         val key_model_state = "key_model_state"

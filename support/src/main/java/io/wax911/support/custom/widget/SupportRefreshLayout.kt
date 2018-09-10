@@ -2,9 +2,7 @@ package io.wax911.support.custom.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -13,17 +11,10 @@ import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.Transformation
 import android.widget.AbsListView
-
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
-import androidx.core.view.MotionEventCompat
-import androidx.core.view.NestedScrollingChild
-import androidx.core.view.NestedScrollingChildHelper
-import androidx.core.view.NestedScrollingParent
-import androidx.core.view.NestedScrollingParentHelper
-import androidx.core.view.ViewCompat
-import androidx.fragment.app.FragmentActivity
+import androidx.core.view.*
 import io.wax911.support.R
 import io.wax911.support.dipToPx
 import io.wax911.support.getColorFromAttr
@@ -130,7 +121,8 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
      * @param loading Whether or not the view should show load progress.
      */
     // scale and show
-    /* notify */ var isLoading: Boolean
+    /* notify */
+    var isLoading: Boolean
         get() = mLoading
         set(loading) {
             if (loading && (mRefreshing || mLoading)) {
@@ -281,8 +273,8 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
         }
     }
 
-    fun setDragTriggerDistance(dir: Int, distance: Int) {
-        var distance = distance
+    fun setDragTriggerDistance(dir: Int, currentDistance: Int) {
+        var distance = currentDistance
         if (dir == DIRECTION_BOTTOM) {
             distance += mCircleHeight
         }
@@ -375,7 +367,7 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         ensureTarget()
 
-        val action = MotionEventCompat.getActionMasked(ev)
+        val action = ev.actionMasked
 
         if (mReturningToStart && action == MotionEvent.ACTION_DOWN) {
             mReturningToStart = false
@@ -419,7 +411,7 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
     }
 
     override fun onTouchEvent(ev: MotionEvent): Boolean {
-        val action = MotionEventCompat.getActionMasked(ev)
+        val action = ev.actionMasked
 
         if (mReturningToStart && action == MotionEvent.ACTION_DOWN) {
             mReturningToStart = false
@@ -481,8 +473,8 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
         }
 
         if (!mScale) {
-            ViewCompat.setScaleX(mCircleViews!![dir], 1f)
-            ViewCompat.setScaleY(mCircleViews!![dir], 1f)
+            mCircleViews!![dir].scaleX = 1f
+            mCircleViews!![dir].scaleY = 1f
         }
 
         if (mScale) {
@@ -553,7 +545,7 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
      * scroll up. Override this if the child view is a custom view.
      */
     fun canChildScrollUp(): Boolean {
-        return ViewCompat.canScrollVertically(mTarget!!, -1)
+        return mTarget!!.canScrollVertically(-1)
     }
 
     /**
@@ -561,7 +553,7 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
      * scroll down. Override this if the child view is a custom view.
      */
     fun canChildScrollDown(): Boolean {
-        return ViewCompat.canScrollVertically(mTarget!!, 1)
+        return mTarget!!.canScrollVertically(1)
     }
 
     override fun requestDisallowInterceptTouchEvent(b: Boolean) {
@@ -773,7 +765,7 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
     private fun startScaleDownReturnToTopStartAnimation(from: Int,
                                                         listener: Animation.AnimationListener?) {
         mFrom = from
-        mStartingScale = ViewCompat.getScaleX(mCircleViews!![DIRECTION_TOP])
+        mStartingScale = mCircleViews!![DIRECTION_TOP].scaleX
         mScaleDownToStartAnimation = object : Animation() {
             public override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
                 val targetScale = mStartingScale + -mStartingScale * interpolatedTime
@@ -792,7 +784,7 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
     private fun startScaleDownReturnToBottomStartAnimation(from: Int,
                                                            listener: Animation.AnimationListener?) {
         mFrom = from
-        mStartingScale = ViewCompat.getScaleX(mCircleViews!![DIRECTION_BOTTOM])
+        mStartingScale = mCircleViews!![DIRECTION_BOTTOM].scaleX
         mScaleDownToStartAnimation = object : Animation() {
             public override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
                 val targetScale = mStartingScale + -mStartingScale * interpolatedTime
@@ -810,12 +802,6 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
 
     private fun startScaleUpAnimation(dir: Int, listener: Animation.AnimationListener?) {
         mCircleViews!![dir].visibility = View.VISIBLE
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            // Pre API 11, alpha is used in place of scale up to show the
-            // progress circle appearing.
-            // Don't adjust the alpha during appearance otherwise.
-            mProgress!![dir].alpha = MAX_ALPHA
-        }
         mScaleAnimation = object : Animation() {
             public override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
                 setAnimationProgress(dir, interpolatedTime)
@@ -830,8 +816,8 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
     }
 
     private fun setAnimationProgress(dir: Int, progress: Float) {
-        ViewCompat.setScaleX(mCircleViews!![dir], progress)
-        ViewCompat.setScaleY(mCircleViews!![dir], progress)
+        mCircleViews!![dir].scaleX = progress
+        mCircleViews!![dir].scaleY = progress
     }
 
     private fun startScaleDownAnimation(dir: Int, listener: Animation.AnimationListener?) {
@@ -1037,7 +1023,10 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
         else -> { }
     }
 
-    fun onResponseHandle() {
+    /**
+     * Resets the refreshing and loading states, only if the states are loading and refreshing
+     */
+    fun onResponseResetStates() {
         if (isRefreshing)
             isRefreshing = false
         if (isLoading)

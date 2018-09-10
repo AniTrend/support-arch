@@ -9,12 +9,12 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import io.wax911.support.R
 import io.wax911.support.base.view.CompatView
 import io.wax911.support.custom.fragment.SupportFragment
 import io.wax911.support.custom.presenter.SupportPresenter
@@ -166,16 +166,16 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         Log.i(getViewName(), "onChanged() from view mutableLiveData has received data")
     }
 
-    override fun onResponseError(call: Call<M>, throwable: Throwable) {
-        Log.e(getViewName(), "onResponseError", throwable)
+    override fun onResponseError(call: Call<M>, throwable: Throwable, @StringRes message: Int) {
+        Log.e(getViewName(), getString(message), throwable)
     }
 
-    override fun onResponseSuccess(call: Call<M>, message: String) {
-        Log.i(getViewName(), message)
+    override fun onResponseSuccess(call: Call<M>, @StringRes message: Int) {
+        Log.i(getViewName(), getString(message))
     }
 
     override fun onSharedPreferenceChanged(preference: SharedPreferences?, key: String?) {
-        if (!TextUtils.isEmpty(key))
+        if (!key.isNullOrEmpty())
             Log.d(getViewName(), "onSharedPreferenceChanged -> $key | Changed value")
     }
 }

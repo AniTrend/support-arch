@@ -39,7 +39,6 @@ abstract class CrudRepository<K, V>(private val responseCallback: ResponseCallba
         else -> { }
     }
 
-
     /**
      * Creates the network client for implementing class
      *
@@ -88,10 +87,7 @@ abstract class CrudRepository<K, V>(private val responseCallback: ResponseCallba
      * @param call the origination requesting object
      * @param throwable contains information about the error
      */
-    override fun onFailure(call: Call<V>, throwable: Throwable) {
-        throwable.printStackTrace()
-        responseCallback.onResponseError(call, throwable)
-    }
+    override fun onFailure(call: Call<V>, throwable: Throwable) { throwable.printStackTrace() }
 
     open fun onCleared() {
         if (!isProcessStatus(AsyncTask.Status.FINISHED))

@@ -12,10 +12,9 @@ import io.wax911.support.base.event.RecyclerChangeListener
 import io.wax911.support.custom.animation.ScaleAnimation
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.isEmptyOrNull
-import io.wax911.support.util.SupportActionUtil
 import io.wax911.support.isLowRamDevice
 import io.wax911.support.replaceWith
-import kotlin.collections.ArrayList
+import io.wax911.support.util.SupportActionUtil
 
 /**
  * Created by max on 2017/06/09.
@@ -24,16 +23,18 @@ import kotlin.collections.ArrayList
 
 abstract class SupportViewAdapter<T>(private val context: Context) : RecyclerView.Adapter<SupportViewHolder<T>>(), Filterable, RecyclerChangeListener<T> {
 
+    lateinit var presenter: SupportPresenter<*>
+    lateinit var clickListener: ItemClickListener<T>
 
-    private var lastPosition: Int = 0
-    private val isLowRamDevice: Boolean by lazy {
-        context.isLowRamDevice()
-    }
-    private var supportAction: SupportActionUtil<T>? = null
+    var supportAction: SupportActionUtil<T>? = null
         set(value) {
             field = value
             field!!.recyclerAdapter = this
         }
+
+    private var lastPosition: Int = 0
+    private val isLowRamDevice: Boolean by lazy { context.isLowRamDevice() }
+
     /**
      * Get currently set animation type for recycler view holder items,
      * if no custom animation is set @[ScaleAnimation]
@@ -53,8 +54,6 @@ abstract class SupportViewAdapter<T>(private val context: Context) : RecyclerVie
 
     protected val data: MutableList<T> by lazy { ArrayList<T>() }
     protected var clone: List<T>? = null
-    protected var presenter: SupportPresenter<*>? = null
-    protected var clickListener: ItemClickListener<T>? = null
 
     override fun getItemId(position: Int): Long {
         return when (!hasStableIds()) {
@@ -130,6 +129,7 @@ abstract class SupportViewAdapter<T>(private val context: Context) : RecyclerVie
         if (itemCount > 0) {
             animateViewHolder(holder, position)
             val model = data[position]
+            holder.clickListener = clickListener
             holder.supportActionUtil = supportAction
             holder.onBindViewHolder(model)
             holder.onBindSelectionState(model)
@@ -167,7 +167,7 @@ abstract class SupportViewAdapter<T>(private val context: Context) : RecyclerVie
         notifyDataSetChanged()
     }
 
-    fun isEmpty() = data.isEmptyOrNull()
+    fun hasData() = !data.isEmptyOrNull()
 
     /**
      * Initial implementation is only specific for group types of recyclers,
@@ -195,9 +195,11 @@ abstract class SupportViewAdapter<T>(private val context: Context) : RecyclerVie
             layoutParams.isFullSpan = true
     }
 
-    protected abstract fun isRecyclerStateType(viewType: Int): Boolean
+    protected fun isRecyclerStateType(viewType: Int): Boolean =
+            viewType == 1
 
-    protected abstract fun isFullSpanItem(position: Int): Boolean
+    protected fun isFullSpanItem(position: Int): Boolean =
+            position == 0
 
     private fun animateViewHolder(holder: SupportViewHolder<T>?, position: Int) {
         when (!isLowRamDevice && position > lastPosition) {

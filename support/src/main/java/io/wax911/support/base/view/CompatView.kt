@@ -9,9 +9,6 @@ interface CompatView<VM> : Observer<VM>, SharedPreferences.OnSharedPreferenceCha
     val compatViewPermissionKey: Int
         get() = 110
 
-    var isPager : Boolean
-        get() = true
-
     /**
      * Mandatory presenter initialization
      */
@@ -36,7 +33,9 @@ interface CompatView<VM> : Observer<VM>, SharedPreferences.OnSharedPreferenceCha
      * If no permission is granted then this method will request a permission for you
      * @see ActivityCompat#requestPermissions
      */
-    fun requestPermissionIfMissing(manifestPermission: String): Boolean
+    fun requestPermissionIfMissing(manifestPermission: String): Boolean {
+        return false
+    }
 
     /**
      * Informs parent activity if on back can continue to super method or not

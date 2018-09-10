@@ -56,7 +56,5 @@ class BaseRepository private constructor(responseCallback: ResponseCallback<Base
         }
     }
 
-    companion object : InstanceUtil<CrudRepository<Long, BaseModel>, ResponseCallback<BaseModel>>({
-        BaseRepository(it)
-    })
+    companion object : InstanceUtil<CrudRepository<Long, BaseModel>, ResponseCallback<BaseModel>>({ BaseRepository(it) })
 }

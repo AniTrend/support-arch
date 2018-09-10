@@ -13,7 +13,10 @@ import com.google.android.material.navigation.NavigationView
 import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
 import io.wax911.sample.util.StateUtil
+import io.wax911.sample.view.fragment.detail.FragmentHome
+import io.wax911.sample.view.fragment.list.FragmentHistory
 import io.wax911.support.custom.activity.SupportActivity
+import io.wax911.support.util.SupportStateUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -75,16 +78,16 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(StateUtil.key_navigation_selected, selectedItem)
-        outState.putInt(StateUtil.key_navigation_title, selectedTitle)
+        outState.putInt(SupportStateUtil.key_navigation_selected, selectedItem)
+        outState.putInt(SupportStateUtil.key_navigation_title, selectedTitle)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(StateUtil.key_navigation_selected)
-            selectedTitle = savedInstanceState.getInt(StateUtil.key_navigation_title)
+            selectedItem = savedInstanceState.getInt(SupportStateUtil.key_navigation_selected)
+            selectedTitle = savedInstanceState.getInt(SupportStateUtil.key_navigation_title)
         }
     }
 
@@ -122,11 +125,11 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
         when (menu) {
             R.id.nav_home -> {
                 selectedTitle = R.string.nav_home
-                // supportFragment = FragmentHome.newInstance()
+                supportFragment = FragmentHome.newInstance()
             }
             R.id.nav_history -> {
                 selectedTitle = R.string.nav_history
-                // supportFragment = FragmentHistory.newInstance()
+                supportFragment = FragmentHistory.newInstance()
             }
         }
 

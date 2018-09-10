@@ -1,19 +1,15 @@
 package io.wax911.support.custom.widget
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RadialGradient
-import android.graphics.Shader
+import android.graphics.*
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
-
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
+import io.wax911.support.getCompatColor
 
 /**
  * Circle image view.
@@ -89,7 +85,7 @@ class SupportCircleImage : AppCompatImageView {
      * @param colorRes Id of a color resource.
      */
     fun setBackgroundColorRes(colorRes: Int) {
-        setBackgroundColor(context.resources.getColor(colorRes))
+        setBackgroundColor(context.getCompatColor(colorRes))
     }
 
     override fun setBackgroundColor(color: Int) {

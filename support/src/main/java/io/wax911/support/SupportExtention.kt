@@ -27,7 +27,6 @@ import com.annimon.stream.IntPair
 import com.annimon.stream.Objects
 import com.annimon.stream.Optional
 import com.annimon.stream.Stream
-import io.wax911.support.custom.presenter.SupportPresenter
 import okhttp3.Cache
 import java.io.File
 import java.util.*
@@ -295,10 +294,10 @@ fun String?.capitalizeWords(exceptions: List<String>) : String = when {
         val words = this.split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for ((index, word) in words.withIndex()) {
             when (!TextUtils.isEmpty(word)) {
-                true -> if (exceptions.contains(word))
-                    result.append(word)
-                else
-                    result.append(word.capitalize())
+                true -> {
+                    if (exceptions.contains(word)) result.append(word)
+                    else result.append(word.capitalize())
+                }
             }
             if (index != word.length - 1)
                 result.append(" ")
@@ -314,7 +313,7 @@ fun String?.capitalizeWords(exceptions: List<String>) : String = when {
  */
 fun  Array<String>.capitalizeWords() : List<String> =
      Stream.of(*this)
-             .map { s -> s.capitalizeWords(emptyList()) }
+             .map { s -> s.capitalize() }
              .toList()
 
 fun Collection<*>?.isEmptyOrNull() : Boolean =

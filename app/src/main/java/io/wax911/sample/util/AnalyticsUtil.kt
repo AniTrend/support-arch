@@ -30,11 +30,8 @@ class AnalyticsUtil private constructor(context: Context) : SupportAnalyticUtil 
     private fun configureCrashAnalytics(context: Context) {
         when(!BuildConfig.DEBUG) {
             true -> {
-                val crashlyticsCore = CrashlyticsCore.Builder()
-                        .build()
-
                 fabric = Fabric.with(Fabric.Builder(context)
-                        .kits(crashlyticsCore)
+                        .kits(CrashlyticsCore.Builder().build())
                         .appIdentifier(BuildConfig.BUILD_TYPE)
                         .build())
             }

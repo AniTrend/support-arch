@@ -3,8 +3,8 @@ package io.wax911.support.custom.fragment
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import androidx.annotation.IntegerRes
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.annimon.stream.IntPair
@@ -15,13 +15,12 @@ import io.wax911.support.base.view.CompatView
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.util.SupportActionUtil
 import org.greenrobot.eventbus.EventBus
+import retrofit2.Call
 
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, CompatView<VM>, ItemClickListener<M> {
 
     @MenuRes
     protected var inflateMenu: Int = 0
-    @IntegerRes
-    protected var mColumnSize: Int = 0
 
     protected var supportAction: SupportActionUtil<M>? = null
     protected var snackbar: Snackbar? = null
@@ -64,7 +63,9 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-    abstract override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+    }
 
     /**
      * Called when the Fragment is visible to the user.  This is generally
@@ -122,7 +123,12 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
         return super.hasBackPressableAction()
     }
 
-    abstract override fun onSelectionChanged(actionMode: ActionMode, count: Int)
+    /**
+     * Handles what happens when an action mode selection changes
+     */
+    override fun onSelectionChanged(actionMode: ActionMode, count: Int) {
+
+    }
 
     /**
      * Called when action mode is first created. The menu supplied will be used to
@@ -133,7 +139,9 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * @return true if the action mode should be created, false if entering this
      * mode should be aborted.
      */
-    abstract override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean
+    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+        return false
+    }
 
     /**
      * Called to refresh an action mode's action menu whenever it is invalidated.
@@ -167,7 +175,9 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
         supportAction?.clearSelection()
     }
 
-    abstract override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String)
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        Log.d(getViewName(), "onSharedPreferenceChanged -> $key | Changed value")
+    }
 
     /**
      * When the target view from [View.OnClickListener]
@@ -176,7 +186,9 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * @param target view that has been clicked
      * @param data   the mutableLiveData that at the click index
      */
-    abstract override fun onItemClick(target: View, data: IntPair<M>)
+    override fun onItemClick(target: View, data: IntPair<M>) {
+
+    }
 
     /**
      * When the target view from [View.OnLongClickListener]
@@ -185,7 +197,23 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * @param target view that has been long clicked
      * @param data   the mutableLiveData that at the long click index
      */
-    abstract override fun onItemLongClick(target: View, data: IntPair<M>)
+    override fun onItemLongClick(target: View, data: IntPair<M>) {
+
+    }
+
+    override fun onResponseError(call: Call<VM>, throwable: Throwable, message: Int) {
+        Log.e(getViewName(), getString(message), throwable)
+    }
+
+    override fun onResponseSuccess(call: Call<VM>, message: Int) {
+        Log.i(getViewName(), getString(message))
+    }
 
     override fun getViewName(): String = this.toString()
+
+    /**
+     * Called when the data is changed.
+     * @param model The new data
+     */
+    abstract override fun onChanged(model: VM)
 }
