@@ -1,8 +1,6 @@
 package io.wax911.sample
 
 import android.app.Application
-import androidx.room.Room
-import io.wax911.sample.dao.DatabaseHelper
 import org.greenrobot.eventbus.EventBus
 
 class App : Application() {

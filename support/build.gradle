@@ -25,6 +25,12 @@ android {
     }
 }
 
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
 configurations.all {
     resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
 }
@@ -32,9 +38,13 @@ configurations.all {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation "com.google.android.material:material:${rootProject.material}"
-
+    /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.kotlin}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.coroutinesCore}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.coroutinesAndroid}"
+
+    /** Material Design */
+    implementation "com.google.android.material:material:${rootProject.material}"
 
     /** Architecture Components */
     implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.anroidx}"
@@ -44,13 +54,13 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${rootProject.retrofit}"
 
     /** Java Streams Port */
-    implementation 'com.annimon:stream:1.1.9'
+    implementation "com.annimon:stream:${rootProject.stream}"
 
     /** Event Bus Library */
-    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation "org.greenrobot:eventbus:${rootProject.eventBus}"
 
     /** State Layout Library */
-    implementation 'com.github.nguyenhoanglam:ProgressLayout:1.0.1'
+    implementation "com.github.nguyenhoanglam:ProgressLayout:$rootProject.stateLayout"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'

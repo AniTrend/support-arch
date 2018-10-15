@@ -1,60 +1,47 @@
 package io.wax911.sample.repository
 
-import io.wax911.sample.api.NetworkClient
+import android.content.Context
+import android.os.Bundle
+import io.wax911.sample.dao.BaseModelDao
+import io.wax911.sample.dao.DatabaseHelper
 import io.wax911.sample.model.BaseModel
-import io.wax911.support.base.dao.CrudRepository
-import io.wax911.support.base.event.ResponseCallback
-import io.wax911.support.custom.worker.SupportRequestClient
+import io.wax911.support.base.dao.SupportRepository
 import io.wax911.support.util.InstanceUtil
-import retrofit2.Call
-import retrofit2.Response
+import io.wax911.support.util.SupportStateUtil
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.async
 
-class BaseRepository private constructor(responseCallback: ResponseCallback<BaseModel>) : CrudRepository<Long, BaseModel>(responseCallback) {
+class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>() {
 
-    override fun save(model: BaseModel) {
-        modelDao.insert(model)
-    }
-
-    override fun find(key: Long) {
-        val result = modelDao.get(key)
-        mutableLiveData.value = result
-    }
-
-    override fun delete(model: BaseModel) {
-        modelDao.delete(model)
+    override fun find(key: Long): Deferred<BaseModel?> = async {
+        (modelDao as BaseModelDao).get(key)
     }
 
     /**
-     * Creates the network client for implementing class
+     * Creates the network client for implementing class using the given parameters
+     *
+     * @param bundle bundle of parameters for the request
      */
-    override fun createNetworkClient(): SupportRequestClient<BaseModel> =
-            NetworkClient.newInstance(this, parameters)
+    override fun createNetworkClientRequest(bundle: Bundle, context: Context): Deferred<Unit> = async {
+        when (bundle.getString(SupportStateUtil.arg_bundle)) {
+
+        }
+    }
 
     /**
      * When the application is not connected to the internet this method is called to resolve the
      * kind of content that needs to be fetched from the database
      */
-    override fun requestFromCache() {
-        when (requestType) {
+    override fun requestFromCache(bundle: Bundle, context: Context) = async {
+        when (bundle.getString(SupportStateUtil.arg_bundle)) {
 
         }
     }
 
-    /**
-     * Invoked for a received HTTP response.
-     *
-     *
-     * Note: An HTTP response may still indicate an application-level failure such as a 404 or 500.
-     * Call [Response.isSuccessful] to determine if the response indicates success.
-     *
-     * @param call the origination requesting object
-     * @param response the response from the network
-     */
-    override fun onResponse(call: Call<BaseModel>, response: Response<BaseModel>) {
-        when (requestType) {
-
+    companion object : InstanceUtil<BaseRepository, DatabaseHelper>({
+        val repo = BaseRepository().also { r ->
+            r.modelDao = it.baseModelDao()
         }
-    }
-
-    companion object : InstanceUtil<CrudRepository<Long, BaseModel>, ResponseCallback<BaseModel>>({ BaseRepository(it) })
+        repo
+    })
 }

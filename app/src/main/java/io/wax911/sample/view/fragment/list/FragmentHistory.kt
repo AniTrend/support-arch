@@ -15,12 +15,7 @@ class FragmentHistory : SupportFragmentList<BaseModel, BasePresenter, List<BaseM
 
     companion object : InstanceUtilNoArg<SupportFragment<*, *, *>>({ FragmentHistory() })
 
-    /**
-     * Mandatory presenter initialization
-     */
-    override fun initPresenter() {
-        presenter = BasePresenter.newInstance(requireContext())
-    }
+    override fun initPresenter(): BasePresenter = BasePresenter.newInstance(requireContext())
 
     /**
      * Called to do extra initialization on behalf of the onCreate method using saved instance
@@ -28,7 +23,7 @@ class FragmentHistory : SupportFragmentList<BaseModel, BasePresenter, List<BaseM
      */
     override fun initializeListComponents(savedInstanceState: Bundle?) {
         mColumnSize = R.integer.single_list_size
-        supportViewAdapter = SimpleModelAdapter.newInstance(requireContext())
+        supportViewAdapter = SimpleModelAdapter.newInstance()
     }
 
     /**
@@ -51,7 +46,7 @@ class FragmentHistory : SupportFragmentList<BaseModel, BasePresenter, List<BaseM
      * Called when the data is changed.
      * @param model The new data
      */
-    override fun onChanged(model: List<BaseModel>) =
+    override fun onChanged(model: List<BaseModel>?) =
             onPostModelChange(model, R.string.empty_response)
 
     /**

@@ -8,7 +8,6 @@ import android.content.res.Resources
 import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -27,6 +26,8 @@ import com.annimon.stream.IntPair
 import com.annimon.stream.Objects
 import com.annimon.stream.Optional
 import com.annimon.stream.Stream
+import io.wax911.support.custom.presenter.SupportPresenter
+import io.wax911.support.custom.widget.SupportRefreshLayout
 import okhttp3.Cache
 import java.io.File
 import java.util.*
@@ -42,12 +43,20 @@ fun Int.swapTheme() : Int = when (this == R.style.SupportThemeLight) {
     false -> R.style.SupportThemeLight
 }
 
+fun View.gone() {
+    this.visibility = View.GONE
+}
+
+fun View.visible() {
+    this.visibility = View.VISIBLE
+}
+
 fun String.Companion.empty(): String =
         ""
 
-fun FragmentActivity.hideKeyboard() {
-    val inputMethodManager = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.hideSoftInputFromWindow(this.window.decorView.windowToken, 0)
+fun FragmentActivity?.hideKeyboard() = this?.also {
+    val inputMethodManager = it.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+    inputMethodManager?.hideSoftInputFromWindow(it.window?.decorView?.windowToken, 0)
 }
 
 fun Context.isLowRamDevice() : Boolean {
@@ -55,13 +64,9 @@ fun Context.isLowRamDevice() : Boolean {
     return ActivityManagerCompat.isLowRamDevice(activityManager)
 }
 
-fun Context.getConnectivityManager() : ConnectivityManager =
-    this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-
 fun Context.isConnectedToNetwork() : Boolean {
-    val connectivityManager = this.getConnectivityManager()
-    return connectivityManager.activeNetworkInfo.isConnected
+    val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+    return connectivityManager?.activeNetworkInfo?.isConnected ?: true
 }
 
 fun Context.getOkHttpCache(cacheLimit: Long) : Cache {
@@ -280,26 +285,28 @@ fun <A> Iterable<A>?.indexOf(targetItem: A?): Int = when (this != null) {
 fun <E> Collection<E>?.indexOfIntPair(targetItem: E?): Optional<IntPair<E>> = when {
     !this.isEmptyOrNull() -> Stream.of(this).findIndexed { _, value ->
         value.equal(targetItem)
-     }
+    }
     else -> Optional.empty()
 }
 
 
 /**
  * Capitalize words for text view consumption
+ *
+ * @param exceptions words or characters to exclude during capitalization
  */
 fun String?.capitalizeWords(exceptions: List<String>) : String = when {
-    !TextUtils.isEmpty(this) -> {
+    !this.isNullOrEmpty() -> {
         val result = StringBuilder(this!!.length)
         val words = this.split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for ((index, word) in words.withIndex()) {
-            when (!TextUtils.isEmpty(word)) {
+            when (word.isNotEmpty()) {
                 true -> {
                     if (exceptions.contains(word)) result.append(word)
                     else result.append(word.capitalize())
                 }
             }
-            if (index != word.length - 1)
+            if (index != words.size - 1)
                 result.append(" ")
         }
         result.toString()
@@ -309,15 +316,17 @@ fun String?.capitalizeWords(exceptions: List<String>) : String = when {
 
 /**
  * Get a list from a given array of strings
+ *
+ * @param exceptions words or characters to exclude during capitalization
  * @return list of capitalized strings
  */
-fun  Array<String>.capitalizeWords() : List<String> =
-     Stream.of(*this)
-             .map { s -> s.capitalize() }
-             .toList()
+fun  Array<String>.capitalizeWords(exceptions: List<String>) : List<String> =
+        Stream.of(*this)
+                .map { s -> s.capitalizeWords(exceptions) }
+                .toList()
 
 fun Collection<*>?.isEmptyOrNull() : Boolean =
-        this == null || this.isEmpty()
+        this?.isEmpty() == true
 
 fun Collection<*>?.sizeOf() : Int = when {
     this.isEmptyOrNull() -> 0
@@ -334,7 +343,7 @@ fun <C> MutableList<C>.replaceWith(collection :Collection<C>) {
  * @see ComparatorUtil#getKeyComparator
  */
 fun <T> Map<String, T>.getKeyFilteredMap() : List<Map.Entry<String, T>> =
-    Stream.of(this).sorted(ComparatorUtil.getKeyComparator()).toList()
+        Stream.of(this).sorted(ComparatorUtil.getKeyComparator()).toList()
 
 /**
  * Checks if two objects are not null and equal
@@ -369,4 +378,18 @@ fun Float.isScreenW() : Boolean {
     val displayMetrics = Resources.getSystem().displayMetrics
     val screenWidth = displayMetrics.widthPixels / displayMetrics.density
     return screenWidth >= this
+}
+
+fun SupportRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?, presesenter : SupportPresenter<*>) = context?.also {
+    this.setDragTriggerDistance(SupportRefreshLayout.DIRECTION_BOTTOM, (it.resources.getNavigationBarHeight()))
+    this.setProgressBackgroundColorSchemeColor(it.getColorFromAttr(R.attr.rootColor))
+    this.setColorSchemeColors(it.getColorFromAttr(R.attr.contentColor))
+    this.setPermitRefresh(presesenter.isPager)
+    this.setPermitLoad(false)
+    this.gone()
+}
+
+fun SupportRefreshLayout.onResponseResetStates() {
+    if (this.isRefreshing) this.isRefreshing = false
+    if (this.isLoading) this.isLoading = false
 }

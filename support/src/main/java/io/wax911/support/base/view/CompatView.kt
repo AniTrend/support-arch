@@ -2,17 +2,25 @@ package io.wax911.support.base.view
 
 import android.content.SharedPreferences
 import androidx.lifecycle.Observer
-import io.wax911.support.base.event.ResponseCallback
+import io.wax911.support.custom.presenter.SupportPresenter
+import io.wax911.support.custom.viewmodel.SupportViewModel
 
-interface CompatView<VM> : Observer<VM>, SharedPreferences.OnSharedPreferenceChangeListener, ResponseCallback<VM> {
+interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPreferences.OnSharedPreferenceChangeListener {
 
     val compatViewPermissionKey: Int
         get() = 110
 
     /**
-     * Mandatory presenter initialization
+     * @return the presenter that will be used by the fragment activity
      */
-    fun initPresenter()
+    fun initPresenter() : P
+
+    /**
+     * @return the target view model, assuming that the fragment activity needs one
+     */
+    fun initViewModel() : SupportViewModel<VM?, *>? {
+        TODO("ViewModel has not been initialized")
+    }
 
     fun shouldDisableMenu() : Boolean = false
     fun shouldSubscribe() : Boolean = false

@@ -16,6 +16,8 @@ import io.wax911.sample.util.StateUtil
 import io.wax911.sample.view.fragment.detail.FragmentHome
 import io.wax911.sample.view.fragment.list.FragmentHistory
 import io.wax911.support.custom.activity.SupportActivity
+import io.wax911.support.custom.presenter.SupportPresenter
+import io.wax911.support.custom.viewmodel.SupportViewModel
 import io.wax911.support.util.SupportStateUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -34,8 +36,8 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
     private val navigationListener = { item: MenuItem ->
         drawerLayout.closeDrawer(GravityCompat.START)
         when (item.itemId) {
-            R.id.nav_theme -> {
-                presenter.supportPreference.toggleTheme()
+            R.id.nav_theme -> presenter.supportPreference?.also {
+                it.toggleTheme()
                 recreate()
             }
             R.id.nav_about -> Toast.makeText(this@MainActivity, "About", Toast.LENGTH_SHORT).show()
@@ -44,9 +46,10 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
         false
     }
 
-    override fun initPresenter() {
-        presenter = BasePresenter.newInstance(this)
-    }
+    /**
+     * @return the presenter that will be used by the fragment activity
+     */
+    override fun initPresenter(): BasePresenter = BasePresenter.newInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

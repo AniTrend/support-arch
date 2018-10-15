@@ -1,7 +1,7 @@
 package io.wax911.support.custom.recycler
 
-import android.content.Context
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,28 +12,25 @@ import io.wax911.support.base.event.RecyclerChangeListener
 import io.wax911.support.custom.animation.ScaleAnimation
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.isEmptyOrNull
-import io.wax911.support.isLowRamDevice
 import io.wax911.support.replaceWith
 import io.wax911.support.util.SupportActionUtil
+import io.wax911.support.util.SupportStateUtil
+import java.util.*
 
 /**
  * Created by max on 2017/06/09.
  * Recycler view adapter implementation
  */
 
-abstract class SupportViewAdapter<T>(private val context: Context) : RecyclerView.Adapter<SupportViewHolder<T>>(), Filterable, RecyclerChangeListener<T> {
+abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>>(), Filterable, RecyclerChangeListener<T> {
 
     lateinit var presenter: SupportPresenter<*>
-    lateinit var clickListener: ItemClickListener<T>
+    var clickListener: ItemClickListener<T>? = null
 
     var supportAction: SupportActionUtil<T>? = null
-        set(value) {
-            field = value
-            field!!.recyclerAdapter = this
-        }
+        set(value) { field = value?.also { it.recyclerAdapter = this } }
 
     private var lastPosition: Int = 0
-    private val isLowRamDevice: Boolean by lazy { context.isLowRamDevice() }
 
     /**
      * Get currently set animation type for recycler view holder items,
@@ -43,14 +40,7 @@ abstract class SupportViewAdapter<T>(private val context: Context) : RecyclerVie
      *
      * @see AnimationBase
      */
-    private var customAnimation: AnimationBase? = null
-        get() = when (field == null) {
-            true -> {
-                field = ScaleAnimation()
-                field
-            }
-            false -> field
-        }
+    private var customAnimation: AnimationBase? = ScaleAnimation()
 
     protected val data: MutableList<T> by lazy { ArrayList<T>() }
     protected var clone: List<T>? = null
@@ -129,33 +119,85 @@ abstract class SupportViewAdapter<T>(private val context: Context) : RecyclerVie
         if (itemCount > 0) {
             animateViewHolder(holder, position)
             val model = data[position]
-            holder.clickListener = clickListener
-            holder.supportActionUtil = supportAction
-            holder.onBindViewHolder(model)
-            holder.onBindSelectionState(model)
+            holder.also {
+                it.clickListener = clickListener
+                it.supportActionUtil = supportAction
+                it.onBindViewHolder(model)
+                it.onBindSelectionState(model)
+            }
         }
     }
 
     /**
      * Calls the the recycler view holder impl to perform view recycling
      * @see SupportViewHolder
-     * <br></br><br></br>
-     * default implemation is already done for you
      */
-    override fun onViewRecycled(holder: SupportViewHolder<T>) {
-        holder.onViewRecycled()
+    override fun onViewRecycled(holder: SupportViewHolder<T>) = holder.onViewRecycled()
+
+
+    /**
+     * Returns a filter that can be used to constrain data with a filtering
+     * pattern.
+     *
+     * This method is usually implemented by [android.widget.Adapter]
+     * classes.
+     *
+     * @return a filter used to constrain data
+     */
+    override fun getFilter(): Filter = object : Filter() {
+
+        /**
+         *
+         * Invoked in a worker thread to filter the data according to the
+         * constraint. Subclasses must implement this method to perform the
+         * filtering operation. Results computed by the filtering operation
+         * must be returned as a [android.widget.Filter.FilterResults] that
+         * will then be published in the UI thread through
+         * [.publishResults].
+         *
+         *
+         * **Contract:** When the constraint is null, the original
+         * data must be restored.
+         *
+         * @param constraint the constraint used to filter the data
+         * @return the results of the filtering operation
+         *
+         * @see .filter
+         * @see .publishResults
+         * @see android.widget.Filter.FilterResults
+         */
+        override fun performFiltering(constraint: CharSequence?): FilterResults? = FilterResults().also {
+            it.values = Collections.EMPTY_LIST
+        }
+
+        /**
+         * Invoked in the UI thread to publish the filtering results in the
+         * user interface. Subclasses must implement this method to display the
+         * results computed in [.performFiltering].
+         *
+         * @param constraint the constraint used to filter the data
+         * @param results the results of the filtering operation
+         *
+         * @see .filter
+         * @see .performFiltering
+         * @see android.widget.Filter.FilterResults
+         */
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+            results?.also {
+                data.clear()
+                data += results.values as Collection<T>
+                notifyDataSetChanged()
+            }
+        }
     }
 
     /**
      * Returns the total number of items in the data set held by the adapter.
-     * <br></br>
-     * The default method has already been implemented for you.
+     * <br>
      *
      * @return The total number of items in this adapter.
      */
-    override fun getItemCount(): Int {
-        return data.size
-    }
+    override fun getItemCount(): Int = data.size
 
     /**
      * Clears data sets and notifies the recycler observer about the changed data set
@@ -195,22 +237,26 @@ abstract class SupportViewAdapter<T>(private val context: Context) : RecyclerVie
             layoutParams.isFullSpan = true
     }
 
-    protected fun isRecyclerStateType(viewType: Int): Boolean =
-            viewType == 1
+    protected fun isRecyclerStateType(viewType: Int): Boolean = when (viewType) {
+        SupportStateUtil.RECYCLER_TYPE_EMPTY, SupportStateUtil.RECYCLER_TYPE_LOADING,
+        SupportStateUtil.RECYCLER_TYPE_HEADER -> true
+        else -> false
+    }
 
-    protected fun isFullSpanItem(position: Int): Boolean =
-            position == 0
+    protected fun isFullSpanItem(position: Int): Boolean = false
 
     private fun animateViewHolder(holder: SupportViewHolder<T>?, position: Int) {
-        when (!isLowRamDevice && position > lastPosition) {
-            true -> when (holder != null && customAnimation != null) {
-                true -> for (animator in customAnimation!!.getAnimators(holder!!.itemView)) {
-                    animator.duration = customAnimation!!.getAnimationDuration().toLong()
-                    animator.interpolator = customAnimation!!.getInterpolator()
-                    animator.start()
+        holder?.also { h ->
+            when (position > lastPosition) {
+                true -> customAnimation?.also { a ->
+                    for (animator in a.getAnimators(h.itemView)) {
+                        animator.duration = a.getAnimationDuration().toLong()
+                        animator.interpolator = a.getInterpolator()
+                        animator.start()
+                    }
                 }
             }
+            lastPosition = position
         }
-        lastPosition = position
     }
 }

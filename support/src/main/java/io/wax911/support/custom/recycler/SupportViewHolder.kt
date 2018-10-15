@@ -53,13 +53,10 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
      * Applying selection styling on the desired item
      * @param model the current mutableLiveData item
      */
-    fun onBindSelectionState(model: T) {
-        when (supportActionUtil != null) {
-            true -> supportActionUtil!!.setBackgroundColor(
-                    this, supportActionUtil!!.selectedItems.contains(model)
-            )
-        }
-    }
+    fun onBindSelectionState(model: T) =
+            supportActionUtil?.let {
+                it.setBackgroundColor(this, it.selectedItems.contains(model))
+            }
 
     /**
      * Handle any onclick events from our views
@@ -68,11 +65,10 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
      * @param v the view that has been clicked
      * @see View.OnClickListener
      */
-    protected fun performClick(data: List<T>, v: View) {
+    protected fun performClick(data: T, v: View) {
         val pair = isValidIndexPair
-        val model: T = data[pair.first]
-        if (pair.second && isClickable(model))
-            clickListener?.onItemClick(v, IntPair(pair.first, model))
+        if (pair.second && isClickable(data))
+            clickListener?.onItemClick(v, IntPair(pair.first, data))
     }
 
     /**
@@ -81,23 +77,19 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
      * @param v The view that was clicked and held.
      * @return true if the supportActionUtil consumed the long click, false otherwise.
      */
-    protected fun performLongClick(data: List<T>, v: View): Boolean {
+    protected fun performLongClick(data: T, v: View): Boolean {
         val pair = isValidIndexPair
-        val model: T = data[pair.first]
-        return when (pair.second && isLongClickable(model)) {
-            true -> { clickListener?.onItemLongClick(v, IntPair(pair.first, model)); true }
+        return when (pair.second && isLongClickable(data)) {
+            true -> { clickListener?.onItemLongClick(v, IntPair(pair.first, data)); true }
             else -> false
         }
     }
 
-    private fun isClickable(clicked: T): Boolean = when (supportActionUtil != null) {
-        true -> supportActionUtil!!.isSelectionClickable(this, clicked)
-        false -> true
-    }
+    private fun isClickable(clicked: T): Boolean =
+            supportActionUtil?.isSelectionClickable(this, clicked) == true
 
 
-    private fun isLongClickable(clicked: T): Boolean = when (supportActionUtil != null) {
-        true -> supportActionUtil!!.isLongSelectionClickable(this, clicked)
-        false -> true
-    }
+
+    private fun isLongClickable(clicked: T): Boolean =
+            supportActionUtil?.isLongSelectionClickable(this, clicked) == true
 }

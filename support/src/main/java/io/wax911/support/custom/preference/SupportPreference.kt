@@ -47,5 +47,5 @@ abstract class SupportPreference constructor(context: Context) {
     }
 
     @StyleRes
-    fun getTheme(): Int = sharedPreferences.getInt(_isLightTheme, R.style.SupportThemeLight)
+    open fun getTheme(): Int = sharedPreferences.getInt(_isLightTheme, R.style.SupportThemeLight)
 }

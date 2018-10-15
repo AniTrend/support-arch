@@ -10,22 +10,9 @@ interface QueryBase<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(attribute: T)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(attributes:List<T>)
-
     @Update
     fun update(attribute: T)
 
-    @Update
-    fun update(attributes:List<T>)
-
     @Delete
     fun delete(attribute: T)
-
-    @Delete
-    fun delete(attributes:List<T>)
-
-    fun get() : T
-    fun get(id : Long) : T
-    fun get(offset : Int, limit : Int) : List<T>
 }
