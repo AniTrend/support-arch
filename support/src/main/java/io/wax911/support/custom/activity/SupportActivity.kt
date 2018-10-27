@@ -157,7 +157,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * @param data The new data
      */
     override fun onChanged(data: M?) {
-        Log.i(getViewName(), "onChanged() from view mutableLiveData has received data")
+        Log.i(getViewName(), "onChanged() from view liveData has received data")
     }
 
     override fun onSharedPreferenceChanged(preference: SharedPreferences?, key: String?) {

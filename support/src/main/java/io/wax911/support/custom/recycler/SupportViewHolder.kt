@@ -23,14 +23,14 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
      * Constructs an int pair container with a boolean representing a valid adapter position
      * @return IntPair
      */
-    private val isValidIndexPair: IntPair<Boolean> =
+    private fun isValidIndexPair(): IntPair<Boolean> =
             IntPair(adapterPosition, adapterPosition != RecyclerView.NO_POSITION)
 
     /**
      * Load image, text, buttons, etc. in this method from the given parameter
      * <br></br>
      *
-     * @param model Is the mutableLiveData at the current adapter position
+     * @param model Is the liveData at the current adapter position
      */
     abstract fun onBindViewHolder(model: T)
 
@@ -50,13 +50,21 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
     abstract override fun onClick(v: View)
 
     /**
-     * Applying selection styling on the desired item
-     * @param model the current mutableLiveData item
+     * Called when a view has been clicked and held.
+     *
+     * @param v The view that was clicked and held.
+     *
+     * @return true if the callback consumed the long click, false otherwise.
      */
-    fun onBindSelectionState(model: T) =
-            supportActionUtil?.let {
-                it.setBackgroundColor(this, it.selectedItems.contains(model))
-            }
+    override fun onLongClick(v: View?): Boolean = false
+
+    /**
+     * Applying selection styling on the desired item
+     * @param model the current liveData item
+     */
+    fun onBindSelectionState(model: T) = supportActionUtil?.let {
+        it.setBackgroundColor(this, it.selectedItems.contains(model))
+    }
 
     /**
      * Handle any onclick events from our views
@@ -66,7 +74,7 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
      * @see View.OnClickListener
      */
     protected fun performClick(data: T, v: View) {
-        val pair = isValidIndexPair
+        val pair = isValidIndexPair()
         if (pair.second && isClickable(data))
             clickListener?.onItemClick(v, IntPair(pair.first, data))
     }
@@ -78,7 +86,7 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
      * @return true if the supportActionUtil consumed the long click, false otherwise.
      */
     protected fun performLongClick(data: T, v: View): Boolean {
-        val pair = isValidIndexPair
+        val pair = isValidIndexPair()
         return when (pair.second && isLongClickable(data)) {
             true -> { clickListener?.onItemLongClick(v, IntPair(pair.first, data)); true }
             else -> false
@@ -86,10 +94,10 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
     }
 
     private fun isClickable(clicked: T): Boolean =
-            supportActionUtil?.isSelectionClickable(this, clicked) == true
+            supportActionUtil?.isSelectionClickable(this, clicked) ?: true
 
 
 
     private fun isLongClickable(clicked: T): Boolean =
-            supportActionUtil?.isLongSelectionClickable(this, clicked) == true
+            supportActionUtil?.isLongSelectionClickable(this, clicked) ?: true
 }

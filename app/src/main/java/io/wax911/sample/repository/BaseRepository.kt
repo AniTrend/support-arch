@@ -13,9 +13,7 @@ import kotlinx.coroutines.experimental.async
 
 class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>() {
 
-    override fun find(key: Long): Deferred<BaseModel?> = async {
-        (modelDao as BaseModelDao).get(key)
-    }
+    override fun find(key: Long) = (modelDao as BaseModelDao).get(key)
 
     /**
      * Creates the network client for implementing class using the given parameters
@@ -39,9 +37,6 @@ class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>(
     }
 
     companion object : InstanceUtil<BaseRepository, DatabaseHelper>({
-        val repo = BaseRepository().also { r ->
-            r.modelDao = it.baseModelDao()
-        }
-        repo
+       BaseRepository().also { repo -> repo.modelDao = it.baseModelDao() }
     })
 }

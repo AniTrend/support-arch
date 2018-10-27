@@ -153,7 +153,7 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
          * filtering operation. Results computed by the filtering operation
          * must be returned as a [android.widget.Filter.FilterResults] that
          * will then be published in the UI thread through
-         * [.publishResults].
+         * [.publishResult].
          *
          *
          * **Contract:** When the constraint is null, the original
@@ -163,7 +163,7 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
          * @return the results of the filtering operation
          *
          * @see .filter
-         * @see .publishResults
+         * @see .publishResult
          * @see android.widget.Filter.FilterResults
          */
         override fun performFiltering(constraint: CharSequence?): FilterResults? = FilterResults().also {

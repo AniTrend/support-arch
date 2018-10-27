@@ -18,6 +18,10 @@ abstract class SupportViewModel<M, K> : ViewModel() {
      */
     fun queryFor(context: Context?) = repository.requestFromNetwork(bundle, context)
 
+    fun hasModelData(): Boolean = repository.liveData.value != null
+
+    fun getModelData() : M? = repository.liveData.value
+
     /**
      * This method will be called when this ViewModel is no longer used and will be destroyed.
      *

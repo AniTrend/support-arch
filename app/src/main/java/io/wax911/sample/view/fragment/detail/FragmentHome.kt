@@ -64,7 +64,7 @@ class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
     }
 
     /**
-     * Update views or bind a mutableLiveData to them
+     * Update views or bind a liveData to them
      */
     override fun updateUI() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

@@ -8,6 +8,7 @@ import android.content.res.Resources
 import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -22,14 +23,22 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.annimon.stream.IntPair
 import com.annimon.stream.Objects
 import com.annimon.stream.Optional
 import com.annimon.stream.Stream
+import com.nguyenhoanglam.progresslayout.ProgressLayout
 import io.wax911.support.custom.presenter.SupportPresenter
+import io.wax911.support.custom.recycler.SupportRecyclerView
+import io.wax911.support.custom.recycler.SupportViewAdapter
 import io.wax911.support.custom.widget.SupportRefreshLayout
 import okhttp3.Cache
 import java.io.File
+import java.lang.reflect.Type
 import java.util.*
 
 object ComparatorUtil {
@@ -54,9 +63,9 @@ fun View.visible() {
 fun String.Companion.empty(): String =
         ""
 
-fun FragmentActivity?.hideKeyboard() = this?.also {
-    val inputMethodManager = it.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
-    inputMethodManager?.hideSoftInputFromWindow(it.window?.decorView?.windowToken, 0)
+fun FragmentActivity.hideKeyboard() {
+    val inputMethodManager = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(this.window.decorView.windowToken, 0)
 }
 
 fun Context.isLowRamDevice() : Boolean {
@@ -65,13 +74,28 @@ fun Context.isLowRamDevice() : Boolean {
 }
 
 fun Context.isConnectedToNetwork() : Boolean {
-    val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-    return connectivityManager?.activeNetworkInfo?.isConnected ?: true
+    val connectivityManager = this
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+    return connectivityManager?.activeNetworkInfo?.isConnected ?: false
 }
 
 fun Context.getOkHttpCache(cacheLimit: Long) : Cache {
     val cacheDirectory = File(this.cacheDir, "response-cache")
     return Cache(cacheDirectory, cacheLimit)
+}
+
+/**
+ * Returns a color from a defined attribute
+ *
+ * @param drawableAttr Type of attribute resource
+ *
+ * @return Drawable object
+ */
+fun Context.getDrawableFromAttr(@AttrRes drawableAttr : Int) : Drawable? {
+    val drawableAttribute = this.obtainStyledAttributes(intArrayOf(drawableAttr))
+    val drawable = drawableAttribute.getDrawable(0)
+    drawableAttribute.recycle()
+    return drawable
 }
 
 /**
@@ -380,11 +404,11 @@ fun Float.isScreenW() : Boolean {
     return screenWidth >= this
 }
 
-fun SupportRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?, presesenter : SupportPresenter<*>) = context?.also {
+fun SupportRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?, presenter : SupportPresenter<*>) = context?.also {
     this.setDragTriggerDistance(SupportRefreshLayout.DIRECTION_BOTTOM, (it.resources.getNavigationBarHeight()))
     this.setProgressBackgroundColorSchemeColor(it.getColorFromAttr(R.attr.rootColor))
     this.setColorSchemeColors(it.getColorFromAttr(R.attr.contentColor))
-    this.setPermitRefresh(presesenter.isPager)
+    this.setPermitRefresh(presenter.isPager)
     this.setPermitLoad(false)
     this.gone()
 }
@@ -392,4 +416,71 @@ fun SupportRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?,
 fun SupportRefreshLayout.onResponseResetStates() {
     if (this.isRefreshing) this.isRefreshing = false
     if (this.isLoading) this.isLoading = false
+}
+
+fun Context?.showContentError(progressLayout: ProgressLayout, @StringRes message: Int, @StringRes retryButtonText : Int,
+                              stateLayoutOnClick: View.OnClickListener) = this?.also {
+    when {
+        progressLayout.isLoading || progressLayout.isEmpty || progressLayout.isContent -> {
+            progressLayout.showError(this.getCompatDrawable(R.drawable.ic_support_empty_state),
+                    it.getString(message), it.getString(retryButtonText), stateLayoutOnClick)
+        }
+        else -> {
+        }
+    }
+}
+
+fun ProgressLayout.showContentLoading() = when {
+    this.isContent || this.isEmpty ||
+            this.isError -> this.showLoading()
+    else -> { }
+}
+
+fun ProgressLayout.showLoadedContent() = when {
+    this.isLoading || this.isEmpty ||
+            this.isError -> this.showContent()
+    else -> { }
+}
+
+/**
+ * Start a new activity from context and avoid potential crashes from early API levels
+ */
+inline fun <reified T> Context?.startNewActivity(params: Bundle?) {
+    val intent = Intent(this, T::class.java)
+    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    params?.also { intent.putExtras(it) }
+    this?.startActivity(intent)
+}
+
+/**
+ * Constructs a view model from the type defined
+ */
+inline fun <reified T : ViewModel> FragmentActivity.getViewModelOf() =
+        ViewModelProviders.of(this).get(T::class.java)
+
+fun SupportRecyclerView.setUpWith(supportAdapter: SupportViewAdapter<*>, vertical: Boolean, layoutManager: RecyclerView.LayoutManager? = null) {
+    this.also {
+        it.setHasFixedSize(true)
+        it.isNestedScrollingEnabled = true
+        when {
+            vertical -> {
+                if (layoutManager == null)
+                    it.layoutManager = StaggeredGridLayoutManager(it
+                            .context.resources.getInteger(R.integer.grid_list_x3),
+                            StaggeredGridLayoutManager.VERTICAL)
+                else
+                    it.layoutManager = layoutManager
+                it.adapter = supportAdapter
+            }
+            else -> {
+                if (layoutManager == null)
+                    it.layoutManager = StaggeredGridLayoutManager(it
+                            .context.resources.getInteger(R.integer.single_list_size),
+                            StaggeredGridLayoutManager.HORIZONTAL)
+                else
+                    it.layoutManager = layoutManager
+                it.adapter = supportAdapter
+            }
+        }
+    }
 }

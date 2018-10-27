@@ -41,7 +41,7 @@ class SimpleModelAdapter private constructor() : SupportViewAdapter<BaseModel>()
          * Load image, text, buttons, etc. in this method from the given parameter
          * <br></br>
          *
-         * @param model Is the mutableLiveData at the current adapter position
+         * @param model Is the liveData at the current adapter position
          */
         override fun onBindViewHolder(model: BaseModel) {
 

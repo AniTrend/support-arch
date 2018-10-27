@@ -62,7 +62,13 @@ dependencies {
     /** State Layout Library */
     implementation "com.github.nguyenhoanglam:ProgressLayout:$rootProject.stateLayout"
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    /** Material Dialogs */
+    implementation "com.afollestad.material-dialogs:core:$rootProject.materialDialogs"
+
+    /** Flex Box */
+    implementation "com.google.android:flexbox:$rootProject.flexBox"
+
+    testImplementation "junit:junit:$rootProject.junit"
+    androidTestImplementation "androidx.test:runner:$rootProject.runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espresso"
 }

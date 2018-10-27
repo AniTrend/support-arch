@@ -26,7 +26,7 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPrefere
     fun shouldSubscribe() : Boolean = false
 
     /**
-     * Update views or bind a mutableLiveData to them
+     * Update views or bind a liveData to them
      */
     fun updateUI()
     fun makeRequest()

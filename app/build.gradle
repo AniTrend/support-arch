@@ -74,7 +74,7 @@ dependencies {
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:3.9.1"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
 
     /** Glide Libraries */
     implementation "com.github.bumptech.glide:glide:$rootProject.glide"
@@ -88,8 +88,14 @@ dependencies {
 
     /** State Layout Library */
     implementation "com.github.nguyenhoanglam:ProgressLayout:$rootProject.stateLayout"
+
+    /** Material Dialogs */
+    implementation "com.afollestad.material-dialogs:core:$rootProject.materialDialogs"
+
+    /** Flex Box */
+    implementation "com.google.android:flexbox:$rootProject.flexBox"
     
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-beta01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-beta01'
+    testImplementation "junit:junit:$rootProject.junit"
+    androidTestImplementation "androidx.test:runner:$rootProject.runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espresso"
 }

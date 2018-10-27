@@ -10,14 +10,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.annimon.stream.IntPair
 import com.google.android.material.snackbar.Snackbar
-import io.wax911.support.R
+import io.wax911.support.*
 import io.wax911.support.base.event.RecyclerLoadListener
-import io.wax911.support.configureWidgetBehaviorWith
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.custom.recycler.SupportViewAdapter
 import io.wax911.support.custom.widget.SupportRefreshLayout
-import io.wax911.support.getCompatDrawable
-import io.wax911.support.onResponseResetStates
 import io.wax911.support.util.SupportNotifyUtil
 import io.wax911.support.util.SupportStateUtil
 import kotlinx.android.synthetic.main.support_list.*
@@ -36,7 +33,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     private val stateLayoutOnClick by lazy {
         android.view.View.OnClickListener {
             resetWidgetStates()
-            showLoading()
+            progressLayout.showContentLoading()
             onRefresh()
         }
     }
@@ -143,7 +140,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     override fun onStart() {
         super.onStart()
-        showLoading()
+        progressLayout.showContentLoading()
         when (!supportViewAdapter.hasData()) {
             true -> onRefresh()
             else -> updateUI()
@@ -227,12 +224,11 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
             supportRefreshLayout.onResponseResetStates()
             if (presenter.isFirstPage()) {
-                progressLayout.showContent()
+                progressLayout.showLoadedContent()
                 snackbar = SupportNotifyUtil.make(progressLayout, message!!, Snackbar.LENGTH_INDEFINITE)
                         .setAction(retryButtonText(), snackBarOnClickListener)
                 snackbar?.show()
             } else {
-                showLoading()
                 progressLayout.showError(context?.getCompatDrawable(R.drawable.ic_support_empty_state),
                         message, context?.getString(retryButtonText()), stateLayoutOnClick)
             }
@@ -273,25 +269,6 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         else -> { }
     }
 
-    protected fun showLoading() = when {
-        progressLayout.isContent || progressLayout.isEmpty ||
-                progressLayout.isError -> progressLayout.showLoading()
-        else -> { }
-    }
-
-    protected fun showContent() = when {
-        progressLayout.isLoading || progressLayout.isEmpty ||
-                progressLayout.isError -> progressLayout.showContent()
-        else -> { }
-    }
-
-    protected fun showError(message: String?) = when {
-        progressLayout.isLoading || progressLayout.isEmpty || progressLayout.isContent -> {
-            progressLayout.showError(context?.getCompatDrawable(R.drawable.ic_support_empty_state),
-                    message, context?.getString(retryButtonText()), stateLayoutOnClick)
-        }
-        else -> { }
-    }
     /**
      * While paginating if our request was a success and
      */
@@ -323,7 +300,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                         supportViewAdapter.filter.filter(searchQuery)
                 }
             }
-            showContent()
+            progressLayout.showLoadedContent()
         }
         else -> changeLayoutState(context?.getString(emptyText))
     }
@@ -354,7 +331,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                 if (presenter.isPager)
                     setLimitReached()
                 if (!supportViewAdapter.hasData())
-                    showError(context?.getString(emptyText))
+                    context.showContentError(progressLayout, emptyText, retryButtonText(), stateLayoutOnClick)
             }
         }
     }
@@ -376,7 +353,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * is clicked from a view holder this method will be called
      *
      * @param target view that has been clicked
-     * @param data   the mutableLiveData that at the click index
+     * @param data   the liveData that at the click index
      */
     abstract override fun onItemClick(target: View, data: IntPair<M>)
 
@@ -385,7 +362,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * is clicked from a view holder this method will be called
      *
      * @param target view that has been long clicked
-     * @param data   the mutableLiveData that at the long click index
+     * @param data   the liveData that at the long click index
      */
     abstract override fun onItemLongClick(target: View, data: IntPair<M>)
 }
