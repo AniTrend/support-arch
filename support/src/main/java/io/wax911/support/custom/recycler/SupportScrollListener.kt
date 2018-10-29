@@ -63,19 +63,17 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
         var mTotalItemCount = 0
         var mFirstVisibleItem = 0
         val mVisibleItemCount = recyclerView.childCount
+
         //minimum allowed threshold before next page reload request
-        when {
-            mGridLayoutManager != null -> {
-                mTotalItemCount = mGridLayoutManager!!.itemCount
-                mFirstVisibleItem = mGridLayoutManager!!.findFirstVisibleItemPosition()
-            }
-            mStaggeredGridLayoutManager != null -> {
-                mTotalItemCount = mStaggeredGridLayoutManager!!.itemCount
-                val firstPositions = mStaggeredGridLayoutManager!!.findFirstVisibleItemPositions(null)
-                when (firstPositions != null ) {
-                    firstPositions.isNotEmpty() -> mFirstVisibleItem = firstPositions[0]
-                }
-            }
+        mGridLayoutManager?.let {
+            mTotalItemCount = it.itemCount
+            mFirstVisibleItem = it.findFirstVisibleItemPosition()
+        }
+        mStaggeredGridLayoutManager?.let {
+            mTotalItemCount = it.itemCount
+            val firstPositions = it.findFirstVisibleItemPositions(null)
+            if(firstPositions != null && firstPositions.isNotEmpty())
+                mFirstVisibleItem = firstPositions[0]
         }
 
         //minimum allowed threshold before next page reload request

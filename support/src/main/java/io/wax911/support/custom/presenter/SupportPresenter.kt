@@ -8,25 +8,27 @@ import io.wax911.support.custom.preference.SupportPreference
 import io.wax911.support.custom.recycler.SupportScrollListener
 import org.greenrobot.eventbus.EventBus
 
-abstract class SupportPresenter<S : SupportPreference>(protected var context: Context) : SupportScrollListener(), LifecycleListener {
+abstract class SupportPresenter<S : SupportPreference>(protected var context: Context?) : SupportScrollListener(), LifecycleListener {
 
     val bundle by lazy { Bundle() }
 
-    lateinit var supportPreference: S
+    val supportPreference: S? by lazy { createPreference() }
 
     /**
      * Unregister any listeners from fragments or activities
      */
-    override fun onPause(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) =
-            supportPreference.sharedPreferences
-                    .unregisterOnSharedPreferenceChangeListener(changeListener)
+    override fun onPause(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
+        supportPreference?.sharedPreferences
+                ?.unregisterOnSharedPreferenceChangeListener(changeListener)
+    }
 
     /**
      * Register any listeners from fragments or activities
      */
-    override fun onResume(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) =
-            supportPreference.sharedPreferences
-                    .registerOnSharedPreferenceChangeListener(changeListener)
+    override fun onResume(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
+        supportPreference?.sharedPreferences
+                ?.registerOnSharedPreferenceChangeListener(changeListener)
+    }
 
     /**
      * Destroy any reference which maybe attached to
@@ -35,6 +37,13 @@ abstract class SupportPresenter<S : SupportPreference>(protected var context: Co
     override fun onDestroy() {
 
     }
+
+    /**
+     * Provides the preference object to the lazy initializer
+     *
+     * @return instance of the preference class
+     */
+    protected abstract fun createPreference() : S?
 
     companion object {
 

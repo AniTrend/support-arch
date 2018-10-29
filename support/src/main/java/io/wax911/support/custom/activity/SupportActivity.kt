@@ -4,12 +4,10 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.ColorRes
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -21,29 +19,25 @@ import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.custom.viewmodel.SupportViewModel
 import io.wax911.support.isLightTheme
 import org.greenrobot.eventbus.EventBus
-import retrofit2.Call
 
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M> {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P> {
 
     private var isClosing: Boolean = false
 
     protected var id: Long = -1
     protected var offScreenLimit = 3
 
-    protected var viewModel: SupportViewModel<M, *>? = null
     protected var supportFragment : SupportFragment<*, *, *>? = null
 
-    protected lateinit var presenter: P
+    protected val presenter: P by lazy { initPresenter() }
+    protected val viewModel: SupportViewModel<M?, *>? by lazy { initViewModel() }
 
     /**
      * Some activities may have custom themes and if that's the case
      * override this method and set your own theme style, also if you wish
      * to apply the default navigation bar style for light themes
      */
-    protected fun configureActivity() {
-        initPresenter()
-        setThemeStyle()
-    }
+    protected fun configureActivity() = setThemeStyle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         configureActivity()
@@ -59,16 +53,17 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * Changes the theme style depending on the selected theme
      */
     private fun setThemeStyle() {
-        val currentTheme = presenter.supportPreference.getTheme()
-        when (!currentTheme.isLightTheme()) {
-            true -> when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
-                    window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-                Build.VERSION.SDK_INT > Build.VERSION_CODES.O ->
-                    window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
+        presenter.supportPreference?.also {
+            when (!it.getTheme().isLightTheme()) {
+                true -> when {
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
+                        window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+                    Build.VERSION.SDK_INT > Build.VERSION_CODES.O ->
+                        window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
+                }
             }
+            setTheme(it.getTheme())
         }
-        setTheme(currentTheme)
     }
 
     fun disableToolbarTitle() = actionBar?.setDisplayShowTitleEnabled(false)
@@ -149,9 +144,8 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * as appropriate.
      */
     override fun onBackPressed() {
-        if (supportFragment != null )
-            if (supportFragment!!.hasBackPressableAction())
-                return
+        if (supportFragment?.hasBackPressableAction() == true)
+            return
         return super.onBackPressed()
     }
 
@@ -162,16 +156,8 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * Called when the data is changed.
      * @param data The new data
      */
-    override fun onChanged(data: M) {
-        Log.i(getViewName(), "onChanged() from view mutableLiveData has received data")
-    }
-
-    override fun onResponseError(call: Call<M>, throwable: Throwable, @StringRes message: Int) {
-        Log.e(getViewName(), getString(message), throwable)
-    }
-
-    override fun onResponseSuccess(call: Call<M>, @StringRes message: Int) {
-        Log.i(getViewName(), getString(message))
+    override fun onChanged(data: M?) {
+        Log.i(getViewName(), "onChanged() from view liveData has received data")
     }
 
     override fun onSharedPreferenceChanged(preference: SharedPreferences?, key: String?) {

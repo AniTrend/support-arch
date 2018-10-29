@@ -27,6 +27,12 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
+/**
+ * Material progress drawable.
+ *
+ * A widget for {@link SupportRefreshLayout}.
+ * */
+
 public class SupportProgressDrawable extends Drawable implements Animatable {
 
     private static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();

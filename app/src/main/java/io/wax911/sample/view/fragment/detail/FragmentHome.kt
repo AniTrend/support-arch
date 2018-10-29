@@ -8,17 +8,13 @@ import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
 import io.wax911.support.custom.fragment.SupportFragment
 import io.wax911.support.util.InstanceUtilNoArg
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
 
     companion object : InstanceUtilNoArg<SupportFragment<*,*,*>>({ FragmentHome() })
 
-    /**
-     * Mandatory presenter initialization
-     */
-    override fun initPresenter() {
-        presenter = BasePresenter.newInstance(requireContext())
-    }
+    override fun initPresenter(): BasePresenter = BasePresenter.newInstance(context)
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -41,10 +37,34 @@ class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
      * @return Return the View for the fragment's UI, or null.
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.custom_recycler_state, container, false)
+            inflater.inflate(R.layout.fragment_home, container, false)
 
     /**
-     * Update views or bind a mutableLiveData to them
+     * Called immediately after [.onCreateView]
+     * has returned, but before any saved state has been restored in to the view.
+     * This gives subclasses a chance to initialize themselves once
+     * they know their view hierarchy has been completely created.  The fragment's
+     * view hierarchy is not however attached to its parent at this point.
+     * @param view The View returned by [.onCreateView].
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        helloButton.setOnClickListener {  }
+    }
+
+    /**
+     * Called when the Fragment is visible to the user.  This is generally
+     * tied to [Activity.onStart] of the containing
+     * Activity's lifecycle.
+     */
+    override fun onStart() {
+        super.onStart()
+    }
+
+    /**
+     * Update views or bind a liveData to them
      */
     override fun updateUI() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -58,7 +78,7 @@ class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
      * Called when the data is changed.
      * @param model The new data
      */
-    override fun onChanged(model: Nothing) {
+    override fun onChanged(model: Nothing?) {
 
     }
 }

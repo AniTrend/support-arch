@@ -6,13 +6,13 @@ import androidx.fragment.app.FragmentActivity
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.google.firebase.analytics.FirebaseAnalytics
-import io.fabric.sdk.android.BuildConfig
 import io.fabric.sdk.android.Fabric
+import io.wax911.support.BuildConfig
+import io.wax911.support.empty
 import io.wax911.support.util.SingletonUtil
 import io.wax911.support.util.SupportAnalyticUtil
-import io.wax911.support.empty
 
-class AnalyticsUtil private constructor(context: Context) : SupportAnalyticUtil {
+class AnalyticsUtil private constructor(context: Context?) : SupportAnalyticUtil {
 
     init {
         configureAnalytics(context)
@@ -27,13 +27,15 @@ class AnalyticsUtil private constructor(context: Context) : SupportAnalyticUtil 
      * the current application preferences the application may have
      * disabled the current instance from sending any data
      */
-    private fun configureCrashAnalytics(context: Context) {
-        when(!BuildConfig.DEBUG) {
-            true -> {
-                fabric = Fabric.with(Fabric.Builder(context)
-                        .kits(CrashlyticsCore.Builder().build())
-                        .appIdentifier(BuildConfig.BUILD_TYPE)
-                        .build())
+    private fun configureCrashAnalytics(context: Context?) {
+        context?.also {
+            when(!BuildConfig.DEBUG) {
+                true -> {
+                    fabric = Fabric.with(Fabric.Builder(it)
+                            .kits(CrashlyticsCore.Builder().build())
+                            .appIdentifier(BuildConfig.BUILD_TYPE)
+                            .build())
+                }
             }
         }
     }
@@ -41,12 +43,14 @@ class AnalyticsUtil private constructor(context: Context) : SupportAnalyticUtil 
     /**
      * Application global firebase analytics
      */
-    private fun configureAnalytics(context: Context) {
-        when(!BuildConfig.DEBUG) {
-            true -> {
-                analytics = FirebaseAnalytics.getInstance(context)
-                analytics!!.setAnalyticsCollectionEnabled(true)
-                analytics!!.setMinimumSessionDuration(5000L)
+    private fun configureAnalytics(context: Context?) {
+        context?.also {
+            when(!BuildConfig.DEBUG) {
+                true -> {
+                    analytics = FirebaseAnalytics.getInstance(it)
+                    analytics!!.setAnalyticsCollectionEnabled(true)
+                    analytics!!.setMinimumSessionDuration(5000L)
+                }
             }
         }
     }
@@ -61,24 +65,22 @@ class AnalyticsUtil private constructor(context: Context) : SupportAnalyticUtil 
     }
 
     override fun logException(throwable: Throwable) =
-        Crashlytics.logException(throwable)
+            Crashlytics.logException(throwable)
 
 
     override fun log(tag: String, message: String) =
-        Crashlytics.log(0, tag, message)
+            Crashlytics.log(0, tag, message)
 
     override fun clearUserSession() =
-        Crashlytics.setUserIdentifier(String.empty())
+            Crashlytics.setUserIdentifier(String.empty())
 
     override fun setCrashAnalyticUser(userName: String) {
-        when (fabric != null) { true -> Crashlytics.setUserIdentifier(userName) }
+        fabric?.also { Crashlytics.setUserIdentifier(userName) }
     }
 
     override fun resetAnalyticsData() {
         analytics?.resetAnalyticsData()
     }
 
-    companion object : SingletonUtil<SupportAnalyticUtil, Context> ({ AnalyticsUtil(it) })
+    companion object : SingletonUtil<SupportAnalyticUtil, Context?> ({ AnalyticsUtil(it) })
 }
-
-

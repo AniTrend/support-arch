@@ -16,7 +16,7 @@ interface ItemClickListener<T> {
      * is clicked from a view holder this method will be called
      *
      * @param target view that has been clicked
-     * @param data the mutableLiveData that at the click index
+     * @param data the liveData that at the click index
      */
     fun onItemClick(target: View, data: IntPair<T>)
 
@@ -25,7 +25,7 @@ interface ItemClickListener<T> {
      * is clicked from a view holder this method will be called
      *
      * @param target view that has been long clicked
-     * @param data the mutableLiveData that at the long click index
+     * @param data the liveData that at the long click index
      */
     fun onItemLongClick(target: View, data: IntPair<T>)
 }

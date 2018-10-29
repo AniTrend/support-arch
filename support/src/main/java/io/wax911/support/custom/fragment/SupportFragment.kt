@@ -13,19 +13,21 @@ import io.wax911.support.base.event.ActionModeListener
 import io.wax911.support.base.event.ItemClickListener
 import io.wax911.support.base.view.CompatView
 import io.wax911.support.custom.presenter.SupportPresenter
+import io.wax911.support.custom.viewmodel.SupportViewModel
 import io.wax911.support.util.SupportActionUtil
 import org.greenrobot.eventbus.EventBus
-import retrofit2.Call
 
-abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, CompatView<VM>, ItemClickListener<M> {
+abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, CompatView<VM, P>, ItemClickListener<M> {
 
     @MenuRes
     protected var inflateMenu: Int = 0
-
-    protected var supportAction: SupportActionUtil<M>? = null
     protected var snackbar: Snackbar? = null
 
-    protected lateinit var presenter: P
+    protected val presenter: P by lazy { initPresenter() }
+    protected val viewModel: SupportViewModel<VM?, *>? by lazy { initViewModel() }
+    protected val supportAction: SupportActionUtil<M> by lazy {
+        SupportActionUtil<M>(this, true)
+    }
 
     /**
      * Called to do initial creation of a fragment.  This is called after
@@ -47,10 +49,8 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * a previous saved state, this is the state.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
-        initPresenter()
         super.onCreate(savedInstanceState)
         retainInstance = true
-        supportAction = SupportActionUtil(this, true)
     }
 
     /**
@@ -93,6 +93,16 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
         super.onStop()
     }
 
+    override fun onPause() {
+        presenter.onPause(this)
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.onResume(this)
+    }
+
     /**
      * Initialize the contents of the Fragment host's standard options menu.  You
      * should place your menu items in to <var>menu</var>.  For this method
@@ -110,15 +120,13 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      */
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         if (inflateMenu != 0)
-            inflater!!.inflate(inflateMenu, menu)
+            inflater?.inflate(inflateMenu, menu)
     }
 
     override fun hasBackPressableAction(): Boolean {
-        if (supportAction != null) {
-            if (!supportAction!!.selectedItems.isEmpty()) {
-                supportAction!!.clearSelection()
-                return true
-            }
+        if (!supportAction.selectedItems.isEmpty()) {
+            supportAction.clearSelection()
+            return true
         }
         return super.hasBackPressableAction()
     }
@@ -172,7 +180,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * @param mode The current ActionMode being destroyed
      */
     override fun onDestroyActionMode(mode: ActionMode) {
-        supportAction?.clearSelection()
+        supportAction.clearSelection()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -184,7 +192,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * is clicked from a view holder this method will be called
      *
      * @param target view that has been clicked
-     * @param data   the mutableLiveData that at the click index
+     * @param data   the liveData that at the click index
      */
     override fun onItemClick(target: View, data: IntPair<M>) {
 
@@ -195,18 +203,10 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * is clicked from a view holder this method will be called
      *
      * @param target view that has been long clicked
-     * @param data   the mutableLiveData that at the long click index
+     * @param data   the liveData that at the long click index
      */
     override fun onItemLongClick(target: View, data: IntPair<M>) {
 
-    }
-
-    override fun onResponseError(call: Call<VM>, throwable: Throwable, message: Int) {
-        Log.e(getViewName(), getString(message), throwable)
-    }
-
-    override fun onResponseSuccess(call: Call<VM>, message: Int) {
-        Log.i(getViewName(), getString(message))
     }
 
     override fun getViewName(): String = this.toString()
@@ -215,5 +215,5 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * Called when the data is changed.
      * @param model The new data
      */
-    abstract override fun onChanged(model: VM)
+    abstract override fun onChanged(model: VM?)
 }
