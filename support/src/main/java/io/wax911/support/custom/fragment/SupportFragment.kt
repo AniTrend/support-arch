@@ -93,6 +93,16 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
         super.onStop()
     }
 
+    override fun onPause() {
+        presenter.onPause(this)
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.onResume(this)
+    }
+
     /**
      * Initialize the contents of the Fragment host's standard options menu.  You
      * should place your menu items in to <var>menu</var>.  For this method

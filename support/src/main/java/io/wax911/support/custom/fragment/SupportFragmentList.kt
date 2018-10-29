@@ -1,5 +1,6 @@
 package io.wax911.support.custom.fragment
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -324,7 +325,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                     }
                     false -> supportViewAdapter.onItemsInserted(model)
                 }
-                supportRefreshLayout.setPermitRefresh(false)
+                supportRefreshLayout.isRefreshing = false
                 updateUI()
             }
             else -> {
@@ -333,6 +334,22 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                 if (!supportViewAdapter.hasData())
                     context.showContentError(progressLayout, emptyText, retryButtonText(), stateLayoutOnClick)
             }
+        }
+    }
+
+    /**
+     * Returns a boolean that either allows or dis-allows this current fragment
+     * from refreshing when preferences have been changed.
+     *
+     * @param key preference key that has been changed
+     * */
+    protected fun isPreferenceKeyValid(key: String) = true
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        super.onSharedPreferenceChanged(sharedPreferences, key)
+        if (isPreferenceKeyValid(key)) {
+            supportRefreshLayout.isRefreshing = true
+            onRefresh()
         }
     }
 
