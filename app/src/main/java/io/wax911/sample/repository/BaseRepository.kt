@@ -8,8 +8,9 @@ import io.wax911.sample.model.BaseModel
 import io.wax911.support.base.dao.SupportRepository
 import io.wax911.support.util.InstanceUtil
 import io.wax911.support.util.SupportStateUtil
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 
 class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>() {
 
@@ -20,7 +21,7 @@ class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>(
      *
      * @param bundle bundle of parameters for the request
      */
-    override fun createNetworkClientRequest(bundle: Bundle, context: Context): Deferred<Unit> = async {
+    override fun createNetworkClientRequest(bundle: Bundle, context: Context): Deferred<Unit> = GlobalScope.async {
         when (bundle.getString(SupportStateUtil.arg_bundle)) {
 
         }
@@ -30,7 +31,7 @@ class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>(
      * When the application is not connected to the internet this method is called to resolve the
      * kind of content that needs to be fetched from the database
      */
-    override fun requestFromCache(bundle: Bundle, context: Context) = async {
+    override fun requestFromCache(bundle: Bundle, context: Context) = GlobalScope.async {
         when (bundle.getString(SupportStateUtil.arg_bundle)) {
 
         }

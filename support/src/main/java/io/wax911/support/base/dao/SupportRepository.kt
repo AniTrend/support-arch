@@ -6,8 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import io.wax911.support.isConnectedToNetwork
-import kotlinx.coroutines.experimental.*
-import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.*
 
 abstract class SupportRepository<K, V> {
 
@@ -53,7 +52,7 @@ abstract class SupportRepository<K, V> {
      *
      * @param results data that needs to be sent to the view responsible for creating the request
      */
-    protected suspend fun publishResult(results : V?) = withContext(UI) {
+    protected suspend fun publishResult(results : V?) = withContext(Dispatchers.Main) {
         liveData.value = results
     }
 
@@ -66,7 +65,7 @@ abstract class SupportRepository<K, V> {
      */
     fun requestFromNetwork(bundle: Bundle, context: Context?) {
         context?.also { it ->
-            repositoryJob = async {
+            repositoryJob = GlobalScope.async {
                 when (it.isConnectedToNetwork()) {
                     true -> createNetworkClientRequest(bundle, it).await()
                     false -> requestFromCache(bundle, it).await()
@@ -75,7 +74,11 @@ abstract class SupportRepository<K, V> {
             disposableHandle = repositoryJob?.invokeOnCompletion { j ->
                 j?.also { throwable ->
                     throwable.printStackTrace()
-                    liveData.value = null
+                    try {
+                        GlobalScope.launch { publishResult(null) }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
         }
