@@ -65,18 +65,5 @@ class SimpleModelAdapter private constructor() : SupportViewAdapter<BaseModel>()
         override fun onClick(v: View) {
 
         }
-
-
-        /**
-         * Called when a view has been clicked and held.
-         *
-         * @param v The view that was clicked and held.
-         *
-         * @return true if the callback consumed the long click, false otherwise.
-         */
-        override fun onLongClick(v: View): Boolean {
-            return false
-        }
-
     }
 }

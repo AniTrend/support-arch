@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IntegerRes
+import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -28,6 +29,9 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
 
     protected var searchQuery : String? = null
     protected var isLimitReached : Boolean = false
+
+    @LayoutRes
+    protected var inflateLayout: Int = R.layout.support_list
 
     protected lateinit var supportViewAdapter: SupportViewAdapter<M>
 
@@ -110,7 +114,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * @return Return the View for the fragment's UI, or null.
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.support_list, container, false)
+            inflater.inflate(inflateLayout, container, false)
 
     /**
      * Called immediately after [.onCreateView]

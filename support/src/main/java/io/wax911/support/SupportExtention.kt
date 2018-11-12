@@ -321,7 +321,7 @@ fun <E> Collection<E>?.indexOfIntPair(targetItem: E?): Optional<IntPair<E>> = wh
  */
 fun String?.capitalizeWords(exceptions: List<String>) : String = when {
     !this.isNullOrEmpty() -> {
-        val result = StringBuilder(this!!.length)
+        val result = StringBuilder(this.length)
         val words = this.split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for ((index, word) in words.withIndex()) {
             when (word.isNotEmpty()) {
