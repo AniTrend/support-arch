@@ -2,10 +2,13 @@ package io.wax911.sample.repository
 
 import android.content.Context
 import android.os.Bundle
+import androidx.room.RoomDatabase
+import io.wax911.sample.api.NetworkClient
 import io.wax911.sample.dao.BaseModelDao
 import io.wax911.sample.dao.DatabaseHelper
 import io.wax911.sample.model.BaseModel
 import io.wax911.support.base.dao.SupportRepository
+import io.wax911.support.base.repository.CompanionRepository
 import io.wax911.support.util.InstanceUtil
 import io.wax911.support.util.SupportStateUtil
 import kotlinx.coroutines.Deferred
@@ -14,7 +17,12 @@ import kotlinx.coroutines.async
 
 class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>() {
 
-    override fun find(key: Long) = (modelDao as BaseModelDao).get(key)
+    /**
+     * Requires the network client to be created in the implementing repo,
+     * to access the created client please use:
+     * @see networkClient
+     */
+    override fun initNetworkClient() = NetworkClient()
 
     /**
      * Creates the network client for implementing class using the given parameters
@@ -29,7 +37,10 @@ class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>(
 
     /**
      * When the application is not connected to the internet this method is called to resolve the
-     * kind of content that needs to be fetched from the database
+     * kind of content that needs to be fetched from the database using the given parameters
+     * <br/>
+     *
+     * @param bundle bundle of parameters for the request
      */
     override fun requestFromCache(bundle: Bundle, context: Context) = GlobalScope.async {
         when (bundle.getString(SupportStateUtil.arg_bundle)) {
@@ -37,7 +48,19 @@ class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>(
         }
     }
 
-    companion object : InstanceUtil<BaseRepository, DatabaseHelper>({
-       BaseRepository().also { repo -> repo.modelDao = it.baseModelDao() }
-    })
+    companion object : CompanionRepository<BaseRepository>{
+
+        /**
+         * Returns the repository that should be used by the view model.
+         * <br/>
+         *
+         * @param database application database instance to use
+         */
+        override fun newInstance(database: RoomDatabase): BaseRepository {
+            val databaseHelper = database as DatabaseHelper
+            return BaseRepository().also { repo ->
+                repo.modelDao = databaseHelper.baseModelDao()
+            }
+        }
+    }
 }

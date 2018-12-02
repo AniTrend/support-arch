@@ -38,7 +38,6 @@ import io.wax911.support.custom.recycler.SupportViewAdapter
 import io.wax911.support.custom.widget.SupportRefreshLayout
 import okhttp3.Cache
 import java.io.File
-import java.lang.reflect.Type
 import java.util.*
 
 object ComparatorUtil {
@@ -60,27 +59,28 @@ fun View.visible() {
     this.visibility = View.VISIBLE
 }
 
-fun String.Companion.empty(): String =
-        ""
+fun String.Companion.empty() = ""
 
-fun FragmentActivity.hideKeyboard() {
-    val inputMethodManager = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.hideSoftInputFromWindow(this.window.decorView.windowToken, 0)
+fun FragmentActivity?.hideKeyboard() = this?.also {
+    val inputMethodManager = it.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(it.window.decorView.windowToken, 0)
 }
 
-fun Context.isLowRamDevice() : Boolean {
-    val activityManager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+
+fun Context?.isLowRamDevice() : Boolean = this?.let {
+    val activityManager = it.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     return ActivityManagerCompat.isLowRamDevice(activityManager)
-}
+} ?: false
 
-fun Context.isConnectedToNetwork() : Boolean {
-    val connectivityManager = this
+fun Context?.isConnectedToNetwork() : Boolean = this?.let {
+    val connectivityManager = it
             .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
     return connectivityManager?.activeNetworkInfo?.isConnected ?: false
-}
+} ?: false
 
-fun Context.getOkHttpCache(cacheLimit: Long) : Cache {
-    val cacheDirectory = File(this.cacheDir, "response-cache")
+
+fun Context?.getOkHttpCache(cacheLimit: Long) : Cache? = this?.let {
+    val cacheDirectory = File(it.cacheDir, "response-cache")
     return Cache(cacheDirectory, cacheLimit)
 }
 
@@ -280,7 +280,7 @@ fun <T> Array<T>.constructListFrom() : List<T> = Arrays.asList(*this)
  * @param targetItem the item to search
  * @return 0 if no result was found
  */
-fun <A> Iterable<A>?.indexOf(targetItem: A?): Int = when (this != null) {
+fun <A> Iterable<A>?.indexOfIterable(targetItem: A?): Int = when (this != null) {
     targetItem != null -> {
         val pairOptional = Stream.of(this)
                 .findIndexed { _, value -> value.equal(targetItem) }
@@ -307,7 +307,7 @@ fun <A> Iterable<A>?.indexOf(targetItem: A?): Int = when (this != null) {
  * @see IntPair
  */
 fun <E> Collection<E>?.indexOfIntPair(targetItem: E?): Optional<IntPair<E>> = when {
-    !this.isEmptyOrNull() -> Stream.of(this).findIndexed { _, value ->
+    !this.isNullOrEmpty() -> Stream.of(this).findIndexed { _, value ->
         value.equal(targetItem)
     }
     else -> Optional.empty()
@@ -344,17 +344,14 @@ fun String?.capitalizeWords(exceptions: List<String>) : String = when {
  * @param exceptions words or characters to exclude during capitalization
  * @return list of capitalized strings
  */
-fun  Array<String>.capitalizeWords(exceptions: List<String>) : List<String> =
+fun  Array<String>.capitalizeWords(exceptions: List<String> = Collections.emptyList()) : List<String> =
         Stream.of(*this)
                 .map { s -> s.capitalizeWords(exceptions) }
                 .toList()
 
-fun Collection<*>?.isEmptyOrNull() : Boolean =
-        this?.isEmpty() == true
-
 fun Collection<*>?.sizeOf() : Int = when {
-    this.isEmptyOrNull() -> 0
-    else -> this!!.size
+    this.isNullOrEmpty() -> 0
+    else -> this.size
 }
 
 fun <C> MutableList<C>.replaceWith(collection :Collection<C>) {
@@ -452,9 +449,6 @@ inline fun <reified T> Context?.startNewActivity(params: Bundle?) {
     this?.startActivity(intent)
 }
 
-/**
- * Constructs a view model from the type defined
- */
 inline fun <reified T : ViewModel> FragmentActivity.getViewModelOf() =
         ViewModelProviders.of(this).get(T::class.java)
 

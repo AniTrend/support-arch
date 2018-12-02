@@ -16,10 +16,6 @@ import io.wax911.support.base.event.RecyclerLoadListener
  */
 abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
 
-    companion object {
-        val pagingLimit = 15
-    }
-
     var isPagingLimit = false
     var isPager = true
 
@@ -57,6 +53,11 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
         this.mLoadListener = mLoadListener
     }
 
+    /**
+     * Provides pagination size for calculating offsets
+     */
+    abstract fun paginationSize() : Int
+
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
@@ -87,7 +88,7 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
             false -> when (mTotalItemCount - mVisibleItemCount <= mFirstVisibleItem + mVisibleThreshold) {
                 true -> {
                     currentPage++
-                    currentOffset += pagingLimit
+                    currentOffset += paginationSize()
                     mLoadListener!!.onLoadMore()
                     mLoading = true
                 }

@@ -18,9 +18,16 @@ import io.wax911.support.custom.fragment.SupportFragment
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.custom.viewmodel.SupportViewModel
 import io.wax911.support.isLightTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
+import kotlin.coroutines.CoroutineContext
 
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P> {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CoroutineScope, CompatView<M, P> {
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected lateinit var job: Job
 
     private var isClosing: Boolean = false
 
@@ -40,6 +47,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     protected fun configureActivity() = setThemeStyle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        job = Job()
         configureActivity()
         super.onCreate(savedInstanceState)
     }
@@ -135,6 +143,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     }
 
     override fun onDestroy() {
+        job.cancel()
         presenter.onDestroy()
         super.onDestroy()
     }
@@ -149,6 +158,18 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         return super.onBackPressed()
     }
 
+    /**
+     * @return Context of this scope.
+     */
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Default
+
+    /**
+     * Compares if this State is at least equal to the given state.
+     * <br/>
+     *
+     * @param state to compare to the current state
+     */
     protected fun isAtLeastState(state: Lifecycle.State): Boolean =
             lifecycle.currentState.isAtLeast(state)
 

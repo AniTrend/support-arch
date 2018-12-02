@@ -13,10 +13,6 @@ import kotlinx.android.synthetic.main.support_layout_state.view.*
 
 class SupportStateLayout : FrameLayout, CustomView {
 
-    private val STATE_LOADING = 0
-    private val STATE_CONTENT = 1
-    private val STATE_ERROR = 2
-
     constructor(context: Context) :
             super(context) { onInit() }
     constructor(context: Context, attrs: AttributeSet?) :
@@ -78,5 +74,11 @@ class SupportStateLayout : FrameLayout, CustomView {
     override fun onDetachedFromWindow() {
         onViewRecycled()
         super.onDetachedFromWindow()
+    }
+
+    companion object {
+        private const val STATE_LOADING = 0
+        private const val STATE_CONTENT = 1
+        private const val STATE_ERROR = 2
     }
 }

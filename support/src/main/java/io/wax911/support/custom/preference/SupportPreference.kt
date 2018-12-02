@@ -11,7 +11,7 @@ abstract class SupportPreference constructor(context: Context) {
 
     /** Base Application Values  */
     private val _versionCode = "_versionCode"
-    private val _freshInstall = "_freshInstall"
+    private val _isNewInstallation = "_isNewInstallation"
     private val _isAuthenticated = "_isAuthenticated"
     private val _isLightTheme = "_isLightTheme"
 
@@ -26,11 +26,11 @@ abstract class SupportPreference constructor(context: Context) {
             sharedPreferences.edit().putBoolean(_isAuthenticated, value).apply()
         }
 
-    var isfreshInstall = true
-        get() = sharedPreferences.getBoolean(_freshInstall, true)
+    var isNewInstallation = true
+        get() = sharedPreferences.getBoolean(_isNewInstallation, true)
         set(value) {
             field = value
-            sharedPreferences.edit().putBoolean(_freshInstall, value).apply()
+            sharedPreferences.edit().putBoolean(_isNewInstallation, value).apply()
         }
 
     var versionCode = 1

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.*
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.annimon.stream.IntPair
 import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.base.event.ActionModeListener
@@ -15,13 +16,20 @@ import io.wax911.support.base.view.CompatView
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.custom.viewmodel.SupportViewModel
 import io.wax911.support.util.SupportActionUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
+import kotlin.coroutines.CoroutineContext
 
-abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, CompatView<VM, P>, ItemClickListener<M> {
+abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), CoroutineScope, ActionModeListener, CompatView<VM, P>, ItemClickListener<M> {
+
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected lateinit var job: Job
 
     @MenuRes
     protected var inflateMenu: Int = 0
-    protected var snackbar: Snackbar? = null
+    protected var snackBar: Snackbar? = null
 
     protected val presenter: P by lazy { initPresenter() }
     protected val viewModel: SupportViewModel<VM?, *>? by lazy { initViewModel() }
@@ -50,6 +58,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        job = Job()
         retainInstance = true
     }
 
@@ -101,6 +110,16 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     override fun onResume() {
         super.onResume()
         presenter.onResume(this)
+    }
+
+    /**
+     * Called when the fragment is no longer in use.  This is called
+     * after [.onStop] and before [.onDetach].
+     */
+    override fun onDestroy() {
+        job.cancel()
+        presenter.onDestroy()
+        super.onDestroy()
     }
 
     /**
@@ -186,6 +205,15 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         Log.d(getViewName(), "onSharedPreferenceChanged -> $key | Changed value")
     }
+
+    /**
+     * Context of this scope.
+     */
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Default
+
+    protected fun isAtLeastState(state: Lifecycle.State): Boolean =
+            lifecycle.currentState.isAtLeast(state)
 
     /**
      * When the target view from [View.OnClickListener]

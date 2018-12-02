@@ -2,8 +2,11 @@ package io.wax911.support.extension
 
 import android.util.Log
 import okhttp3.ResponseBody
-import java.lang.Exception
 
+/**
+ * Retrofit error handler, this extension function will log the response error in json format
+ * to the console
+ */
 fun ResponseBody?.logError() {
     this?.also {
         try {

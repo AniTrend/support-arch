@@ -4,7 +4,7 @@ import android.animation.Animator
 import android.view.View
 import android.view.animation.Interpolator
 
-interface AnimationBase {
+interface SupportAnimation {
 
     fun getAnimators(view: View): Array<Animator>
 

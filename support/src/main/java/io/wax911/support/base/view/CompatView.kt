@@ -39,7 +39,7 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPrefere
     /**
      * Check if the current fragment activity has a permission granted to it.
      * If no permission is granted then this method will request a permission for you
-     * @see ActivityCompat#requestPermissions
+     * @see [Activity#requestPermissions]
      */
     fun requestPermissionIfMissing(manifestPermission: String): Boolean {
         return false

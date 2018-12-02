@@ -46,7 +46,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     private val snackBarOnClickListener by lazy {
         android.view.View.OnClickListener {
             resetWidgetStates()
-            supportRefreshLayout.isLoading = true
+            supportRefreshLayout?.isLoading = true
             makeRequest()
         }
     }
@@ -55,9 +55,11 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * Checks and resets swipe refresh layout and snack bar states
      */
     private fun resetWidgetStates() {
-        if (supportRefreshLayout.isRefreshing)
-            supportRefreshLayout.isRefreshing = false
-        snackbar?.also {
+        when (supportRefreshLayout?.isRefreshing) {
+            null -> { }
+            else -> { supportRefreshLayout.isRefreshing = false }
+        }
+        snackBar?.also {
             if (it.isShown)
                 it.dismiss()
         }
@@ -132,7 +134,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         supportRecyclerView.layoutManager = StaggeredGridLayoutManager(
                 resources.getInteger(mColumnSize), StaggeredGridLayoutManager.VERTICAL)
 
-        supportRefreshLayout.also {
+        supportRefreshLayout?.also {
             it.configureWidgetBehaviorWith(activity, presenter)
             it.setOnRefreshAndLoadListener(this)
         }
@@ -226,13 +228,13 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     }
 
     protected fun changeLayoutState(message: String?) {
-        if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
-            supportRefreshLayout.onResponseResetStates()
+        if (isAtLeastState(Lifecycle.State.RESUMED)) {
+            supportRefreshLayout?.onResponseResetStates()
             if (presenter.isFirstPage()) {
                 progressLayout.showLoadedContent()
-                snackbar = SupportNotifyUtil.make(progressLayout, message!!, Snackbar.LENGTH_INDEFINITE)
+                snackBar = SupportNotifyUtil.make(progressLayout, message!!, Snackbar.LENGTH_INDEFINITE)
                         .setAction(retryButtonText(), snackBarOnClickListener)
-                snackbar?.show()
+                snackBar?.show()
             } else {
                 progressLayout.showError(context?.getCompatDrawable(R.drawable.ic_support_empty_state),
                         message, context?.getString(retryButtonText()), stateLayoutOnClick)
@@ -241,7 +243,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     }
 
     override fun onLoadMore() {
-        supportRefreshLayout.isLoading = true
+        supportRefreshLayout?.isLoading = true
         makeRequest()
     }
 
@@ -249,6 +251,12 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * Called when a swipe gesture triggers a refresh.
      */
     override fun onRefresh() {
+        when (supportRefreshLayout?.isRefreshing) {
+            false -> {
+                if (!progressLayout.isLoading)
+                    supportRefreshLayout?.isRefreshing = true
+            }
+        }
         presenter.isPagingLimit = false
         presenter.onRefreshPage()
         makeRequest()
@@ -279,7 +287,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     protected fun setLimitReached() {
         if (presenter.currentPage != 0) {
-            supportRefreshLayout.isLoading = false
+            supportRefreshLayout?.isLoading = false
             presenter.isPagingLimit = true
         }
     }
@@ -300,7 +308,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                     supportRecyclerView.adapter = supportViewAdapter
                 }
                 else -> {
-                    supportRefreshLayout.onResponseResetStates()
+                    supportRefreshLayout?.onResponseResetStates()
                     if (!searchQuery.isNullOrEmpty())
                         supportViewAdapter.filter.filter(searchQuery)
                 }
@@ -319,17 +327,17 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     protected fun onPostModelChange(model : List<M>?, @StringRes emptyText: Int) {
         when {
-            model != null && !model.isEmpty() -> {
-                when (presenter.isPager && supportRefreshLayout.isRefreshing) {
+            !model.isNullOrEmpty() -> {
+                when (presenter.isPager) {
                     true -> {
-                        when {
-                            supportViewAdapter.hasData() -> supportViewAdapter.onItemsInserted(model)
-                            else -> supportViewAdapter.onItemRangeInserted(model)
+                        when (supportRefreshLayout?.isRefreshing) {
+                            true -> supportViewAdapter.onItemsInserted(model)
+                            false -> supportViewAdapter.onItemRangeInserted(model)
                         }
                     }
                     false -> supportViewAdapter.onItemsInserted(model)
                 }
-                supportRefreshLayout.isRefreshing = false
+                supportRefreshLayout?.isRefreshing = false
                 updateUI()
             }
             else -> {
@@ -352,7 +360,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         super.onSharedPreferenceChanged(sharedPreferences, key)
         if (isPreferenceKeyValid(key)) {
-            supportRefreshLayout.isRefreshing = true
+            supportRefreshLayout?.isRefreshing = true
             onRefresh()
         }
     }

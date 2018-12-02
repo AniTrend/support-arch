@@ -16,8 +16,6 @@ import io.wax911.sample.util.StateUtil
 import io.wax911.sample.view.fragment.detail.FragmentHome
 import io.wax911.sample.view.fragment.list.FragmentHistory
 import io.wax911.support.custom.activity.SupportActivity
-import io.wax911.support.custom.presenter.SupportPresenter
-import io.wax911.support.custom.viewmodel.SupportViewModel
 import io.wax911.support.util.SupportStateUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -128,11 +126,11 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
         when (menu) {
             R.id.nav_home -> {
                 selectedTitle = R.string.nav_home
-                supportFragment = FragmentHome.newInstance()
+                supportFragment = FragmentHome.newInstance(intent.extras)
             }
             R.id.nav_history -> {
                 selectedTitle = R.string.nav_history
-                supportFragment = FragmentHistory.newInstance()
+                supportFragment = FragmentHistory.newInstance(intent.extras)
             }
         }
 

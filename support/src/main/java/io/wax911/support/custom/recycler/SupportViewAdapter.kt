@@ -6,12 +6,11 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import io.wax911.support.base.animation.AnimationBase
+import io.wax911.support.base.animation.SupportAnimation
 import io.wax911.support.base.event.ItemClickListener
 import io.wax911.support.base.event.RecyclerChangeListener
 import io.wax911.support.custom.animation.ScaleAnimation
 import io.wax911.support.custom.presenter.SupportPresenter
-import io.wax911.support.isEmptyOrNull
 import io.wax911.support.replaceWith
 import io.wax911.support.util.SupportActionUtil
 import io.wax911.support.util.SupportStateUtil
@@ -38,9 +37,9 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
      * will be assigned in [.onAttachedToRecyclerView]
      * <br></br>
      *
-     * @see AnimationBase
+     * @see SupportAnimation
      */
-    private var customAnimation: AnimationBase? = ScaleAnimation()
+    private var customSupportAnimation: SupportAnimation? = ScaleAnimation()
 
     protected val data: MutableList<T> by lazy { ArrayList<T>() }
     protected var clone: List<T>? = null
@@ -209,7 +208,7 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
         notifyDataSetChanged()
     }
 
-    fun hasData() = !data.isEmptyOrNull()
+    fun hasData() = !data.isNullOrEmpty()
 
     /**
      * Initial implementation is only specific for group types of recyclers,
@@ -248,7 +247,7 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
     private fun animateViewHolder(holder: SupportViewHolder<T>?, position: Int) {
         holder?.also { h ->
             when (position > lastPosition) {
-                true -> customAnimation?.also { a ->
+                true -> customSupportAnimation?.also { a ->
                     for (animator in a.getAnimators(h.itemView)) {
                         animator.duration = a.getAnimationDuration().toLong()
                         animator.interpolator = a.getInterpolator()

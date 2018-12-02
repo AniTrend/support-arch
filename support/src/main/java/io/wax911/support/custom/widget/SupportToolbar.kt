@@ -5,9 +5,14 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.Toolbar
 import io.wax911.support.R
 import io.wax911.support.base.view.CustomView
+import io.wax911.support.custom.activity.SupportActivity
+import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.getColorFromAttr
+import io.wax911.support.isLightTheme
 
 class SupportToolbar : Toolbar, CustomView {
+
+    private var presenter: SupportPresenter<*>? = null
 
     constructor(context: Context?)
             : super(context) { onInit() }
@@ -20,8 +25,18 @@ class SupportToolbar : Toolbar, CustomView {
      * Optionally included when constructing custom views
      */
     override fun onInit() {
+        if (context is SupportActivity<*, *>)
+            presenter = (context as SupportActivity<* , *>).initPresenter()
+
         setBackgroundColor(context.getColorFromAttr(R.attr.colorPrimary))
-        popupTheme = R.style.SupportThemeLight_PopupOverlay
+
+        val isLightTheme = presenter?.let {
+            it.supportPreference?.getTheme()?.isLightTheme()
+        }
+        popupTheme = when (isLightTheme) {
+            false -> R.style.SupportThemeDark_PopupOverlay
+            null, true -> R.style.SupportThemeLight_PopupOverlay
+        }
     }
 
     /**

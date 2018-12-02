@@ -3,6 +3,17 @@ package io.wax911.support.custom.widget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Transformation;
+import android.widget.AbsListView;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
@@ -14,17 +25,6 @@ import androidx.core.view.NestedScrollingParent;
 import androidx.core.view.NestedScrollingParentHelper;
 import androidx.core.view.ViewCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewConfiguration;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Transformation;
-import android.widget.AbsListView;
 
 /**
  * Created by max on 2017/12/05.
@@ -39,7 +39,7 @@ import android.widget.AbsListView;
 public class SupportRefreshLayout extends ViewGroup implements NestedScrollingParent, NestedScrollingChild {
 
     // direction
-    public static final int DIRECTION_TOP = 0;
+    private static final int DIRECTION_TOP = 0;
     public static final int DIRECTION_BOTTOM = 1;
 
     private static final int MAX_ALPHA = 255;
@@ -73,12 +73,12 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
     private boolean mLoading = false;
     private boolean mPermitRefresh = true;
     private boolean mPermitLoad = true;
-    private int mTouchSlop;
-    private float[] mDragTriggerDistances = new float[] {-1, -1};
+    private final int mTouchSlop;
+    private final float[] mDragTriggerDistances = new float[] {-1, -1};
 
     // If nested scrolling is enabled, the total amount that needed to be
     // consumed by this as the nested scrolling parent is used in place of the
-    // overscroll determined by MOVE events in the onTouch handler
+    // over scroll determined by MOVE events in the onTouch handler
     private float mTotalUnconsumed;
     private final NestedScrollingParentHelper mNestedScrollingParentHelper;
     private final NestedScrollingChildHelper mNestedScrollingChildHelper;
@@ -86,7 +86,7 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
     private final int[] mParentOffsetInWindow = new int[2];
     private boolean mNestedScrollInProgress;
 
-    private int mMediumAnimationDuration;
+    private final int mMediumAnimationDuration;
     private int mDragOffsetDistance;
     // Whether or not the starting offset has been determined.
     private boolean mOriginalOffsetCalculated = false;
@@ -94,7 +94,7 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
     private float mInitialDownY;
     private boolean mIsBeingDragged;
     // Whether this item is scaled up rather than clipped.
-    private boolean mScale = false;
+    private final boolean mScale = false;
 
     // Target is returning to its start offset because it was cancelled or a
     // refresh was triggered.
@@ -106,15 +106,11 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     private SupportCircleImageView[] mCircleViews;
 
-    protected int mFrom;
+    private int mFrom;
 
     private float mStartingScale;
 
     private SupportProgressDrawable[] mProgress;
-
-    private Animation mScaleAnimation;
-
-    private Animation mScaleDownAnimation;
 
     private Animation mAlphaStartAnimation;
 
@@ -124,8 +120,8 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     private boolean mNotify;
 
-    private int mCircleWidth;
-    private int mCircleHeight;
+    private final int mCircleWidth;
+    private final int mCircleHeight;
 
     public SupportRefreshLayout(Context context) {
         this(context, null);
@@ -453,7 +449,7 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
                 mLoading = false;
             }
             mProgress[dir].setStartEndTrim(0f, 0f);
-            Animation.AnimationListener listener = null;
+            Animation.AnimationListener listener;
             if (!mScale) {
                 listener = new Animation.AnimationListener() {
 
@@ -487,7 +483,7 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
      * @return Whether it is possible for the child view of this layout to
      *         scroll up. Override this if the child view is a custom view.
      */
-    public boolean canChildScrollUp() {
+    private boolean canChildScrollUp() {
         return ViewCompat.canScrollVertically(mTarget, -1);
     }
 
@@ -495,7 +491,7 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
      * @return Whether it is possible for the child view of this layout to
      *         scroll down. Override this if the child view is a custom view.
      */
-    public boolean canChildScrollDown() {
+    private boolean canChildScrollDown() {
         return ViewCompat.canScrollVertically(mTarget, 1);
     }
 
@@ -845,13 +841,11 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     private void startScaleUpAnimation(final int dir, Animation.AnimationListener listener) {
         mCircleViews[dir].setVisibility(View.VISIBLE);
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            // Pre API 11, alpha is used in place of scale up to show the
-            // progress circle appearing.
-            // Don't adjust the alpha during appearance otherwise.
-            mProgress[dir].setAlpha(MAX_ALPHA);
-        }
-        mScaleAnimation = new Animation() {
+        // Pre API 11, alpha is used in place of scale up to show the
+        // progress circle appearing.
+        // Don't adjust the alpha during appearance otherwise.
+        mProgress[dir].setAlpha(MAX_ALPHA);
+        Animation mScaleAnimation = new Animation() {
             @Override
             public void applyTransformation(float interpolatedTime, Transformation t) {
                 setAnimationProgress(dir, interpolatedTime);
@@ -871,7 +865,7 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void startScaleDownAnimation(final int dir, Animation.AnimationListener listener) {
-        mScaleDownAnimation = new Animation() {
+        Animation mScaleDownAnimation = new Animation() {
             @Override
             public void applyTransformation(float interpolatedTime, Transformation t) {
                 setAnimationProgress(dir, 1 - interpolatedTime);
@@ -1078,7 +1072,7 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     // animation listener.
 
-    private Animation.AnimationListener mRefreshListener = new Animation.AnimationListener() {
+    private final Animation.AnimationListener mRefreshListener = new Animation.AnimationListener() {
 
         @Override
         public void onAnimationStart(Animation animation) {
@@ -1106,7 +1100,7 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
         }
     };
 
-    private Animation.AnimationListener mLoadListener = new Animation.AnimationListener() {
+    private final Animation.AnimationListener mLoadListener = new Animation.AnimationListener() {
 
         @Override
         public void onAnimationStart(Animation animation) {
