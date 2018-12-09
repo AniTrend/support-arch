@@ -3,7 +3,7 @@
 
     <item android:title="@string/nav_header_customization">
         <menu>
-            <group>
+            <group android:id="@+id/nav_group_customization">
                 <item
                     android:id="@+id/nav_theme"
                     android:icon="@drawable/ic_invert_colors_grey_600_24dp"
@@ -14,7 +14,7 @@
 
     <item android:title="@string/nav_header_support">
         <menu>
-            <group>
+            <group android:id="@+id/nav_group_support">
                 <item
                     android:id="@+id/nav_about"
                     android:icon="@drawable/ic_help_grey_600_24dp"

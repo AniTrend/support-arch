@@ -443,10 +443,14 @@ fun ProgressLayout.showLoadedContent() = when {
  * Start a new activity from context and avoid potential crashes from early API levels
  */
 inline fun <reified T> Context?.startNewActivity(params: Bundle?) {
-    val intent = Intent(this, T::class.java)
-    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-    params?.also { intent.putExtras(it) }
-    this?.startActivity(intent)
+    try {
+        val intent = Intent(this, T::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        params?.also { intent.putExtras(it) }
+        this?.startActivity(intent)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 }
 
 inline fun <reified T : ViewModel> FragmentActivity.getViewModelOf() =

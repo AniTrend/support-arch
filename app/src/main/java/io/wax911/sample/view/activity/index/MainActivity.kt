@@ -3,12 +3,14 @@ package io.wax911.sample.view.activity.index
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
@@ -16,6 +18,7 @@ import io.wax911.sample.util.StateUtil
 import io.wax911.sample.view.fragment.detail.FragmentHome
 import io.wax911.sample.view.fragment.list.FragmentHistory
 import io.wax911.support.custom.activity.SupportActivity
+import io.wax911.support.startNewActivity
 import io.wax911.support.util.SupportStateUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -24,15 +27,18 @@ import kotlinx.android.synthetic.main.content_main.*
 class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.OnNavigationItemSelectedListener,
         BottomNavigationView.OnNavigationItemSelectedListener  {
 
-    private lateinit var mDrawerToggle: ActionBarDrawerToggle
 
     @IdRes
     private var selectedItem: Int = 0
     @StringRes
     private var selectedTitle: Int = 0
 
+    private lateinit var mDrawerToggle: ActionBarDrawerToggle
+    private var bottomDrawerBehavior: BottomSheetBehavior<View>? = null
+
     private val navigationListener = { item: MenuItem ->
-        drawerLayout.closeDrawer(GravityCompat.START)
+        if (item.groupId != R.id.nav_group_customization)
+            drawerLayout.closeDrawer(GravityCompat.START)
         when (item.itemId) {
             R.id.nav_theme -> presenter.supportPreference?.also {
                 it.toggleTheme()

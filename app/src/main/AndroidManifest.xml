@@ -19,6 +19,10 @@
         tools:replace="android:allowBackup"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <meta-data
+            android:name="android.app.shortcuts"
+            android:resource="@xml/shortcuts" />
+
         <activity android:name=".view.activity.base.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

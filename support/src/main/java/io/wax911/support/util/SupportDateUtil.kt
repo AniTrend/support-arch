@@ -26,7 +26,13 @@ object SupportDateUtil {
     val currentSeason: String
         @SeasonType get() {
             val month = Calendar.getInstance().get(Calendar.MONTH)
-            return SeasonType.Seasons[month]
+            return when (month) {
+                in 0..1 -> SeasonType.WINTER
+                in 2..4 -> SeasonType.SPRING
+                in 5..7 -> SeasonType.SUMMER
+                in 8..10 -> SeasonType.FALL
+                else -> SeasonType.WINTER
+            }
         }
 
     /**
@@ -36,8 +42,7 @@ object SupportDateUtil {
      * @return Season name
      */
     val currentSeasonIndex: Int by lazy {
-        val current = seasons[Calendar.getInstance().get(Calendar.MONTH)]
-        SeasonType.Seasons.constructListFrom().indexOf(current)
+        SeasonType.Seasons.constructListFrom().indexOf(currentSeason)
     }
 
     /**

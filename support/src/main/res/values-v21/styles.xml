@@ -31,8 +31,6 @@
         <item name="android:navigationBarColor">@color/colorRootDark</item>
 
         <item name="android:popupMenuStyle">@style/PopupThemeLight</item>
-
-        <item name="android:windowAnimationStyle">@style/SupportWindowAnimationTransition</item>
     </style>
 
     <!-- Dark Application Theme -->
@@ -67,8 +65,6 @@
         <item name="android:popupMenuStyle">@style/PopupThemeDark</item>
         <!--actionOverflowMenuStyle controls the state of the overflow popup window-->
         <!--<item name="actionOverflowMenuStyle">@style/DarkOverflowMenu</item>-->
-
-        <item name="android:windowAnimationStyle">@style/SupportWindowAnimationTransition</item>
     </style>
 
     <!-- AMOLED Dark Application Theme -->
@@ -99,8 +95,6 @@
 
         <!--actionOverflowMenuStyle controls the state of the overflow popup window-->
         <item name="actionOverflowMenuStyle">@style/DarkOverflowMenu</item>
-
-        <item name="android:windowAnimationStyle">@style/SupportWindowAnimationTransition</item>
 
     </style>
 
