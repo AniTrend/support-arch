@@ -45,83 +45,149 @@ object ComparatorUtil {
             kotlin.Comparator { o1, o2 -> o1.key.compareTo(o2.key)  }
 }
 
+/**
+ * Toggles between light and dark theme
+ *
+ * @return Style resource
+ */
 @StyleRes
 fun Int.swapTheme() : Int = when (this == R.style.SupportThemeLight) {
     true -> R.style.SupportThemeDark
     false -> R.style.SupportThemeLight
 }
 
+/**
+ * Sets the current views visibility to GONE
+ *
+ * @see View.GONE
+ */
 fun View.gone() {
-    this.visibility = View.GONE
+    visibility = View.GONE
 }
 
+/**
+ * Sets the current views visibility to INVISIBLE
+ *
+ * @see View.INVISIBLE
+ */
+fun View.invisible() {
+    visibility = View.INVISIBLE
+}
+
+/**
+ * Sets the current views visibility to VISIBLE
+ *
+ * @see View.VISIBLE
+ */
 fun View.visible() {
-    this.visibility = View.VISIBLE
+    visibility = View.VISIBLE
 }
 
+/**
+ * Potentially useless but returns an empty string, the signature may change in future
+ *
+ * @see String.isNullOrBlank
+ */
 fun String.Companion.empty() = ""
 
-fun FragmentActivity?.hideKeyboard() = this?.also {
-    val inputMethodManager = it.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.hideSoftInputFromWindow(it.window.decorView.windowToken, 0)
+/**
+ * Request to hide the soft input window from the context of the window
+ * that is currently accepting input. This should be called as a result
+ * of the user doing some actually than fairly explicitly requests to
+ * have the input window hidden.
+ */
+fun FragmentActivity?.hideKeyboard() = this?.apply {
+    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(window.decorView.windowToken, 0)
 }
 
-
+/**
+ * Exactly whether a device is low-RAM is ultimately up to the device configuration, but currently
+ * it generally means something in the class of a 512MB device with about a 800x480 or less screen.
+ * This is mostly intended to be used by apps to determine whether they should
+ * turn off certain features that require more RAM.
+ *
+ * @return true if this is a low-RAM device.
+ */
 fun Context?.isLowRamDevice() : Boolean = this?.let {
     val activityManager = it.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     return ActivityManagerCompat.isLowRamDevice(activityManager)
 } ?: false
 
+/**
+ * Check if the device has any active network connections like WiFi or Network data,
+ * preferably use broadcast receivers if you want to do live updates of the internet connectivity status
+ *
+ * @return true if network connectivity exists, false otherwise.
+ */
 fun Context?.isConnectedToNetwork() : Boolean = this?.let {
     val connectivityManager = it
             .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
     return connectivityManager?.activeNetworkInfo?.isConnected ?: false
 } ?: false
 
-
+/**
+ * Creates an abstract file that will be used by OkHttp to cache HTTP and HTTPS responses
+ * to the filesystem so they may be reused, saving time and bandwidth.
+ *
+ * @return Cache object
+ */
 fun Context?.getOkHttpCache(cacheLimit: Long) : Cache? = this?.let {
     val cacheDirectory = File(it.cacheDir, "response-cache")
     return Cache(cacheDirectory, cacheLimit)
 }
 
 /**
- * Returns a color from a defined attribute
+ * Creates a drawable from the given attribute resource which cannot be nullable type
  *
- * @param drawableAttr Type of attribute resource
- *
- * @return Drawable object
+ * @param drawableAttr attribute resource for drawable
+ * @return Drawable for the attribute, or null if not defined.
+ * @throws UnsupportedOperationException if the attribute is defined but is
+ *         not a color or drawable resource.
  */
 fun Context.getDrawableFromAttr(@AttrRes drawableAttr : Int) : Drawable? {
-    val drawableAttribute = this.obtainStyledAttributes(intArrayOf(drawableAttr))
+    val drawableAttribute = obtainStyledAttributes(intArrayOf(drawableAttr))
     val drawable = drawableAttribute.getDrawable(0)
     drawableAttribute.recycle()
     return drawable
 }
 
 /**
- * Returns a color from a defined attribute
+ * Creates a color from the given attribute, If the attribute references a color resource holding a complex
+ * @link{android.content.res.ColorStateList}, then the default color from the set is returned.
  *
- * @param colorAttr Type of attribute resource
- *
- * @return Color Integer
+ * @param colorAttr attribute resource for color
+ * @return Attribute color value, or defValue if not defined.
+ * @throws UnsupportedOperationException if the attribute is defined but is
+ *         not a color or drawable resource.
  */
-fun Context.getColorFromAttr(@AttrRes colorAttr : Int) : Int {
-    val colorAttribute = this.obtainStyledAttributes(intArrayOf(colorAttr))
-    @ColorInt val color = colorAttribute.getColor(0, 0)
+fun Context.getColorFromAttr(@AttrRes colorAttr : Int, defaultColor : Int = 0) : Int {
+    val colorAttribute = obtainStyledAttributes(intArrayOf(colorAttr))
+    @ColorInt val color = colorAttribute.getColor(0, defaultColor)
     colorAttribute.recycle()
     return color
 }
 
+/**
+ * Starting in android Marshmallow, the returned
+ * color will be styled for the specified Context's theme.
+ *
+ * @see android.os.Build.VERSION_CODES.M
+ * @return A single color value in the form 0xAARRGGBB.
+ */
 fun Context.getCompatColor(@ColorRes colorRes: Int) =
         ContextCompat.getColor(this, colorRes)
 
 /**
  * Avoids resource not found when using vector drawables in API levels < Lollipop
  *
+ * This method supports inflation of {@code <vector>}, {@code <animated-vector>} and
+ * {@code <animated-selector>} resources on devices where platform support is not available.
+ *
  * @param resource The resource id of the drawable or vector drawable
  *                 @see DrawableRes
  *
- * @return Drawable
+ * @return Drawable An object that can be used to draw this resource.
  * @see Drawable
  */
 fun Context.getCompatDrawable(@DrawableRes resource : Int) : Drawable? =
@@ -133,12 +199,8 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int) : Drawable? =
  * that the state of each drawable is not shared
  *
  * @param resource The resource id of the drawable or vector drawable
- *                 @see DrawableRes
- *
- * @param tint A specific color to tint the drawable
- *
- * @return Drawable
- * @see Drawable
+ * @param tintColor A specific color to tint the drawable
+ * @return Drawable tinted with the tint color
  */
 fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor : Int) : Drawable? {
     val drawableResource = AppCompatResources.getDrawable(this, resource)
@@ -155,17 +217,19 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor :
  * Avoids resource not found when using vector drawables in API levels < Lollipop
  * and tints the drawable depending on the current selected theme, images loaded
  * from this method apply the {@link Drawable#mutate()} to assure that the state
- * of each drawable is not shared
+ * of each drawable is not shared.
  *
+ * @return Drawable tinted with {@link R.attr.titleColor}
  * @param resource The resource id of the drawable or vector drawable
- *                 @see DrawableRes
- *
- * @return Drawable tinted with R.attr.titleColor
- * @see Drawable
+ * @return Drawable tinted with the tint color
  */
 fun Context.getTintedDrawable(@DrawableRes resource : Int) : Drawable? {
-    val drawable = DrawableCompat.wrap(Objects.requireNonNull(AppCompatResources.getDrawable(this, resource)!!)).mutate()
-    DrawableCompat.setTint(drawable, this.getColorFromAttr(R.attr.titleColor))
+    val originalDrawable = getCompatDrawable(resource)
+    var drawable : Drawable? = null
+    if (originalDrawable != null) {
+        drawable = DrawableCompat.wrap(originalDrawable).mutate()
+        DrawableCompat.setTint(drawable, getColorFromAttr(R.attr.titleColor))
+    }
     return drawable
 }
 
@@ -176,32 +240,36 @@ fun Context.getTintedDrawable(@DrawableRes resource : Int) : Drawable? {
  * of each drawable is not shared
  *
  * @param resource The resource id of the drawable or vector drawable
- *                 @see DrawableRes
- *
- * @param colorAttr Type of attribute resource
- *
- * @return Drawable tinted with R.attr.titleColor
- * @see Drawable
+ * @param colorAttr A specific color to tint the drawable
+ * @return Drawable tinted with the tint color
  */
 fun Context.getTintedDrawable(@DrawableRes resource : Int, @AttrRes colorAttr : Int) : Drawable? {
-    val drawable = DrawableCompat.wrap(Objects.requireNonNull(AppCompatResources.getDrawable(this, resource)!!)).mutate()
-    DrawableCompat.setTint(drawable, this.getColorFromAttr(colorAttr))
+    val originalDrawable = getCompatDrawable(resource)
+    var drawable : Drawable? = null
+    if (originalDrawable != null) {
+        drawable = DrawableCompat.wrap(originalDrawable).mutate()
+        DrawableCompat.setTint(drawable, getColorFromAttr(colorAttr))
+    }
     return drawable
 }
 
 /**
- * Get screen dimensions for the current device configuration
+ * Gets the size of the display, in pixels. Value returned by this method does
+ * not necessarily represent the actual raw size (native resolution) of the display.
+ *
+ * @return A Point object to with the size information.
+ * @see Point
  */
 fun Context.getScreenDimens() : Point {
     val deviceDimens = Point()
-    val windowManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    windowManager.defaultDisplay?.getSize(deviceDimens)
+    (getSystemService(Context.WINDOW_SERVICE) as WindowManager).apply {
+        defaultDisplay?.getSize(deviceDimens)
+    }
     return deviceDimens
 }
 
 /**
  * Starts a shared transition of activities connected by views
- * <br/>
  *
  * @param target The view from the calling activity with transition name
  * @param data Intent with bundle and or activity to start
@@ -223,7 +291,7 @@ fun Context.getLayoutInflater() : LayoutInflater =
  * Credits
  * @author hamakn
  * https://gist.github.com/hamakn/8939eb68a920a6d7a498
- * */
+ */
 fun Resources.getStatusBarHeight() : Int {
     var statusBarHeight = 0
     val resourceId = this.getIdentifier("status_bar_height", "dimen", "android")
@@ -236,7 +304,7 @@ fun Resources.getStatusBarHeight() : Int {
  * Credits
  * @author hamakn
  * https://gist.github.com/hamakn/8939eb68a920a6d7a498
- * */
+ */
 fun Resources.getNavigationBarHeight() : Int {
     var navigationBarHeight = 0
     val resourceId = this.getIdentifier("navigation_bar_height", "dimen", "android")
@@ -249,7 +317,7 @@ fun Resources.getNavigationBarHeight() : Int {
  * Credits
  * @author hamakn
  * https://gist.github.com/hamakn/8939eb68a920a6d7a498
- * */
+ */
 fun FragmentActivity.getActionBarHeight() : Int {
     val styledAttributes = this.theme.obtainStyledAttributes(
             intArrayOf(android.R.attr.actionBarSize)
@@ -259,16 +327,19 @@ fun FragmentActivity.getActionBarHeight() : Int {
 }
 
 /**
- * Get List from a given array res
- * @return list of the array
+ * Creates a list of the array resource given
+ *
+ * @return The string list associated with the resource.
+ * @throws Exception if the given ID does not exist.
  */
 fun Context.getStringList(@ArrayRes arrayRes : Int) : List<String> {
-    val array = this.resources.getStringArray(arrayRes)
+    val array = resources.getStringArray(arrayRes)
     return array.constructListFrom<String>()
 }
 
 /**
- * Get List from a given array type
+ * Returns a fixed-size list backed by the specified array.
+ *
  * @return list of the array
  */
 fun <T> Array<T>.constructListFrom() : List<T> = Arrays.asList(*this)
@@ -313,20 +384,20 @@ fun <E> Collection<E>?.indexOfIntPair(targetItem: E?): Optional<IntPair<E>> = wh
     else -> Optional.empty()
 }
 
-
 /**
- * Capitalize words for text view consumption
+ * Returns a copy of this strings having its first letter uppercase, or the original string,
+ * if it's empty or already starts with an upper case letter.
  *
  * @param exceptions words or characters to exclude during capitalization
  */
-fun String?.capitalizeWords(exceptions: List<String>) : String = when {
+fun String?.capitalizeWords(exceptions: List<String>? = null) : String = when {
     !this.isNullOrEmpty() -> {
         val result = StringBuilder(this.length)
         val words = this.split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for ((index, word) in words.withIndex()) {
             when (word.isNotEmpty()) {
                 true -> {
-                    if (exceptions.contains(word)) result.append(word)
+                    if (!exceptions.isNullOrEmpty() && exceptions.contains(word)) result.append(word)
                     else result.append(word.capitalize())
                 }
             }
@@ -339,35 +410,42 @@ fun String?.capitalizeWords(exceptions: List<String>) : String = when {
 }
 
 /**
- * Get a list from a given array of strings
+ * Capitalizes all the strings unless they are specified in the exceptions list
  *
  * @param exceptions words or characters to exclude during capitalization
  * @return list of capitalized strings
  */
-fun  Array<String>.capitalizeWords(exceptions: List<String> = Collections.emptyList()) : List<String> =
-        Stream.of(*this)
-                .map { s -> s.capitalizeWords(exceptions) }
-                .toList()
+fun  Array<String>.capitalizeWords(exceptions: List<String>? = null) = Stream.of(*this)
+        .map { s -> s.capitalizeWords(exceptions) }
+        .toList()
 
+/**
+ * Gives the size of the collection by doing a null check first
+ *
+ * @return 0 if the collection is null or empty otherwise the size of the collection
+ */
 fun Collection<*>?.sizeOf() : Int = when {
     this.isNullOrEmpty() -> 0
     else -> this.size
 }
 
+/**
+ * Clears the current list and adds the new items into the collection replacing all items
+ */
 fun <C> MutableList<C>.replaceWith(collection :Collection<C>) {
-    this.clear()
-    this.addAll(collection)
+    clear(); addAll(collection)
 }
 
 /**
  * Sorts a given map by the order of the of the keys in the map in descending order
- * @see ComparatorUtil#getKeyComparator
+ *
+ * @see ComparatorUtil.getKeyComparator
  */
 fun <T> Map<String, T>.getKeyFilteredMap() : List<Map.Entry<String, T>> =
         Stream.of(this).sorted(ComparatorUtil.getKeyComparator()).toList()
 
 /**
- * Checks if two objects are not null and equal
+ * @return true if two objects are the same otherwise false if one of them is null or both are not equal
  */
 fun Any?.equal(b : Any?) : Boolean =
         this != null && b != null && this == b
@@ -401,25 +479,34 @@ fun Float.isScreenW() : Boolean {
     return screenWidth >= this
 }
 
+/**
+ * This method applies the most common configuration for the widget, things like direction, colors, behavior etc.
+ */
 fun SupportRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?, presenter : SupportPresenter<*>) = context?.also {
-    this.setDragTriggerDistance(SupportRefreshLayout.DIRECTION_BOTTOM, (it.resources.getNavigationBarHeight()))
-    this.setProgressBackgroundColorSchemeColor(it.getColorFromAttr(R.attr.rootColor))
-    this.setColorSchemeColors(it.getColorFromAttr(R.attr.contentColor))
-    this.setPermitRefresh(presenter.isPager)
-    this.setPermitLoad(false)
-    this.gone()
+    setDragTriggerDistance(SupportRefreshLayout.DIRECTION_BOTTOM, (it.resources.getNavigationBarHeight()))
+    setProgressBackgroundColorSchemeColor(it.getColorFromAttr(R.attr.rootColor))
+    setColorSchemeColors(it.getColorFromAttr(R.attr.contentColor))
+    setPermitRefresh(presenter.isPager)
+    setPermitLoad(false)
+    gone()
 }
 
+/**
+ * Resets the refreshing or loading states when called, common use case would be after a network response
+ */
 fun SupportRefreshLayout.onResponseResetStates() {
-    if (this.isRefreshing) this.isRefreshing = false
-    if (this.isLoading) this.isLoading = false
+    if (isRefreshing) isRefreshing = false
+    if (isLoading) isLoading = false
 }
 
+/**
+ *
+ */
 fun Context?.showContentError(progressLayout: ProgressLayout, @StringRes message: Int, @StringRes retryButtonText : Int,
                               stateLayoutOnClick: View.OnClickListener) = this?.also {
     when {
         progressLayout.isLoading || progressLayout.isEmpty || progressLayout.isContent -> {
-            progressLayout.showError(this.getCompatDrawable(R.drawable.ic_support_empty_state),
+            progressLayout.showError(getCompatDrawable(R.drawable.ic_support_empty_state),
                     it.getString(message), it.getString(retryButtonText), stateLayoutOnClick)
         }
         else -> {
