@@ -10,5 +10,6 @@ interface SupportAnimation {
 
     fun getInterpolator(): Interpolator
 
-    fun getAnimationDuration(): Int
+    @AnimationDuration
+    fun getAnimationDuration(): Int = AnimationDuration.SHORT
 }

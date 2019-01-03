@@ -1,4 +1,4 @@
-package io.wax911.support.custom.worker
+package io.wax911.support.custom.controller
 
 import io.wax911.support.model.ModelWrapper
 import kotlinx.coroutines.Deferred

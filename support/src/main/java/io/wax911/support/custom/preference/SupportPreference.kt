@@ -40,7 +40,7 @@ abstract class SupportPreference constructor(context: Context) {
             sharedPreferences.edit().putInt(_versionCode, value).apply()
         }
 
-    fun toggleTheme() {
+    open fun toggleTheme() {
         val editor = sharedPreferences.edit()
         editor.putInt(_isLightTheme, getTheme().swapTheme())
         editor.apply()

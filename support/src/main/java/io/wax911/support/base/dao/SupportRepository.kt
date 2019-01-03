@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import io.wax911.support.custom.worker.SupportRequestClient
+import io.wax911.support.custom.controller.SupportRequestClient
 import io.wax911.support.isConnectedToNetwork
 import kotlinx.coroutines.*
 
@@ -14,12 +14,10 @@ abstract class SupportRepository<K, V> {
     private var repositoryJob : Job? = null
     private var disposableHandle : DisposableHandle? = null
 
+    protected var modelDao: SupportQuery<V>? = null
     protected val networkClient: SupportRequestClient by lazy { initNetworkClient() }
-    protected var modelDao: QueryBase<V>? = null
 
-    val liveData : MutableLiveData<V?> by lazy {
-        MutableLiveData<V?>()
-    }
+    val liveData : MutableLiveData<V?> by lazy { MutableLiveData<V?>() }
 
     /**
      * Saves the given model to the database
@@ -112,9 +110,9 @@ abstract class SupportRepository<K, V> {
                     false -> requestFromCache(bundle, it).await()
                 }
             }
-            disposableHandle = repositoryJob?.invokeOnCompletion { j ->
-                j?.also { throwable ->
-                    throwable.printStackTrace()
+            disposableHandle = repositoryJob?.invokeOnCompletion { cause : Throwable? ->
+                cause?.apply {
+                    printStackTrace()
                     try {
                         GlobalScope.launch { publishResult(null) }
                     } catch (e: Exception) {

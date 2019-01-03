@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Update
 
-interface QueryBase<T> {
+interface SupportQuery<T> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(attribute: T)
