@@ -1,6 +1,6 @@
 package io.wax911.sample.api
 
-import io.wax911.support.custom.worker.SupportRequestClient
+import io.wax911.support.custom.controller.SupportRequestClient
 import io.wax911.support.extension.logError
 import io.wax911.support.model.ModelWrapper
 import kotlinx.coroutines.Deferred

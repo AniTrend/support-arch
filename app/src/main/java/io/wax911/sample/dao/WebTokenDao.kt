@@ -3,10 +3,10 @@ package io.wax911.sample.dao
 import androidx.room.Dao
 import androidx.room.Query
 import io.wax911.sample.model.WebToken
-import io.wax911.support.base.dao.QueryBase
+import io.wax911.support.base.dao.SupportQuery
 
 @Dao
-interface WebTokenDao : QueryBase<WebToken> {
+interface WebTokenDao : SupportQuery<WebToken> {
 
     @Query("select * from WebToken limit 1")
     fun get(): WebToken
