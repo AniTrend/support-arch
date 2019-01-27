@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import io.wax911.support.*
-import io.wax911.support.base.view.CustomView
+import io.wax911.support.view.CustomView
 import kotlinx.android.synthetic.main.support_layout_state.view.*
 
 class SupportStateLayout : FrameLayout, CustomView {

@@ -1,7 +1,6 @@
-package io.wax911.support.base.repository
+package io.wax911.support.repository
 
 import androidx.room.RoomDatabase
-import io.wax911.support.base.dao.SupportRepository
 
 interface CompanionRepository<R: SupportRepository<*, *>> {
 

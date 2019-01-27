@@ -15,13 +15,13 @@ abstract class SupportRequestClient {
      *
      * @param call retrofit call to execute
      */
-    abstract fun <T> executeUsing(call: Call<T>): Deferred<ModelWrapper<T?>>
+    abstract fun <T> executeUsingAsync(call: Call<T>): Deferred<ModelWrapper<T?>>
 
     /**
      * Cancels all the call requests that were used in the executeUsing function
      * <br/>
      *
-     * @see executeUsing
+     * @see executeUsingAsync
      */
     fun cancel() {
         try {

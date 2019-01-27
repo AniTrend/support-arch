@@ -7,14 +7,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 
-class SupportLifecycleUtil(context: Context, callback: LifecycleCallback): LifecycleObserver {
+class SupportLifecycleUtil(context: Context): LifecycleObserver {
 
-    private var lifecycleCallback: LifecycleCallback? = null
+    var lifecycleCallback: LifecycleCallback? = null
 
     init {
         if (context is FragmentActivity)
             context.lifecycle.addObserver(this)
-        lifecycleCallback = callback
     }
 
     /**

@@ -1,4 +1,4 @@
-package io.wax911.support.base.viewmodel
+package io.wax911.support.viewmodel
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer

@@ -15,6 +15,24 @@ abstract class SupportPresenter<S : SupportPreference>(protected var context: Co
     val supportPreference: S? by lazy { createPreference() }
 
     /**
+     * Enables or disables action mode, behaviour should be implemented in your adapter, in
+     * the [io.wax911.support.custom.recycler.SupportViewHolder.clickListener].
+     * Default value for this property is false
+     *
+     * @see io.wax911.support.custom.recycler.SupportViewHolder
+     */
+    var isActionModeEnabled: Boolean = false
+
+    /**
+     * Indicates the number of pages that should be retained to either side of the
+     * current page in the view hierarchy in an idle state. Pages beyond this
+     * limit will be recreated from the adapter when needed.
+     *
+     * @see [androidx.viewpager.widget.ViewPager.setOffscreenPageLimit]
+     */
+    var offScreenPagerLimit: Int = 3
+
+    /**
      * Unregister any listeners from fragments or activities
      */
     override fun onPause(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
@@ -50,12 +68,11 @@ abstract class SupportPresenter<S : SupportPreference>(protected var context: Co
         /**
          * Trigger all subscribers that may be listening. This method makes use of sticky broadcasts
          * in case all subscribed listeners were not loaded in time for the broadcast
-         * <br/>
          *
          * @param param the object of type T to send
          * @param isSticky set true to make sticky post
          */
-        fun <T> notifyAllListeners(param : T, isSticky: Boolean) = when {
+        fun <T> notifyAllListeners(param : T, isSticky: Boolean = false) = when {
             isSticky -> EventBus.getDefault().postSticky(param)
             else -> EventBus.getDefault().post(param)
         }

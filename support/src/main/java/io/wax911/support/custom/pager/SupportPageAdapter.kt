@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentStatePagerAdapter
 import io.wax911.support.empty
+import io.wax911.support.getStringList
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -23,7 +24,7 @@ abstract class SupportPageAdapter(protected val context: FragmentActivity): Frag
     fun setPagerTitles(@ArrayRes titleRes: Int) {
         if (titles.size > 0)
             titles.clear()
-        titles.addAll(context.resources.getStringArray(titleRes))
+        titles.addAll(context.getStringList(titleRes))
     }
 
     /**

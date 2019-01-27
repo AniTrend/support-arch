@@ -1,6 +1,6 @@
-package io.wax911.support.util
+package io.wax911.support.factory
 
-open class SingletonUtil<out T, in A>(creator: (A) -> T) {
+open class SingletonCreator<out T, in A>(creator: (A) -> T) {
 
     private var creator: ((A) -> T)? = creator
     @Volatile private var instance: T? = null

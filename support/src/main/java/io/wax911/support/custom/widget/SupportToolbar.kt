@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.Toolbar
 import io.wax911.support.R
-import io.wax911.support.base.view.CustomView
+import io.wax911.support.view.CustomView
 import io.wax911.support.custom.activity.SupportActivity
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.getColorFromAttr

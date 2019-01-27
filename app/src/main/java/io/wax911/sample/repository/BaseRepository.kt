@@ -4,13 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import androidx.room.RoomDatabase
 import io.wax911.sample.api.NetworkClient
-import io.wax911.sample.dao.BaseModelDao
 import io.wax911.sample.dao.DatabaseHelper
 import io.wax911.sample.model.BaseModel
-import io.wax911.support.base.dao.SupportRepository
-import io.wax911.support.base.repository.CompanionRepository
-import io.wax911.support.util.InstanceUtil
-import io.wax911.support.util.SupportStateUtil
+import io.wax911.support.repository.SupportRepository
+import io.wax911.support.repository.CompanionRepository
+import io.wax911.support.util.SupportStateKeyUtil
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -29,8 +27,8 @@ class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>(
      *
      * @param bundle bundle of parameters for the request
      */
-    override fun createNetworkClientRequest(bundle: Bundle, context: Context): Deferred<Unit> = GlobalScope.async {
-        when (bundle.getString(SupportStateUtil.arg_bundle)) {
+    override fun createNetworkClientRequestAsync(bundle: Bundle, context: Context): Deferred<Unit> = GlobalScope.async {
+        when (bundle.getString(SupportStateKeyUtil.arg_bundle)) {
 
         }
     }
@@ -42,8 +40,8 @@ class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>(
      *
      * @param bundle bundle of parameters for the request
      */
-    override fun requestFromCache(bundle: Bundle, context: Context) = GlobalScope.async {
-        when (bundle.getString(SupportStateUtil.arg_bundle)) {
+    override fun requestFromCacheAsync(bundle: Bundle, context: Context) = GlobalScope.async {
+        when (bundle.getString(SupportStateKeyUtil.arg_bundle)) {
 
         }
     }

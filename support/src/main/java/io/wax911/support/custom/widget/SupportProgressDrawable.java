@@ -39,7 +39,7 @@ public class SupportProgressDrawable extends Drawable implements Animatable {
     private static final Interpolator MATERIAL_INTERPOLATOR = new FastOutSlowInInterpolator();
 
     private static final float FULL_ROTATION = 1080.0f;
-    @Retention(RetentionPolicy.CLASS)
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef({LARGE, DEFAULT})
     @interface ProgressDrawableSize {}
     // Maps to ProgressBar.Large style

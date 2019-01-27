@@ -406,8 +406,8 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
         }
 
         if (!mScale) {
-            ViewCompat.setScaleX(mCircleViews[dir], 1f);
-            ViewCompat.setScaleY(mCircleViews[dir], 1f);
+            mCircleViews[dir].setScaleX(1f);
+            mCircleViews[dir].setScaleY(1f);
         }
 
         if (mScale) {
@@ -497,15 +497,10 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     @Override
     public void requestDisallowInterceptTouchEvent(boolean b) {
-        if ((android.os.Build.VERSION.SDK_INT < 21 && mTarget instanceof AbsListView)
-                || (mTarget != null && !ViewCompat.isNestedScrollingEnabled(mTarget))) {
-            // do nothing.
-        } else {
-            super.requestDisallowInterceptTouchEvent(b);
-        }
+        if ((android.os.Build.VERSION.SDK_INT >= 21 || !(mTarget instanceof AbsListView))
+                && (mTarget == null || ViewCompat.isNestedScrollingEnabled(mTarget)))
+                    super.requestDisallowInterceptTouchEvent(b);
     }
-
-    // state.
 
     /**
      * Notify the widget that refresh state has changed. Do not call this when
@@ -860,8 +855,8 @@ public class SupportRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void setAnimationProgress(int dir, float progress) {
-        ViewCompat.setScaleX(mCircleViews[dir], progress);
-        ViewCompat.setScaleY(mCircleViews[dir], progress);
+        mCircleViews[dir].setScaleX(progress);
+        mCircleViews[dir].setScaleY(progress);
     }
 
     private void startScaleDownAnimation(final int dir, Animation.AnimationListener listener) {

@@ -1,4 +1,4 @@
-package io.wax911.support.base.view
+package io.wax911.support.view
 
 import android.content.SharedPreferences
 import androidx.lifecycle.Observer

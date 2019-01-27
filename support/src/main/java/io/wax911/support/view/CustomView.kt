@@ -1,4 +1,4 @@
-package io.wax911.support.base.view
+package io.wax911.support.view
 
 /**
  * Created by max on 2017/06/24.

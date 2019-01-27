@@ -1,4 +1,4 @@
-package io.wax911.support.util
+package io.wax911.support.analytic.contract
 
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity

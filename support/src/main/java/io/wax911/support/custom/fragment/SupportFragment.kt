@@ -12,10 +12,11 @@ import com.annimon.stream.IntPair
 import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.base.event.ActionModeListener
 import io.wax911.support.base.event.ItemClickListener
-import io.wax911.support.base.view.CompatView
+import io.wax911.support.custom.action.contract.ISupportActionMode
+import io.wax911.support.view.CompatView
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.custom.viewmodel.SupportViewModel
-import io.wax911.support.util.SupportActionUtil
+import io.wax911.support.custom.action.SupportActionMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -24,8 +25,7 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), CoroutineScope, ActionModeListener, CompatView<VM, P>, ItemClickListener<M> {
 
-    @Suppress("MemberVisibilityCanBePrivate")
-    protected lateinit var job: Job
+    private lateinit var job: Job
 
     @MenuRes
     protected var inflateMenu: Int = 0
@@ -33,8 +33,8 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Cor
 
     protected val presenter: P by lazy { initPresenter() }
     protected val viewModel: SupportViewModel<VM?, *>? by lazy { initViewModel() }
-    protected val supportAction: SupportActionUtil<M> by lazy {
-        SupportActionUtil<M>(this, true)
+    protected val supportAction: ISupportActionMode<M> by lazy {
+        SupportActionMode<M>(this, presenter)
     }
 
     /**
@@ -143,7 +143,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Cor
     }
 
     override fun hasBackPressableAction(): Boolean {
-        if (!supportAction.selectedItems.isEmpty()) {
+        if (!supportAction.getAllSelectedItems().isEmpty()) {
             supportAction.clearSelection()
             return true
         }
@@ -151,9 +151,11 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Cor
     }
 
     /**
-     * Handles what happens when an action mode selection changes
+     * Called when an item is selected or deselected.
+     *
+     * @param mode The current ActionMode being used
      */
-    override fun onSelectionChanged(actionMode: ActionMode, count: Int) {
+    override fun onSelectionChanged(mode: ActionMode?, count: Int) {
 
     }
 
@@ -186,7 +188,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Cor
      *
      * @param mode The current ActionMode
      * @param item The item that was clicked
-     * @return true if this supportActionUtil handled the event, false if the standard MenuItem
+     * @return true if this supportActionMode handled the event, false if the standard MenuItem
      * invocation should continue.
      */
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {

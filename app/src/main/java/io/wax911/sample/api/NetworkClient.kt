@@ -17,7 +17,7 @@ class NetworkClient : SupportRequestClient() {
      *
      * @param call retrofit call to execute
      */
-    override fun <T> executeUsing(call: Call<T>): Deferred<ModelWrapper<T?>> = GlobalScope.async {
+    override fun <T> executeUsingAsync(call: Call<T>): Deferred<ModelWrapper<T?>> = GlobalScope.async {
         try {
             callList.add(call)
             val response = call.execute()

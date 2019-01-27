@@ -1,4 +1,4 @@
-package io.wax911.support.base.dao
+package io.wax911.support.dao
 
 import androidx.room.Delete
 import androidx.room.Insert
@@ -7,10 +7,10 @@ import androidx.room.Update
 
 interface SupportQuery<T> {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(attribute: T)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(attribute: T)
 
     @Delete

@@ -3,7 +3,7 @@ package io.wax911.sample.dao
 import androidx.room.Dao
 import androidx.room.Query
 import io.wax911.sample.model.BaseModel
-import io.wax911.support.base.dao.SupportQuery
+import io.wax911.support.dao.SupportQuery
 
 @Dao
 interface BaseModelDao : SupportQuery<BaseModel?> {

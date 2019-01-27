@@ -334,15 +334,8 @@ fun FragmentActivity.getActionBarHeight() : Int {
  */
 fun Context.getStringList(@ArrayRes arrayRes : Int) : List<String> {
     val array = resources.getStringArray(arrayRes)
-    return array.constructListFrom<String>()
+    return array.toList()
 }
-
-/**
- * Returns a fixed-size list backed by the specified array.
- *
- * @return list of the array
- */
-fun <T> Array<T>.constructListFrom() : List<T> = Arrays.asList(*this)
 
 /**
  * Gets the index of any type of iterable guaranteed that an equal override for the class
@@ -465,7 +458,7 @@ fun Float.spToPx() : Int {
     return Math.round(this * scaledDensity)
 }
 
-fun Float.isScreenSw() : Boolean {
+fun Float.isSmallWidthScreen() : Boolean {
     val displayMetrics = Resources.getSystem().displayMetrics
     val widthDp = displayMetrics.widthPixels / displayMetrics.density
     val heightDp = displayMetrics.heightPixels / displayMetrics.density
@@ -473,7 +466,7 @@ fun Float.isScreenSw() : Boolean {
     return screenSw >= this
 }
 
-fun Float.isScreenW() : Boolean {
+fun Float.isWideScreen() : Boolean {
     val displayMetrics = Resources.getSystem().displayMetrics
     val screenWidth = displayMetrics.widthPixels / displayMetrics.density
     return screenWidth >= this
@@ -499,9 +492,7 @@ fun SupportRefreshLayout.onResponseResetStates() {
     if (isLoading) isLoading = false
 }
 
-/**
- *
- */
+
 fun Context?.showContentError(progressLayout: ProgressLayout, @StringRes message: Int, @StringRes retryButtonText : Int,
                               stateLayoutOnClick: View.OnClickListener) = this?.also {
     when {
@@ -543,29 +534,37 @@ inline fun <reified T> Context?.startNewActivity(params: Bundle?) {
 inline fun <reified T : ViewModel> FragmentActivity.getViewModelOf() =
         ViewModelProviders.of(this).get(T::class.java)
 
-fun SupportRecyclerView.setUpWith(supportAdapter: SupportViewAdapter<*>, vertical: Boolean, layoutManager: RecyclerView.LayoutManager? = null) {
-    this.also {
-        it.setHasFixedSize(true)
-        it.isNestedScrollingEnabled = true
-        when {
-            vertical -> {
-                if (layoutManager == null)
-                    it.layoutManager = StaggeredGridLayoutManager(it
-                            .context.resources.getInteger(R.integer.grid_list_x3),
-                            StaggeredGridLayoutManager.VERTICAL)
-                else
-                    it.layoutManager = layoutManager
-                it.adapter = supportAdapter
-            }
-            else -> {
-                if (layoutManager == null)
-                    it.layoutManager = StaggeredGridLayoutManager(it
-                            .context.resources.getInteger(R.integer.single_list_size),
-                            StaggeredGridLayoutManager.HORIZONTAL)
-                else
-                    it.layoutManager = layoutManager
-                it.adapter = supportAdapter
-            }
+
+/**
+ * Sets up a recycler view by handling all the boilerplate code associated with it using
+ * the given layout manager or the default.
+ *
+ * @param supportAdapter recycler view adapter which will be used
+ * @param vertical if the layout adapter should be vertical or horizontal
+ * @param layoutManager optional layout manager if you do not wish to use the default
+ */
+fun SupportRecyclerView.setUpWith(supportAdapter: SupportViewAdapter<*>, vertical: Boolean = true,
+                                  layoutManager: RecyclerView.LayoutManager? = null) {
+    setHasFixedSize(true)
+    isNestedScrollingEnabled = true
+    when {
+        vertical -> {
+            if (layoutManager == null)
+                this.layoutManager = StaggeredGridLayoutManager(
+                        context.resources.getInteger(R.integer.grid_list_x3),
+                        StaggeredGridLayoutManager.VERTICAL)
+            else
+                this.layoutManager = layoutManager
+            adapter = supportAdapter
+        }
+        else -> {
+            if (layoutManager == null)
+                this.layoutManager = StaggeredGridLayoutManager(
+                        context.resources.getInteger(R.integer.single_list_size),
+                        StaggeredGridLayoutManager.HORIZONTAL)
+            else
+                this.layoutManager = layoutManager
+            adapter = supportAdapter
         }
     }
 }

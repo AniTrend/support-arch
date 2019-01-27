@@ -4,7 +4,7 @@ import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
-import io.wax911.support.base.view.CustomView
+import io.wax911.support.view.CustomView
 
 class SingleLineTextView : AppCompatTextView, CustomView {
 

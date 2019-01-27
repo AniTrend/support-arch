@@ -1,4 +1,4 @@
-package io.wax911.support.base.dao
+package io.wax911.support.repository
 
 import android.content.Context
 import android.os.Bundle
@@ -6,10 +6,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import io.wax911.support.custom.controller.SupportRequestClient
+import io.wax911.support.dao.SupportQuery
 import io.wax911.support.isConnectedToNetwork
+import io.wax911.support.repository.contract.ISupportRepository
 import kotlinx.coroutines.*
 
-abstract class SupportRepository<K, V> {
+abstract class SupportRepository<K, V>: ISupportRepository<K, V> {
 
     private var repositoryJob : Job? = null
     private var disposableHandle : DisposableHandle? = null
@@ -25,17 +27,15 @@ abstract class SupportRepository<K, V> {
      *
      * @param model item which should be saved
      */
-    open fun save(model : V) = modelDao?.insert(model)
+    override fun save(model : V) { modelDao?.insert(model) }
 
     /**
-     * Find any specific items from our database using a key
+     * Updates the given model to the database
+     * <br/>
+     *
+     * @param model item which should be updated
      */
-    open fun find(key : K) : V? = null
-
-    /**
-     * Find any specific items from our database
-     */
-    open fun find() : V? = null
+    override fun update(model : V) { modelDao?.update(model) }
 
     /**
      * Deletes the given model from the database
@@ -43,7 +43,7 @@ abstract class SupportRepository<K, V> {
      *
      * @param model item which should be deleted
      */
-    open fun delete(model : V) { modelDao?.delete(model) }
+    override fun delete(model : V) { modelDao?.delete(model) }
 
     /**
      * Sets the given life cycle owner to observe changes in the live data that
@@ -53,7 +53,7 @@ abstract class SupportRepository<K, V> {
      * @param context any valid life cycle owner such as a FragmentActivity descendant
      * @param observer any observer that shares the same value type as this repository
      */
-    fun registerObserver(context: LifecycleOwner, observer: Observer<V?>) {
+    override fun registerObserver(context: LifecycleOwner, observer: Observer<V?>) {
         if (!liveData.hasActiveObservers())
             liveData.observe(context, observer)
     }
@@ -73,7 +73,7 @@ abstract class SupportRepository<K, V> {
      *
      * @param bundle bundle of parameters for the request
      */
-    protected abstract fun createNetworkClientRequest(bundle: Bundle, context: Context): Deferred<Unit>
+    protected abstract fun createNetworkClientRequestAsync(bundle: Bundle, context: Context): Deferred<Unit>
 
     /**
      * When the application is not connected to the internet this method is called to resolve the
@@ -82,7 +82,7 @@ abstract class SupportRepository<K, V> {
      *
      * @param bundle bundle of parameters for the request
      */
-    protected abstract fun requestFromCache(bundle: Bundle, context: Context): Deferred<Unit>
+    protected abstract fun requestFromCacheAsync(bundle: Bundle, context: Context): Deferred<Unit>
 
     /**
      * Dispatches the results to be set to the live data to a UI thread
@@ -102,12 +102,12 @@ abstract class SupportRepository<K, V> {
      * @param bundle bundle of parameters for the request
      * @param context any valid context
      */
-    fun requestFromNetwork(bundle: Bundle, context: Context?) {
-        context?.also { it ->
+    override fun requestFromNetwork(bundle: Bundle, context: Context?) {
+        context?.also {
             repositoryJob = GlobalScope.async {
                 when (it.isConnectedToNetwork()) {
-                    true -> createNetworkClientRequest(bundle, it).await()
-                    false -> requestFromCache(bundle, it).await()
+                    true -> createNetworkClientRequestAsync(bundle, it).await()
+                    false -> requestFromCacheAsync(bundle, it).await()
                 }
             }
             disposableHandle = repositoryJob?.invokeOnCompletion { cause : Throwable? ->
@@ -126,7 +126,7 @@ abstract class SupportRepository<K, V> {
     /**
      * Deals with cancellation of any pending or on going operations that the repository is busy with
      */
-    open fun onCleared() {
+    override fun onCleared() {
         networkClient.cancel()
         repositoryJob?.cancel()
         disposableHandle?.dispose()

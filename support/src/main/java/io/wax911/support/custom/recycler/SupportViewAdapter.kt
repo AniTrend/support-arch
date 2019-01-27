@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import io.wax911.support.base.animation.SupportAnimation
+import io.wax911.support.base.attribute.RecyclerType
 import io.wax911.support.base.event.ItemClickListener
 import io.wax911.support.base.event.RecyclerChangeListener
+import io.wax911.support.custom.action.contract.ISupportActionMode
 import io.wax911.support.custom.animation.ScaleAnimation
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.replaceWith
-import io.wax911.support.util.SupportActionUtil
-import io.wax911.support.util.SupportStateUtil
+import io.wax911.support.util.SupportStateKeyUtil
 import java.util.*
 
 /**
@@ -24,10 +25,14 @@ import java.util.*
 abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>>(), Filterable, RecyclerChangeListener<T> {
 
     lateinit var presenter: SupportPresenter<*>
-    var clickListener: ItemClickListener<T>? = null
+    var itemClickListener: ItemClickListener<T>? = null
 
-    var supportAction: SupportActionUtil<T>? = null
-        set(value) { field = value?.also { it.recyclerAdapter = this } }
+    var supportAction: ISupportActionMode<T>? = null
+        set(value) {
+            field = value?.apply {
+                setRecyclerViewAdapter(this@SupportViewAdapter)
+            }
+        }
 
     private var lastPosition: Int = 0
 
@@ -118,11 +123,11 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
         if (itemCount > 0) {
             animateViewHolder(holder, position)
             val model = data[position]
-            holder.also {
-                it.clickListener = clickListener
-                it.supportActionUtil = supportAction
-                it.onBindViewHolder(model)
-                it.onBindSelectionState(model)
+            holder.apply {
+                clickListener = itemClickListener
+                supportActionMode = supportAction
+                onBindViewHolder(model)
+                onBindSelectionState(model)
             }
         }
     }
@@ -237,8 +242,8 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
     }
 
     protected fun isRecyclerStateType(viewType: Int): Boolean = when (viewType) {
-        SupportStateUtil.RECYCLER_TYPE_EMPTY, SupportStateUtil.RECYCLER_TYPE_LOADING,
-        SupportStateUtil.RECYCLER_TYPE_HEADER -> true
+        RecyclerType.RECYCLER_TYPE_EMPTY, RecyclerType.RECYCLER_TYPE_LOADING,
+        RecyclerType.RECYCLER_TYPE_HEADER -> true
         else -> false
     }
 

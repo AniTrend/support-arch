@@ -8,11 +8,11 @@ import io.wax911.sample.adapter.recycler.SimpleModelAdapter
 import io.wax911.sample.model.BaseModel
 import io.wax911.sample.presenter.BasePresenter
 import io.wax911.support.custom.fragment.SupportFragmentList
-import io.wax911.support.util.InstanceUtil
+import io.wax911.support.factory.InstanceCreator
 
 class FragmentHistory : SupportFragmentList<BaseModel, BasePresenter, List<BaseModel>>() {
 
-    companion object : InstanceUtil<FragmentHistory, Bundle?>({
+    companion object : InstanceCreator<FragmentHistory, Bundle?>({
         val fragment = FragmentHistory()
         fragment.arguments = it
         fragment

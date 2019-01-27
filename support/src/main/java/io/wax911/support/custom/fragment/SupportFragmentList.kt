@@ -18,7 +18,7 @@ import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.custom.recycler.SupportViewAdapter
 import io.wax911.support.custom.widget.SupportRefreshLayout
 import io.wax911.support.util.SupportNotifyUtil
-import io.wax911.support.util.SupportStateUtil
+import io.wax911.support.util.SupportStateKeyUtil
 import kotlinx.android.synthetic.main.support_list.*
 
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFragment<M, P, VM>(),
@@ -175,12 +175,12 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(SupportStateUtil.key_columns, mColumnSize)
-        outState.putBoolean(SupportStateUtil.key_pagination, presenter.isPager)
-        outState.putBoolean(SupportStateUtil.key_pagination_limit, presenter.isPagingLimit)
+        outState.putInt(SupportStateKeyUtil.key_columns, mColumnSize)
+        outState.putBoolean(SupportStateKeyUtil.key_pagination, presenter.isPager)
+        outState.putBoolean(SupportStateKeyUtil.key_pagination_limit, presenter.isPagingLimit)
 
-        outState.putInt(SupportStateUtil.arg_page, presenter.currentPage)
-        outState.putInt(SupportStateUtil.arg_page_offset, presenter.currentOffset)
+        outState.putInt(SupportStateKeyUtil.arg_page, presenter.currentPage)
+        outState.putInt(SupportStateKeyUtil.arg_page_offset, presenter.currentOffset)
     }
 
     /**
@@ -197,12 +197,12 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.also {
-            mColumnSize = it.getInt(SupportStateUtil.key_columns)
-            presenter.isPager = it.getBoolean(SupportStateUtil.key_pagination)
-            presenter.isPagingLimit = it.getBoolean(SupportStateUtil.key_pagination_limit)
+            mColumnSize = it.getInt(SupportStateKeyUtil.key_columns)
+            presenter.isPager = it.getBoolean(SupportStateKeyUtil.key_pagination)
+            presenter.isPagingLimit = it.getBoolean(SupportStateKeyUtil.key_pagination_limit)
 
-            presenter.currentPage = it.getInt(SupportStateUtil.arg_page)
-            presenter.currentOffset = it.getInt(SupportStateUtil.arg_page_offset)
+            presenter.currentPage = it.getInt(SupportStateKeyUtil.arg_page)
+            presenter.currentOffset = it.getInt(SupportStateKeyUtil.arg_page_offset)
         }
     }
 
@@ -301,7 +301,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     protected fun injectAdapter(@StringRes emptyText: Int) = when {
         supportViewAdapter.hasData() -> {
             supportViewAdapter.presenter = presenter
-            supportViewAdapter.clickListener = this
+            supportViewAdapter.itemClickListener = this
             when {
                 supportRecyclerView.adapter == null -> {
                     supportViewAdapter.supportAction = supportAction
@@ -337,7 +337,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                     }
                     false -> supportViewAdapter.onItemsInserted(model)
                 }
-                supportRefreshLayout?.isRefreshing = false
+                supportRefreshLayout?.onResponseResetStates()
                 updateUI()
             }
             else -> {
@@ -345,6 +345,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                     setLimitReached()
                 if (!supportViewAdapter.hasData())
                     context.showContentError(progressLayout, emptyText, retryButtonText(), stateLayoutOnClick)
+                supportRefreshLayout?.onResponseResetStates()
             }
         }
     }

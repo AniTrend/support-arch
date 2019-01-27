@@ -1,4 +1,4 @@
-package io.wax911.support.base.dao
+package io.wax911.support.dao
 
 interface RoomConverter<T> {
 

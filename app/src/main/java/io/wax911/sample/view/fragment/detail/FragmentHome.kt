@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
 import io.wax911.support.custom.fragment.SupportFragment
-import io.wax911.support.util.InstanceUtil
+import io.wax911.support.factory.InstanceCreator
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
 
-    companion object : InstanceUtil<FragmentHome, Bundle?>({
+    companion object : InstanceCreator<FragmentHome, Bundle?>({
         val fragment = FragmentHome()
         fragment.arguments = it
         fragment
