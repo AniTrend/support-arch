@@ -45,17 +45,6 @@ object ComparatorUtil {
 }
 
 /**
- * Toggles between light and dark theme
- *
- * @return Style resource
- */
-@StyleRes
-fun Int.swapTheme() : Int = when (this == R.style.SupportThemeLight) {
-    true -> R.style.SupportThemeDark
-    false -> R.style.SupportThemeLight
-}
-
-/**
  * Sets the current views visibility to GONE
  *
  * @see View.GONE
@@ -206,7 +195,7 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor :
     if (drawableResource != null) {
         val drawableResult = DrawableCompat.wrap(drawableResource).mutate()
         if (tintColor != 0)
-            DrawableCompat.setTint(drawableResult, this.getCompatColor(tintColor))
+            DrawableCompat.setTint(drawableResult, getCompatColor(tintColor))
         return drawableResource
     }
     return null
@@ -284,7 +273,7 @@ fun Int.isLightTheme() : Boolean =
         this == R.style.SupportThemeLight
 
 fun Context.getLayoutInflater() : LayoutInflater =
-        this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 /**
  * Credits
@@ -293,9 +282,9 @@ fun Context.getLayoutInflater() : LayoutInflater =
  */
 fun Resources.getStatusBarHeight() : Int {
     var statusBarHeight = 0
-    val resourceId = this.getIdentifier("status_bar_height", "dimen", "android")
+    val resourceId = getIdentifier("status_bar_height", "dimen", "android")
     if (resourceId > 0)
-        statusBarHeight = this.getDimensionPixelSize(resourceId)
+        statusBarHeight = getDimensionPixelSize(resourceId)
     return statusBarHeight
 }
 
@@ -306,9 +295,9 @@ fun Resources.getStatusBarHeight() : Int {
  */
 fun Resources.getNavigationBarHeight() : Int {
     var navigationBarHeight = 0
-    val resourceId = this.getIdentifier("navigation_bar_height", "dimen", "android")
+    val resourceId = getIdentifier("navigation_bar_height", "dimen", "android")
     if (resourceId > 0)
-        navigationBarHeight = this.getDimensionPixelSize(resourceId)
+        navigationBarHeight = getDimensionPixelSize(resourceId)
     return navigationBarHeight
 }
 
@@ -318,7 +307,7 @@ fun Resources.getNavigationBarHeight() : Int {
  * https://gist.github.com/hamakn/8939eb68a920a6d7a498
  */
 fun FragmentActivity.getActionBarHeight() : Int {
-    val styledAttributes = this.theme.obtainStyledAttributes(
+    val styledAttributes = theme.obtainStyledAttributes(
             intArrayOf(android.R.attr.actionBarSize)
     )
     styledAttributes.recycle()
@@ -370,7 +359,7 @@ fun <A> Iterable<A>?.indexOfIterable(targetItem: A?): Int = when (this != null) 
  * @see IntPair
  */
 fun <E> Collection<E>?.indexOfIntPair(targetItem: E?): Optional<IntPair<E>> = when {
-    !this.isNullOrEmpty() -> Stream.of(this).findIndexed { _, value ->
+    !isNullOrEmpty() -> Stream.of(this).findIndexed { _, value ->
         value.equal(targetItem)
     }
     else -> Optional.empty()
@@ -384,8 +373,8 @@ fun <E> Collection<E>?.indexOfIntPair(targetItem: E?): Optional<IntPair<E>> = wh
  */
 fun String?.capitalizeWords(exceptions: List<String>? = null) : String = when {
     !this.isNullOrEmpty() -> {
-        val result = StringBuilder(this.length)
-        val words = this.split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val result = StringBuilder(length)
+        val words = split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         for ((index, word) in words.withIndex()) {
             when (word.isNotEmpty()) {
                 true -> {
@@ -418,7 +407,7 @@ fun  Array<String>.capitalizeWords(exceptions: List<String>? = null) = Stream.of
  */
 fun Collection<*>?.sizeOf() : Int = when {
     this.isNullOrEmpty() -> 0
-    else -> this.size
+    else -> size
 }
 
 /**
@@ -505,14 +494,14 @@ fun Context?.showContentError(progressLayout: ProgressLayout, @StringRes message
 }
 
 fun ProgressLayout.showContentLoading() = when {
-    this.isContent || this.isEmpty ||
-            this.isError -> this.showLoading()
+    isContent || isEmpty ||
+            isError -> showLoading()
     else -> { }
 }
 
 fun ProgressLayout.showLoadedContent() = when {
-    this.isLoading || this.isEmpty ||
-            this.isError -> this.showContent()
+    isLoading || isEmpty ||
+            isError -> showContent()
     else -> { }
 }
 
@@ -543,27 +532,20 @@ inline fun <reified T : ViewModel> FragmentActivity.getViewModelOf() =
  * @param layoutManager optional layout manager if you do not wish to use the default
  */
 fun SupportRecyclerView.setUpWith(supportAdapter: SupportViewAdapter<*>, vertical: Boolean = true,
-                                  layoutManager: RecyclerView.LayoutManager? = null) {
+                                  recyclerLayoutManager: RecyclerView.LayoutManager? = null) {
     setHasFixedSize(true)
     isNestedScrollingEnabled = true
-    when {
-        vertical -> {
-            if (layoutManager == null)
-                this.layoutManager = StaggeredGridLayoutManager(
-                        context.resources.getInteger(R.integer.grid_list_x3),
-                        StaggeredGridLayoutManager.VERTICAL)
-            else
-                this.layoutManager = layoutManager
-            adapter = supportAdapter
-        }
-        else -> {
-            if (layoutManager == null)
-                this.layoutManager = StaggeredGridLayoutManager(
-                        context.resources.getInteger(R.integer.single_list_size),
-                        StaggeredGridLayoutManager.HORIZONTAL)
-            else
-                this.layoutManager = layoutManager
-            adapter = supportAdapter
-        }
+    layoutManager = when (recyclerLayoutManager == null) {
+        vertical ->
+            StaggeredGridLayoutManager(
+                    context.resources.getInteger(R.integer.grid_list_x3),
+                    StaggeredGridLayoutManager.VERTICAL)
+        !vertical ->
+            StaggeredGridLayoutManager(
+                    context.resources.getInteger(R.integer.single_list_size),
+                    StaggeredGridLayoutManager.HORIZONTAL)
+        else ->
+            recyclerLayoutManager
     }
+    adapter = supportAdapter
 }

@@ -3,49 +3,38 @@ package io.wax911.support.preference
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import androidx.annotation.StyleRes
-import io.wax911.support.R
-import io.wax911.support.swapTheme
 
 abstract class SupportPreference constructor(context: Context) {
-
-    /** Base Application Values  */
-    private val _versionCode = "_versionCode"
-    private val _isNewInstallation = "_isNewInstallation"
-    private val _isAuthenticated = "_isAuthenticated"
-    private val _isLightTheme = "_isLightTheme"
 
     val sharedPreferences: SharedPreferences by lazy {
         PreferenceManager.getDefaultSharedPreferences(context)
     }
 
     var isAuthenticated = false
-        get() = sharedPreferences.getBoolean(_isAuthenticated, false)
+        get() = sharedPreferences.getBoolean(IS_AUTHENTICATED, false)
         set(value) {
             field = value
-            sharedPreferences.edit().putBoolean(_isAuthenticated, value).apply()
+            sharedPreferences.edit().putBoolean(IS_AUTHENTICATED, value).apply()
         }
 
     var isNewInstallation = true
-        get() = sharedPreferences.getBoolean(_isNewInstallation, true)
+        get() = sharedPreferences.getBoolean(IS_NEW_INSTALLATION, true)
         set(value) {
             field = value
-            sharedPreferences.edit().putBoolean(_isNewInstallation, value).apply()
+            sharedPreferences.edit().putBoolean(IS_NEW_INSTALLATION, value).apply()
         }
 
     var versionCode = 1
-        get() = sharedPreferences.getInt(_versionCode, 1)
+        get() = sharedPreferences.getInt(VERSION_CODE, 1)
         set(value) {
             field = value
-            sharedPreferences.edit().putInt(_versionCode, value).apply()
+            sharedPreferences.edit().putInt(VERSION_CODE, value).apply()
         }
 
-    open fun toggleTheme() {
-        val editor = sharedPreferences.edit()
-        editor.putInt(_isLightTheme, getTheme().swapTheme())
-        editor.apply()
+    companion object {
+        const val VERSION_CODE = "_versionCode"
+        const val IS_NEW_INSTALLATION = "_isNewInstallation"
+        const val IS_AUTHENTICATED = "_isAuthenticated"
+        const val IS_LIGHT_THEME = "_isLightTheme"
     }
-
-    @StyleRes
-    open fun getTheme(): Int = sharedPreferences.getInt(_isLightTheme, R.style.SupportThemeLight)
 }

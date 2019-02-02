@@ -52,6 +52,9 @@ dependencies {
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
 
+    /** Java Streams Port */
+    implementation "com.annimon:stream:$rootProject.stream"
+
     /** Event Bus Library */
     implementation "org.greenrobot:eventbus:$rootProject.eventBus"
 
