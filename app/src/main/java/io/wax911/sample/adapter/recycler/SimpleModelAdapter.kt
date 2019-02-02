@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import android.widget.Filter
 import io.wax911.sample.R
 import io.wax911.sample.model.BaseModel
-import io.wax911.support.custom.recycler.SupportViewAdapter
-import io.wax911.support.custom.recycler.SupportViewHolder
+import io.wax911.support.recycler.adapter.SupportViewAdapter
+import io.wax911.support.recycler.holder.SupportViewHolder
 import io.wax911.support.getLayoutInflater
 
 class SimpleModelAdapter: SupportViewAdapter<BaseModel>() {
@@ -15,21 +15,6 @@ class SimpleModelAdapter: SupportViewAdapter<BaseModel>() {
         val inflatedView = parent.context.getLayoutInflater()
                 .inflate(R.layout.support_layout_state_footer, parent, false)
         return SimpleModelViewHolder(inflatedView)
-    }
-
-    /**
-     *
-     * Returns a filter that can be used to constrain data with a filtering
-     * pattern.
-     *
-     *
-     * This method is usually implemented by [android.widget.Adapter]
-     * classes.
-     *
-     * @return a filter used to constrain data
-     */
-    override fun getFilter(): Filter {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private class SimpleModelViewHolder(view : View) : SupportViewHolder<BaseModel>(view) {

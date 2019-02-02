@@ -17,8 +17,8 @@ import io.wax911.sample.presenter.BasePresenter
 import io.wax911.sample.util.StateUtil
 import io.wax911.sample.view.fragment.detail.FragmentHome
 import io.wax911.sample.view.fragment.list.FragmentHistory
-import io.wax911.support.custom.activity.SupportActivity
-import io.wax911.support.util.SupportStateKeyUtil
+import io.wax911.support.activity.SupportActivity
+import io.wax911.support.util.SupportStateKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -84,16 +84,16 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(SupportStateKeyUtil.key_navigation_selected, selectedItem)
-        outState.putInt(SupportStateKeyUtil.key_navigation_title, selectedTitle)
+        outState.putInt(SupportStateKeyStore.key_navigation_selected, selectedItem)
+        outState.putInt(SupportStateKeyStore.key_navigation_title, selectedTitle)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SupportStateKeyUtil.key_navigation_selected)
-            selectedTitle = savedInstanceState.getInt(SupportStateKeyUtil.key_navigation_title)
+            selectedItem = savedInstanceState.getInt(SupportStateKeyStore.key_navigation_selected)
+            selectedTitle = savedInstanceState.getInt(SupportStateKeyStore.key_navigation_title)
         }
     }
 

@@ -7,8 +7,8 @@ import io.wax911.sample.model.BaseModel
 import io.wax911.sample.presenter.BasePresenter
 import io.wax911.sample.view.activity.index.MainActivity
 import io.wax911.sample.viewmodel.BaseViewModel
-import io.wax911.support.custom.activity.SupportActivity
-import io.wax911.support.custom.viewmodel.SupportViewModel
+import io.wax911.support.activity.SupportActivity
+import io.wax911.support.viewmodel.SupportViewModel
 import io.wax911.support.startNewActivity
 import io.wax911.support.util.SupportDateUtil
 import kotlinx.android.synthetic.main.activity_splash.*

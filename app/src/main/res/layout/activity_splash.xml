@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="io.wax911.sample.view.activity.base.SplashActivity">
 
-    <io.wax911.support.custom.widget.SingleLineTextView
+    <io.wax911.support.view.widget.SingleLineTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <io.wax911.support.custom.widget.SingleLineTextView
+    <io.wax911.support.view.widget.SingleLineTextView
         android:id="@+id/splash_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         app:layout_constraintRight_toRightOf="parent" />
 
 
-    <io.wax911.support.custom.widget.SupportProgress
+    <io.wax911.support.view.widget.SupportProgress
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="@dimen/wide_image_md"

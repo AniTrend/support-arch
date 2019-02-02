@@ -6,7 +6,7 @@ import io.wax911.sample.model.BaseModel
 import io.wax911.sample.repository.BaseRepository
 import io.wax911.sample.util.getDatabase
 import io.wax911.support.viewmodel.CompanionViewModel
-import io.wax911.support.custom.viewmodel.SupportViewModel
+import io.wax911.support.viewmodel.SupportViewModel
 import io.wax911.support.getViewModelOf
 
 class BaseViewModel : SupportViewModel<BaseModel?, Long>() {

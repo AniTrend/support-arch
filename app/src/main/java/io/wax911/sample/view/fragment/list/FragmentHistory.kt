@@ -7,7 +7,7 @@ import io.wax911.sample.R
 import io.wax911.sample.adapter.recycler.SimpleModelAdapter
 import io.wax911.sample.model.BaseModel
 import io.wax911.sample.presenter.BasePresenter
-import io.wax911.support.custom.fragment.SupportFragmentList
+import io.wax911.support.fragment.SupportFragmentList
 import io.wax911.support.factory.InstanceCreator
 
 class FragmentHistory : SupportFragmentList<BaseModel, BasePresenter, List<BaseModel>>() {

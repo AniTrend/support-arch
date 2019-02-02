@@ -8,7 +8,7 @@ import io.wax911.sample.dao.DatabaseHelper
 import io.wax911.sample.model.BaseModel
 import io.wax911.support.repository.SupportRepository
 import io.wax911.support.repository.CompanionRepository
-import io.wax911.support.util.SupportStateKeyUtil
+import io.wax911.support.util.SupportStateKeyStore
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -28,7 +28,7 @@ class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>(
      * @param bundle bundle of parameters for the request
      */
     override fun createNetworkClientRequestAsync(bundle: Bundle, context: Context): Deferred<Unit> = GlobalScope.async {
-        when (bundle.getString(SupportStateKeyUtil.arg_bundle)) {
+        when (bundle.getString(SupportStateKeyStore.arg_bundle)) {
 
         }
     }
@@ -41,7 +41,7 @@ class BaseRepository private constructor(): SupportRepository<Long, BaseModel?>(
      * @param bundle bundle of parameters for the request
      */
     override fun requestFromCacheAsync(bundle: Bundle, context: Context) = GlobalScope.async {
-        when (bundle.getString(SupportStateKeyUtil.arg_bundle)) {
+        when (bundle.getString(SupportStateKeyStore.arg_bundle)) {
 
         }
     }

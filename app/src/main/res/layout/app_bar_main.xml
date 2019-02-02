@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:theme="@style/SupportThemeLight.AppBarOverlay">
 
-        <io.wax911.support.custom.widget.SupportToolbar
+        <io.wax911.support.view.widget.SupportToolbar
             android:id="@+id/supportToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

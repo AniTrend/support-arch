@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
-import io.wax911.support.custom.fragment.SupportFragment
+import io.wax911.support.fragment.SupportFragment
 import io.wax911.support.factory.InstanceCreator
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -62,11 +62,11 @@ class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
      * Update views or bind a liveData to them
      */
     override fun updateUI() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun makeRequest() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     /**
