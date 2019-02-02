@@ -1,10 +1,11 @@
 package io.wax911.support.controller
 
+import io.wax911.support.util.SupportCoroutineUtil
 import io.wax911.support.wrapper.ModelWrapper
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
 
-abstract class SupportRequestClient {
+abstract class SupportRequestClient: SupportCoroutineUtil {
 
     protected val callList: MutableList<Call<*>> by lazy { ArrayList<Call<*>>() }
 

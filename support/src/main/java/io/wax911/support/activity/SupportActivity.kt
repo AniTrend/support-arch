@@ -51,10 +51,8 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     /**
      * Changes the theme style depending on the selected theme
      */
-    private fun setThemeStyle() {
-        presenter.supportPreference?.apply {
-            setTheme(getTheme())
-        }
+    protected fun setThemeStyle() {
+
     }
 
     fun disableToolbarTitle() = actionBar?.setDisplayShowTitleEnabled(false)
