@@ -1,8 +1,7 @@
-package io.wax911.support
+package io.wax911.sample
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).

@@ -6,33 +6,34 @@ buildscript {
         targetSdk = 28
         minSdk = 17
 
-        versionCode = 4
-        versionName = '0.3'
+        versionCode = 6
+        versionName = '0.4.1'
 
         constraint = '1.1.3'
 
         glide = '4.8.0'
-        retrofit = '2.4.0'
+        retrofit = '2.5.0'
 
         material = '1.0.0'
         anroidx = '2.0.0'
-        worker = '1.0.0-alpha11'
-        firebase = '16.0.5'
+        worker = '1.0.0-beta03'
+        firebase = '16.0.6'
 
-        kotlin = '1.3.0'
+        kotlin = '1.3.20'
         stream = '1.2.1'
 
-        junit = '4.12'
-        runner = '1.1.0'
-        espresso = '3.1.0'
+        junit = '1.3.1.1'
+        jupiter = '5.3.1'
+        runner = '1.3.1'
+        instrumentation = '0.2.2'
 
         flexBox = '1.1.0'
         eventBus = '3.1.1'
         stateLayout = '1.0.1'
         crashlytics = '2.6.8@aar'
-        coroutinesCore = '1.0.1'
-        coroutinesAndroid = '1.0.1'
-        materialDialogs = '2.0.0-beta5'
+        coroutinesCore = '1.1.1'
+        coroutinesAndroid = '1.1.1'
+        materialDialogs = '2.0.0-rc9'
     }
     repositories {
         google()
@@ -42,8 +43,9 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${rootProject.kotlin}"
+        classpath "de.mannodermaus.gradle.plugins:android-junit5:${rootProject.junit}"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

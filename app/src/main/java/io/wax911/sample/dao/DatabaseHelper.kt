@@ -8,14 +8,14 @@ import io.wax911.sample.BuildConfig
 import io.wax911.sample.R
 import io.wax911.sample.model.BaseModel
 import io.wax911.sample.model.WebToken
-import io.wax911.support.util.SingletonUtil
+import io.wax911.support.factory.SingletonCreator
 
 @Database(entities = [WebToken::class, BaseModel::class], version = BuildConfig.VERSION_CODE)
 abstract class DatabaseHelper : RoomDatabase() {
     abstract fun webTokenDao(): WebTokenDao
     abstract fun baseModelDao(): BaseModelDao
 
-    companion object : SingletonUtil<DatabaseHelper, Context>({
+    companion object : SingletonCreator<DatabaseHelper, Context>({
         Room.databaseBuilder(it.applicationContext,
                 DatabaseHelper::class.java, it.getString(R.string.app_name))
                 .fallbackToDestructiveMigration()

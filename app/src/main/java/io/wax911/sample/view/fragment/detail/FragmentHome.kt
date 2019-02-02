@@ -7,12 +7,16 @@ import android.view.ViewGroup
 import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
 import io.wax911.support.custom.fragment.SupportFragment
-import io.wax911.support.util.InstanceUtilNoArg
+import io.wax911.support.factory.InstanceCreator
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
 
-    companion object : InstanceUtilNoArg<SupportFragment<*,*,*>>({ FragmentHome() })
+    companion object : InstanceCreator<FragmentHome, Bundle?>({
+        val fragment = FragmentHome()
+        fragment.arguments = it
+        fragment
+    })
 
     override fun initPresenter(): BasePresenter = BasePresenter.newInstance(context)
 
@@ -52,15 +56,6 @@ class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         helloButton.setOnClickListener {  }
-    }
-
-    /**
-     * Called when the Fragment is visible to the user.  This is generally
-     * tied to [Activity.onStart] of the containing
-     * Activity's lifecycle.
-     */
-    override fun onStart() {
-        super.onStart()
     }
 
     /**

@@ -12,8 +12,4 @@ class App : Application() {
                 .throwSubscriberException(BuildConfig.DEBUG)
                 .installDefaultEventBus()
     }
-
-    override fun onCreate() {
-        super.onCreate()
-    }
 }

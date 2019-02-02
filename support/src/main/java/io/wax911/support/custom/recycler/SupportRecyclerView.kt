@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 
 import androidx.recyclerview.widget.RecyclerView
-import io.wax911.support.base.view.CustomView
+import io.wax911.support.view.CustomView
 
 /**
  * Class [SupportRecyclerView] extends [RecyclerView] and adds position management on configuration changes.

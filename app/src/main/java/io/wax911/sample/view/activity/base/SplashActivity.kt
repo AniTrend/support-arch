@@ -1,6 +1,5 @@
 package io.wax911.sample.view.activity.base
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import io.wax911.sample.R
@@ -10,6 +9,7 @@ import io.wax911.sample.view.activity.index.MainActivity
 import io.wax911.sample.viewmodel.BaseViewModel
 import io.wax911.support.custom.activity.SupportActivity
 import io.wax911.support.custom.viewmodel.SupportViewModel
+import io.wax911.support.startNewActivity
 import io.wax911.support.util.SupportDateUtil
 import kotlinx.android.synthetic.main.activity_splash.*
 
@@ -33,7 +33,7 @@ class SplashActivity : SupportActivity<BaseModel, BasePresenter>() {
     }
 
     override fun updateUI() {
-        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        startNewActivity<MainActivity>(intent.extras)
         finish()
     }
 

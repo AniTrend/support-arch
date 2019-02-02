@@ -8,11 +8,8 @@ import io.wax911.sample.model.BaseModel
 import io.wax911.support.custom.recycler.SupportViewAdapter
 import io.wax911.support.custom.recycler.SupportViewHolder
 import io.wax911.support.getLayoutInflater
-import io.wax911.support.util.InstanceUtilNoArg
 
-class SimpleModelAdapter private constructor() : SupportViewAdapter<BaseModel>() {
-
-    companion object : InstanceUtilNoArg<SupportViewAdapter<BaseModel>>({ SimpleModelAdapter() })
+class SimpleModelAdapter: SupportViewAdapter<BaseModel>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SupportViewHolder<BaseModel> {
         val inflatedView = parent.context.getLayoutInflater()

@@ -210,4 +210,10 @@
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
+    <!-- This will set the fade in animation on all your activities by default -->
+    <style name="SupportWindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
 </resources>

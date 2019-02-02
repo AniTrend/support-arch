@@ -4,38 +4,22 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
 import android.view.animation.LinearInterpolator
-import io.wax911.support.base.animation.AnimationBase
-import io.wax911.support.base.animation.AnimationDuration
+import io.wax911.support.base.animation.SupportAnimation
 
 /**
  * Created by max on 2018/02/24.
  */
 
-class ScaleAnimation : AnimationBase {
+class ScaleAnimation(private val from: Float = .85f,
+                     private val to: Float = 1f) : SupportAnimation {
 
-    private val FROM: Float
-    private val TO: Float
-    private val interpolator = LinearInterpolator()
-
-    constructor() {
-        this.FROM = .85f
-        this.TO = 1f
-    }
-
-    constructor(FROM: Float, TO: Float) {
-        this.FROM = FROM
-        this.TO = TO
-    }
+    private val linearInterpolator by lazy { LinearInterpolator() }
 
     override fun getAnimators(view: View): Array<Animator> {
-        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", FROM, TO)
-        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", FROM, TO)
+        val scaleX = ObjectAnimator.ofFloat(view, "scaleX", from, to)
+        val scaleY = ObjectAnimator.ofFloat(view, "scaleY", from, to)
         return arrayOf(scaleX, scaleY)
     }
 
-    override fun getInterpolator() = interpolator
-
-    @AnimationDuration
-    override fun getAnimationDuration() = AnimationDuration.SHORT
-
+    override fun getInterpolator() = linearInterpolator
 }

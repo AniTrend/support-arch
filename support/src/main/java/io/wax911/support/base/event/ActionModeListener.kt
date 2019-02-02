@@ -5,9 +5,14 @@ import android.view.ActionMode.Callback
 
 /**
  * Created by max on 2017/07/17.
- * Action mode trigger supportActionUtil
+ * Action mode trigger supportActionMode
  */
-
 interface ActionModeListener : Callback {
-    fun onSelectionChanged(actionMode: ActionMode, count: Int)
+
+    /**
+     * Called when an item is selected or deselected.
+     *
+     * @param mode The current ActionMode being used
+     */
+    fun onSelectionChanged(mode: ActionMode?, count: Int)
 }

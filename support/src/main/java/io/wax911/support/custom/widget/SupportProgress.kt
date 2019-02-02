@@ -9,8 +9,8 @@ import android.os.Build
 import android.util.AttributeSet
 import android.widget.ProgressBar
 import io.wax911.support.R
-import io.wax911.support.base.view.CustomView
-import io.wax911.support.getCompatColor
+import io.wax911.support.getColorFromAttr
+import io.wax911.support.view.CustomView
 
 class SupportProgress : ProgressBar, CustomView {
 
@@ -30,7 +30,7 @@ class SupportProgress : ProgressBar, CustomView {
      * Optionally included when constructing custom views
      */
     override fun onInit() {
-        mColorFilter = PorterDuffColorFilter(context.getCompatColor(R.color.colorAccent),
+        mColorFilter = PorterDuffColorFilter(context.getColorFromAttr(R.attr.colorAccent),
                 PorterDuff.Mode.SRC_IN)
         applyColorFilter(progressDrawable)
         applyColorFilter(indeterminateDrawable)
