@@ -1,4 +1,4 @@
-package io.wax911.support.custom.activity
+package io.wax911.support.activity
 
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -13,19 +13,16 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import io.wax911.support.view.CompatView
-import io.wax911.support.custom.fragment.SupportFragment
-import io.wax911.support.custom.presenter.SupportPresenter
+import io.wax911.support.view.contract.CompatView
+import io.wax911.support.fragment.SupportFragment
+import io.wax911.support.presenter.SupportPresenter
+import io.wax911.support.util.SupportCoroutineUtil
 import io.wax911.support.viewmodel.SupportViewModel
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
-import kotlin.coroutines.CoroutineContext
 
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CoroutineScope, CompatView<M, P> {
-
-    private lateinit var job: Job
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P>, SupportCoroutineUtil {
 
     private var isClosing: Boolean = false
 
@@ -42,7 +39,6 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     protected fun configureActivity() = setThemeStyle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        job = Job()
         configureActivity()
         super.onCreate(savedInstanceState)
     }
@@ -130,8 +126,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     }
 
     override fun onDestroy() {
-        job.cancel()
-        presenter.onDestroy()
+        cancelAllChildren()
         super.onDestroy()
     }
 
@@ -146,10 +141,12 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     }
 
     /**
-     * @return Context of this scope.
+     * Coroutine dispatcher specification
+     *
+     * @return [kotlinx.coroutines.Dispatchers.IO] by default
      */
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Default
+    override val coroutineDispatcher: CoroutineDispatcher
+        get() = Dispatchers.Default
 
     /**
      * Compares if this State is at least equal to the given state.

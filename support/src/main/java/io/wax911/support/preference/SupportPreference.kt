@@ -1,4 +1,4 @@
-package io.wax911.support.custom.preference
+package io.wax911.support.preference
 
 import android.content.Context
 import android.content.SharedPreferences

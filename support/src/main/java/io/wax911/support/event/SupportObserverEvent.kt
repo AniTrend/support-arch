@@ -1,6 +1,6 @@
-package io.wax911.support.base.event
+package io.wax911.support.event
 
-import io.wax911.support.custom.consumer.SupportObserver
+import io.wax911.support.consumer.SupportObserver
 
 interface SupportObserverEvent {
     fun onModelChanged(consumer: SupportObserver)

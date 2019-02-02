@@ -1,4 +1,4 @@
-package io.wax911.support.custom.recycler.holder.event
+package io.wax911.support.recycler.holder.event
 
 import android.view.View
 

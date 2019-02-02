@@ -1,9 +1,9 @@
-package io.wax911.support.custom.worker
+package io.wax911.support.worker
 
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import io.wax911.support.custom.presenter.SupportPresenter
+import io.wax911.support.presenter.SupportPresenter
 
 abstract class SupportWorker<P : SupportPresenter<*>>(context: Context, workerParameters: WorkerParameters): Worker(context, workerParameters) {
 

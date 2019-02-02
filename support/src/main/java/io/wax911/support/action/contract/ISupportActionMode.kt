@@ -1,8 +1,8 @@
-package io.wax911.support.custom.action.contract
+package io.wax911.support.action.contract
 
-import io.wax911.support.custom.action.decorator.SelectionDecorator
-import io.wax911.support.custom.recycler.adapter.SupportViewAdapter
-import io.wax911.support.custom.recycler.holder.SupportViewHolder
+import io.wax911.support.action.decorator.SelectionDecorator
+import io.wax911.support.recycler.adapter.SupportViewAdapter
+import io.wax911.support.recycler.holder.SupportViewHolder
 
 interface ISupportActionMode<T> {
 

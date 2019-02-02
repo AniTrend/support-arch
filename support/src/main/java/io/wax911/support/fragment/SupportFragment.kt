@@ -1,4 +1,4 @@
-package io.wax911.support.custom.fragment
+package io.wax911.support.fragment
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -8,24 +8,20 @@ import android.view.*
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import com.annimon.stream.IntPair
 import com.google.android.material.snackbar.Snackbar
-import io.wax911.support.custom.action.event.ActionModeListener
-import io.wax911.support.custom.recycler.holder.event.ItemClickListener
-import io.wax911.support.custom.action.contract.ISupportActionMode
-import io.wax911.support.view.CompatView
-import io.wax911.support.custom.presenter.SupportPresenter
+import io.wax911.support.action.event.ActionModeListener
+import io.wax911.support.action.contract.ISupportActionMode
+import io.wax911.support.view.contract.CompatView
+import io.wax911.support.presenter.SupportPresenter
 import io.wax911.support.viewmodel.SupportViewModel
-import io.wax911.support.custom.action.SupportActionMode
-import kotlinx.coroutines.CoroutineScope
+import io.wax911.support.action.SupportActionMode
+import io.wax911.support.util.SupportCoroutineUtil
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
-import kotlin.coroutines.CoroutineContext
 
-abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), CoroutineScope, ActionModeListener, CompatView<VM, P>, ItemClickListener<M> {
-
-    private lateinit var job: Job
+abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener,
+        CompatView<VM, P>, SupportCoroutineUtil {
 
     @MenuRes
     protected var inflateMenu: Int = 0
@@ -58,7 +54,6 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Cor
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        job = Job()
         retainInstance = true
     }
 
@@ -117,8 +112,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Cor
      * after [.onStop] and before [.onDetach].
      */
     override fun onDestroy() {
-        job.cancel()
-        presenter.onDestroy()
+        cancelAllChildren()
         super.onDestroy()
     }
 
@@ -209,35 +203,15 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Cor
     }
 
     /**
-     * Context of this scope.
+     * Coroutine dispatcher specification
+     *
+     * @return [kotlinx.coroutines.Dispatchers.IO] by default
      */
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Default
+    override val coroutineDispatcher: CoroutineDispatcher
+        get() = Dispatchers.Default
 
     protected fun isAtLeastState(state: Lifecycle.State): Boolean =
             lifecycle.currentState.isAtLeast(state)
-
-    /**
-     * When the target view from [View.OnClickListener]
-     * is clicked from a view holder this method will be called
-     *
-     * @param target view that has been clicked
-     * @param data   the liveData that at the click index
-     */
-    override fun onItemClick(target: View, data: IntPair<M>) {
-
-    }
-
-    /**
-     * When the target view from [View.OnLongClickListener]
-     * is clicked from a view holder this method will be called
-     *
-     * @param target view that has been long clicked
-     * @param data   the liveData that at the long click index
-     */
-    override fun onItemLongClick(target: View, data: IntPair<M>) {
-
-    }
 
     override fun getViewName(): String = this.toString()
 

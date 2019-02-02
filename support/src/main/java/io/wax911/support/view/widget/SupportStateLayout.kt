@@ -1,14 +1,12 @@
-package io.wax911.support.custom.widget
+package io.wax911.support.view.widget
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import io.wax911.support.*
-import io.wax911.support.view.CustomView
+import io.wax911.support.view.contract.CustomView
 import kotlinx.android.synthetic.main.support_layout_state.view.*
 
 class SupportStateLayout : FrameLayout, CustomView {
@@ -19,22 +17,16 @@ class SupportStateLayout : FrameLayout, CustomView {
             super(context, attrs) { onInit() }
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr) { onInit() }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) :
             super(context, attrs, defStyleAttr, defStyleRes) { onInit() }
 
     /**
-     * Optionally included when constructing custom views
+     * Callable in view constructors to perform view inflation and
+     * additional attribute initialization
      */
     override fun onInit() {
         context.getLayoutInflater().inflate(R.layout.support_layout_state, this, true)
-    }
-
-    /**
-     * Clean up any resources that won't be needed
-     */
-    override fun onViewRecycled() {
-
     }
 
     fun showLoading(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, @StringRes loadingMessage: Int) {
@@ -69,11 +61,6 @@ class SupportStateLayout : FrameLayout, CustomView {
             stateLinearContent.visible()
             stateProgress.gone()
         }
-    }
-
-    override fun onDetachedFromWindow() {
-        onViewRecycled()
-        super.onDetachedFromWindow()
     }
 
     companion object {

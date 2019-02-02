@@ -1,4 +1,4 @@
-package io.wax911.support.view
+package io.wax911.support.view.contract
 
 import android.content.SharedPreferences
 import androidx.lifecycle.Observer
@@ -19,7 +19,9 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPrefere
      * @return the target view model, assuming that the fragment activity needs one
      */
     fun initViewModel() : SupportViewModel<VM?, *>? {
-        TODO("ViewModel has not been initialized")
+        throw NotImplementedError("Did you forget to override " +
+                "`initViewModel() : SupportViewModel<VM?, *>?` " +
+                "in your activity/fragment -> ${getViewName()}")
     }
 
     fun shouldDisableMenu() : Boolean = false

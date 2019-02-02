@@ -1,4 +1,4 @@
-package io.wax911.support.custom.recycler.adapter
+package io.wax911.support.recycler.adapter
 
 import android.view.ViewGroup
 import android.widget.Filter
@@ -6,14 +6,14 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import io.wax911.support.animation.SupportAnimation
+import io.wax911.support.animator.contract.SupportAnimator
 import io.wax911.support.attribute.RecyclerType
-import io.wax911.support.custom.recycler.holder.event.ItemClickListener
-import io.wax911.support.custom.recycler.adapter.event.RecyclerChangeListener
-import io.wax911.support.custom.action.contract.ISupportActionMode
-import io.wax911.support.animation.ScaleAnimation
-import io.wax911.support.custom.presenter.SupportPresenter
-import io.wax911.support.custom.recycler.holder.SupportViewHolder
+import io.wax911.support.recycler.holder.event.ItemClickListener
+import io.wax911.support.recycler.adapter.event.RecyclerChangeListener
+import io.wax911.support.action.contract.ISupportActionMode
+import io.wax911.support.animator.ScaleAnimator
+import io.wax911.support.presenter.SupportPresenter
+import io.wax911.support.recycler.holder.SupportViewHolder
 import io.wax911.support.replaceWith
 import java.util.*
 
@@ -38,13 +38,13 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
 
     /**
      * Get currently set animation type for recycler view holder items,
-     * if no custom animation is set @[ScaleAnimation]
+     * if no custom animation is set @[ScaleAnimator]
      * will be assigned in [.onAttachedToRecyclerView]
      * <br></br>
      *
-     * @see SupportAnimation
+     * @see SupportAnimator
      */
-    private var customSupportAnimation: SupportAnimation? = ScaleAnimation()
+    private var customSupportAnimator: SupportAnimator? = ScaleAnimator()
 
     protected val data: MutableList<T> by lazy { ArrayList<T>() }
     protected var clone: List<T>? = null
@@ -252,7 +252,7 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
     private fun animateViewHolder(holder: SupportViewHolder<T>?, position: Int) {
         holder?.also { h ->
             when (position > lastPosition) {
-                true -> customSupportAnimation?.also { a ->
+                true -> customSupportAnimator?.also { a ->
                     for (animator in a.getAnimators(h.itemView)) {
                         animator.duration = a.getAnimationDuration().toLong()
                         animator.interpolator = a.getInterpolator()

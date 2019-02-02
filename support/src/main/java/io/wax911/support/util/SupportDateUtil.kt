@@ -1,9 +1,9 @@
 package io.wax911.support.util
 
+import androidx.annotation.IntDef
 import com.annimon.stream.Collectors
 import com.annimon.stream.IntStream
-import io.wax911.support.base.attribute.SeasonType
-import io.wax911.support.base.attribute.TimeTargetType
+import io.wax911.support.attribute.SeasonType
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -90,19 +90,36 @@ object SupportDateUtil {
     /**
      * Checks if the time given has a difference greater than or equal to the target time
      *
-     * @param conversionTarget type of comparison between the epoch time and target
+     * @param conversionType type of comparison between the epoch time and target
      * @param epochTime time to compare against the current system clock
      * @param target unit to compare against
      */
-    fun timeDifferenceSatisfied(@TimeTargetType conversionTarget: Int, epochTime: Long, target: Int): Boolean {
+    fun timeDifferenceSatisfied(@SupportDateUtilTimeType conversionType: Int, epochTime: Long, target: Int): Boolean {
         val currentTime = System.currentTimeMillis()
         val defaultSystemUnit = TimeUnit.MILLISECONDS
-        when (conversionTarget) {
-            TimeTargetType.TIME_UNIT_DAYS -> return defaultSystemUnit.toDays(currentTime - epochTime) >= target
-            TimeTargetType.TIME_UNIT_HOURS -> return defaultSystemUnit.toHours(currentTime - epochTime) >= target
-            TimeTargetType.TIME_UNIT_MINUTES -> return defaultSystemUnit.toMinutes(currentTime - epochTime) >= target
-            TimeTargetType.TIME_UNITS_SECONDS -> return defaultSystemUnit.toSeconds(currentTime - epochTime) >= target
+        return when (conversionType) {
+            SupportDateUtilTimeType.TIME_UNIT_DAYS ->
+                defaultSystemUnit.toDays(currentTime - epochTime) >= target
+            SupportDateUtilTimeType.TIME_UNIT_HOURS ->
+                defaultSystemUnit.toHours(currentTime - epochTime) >= target
+            SupportDateUtilTimeType.TIME_UNIT_MINUTES ->
+                defaultSystemUnit.toMinutes(currentTime - epochTime) >= target
+            SupportDateUtilTimeType.TIME_UNITS_SECONDS ->
+                defaultSystemUnit.toSeconds(currentTime - epochTime) >= target
+            else -> false
         }
-        return false
+    }
+
+    @Retention(AnnotationRetention.SOURCE)
+    @IntDef(SupportDateUtilTimeType.TIME_UNIT_DAYS, SupportDateUtilTimeType.TIME_UNIT_HOURS,
+            SupportDateUtilTimeType.TIME_UNIT_MINUTES, SupportDateUtilTimeType.TIME_UNITS_SECONDS)
+    annotation class SupportDateUtilTimeType {
+        companion object {
+
+            const val TIME_UNIT_DAYS = 0
+            const val TIME_UNIT_HOURS = 1
+            const val TIME_UNIT_MINUTES = 2
+            const val TIME_UNITS_SECONDS = 3
+        }
     }
 }

@@ -1,10 +1,10 @@
-package io.wax911.support.custom.recycler
+package io.wax911.support.recycler
 
 import android.content.Context
 import android.util.AttributeSet
 
 import androidx.recyclerview.widget.RecyclerView
-import io.wax911.support.view.CustomView
+import io.wax911.support.view.contract.CustomView
 
 /**
  * Class [SupportRecyclerView] extends [RecyclerView] and adds position management on configuration changes.
@@ -62,13 +62,6 @@ class SupportRecyclerView : RecyclerView, CustomView {
      * Optionally included when constructing custom views
      */
     override fun onInit() {
-
-    }
-
-    /**
-     * Clean up any resources that won't be needed
-     */
-    override fun onViewRecycled() {
 
     }
 }

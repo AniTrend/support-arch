@@ -5,16 +5,15 @@ import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import io.wax911.support.custom.controller.SupportRequestClient
+import io.wax911.support.controller.SupportRequestClient
 import io.wax911.support.dao.SupportQuery
 import io.wax911.support.isConnectedToNetwork
 import io.wax911.support.repository.contract.ISupportRepository
+import io.wax911.support.util.SupportCoroutineUtil
 import kotlinx.coroutines.*
+import java.lang.Exception
 
-abstract class SupportRepository<K, V>: ISupportRepository<K, V> {
-
-    private var repositoryJob : Job? = null
-    private var disposableHandle : DisposableHandle? = null
+abstract class SupportRepository<K, V>: ISupportRepository<K, V>, SupportCoroutineUtil {
 
     protected var modelDao: SupportQuery<V>? = null
     protected val networkClient: SupportRequestClient by lazy { initNetworkClient() }
@@ -60,8 +59,7 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V> {
 
     /**
      * Requires the network client to be created in the implementing repo,
-     * to access the created client please use:
-     * <br/>
+     * to access the created client.
      *
      * @see networkClient
      */
@@ -69,7 +67,6 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V> {
 
     /**
      * Creates the network client for implementing class using the given parameters
-     * <br/>
      *
      * @param bundle bundle of parameters for the request
      */
@@ -78,7 +75,6 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V> {
     /**
      * When the application is not connected to the internet this method is called to resolve the
      * kind of content that needs to be fetched from the database using the given parameters
-     * <br/>
      *
      * @param bundle bundle of parameters for the request
      */
@@ -86,37 +82,37 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V> {
 
     /**
      * Dispatches the results to be set to the live data to a UI thread
-     * <br/>
      *
      * @param results data that needs to be sent to the view responsible for creating the request
      */
     protected suspend fun publishResult(results : V?) = withContext(Dispatchers.Main) {
-        liveData.value = results
+        try {
+            liveData.value = results
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 
     /**
-     * Handles dispatching of network requests to a background thread
-     * <br/>
+     * Handles dispatching of network requests to a background thread, if the does not have
+     * an active internet connection then data is requested from the database
      *
      * @param bundle bundle of parameters for the request
      * @param context any valid context
      */
     override fun requestFromNetwork(bundle: Bundle, context: Context?) {
-        context?.also {
-            repositoryJob = GlobalScope.async {
-                when (it.isConnectedToNetwork()) {
-                    true -> createNetworkClientRequestAsync(bundle, it).await()
-                    false -> requestFromCacheAsync(bundle, it).await()
+        context?.apply {
+            async {
+                when (isConnectedToNetwork()) {
+                    true -> createNetworkClientRequestAsync(bundle, this@apply).await()
+                    false -> requestFromCacheAsync(bundle, this@apply).await()
                 }
-            }
-            disposableHandle = repositoryJob?.invokeOnCompletion { cause : Throwable? ->
+            }.invokeOnCompletion { cause : Throwable? ->
                 cause?.apply {
                     printStackTrace()
-                    try {
-                        GlobalScope.launch { publishResult(null) }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                    launch {
+                        publishResult(null)
                     }
                 }
             }
@@ -124,11 +120,13 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V> {
     }
 
     /**
-     * Deals with cancellation of any pending or on going operations that the repository is busy with
+     * Deals with cancellation of any pending or on going operations
+     * that the repository is busy with
+     *
+     * @see [io.wax911.support.controller.SupportRequestClient.cancel]
      */
     override fun onCleared() {
         networkClient.cancel()
-        repositoryJob?.cancel()
-        disposableHandle?.dispose()
+        cancelAllChildren()
     }
 }

@@ -1,4 +1,4 @@
-package io.wax911.support.custom.recycler.event
+package io.wax911.support.recycler.event
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView

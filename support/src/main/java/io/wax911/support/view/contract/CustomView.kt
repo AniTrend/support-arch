@@ -1,4 +1,4 @@
-package io.wax911.support.view
+package io.wax911.support.view.contract
 
 import io.wax911.support.util.SupportCoroutineUtil
 import io.wax911.support.util.SupportLifecycleUtil
@@ -26,4 +26,28 @@ interface CustomView: SupportCoroutineUtil, SupportLifecycleUtil.LifecycleCallba
     fun onViewRecycled() {
         cancelAllChildren()
     }
+
+    /**
+     * Called when the parent lifecycle owners state changes to
+     * [androidx.fragment.app.FragmentActivity.onPause]
+     *
+     * @see [androidx.lifecycle.Lifecycle]
+     */
+    override fun onParentPaused() { }
+
+    /**
+     * Called when the parent lifecycle owners state changes to
+     * [androidx.fragment.app.FragmentActivity.onResume]
+     *
+     * @see [androidx.lifecycle.Lifecycle]
+     */
+    override fun onParentResumed() { }
+
+    /**
+     * Called when the parent lifecycle owners state changes to
+     * [androidx.fragment.app.FragmentActivity.onDestroy]
+     *
+     * @see [androidx.lifecycle.Lifecycle]
+     */
+    override fun onParentDestroyed() { }
 }

@@ -1,9 +1,9 @@
-package io.wax911.support.custom.action.decorator
+package io.wax911.support.action.decorator
 
 import android.widget.CheckBox
 import androidx.cardview.widget.CardView
 import io.wax911.support.R
-import io.wax911.support.custom.recycler.holder.SupportViewHolder
+import io.wax911.support.recycler.holder.SupportViewHolder
 import io.wax911.support.getColorFromAttr
 import io.wax911.support.getCompatColor
 

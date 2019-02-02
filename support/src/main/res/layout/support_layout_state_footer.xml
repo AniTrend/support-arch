@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/spacing_lg">
 
-    <io.wax911.support.custom.widget.SupportProgress
+    <io.wax911.support.view.widget.SupportProgress
         android:id="@+id/stateProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

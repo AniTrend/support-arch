@@ -28,14 +28,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <io.wax911.support.custom.widget.SupportProgress
+            <io.wax911.support.view.widget.SupportProgress
                 android:id="@+id/stateProgress"
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/lg_margin" />
 
-            <io.wax911.support.custom.widget.SingleLineTextView
+            <io.wax911.support.view.widget.SingleLineTextView
                 android:id="@+id/stateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

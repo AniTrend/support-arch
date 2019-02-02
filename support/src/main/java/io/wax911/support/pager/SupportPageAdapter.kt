@@ -1,4 +1,4 @@
-package io.wax911.support.custom.pager
+package io.wax911.support.pager
 
 import android.os.Bundle
 import androidx.annotation.ArrayRes

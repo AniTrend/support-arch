@@ -1,12 +1,12 @@
-package io.wax911.support.custom.action
+package io.wax911.support.action
 
 import android.view.ActionMode
-import io.wax911.support.custom.action.event.ActionModeListener
-import io.wax911.support.custom.action.contract.ISupportActionMode
-import io.wax911.support.custom.action.decorator.SelectionDecorator
-import io.wax911.support.custom.presenter.SupportPresenter
-import io.wax911.support.custom.recycler.adapter.SupportViewAdapter
-import io.wax911.support.custom.recycler.holder.SupportViewHolder
+import io.wax911.support.action.event.ActionModeListener
+import io.wax911.support.action.contract.ISupportActionMode
+import io.wax911.support.action.decorator.SelectionDecorator
+import io.wax911.support.presenter.SupportPresenter
+import io.wax911.support.recycler.adapter.SupportViewAdapter
+import io.wax911.support.recycler.holder.SupportViewHolder
 import io.wax911.support.replaceWith
 import java.util.*
 

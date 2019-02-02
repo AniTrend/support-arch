@@ -1,10 +1,10 @@
-package io.wax911.support.custom.widget
+package io.wax911.support.view.widget
 
 import android.content.Context
 import android.util.AttributeSet
 import com.google.android.material.tabs.TabLayout
 import io.wax911.support.R
-import io.wax911.support.view.CustomView
+import io.wax911.support.view.contract.CustomView
 import io.wax911.support.getColorFromAttr
 
 class SupportTab: TabLayout, CustomView {
@@ -18,21 +18,11 @@ class SupportTab: TabLayout, CustomView {
 
 
     /**
-     * Optionally included when constructing custom views
+     * Callable in view constructors to perform view inflation and
+     * additional attribute initialization
      */
     override fun onInit() {
         setBackgroundColor(context.getColorFromAttr(R.attr.colorPrimary))
     }
 
-    /**
-     * Clean up any resources that won't be needed
-     */
-    override fun onViewRecycled() {
-
-    }
-
-    override fun onDetachedFromWindow() {
-        onViewRecycled()
-        super.onDetachedFromWindow()
-    }
 }

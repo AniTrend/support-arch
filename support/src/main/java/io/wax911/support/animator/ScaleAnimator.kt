@@ -1,17 +1,17 @@
-package io.wax911.support.animation
+package io.wax911.support.animator
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
 import android.view.animation.LinearInterpolator
-import io.wax911.support.animation.SupportAnimation
+import io.wax911.support.animator.contract.SupportAnimator
 
 /**
  * Created by max on 2018/02/24.
  */
 
-class ScaleAnimation(private val from: Float = .85f,
-                     private val to: Float = 1f) : SupportAnimation {
+class ScaleAnimator(private val from: Float = .85f,
+                    private val to: Float = 1f) : SupportAnimator {
 
     private val linearInterpolator by lazy { LinearInterpolator() }
 

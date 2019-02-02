@@ -1,7 +1,12 @@
-package io.wax911.support.custom.consumer
+package io.wax911.support.consumer
 
 import android.os.Bundle
 
+/**
+ * Observer publisher holder emitting events
+ *
+ * @see [org.greenrobot.eventbus.EventBus.post]
+ */
 class SupportObserver {
-    val bundle: Bundle by lazy { Bundle() }
+    val bundle by lazy { Bundle() }
 }

@@ -1,6 +1,6 @@
 package io.wax911.support.util
 
-object SupportStateKeyUtil {
+object SupportStateKeyStore {
 
     // Application State Keys
     const val key_navigation_selected = "key_navigation_selected"

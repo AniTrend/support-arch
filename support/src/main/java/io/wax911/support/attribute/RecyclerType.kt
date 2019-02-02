@@ -1,4 +1,4 @@
-package io.wax911.support.base.attribute
+package io.wax911.support.attribute
 
 import androidx.annotation.IntDef
 

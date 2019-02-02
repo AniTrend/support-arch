@@ -11,18 +11,18 @@ import androidx.annotation.RequiresApi
 
 @TargetApi(Build.VERSION_CODES.N_MR1)
 @RequiresApi(Build.VERSION_CODES.N_MR1)
-abstract class SupportShortcutUtil private constructor(protected val context: Context){
+abstract class SupportShortcutUtil private constructor(protected val context: Context) {
 
-    val shortcutManager: ShortcutManager by lazy {
+    protected val shortcutManager: ShortcutManager by lazy {
         context.getSystemService(ShortcutManager::class.java)
     }
 
     protected fun <S> createIntentAction(targetActivity: Class<S>, param: Bundle): Intent {
-        val intent = Intent(context, targetActivity)
-        intent.putExtras(param)
-        intent.action = Intent.ACTION_VIEW
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-        return intent
+        return Intent(context, targetActivity).apply {
+            putExtras(param)
+            action = Intent.ACTION_VIEW
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
     }
 
     abstract fun createShortcuts(vararg shortcutBuilders : SupportShortcutBuilder)
@@ -41,11 +41,11 @@ abstract class SupportShortcutUtil private constructor(protected val context: Co
 
         fun build(): SupportShortcutBuilder = this
 
-        fun setShortcutType(shortcutType: Int): SupportShortcutBuilder = apply {
+        fun setShortcutType(shortcutType: Int) = apply {
             this.shortcutType = shortcutType
         }
 
-        fun setShortcutParams(params: Bundle): SupportShortcutBuilder = apply {
+        fun setShortcutParams(params: Bundle) = apply {
             this.params = params
         }
     }

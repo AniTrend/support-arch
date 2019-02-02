@@ -1,16 +1,23 @@
-package io.wax911.support.custom.presenter
+package io.wax911.support.presenter
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import io.wax911.support.event.LifecycleListener
-import io.wax911.support.custom.preference.SupportPreference
-import io.wax911.support.custom.recycler.event.SupportScrollListener
+import io.wax911.support.event.OnSharedPreferencesLifecycleBind
+import io.wax911.support.preference.SupportPreference
+import io.wax911.support.recycler.event.SupportScrollListener
 import io.wax911.support.util.SupportCoroutineUtil
+import io.wax911.support.util.SupportLifecycleUtil
 import org.greenrobot.eventbus.EventBus
 
-abstract class SupportPresenter<S : SupportPreference>(protected var context: Context?) :
-        SupportScrollListener(), LifecycleListener, SupportCoroutineUtil {
+abstract class SupportPresenter<S : SupportPreference>(protected var context: Context?) : SupportScrollListener(),
+        OnSharedPreferencesLifecycleBind, SupportCoroutineUtil, SupportLifecycleUtil.LifecycleCallback {
+
+    init {
+        SupportLifecycleUtil(context).apply {
+            lifecycleCallback = this@SupportPresenter
+        }
+    }
 
     val bundle by lazy { Bundle() }
 
@@ -18,10 +25,10 @@ abstract class SupportPresenter<S : SupportPreference>(protected var context: Co
 
     /**
      * Enables or disables action mode, behaviour should be implemented in your adapter, in
-     * the [io.wax911.support.custom.recycler.SupportViewHolder.clickListener].
+     * the [io.wax911.support.recycler.holder.event.ItemClickListener].
      * Default value for this property is false
      *
-     * @see io.wax911.support.custom.recycler.SupportViewHolder
+     * @see io.wax911.support.recycler.holder.SupportViewHolder
      */
     var isActionModeEnabled: Boolean = false
 
@@ -49,6 +56,30 @@ abstract class SupportPresenter<S : SupportPreference>(protected var context: Co
         supportPreference?.sharedPreferences
                 ?.registerOnSharedPreferenceChangeListener(changeListener)
     }
+
+    /**
+     * Called when the parent lifecycle owners state changes to
+     * [androidx.fragment.app.FragmentActivity.onPause]
+     *
+     * @see [androidx.lifecycle.Lifecycle]
+     */
+    override fun onParentPaused() { }
+
+    /**
+     * Called when the parent lifecycle owners state changes to
+     * [androidx.fragment.app.FragmentActivity.onResume]
+     *
+     * @see [androidx.lifecycle.Lifecycle]
+     */
+    override fun onParentResumed() { }
+
+    /**
+     * Called when the parent lifecycle owners state changes to
+     * [androidx.fragment.app.FragmentActivity.onDestroy]
+     *
+     * @see [androidx.lifecycle.Lifecycle]
+     */
+    override fun onParentDestroyed() = cancelAllChildren()
 
     /**
      * Provides the preference object to the lazy initializer

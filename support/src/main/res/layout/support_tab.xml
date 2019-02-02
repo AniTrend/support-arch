@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.wax911.support.custom.widget.SupportTab
+<io.wax911.support.view.widget.SupportTab
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tabLayout"
     android:layout_width="match_parent"

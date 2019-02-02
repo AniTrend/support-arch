@@ -1,4 +1,4 @@
-package io.wax911.support.extension
+package io.wax911.support.wrapper.extension
 
 import io.wax911.support.wrapper.ModelWrapper
 
@@ -12,3 +12,4 @@ fun ModelWrapper<*>.isForbidden() = code == 403
 fun ModelWrapper<*>.isNotFound() = code == 404
 
 fun ModelWrapper<*>.isServerError() = code in 500..599
+fun ModelWrapper<*>.isRequestFailure() = code == null

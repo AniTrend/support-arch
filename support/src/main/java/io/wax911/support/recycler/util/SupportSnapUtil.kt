@@ -1,4 +1,4 @@
-package io.wax911.support.custom.recycler.util
+package io.wax911.support.recycler.util
 
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView

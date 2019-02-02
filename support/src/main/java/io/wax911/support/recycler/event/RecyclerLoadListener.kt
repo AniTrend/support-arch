@@ -1,4 +1,4 @@
-package io.wax911.support.custom.recycler.event
+package io.wax911.support.recycler.event
 
 /**
  * Created by max on 2017/06/09.

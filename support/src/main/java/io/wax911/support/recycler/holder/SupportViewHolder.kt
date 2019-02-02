@@ -1,11 +1,11 @@
-package io.wax911.support.custom.recycler.holder
+package io.wax911.support.recycler.holder
 
 import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.annimon.stream.IntPair
-import io.wax911.support.custom.recycler.holder.event.ItemClickListener
-import io.wax911.support.custom.action.contract.ISupportActionMode
+import io.wax911.support.recycler.holder.event.ItemClickListener
+import io.wax911.support.action.contract.ISupportActionMode
 
 /**
  * Created by max on 2017/06/09.

@@ -1,7 +1,8 @@
-package io.wax911.support.custom.fragment
+package io.wax911.support.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +14,17 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.annimon.stream.IntPair
 import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.*
-import io.wax911.support.custom.recycler.event.RecyclerLoadListener
-import io.wax911.support.custom.presenter.SupportPresenter
-import io.wax911.support.custom.recycler.adapter.SupportViewAdapter
-import io.wax911.support.custom.widget.SupportRefreshLayout
+import io.wax911.support.recycler.event.RecyclerLoadListener
+import io.wax911.support.presenter.SupportPresenter
+import io.wax911.support.recycler.adapter.SupportViewAdapter
+import io.wax911.support.view.widget.SupportRefreshLayout
+import io.wax911.support.recycler.holder.event.ItemClickListener
 import io.wax911.support.util.SupportNotifyUtil
-import io.wax911.support.util.SupportStateKeyUtil
+import io.wax911.support.util.SupportStateKeyStore
 import kotlinx.android.synthetic.main.support_list.*
 
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFragment<M, P, VM>(),
-        RecyclerLoadListener, SupportRefreshLayout.OnRefreshAndLoadListener {
+        RecyclerLoadListener, SupportRefreshLayout.OnRefreshAndLoadListener, ItemClickListener<M> {
 
     @IntegerRes
     protected var mColumnSize: Int = 0
@@ -175,12 +177,12 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(SupportStateKeyUtil.key_columns, mColumnSize)
-        outState.putBoolean(SupportStateKeyUtil.key_pagination, presenter.isPager)
-        outState.putBoolean(SupportStateKeyUtil.key_pagination_limit, presenter.isPagingLimit)
+        outState.putInt(SupportStateKeyStore.key_columns, mColumnSize)
+        outState.putBoolean(SupportStateKeyStore.key_pagination, presenter.isPager)
+        outState.putBoolean(SupportStateKeyStore.key_pagination_limit, presenter.isPagingLimit)
 
-        outState.putInt(SupportStateKeyUtil.arg_page, presenter.currentPage)
-        outState.putInt(SupportStateKeyUtil.arg_page_offset, presenter.currentOffset)
+        outState.putInt(SupportStateKeyStore.arg_page, presenter.currentPage)
+        outState.putInt(SupportStateKeyStore.arg_page_offset, presenter.currentOffset)
     }
 
     /**
@@ -197,12 +199,12 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.also {
-            mColumnSize = it.getInt(SupportStateKeyUtil.key_columns)
-            presenter.isPager = it.getBoolean(SupportStateKeyUtil.key_pagination)
-            presenter.isPagingLimit = it.getBoolean(SupportStateKeyUtil.key_pagination_limit)
+            mColumnSize = it.getInt(SupportStateKeyStore.key_columns)
+            presenter.isPager = it.getBoolean(SupportStateKeyStore.key_pagination)
+            presenter.isPagingLimit = it.getBoolean(SupportStateKeyStore.key_pagination_limit)
 
-            presenter.currentPage = it.getInt(SupportStateKeyUtil.arg_page)
-            presenter.currentOffset = it.getInt(SupportStateKeyUtil.arg_page_offset)
+            presenter.currentPage = it.getInt(SupportStateKeyStore.arg_page)
+            presenter.currentOffset = it.getInt(SupportStateKeyStore.arg_page_offset)
         }
     }
 
@@ -266,20 +268,32 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         // no default implementation at this time
     }
 
-    protected fun attachScrollListener() = when (presenter.isPager) {
-        true -> when (!supportRecyclerView.hasOnScrollListener()) {
-            true -> {
-                presenter.initListener(supportRecyclerView.layoutManager as StaggeredGridLayoutManager, this)
-                supportRecyclerView.addOnScrollListener(presenter)
+    protected fun attachScrollListener() {
+        when (presenter.isPager) {
+            true -> when (!supportRecyclerView.hasOnScrollListener()) {
+                true -> {
+                    val layoutManager =
+                            supportRecyclerView.layoutManager as StaggeredGridLayoutManager
+                    presenter.initListener(layoutManager, this)
+                    supportRecyclerView.addOnScrollListener(presenter)
+                }
+                else ->
+                    Log.d(getViewName(), "attachScrollListener() already has " +
+                            "OnScrollListener set, skipping this step")
             }
-            else -> { }
+            else ->
+                Log.d(getViewName(), "Skipping attachScrollListener() " +
+                        "presenter.isPager -> ${presenter.isPager}")
         }
-        else -> { }
     }
 
-    protected fun detachScrollListener() = when {
-        presenter.isPager -> supportRecyclerView.clearOnScrollListeners()
-        else -> { }
+    protected fun detachScrollListener() {
+        when {
+            presenter.isPager -> supportRecyclerView.clearOnScrollListeners()
+            else ->
+                Log.d(getViewName(), "Skipping detachScrollListener() " +
+                        "presenter.isPager -> ${presenter.isPager}")
+        }
     }
 
     /**

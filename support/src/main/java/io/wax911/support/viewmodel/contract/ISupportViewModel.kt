@@ -1,4 +1,4 @@
-package io.wax911.support.custom.viewmodel.contract
+package io.wax911.support.viewmodel.contract
 
 import android.content.Context
 

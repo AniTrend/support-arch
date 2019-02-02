@@ -4,10 +4,10 @@ import android.content.SharedPreferences
 
 /**
  * Created by max on 2017/06/14.
- * Should be implemented by presenters
+ * Implemented by [io.wax911.support.presenter.SupportPresenter]
  */
 
-interface LifecycleListener {
+interface OnSharedPreferencesLifecycleBind {
 
     /**
      * Unregister any listeners from fragments or activities
@@ -18,10 +18,4 @@ interface LifecycleListener {
      * Register any listeners from fragments or activities
      */
     fun onResume(changeListener: SharedPreferences.OnSharedPreferenceChangeListener)
-
-    /**
-     * Destroy any reference which maybe attached to
-     * our context
-     */
-    fun onDestroy()
 }

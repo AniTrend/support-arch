@@ -1,4 +1,4 @@
-package io.wax911.support.custom.widget;
+package io.wax911.support.view.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -1,20 +1,21 @@
-package io.wax911.support.custom.widget
+package io.wax911.support.view.widget
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.AttributeSet
 import android.widget.ProgressBar
 import io.wax911.support.R
 import io.wax911.support.getColorFromAttr
-import io.wax911.support.view.CustomView
+import io.wax911.support.view.contract.CustomView
 
 class SupportProgress : ProgressBar, CustomView {
 
-    private var mColorFilter: PorterDuffColorFilter? = null
+    private val colorFilter: PorterDuffColorFilter? by lazy {
+        PorterDuffColorFilter(context.getColorFromAttr(R.attr.colorAccent),
+                PorterDuff.Mode.SRC_IN)
+    }
 
     constructor(context: Context?) :
             super(context) { onInit() }
@@ -22,25 +23,17 @@ class SupportProgress : ProgressBar, CustomView {
             super(context, attrs) { onInit() }
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) :
             super(context, attrs, defStyleAttr) { onInit() }
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) :
             super(context, attrs, defStyleAttr, defStyleRes) { onInit() }
 
     /**
-     * Optionally included when constructing custom views
+     * Callable in view constructors to perform view inflation and
+     * additional attribute initialization
      */
     override fun onInit() {
-        mColorFilter = PorterDuffColorFilter(context.getColorFromAttr(R.attr.colorAccent),
-                PorterDuff.Mode.SRC_IN)
-        applyColorFilter(progressDrawable)
-        applyColorFilter(indeterminateDrawable)
-    }
-
-    /**
-     * Clean up any resources that won't be needed
-     */
-    override fun onViewRecycled() {
-        mColorFilter = null
+        progressDrawable?.colorFilter = colorFilter
+        indeterminateDrawable?.colorFilter = colorFilter
     }
 
     override fun onDetachedFromWindow() {
@@ -48,18 +41,13 @@ class SupportProgress : ProgressBar, CustomView {
         super.onDetachedFromWindow()
     }
 
-    private fun applyColorFilter(drawable: Drawable?) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && drawable != null)
-            drawable.colorFilter = mColorFilter
-    }
-
-    override fun setProgressDrawable(drawable: Drawable) {
-        applyColorFilter(drawable)
+    override fun setProgressDrawable(drawable: Drawable?) {
+        drawable?.colorFilter = colorFilter
         super.setProgressDrawable(drawable)
     }
 
-    override fun setIndeterminateDrawable(drawable: Drawable) {
-        applyColorFilter(drawable)
+    override fun setIndeterminateDrawable(drawable: Drawable?) {
+        drawable?.colorFilter = colorFilter
         super.setIndeterminateDrawable(drawable)
     }
 }
