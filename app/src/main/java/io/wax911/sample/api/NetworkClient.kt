@@ -2,6 +2,7 @@ package io.wax911.sample.api
 
 import io.wax911.support.controller.SupportRequestClient
 import io.wax911.support.extension.logError
+import io.wax911.support.factory.InstanceCreator
 import io.wax911.support.util.SupportCoroutineUtil
 import io.wax911.support.wrapper.ModelWrapper
 import kotlinx.coroutines.Deferred
@@ -9,7 +10,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import retrofit2.Call
 
-class NetworkClient : SupportRequestClient(), SupportCoroutineUtil {
+class NetworkClient : SupportRequestClient() {
 
     /**
      * Executes the given retrofit call and returns a deferred result. This function call

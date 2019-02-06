@@ -1,24 +1,19 @@
 package io.wax911.sample.view.activity.base
 
 import android.os.Bundle
-import android.os.Handler
 import io.wax911.sample.R
-import io.wax911.sample.model.BaseModel
 import io.wax911.sample.presenter.BasePresenter
 import io.wax911.sample.view.activity.index.MainActivity
-import io.wax911.sample.viewmodel.BaseViewModel
 import io.wax911.support.activity.SupportActivity
-import io.wax911.support.viewmodel.SupportViewModel
-import io.wax911.support.startNewActivity
+import io.wax911.support.extension.startNewActivity
 import io.wax911.support.util.SupportDateUtil
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class SplashActivity : SupportActivity<BaseModel, BasePresenter>() {
+class SplashActivity : SupportActivity<Nothing, BasePresenter>() {
 
-    override fun initPresenter(): BasePresenter = BasePresenter.newInstance(this)
-
-    override fun initViewModel(): SupportViewModel<BaseModel?, *>? =
-            BaseViewModel.newInstance(this, this)
+    override fun initPresenter() = BasePresenter.newInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +33,9 @@ class SplashActivity : SupportActivity<BaseModel, BasePresenter>() {
     }
 
     override fun makeRequest() {
-        Handler().postDelayed({ this.updateUI() }, 2000)
+        launch {
+            delay(2500)
+            updateUI()
+        }
     }
 }

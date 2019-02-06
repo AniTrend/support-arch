@@ -16,7 +16,6 @@ import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
 import io.wax911.sample.util.StateUtil
 import io.wax911.sample.view.fragment.detail.FragmentHome
-import io.wax911.sample.view.fragment.list.FragmentHistory
 import io.wax911.support.activity.SupportActivity
 import io.wax911.support.util.SupportStateKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,7 +24,6 @@ import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.OnNavigationItemSelectedListener,
         BottomNavigationView.OnNavigationItemSelectedListener  {
-
 
     @IdRes
     private var selectedItem: Int = 0
@@ -39,10 +37,7 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
         if (item.groupId != R.id.nav_group_customization)
             drawerLayout.closeDrawer(GravityCompat.START)
         when (item.itemId) {
-            R.id.nav_theme -> presenter.supportPreference?.also {
-                it.toggleTheme()
-                recreate()
-            }
+            R.id.nav_theme -> Toast.makeText(this@MainActivity, "Changes theme", Toast.LENGTH_SHORT).show()
             R.id.nav_about -> Toast.makeText(this@MainActivity, "About", Toast.LENGTH_SHORT).show()
             R.id.nav_contact -> Toast.makeText(this@MainActivity, "Contact", Toast.LENGTH_SHORT).show()
         }
@@ -113,7 +108,7 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search ->
-                //mFlipper.showNext();
+                // mFlipper.showNext();
                 return true
         }
         return super.onOptionsItemSelected(item)
@@ -135,7 +130,7 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
             }
             R.id.nav_history -> {
                 selectedTitle = R.string.nav_history
-                supportFragment = FragmentHistory.newInstance(intent.extras)
+                supportFragment = null
             }
         }
 

@@ -11,7 +11,7 @@ class BasePresenter private constructor(context: Context?): SupportPresenter<Set
     /**
      * Provides pagination size for calculating offsets
      */
-    override fun paginationSize() = StateUtil.PAGING_LIMIT
+    override fun paginationSize() = StateUtil.pagingLimit
 
     /**
      * Provides the preference object to the lazy initializer
