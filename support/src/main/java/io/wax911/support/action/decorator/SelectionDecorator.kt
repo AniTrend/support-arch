@@ -4,8 +4,8 @@ import android.widget.CheckBox
 import androidx.cardview.widget.CardView
 import io.wax911.support.R
 import io.wax911.support.recycler.holder.SupportViewHolder
-import io.wax911.support.getColorFromAttr
-import io.wax911.support.getCompatColor
+import io.wax911.support.extension.getColorFromAttr
+import io.wax911.support.extension.getCompatColor
 
 /**
  * Action mode selection item decorator class

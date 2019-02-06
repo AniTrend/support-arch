@@ -14,7 +14,7 @@ import io.wax911.support.action.contract.ISupportActionMode
 import io.wax911.support.animator.ScaleAnimator
 import io.wax911.support.presenter.SupportPresenter
 import io.wax911.support.recycler.holder.SupportViewHolder
-import io.wax911.support.replaceWith
+import io.wax911.support.extension.replaceWith
 import java.util.*
 
 /**

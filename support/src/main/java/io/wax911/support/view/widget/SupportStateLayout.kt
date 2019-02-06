@@ -6,6 +6,10 @@ import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import io.wax911.support.*
+import io.wax911.support.extension.getCompatDrawable
+import io.wax911.support.extension.getLayoutInflater
+import io.wax911.support.extension.gone
+import io.wax911.support.extension.visible
 import io.wax911.support.view.contract.CustomView
 import kotlinx.android.synthetic.main.support_layout_state.view.*
 

@@ -11,16 +11,15 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.annimon.stream.IntPair
 import com.google.android.material.snackbar.Snackbar
-import io.wax911.support.*
-import io.wax911.support.recycler.event.RecyclerLoadListener
+import io.wax911.support.R
+import io.wax911.support.extension.*
 import io.wax911.support.presenter.SupportPresenter
 import io.wax911.support.recycler.adapter.SupportViewAdapter
-import io.wax911.support.view.widget.SupportRefreshLayout
+import io.wax911.support.recycler.event.RecyclerLoadListener
 import io.wax911.support.recycler.holder.event.ItemClickListener
-import io.wax911.support.util.SupportNotifyUtil
 import io.wax911.support.util.SupportStateKeyStore
+import io.wax911.support.view.widget.SupportRefreshLayout
 import kotlinx.android.synthetic.main.support_list.*
 
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFragment<M, P, VM>(),
@@ -234,7 +233,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
             supportRefreshLayout?.onResponseResetStates()
             if (presenter.isFirstPage()) {
                 progressLayout.showLoadedContent()
-                snackBar = SupportNotifyUtil.make(progressLayout, message!!, Snackbar.LENGTH_INDEFINITE)
+                snackBar = progressLayout.snackBar(message!!, Snackbar.LENGTH_INDEFINITE)
                         .setAction(retryButtonText(), snackBarOnClickListener)
                 snackBar?.show()
             } else {
@@ -390,23 +389,4 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * @param model The new data
      */
     abstract override fun onChanged(model: VM?)
-
-
-    /**
-     * When the target view from [View.OnClickListener]
-     * is clicked from a view holder this method will be called
-     *
-     * @param target view that has been clicked
-     * @param data   the liveData that at the click index
-     */
-    abstract override fun onItemClick(target: View, data: IntPair<M>)
-
-    /**
-     * When the target view from [View.OnLongClickListener]
-     * is clicked from a view holder this method will be called
-     *
-     * @param target view that has been long clicked
-     * @param data   the liveData that at the long click index
-     */
-    abstract override fun onItemLongClick(target: View, data: IntPair<M>)
 }

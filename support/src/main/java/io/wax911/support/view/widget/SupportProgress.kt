@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.ProgressBar
 import io.wax911.support.R
-import io.wax911.support.getColorFromAttr
+import io.wax911.support.extension.getColorFromAttr
 import io.wax911.support.view.contract.CustomView
 
 class SupportProgress : ProgressBar, CustomView {

@@ -95,7 +95,7 @@ abstract class SupportPresenter<S : SupportPreference>(protected var context: Co
          * in case all subscribed listeners were not loaded in time for the broadcast
          *
          * @param param the object of type T to send
-         * @param isSticky set true to make sticky post
+         * @param isSticky set true to snackBar sticky post
          */
         fun <T> notifyAllListeners(param : T, isSticky: Boolean = false) = when {
             isSticky -> EventBus.getDefault().postSticky(param)

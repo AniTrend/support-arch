@@ -3,7 +3,6 @@ package io.wax911.support.recycler.holder
 import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.annimon.stream.IntPair
 import io.wax911.support.recycler.holder.event.ItemClickListener
 import io.wax911.support.action.contract.ISupportActionMode
 
@@ -23,8 +22,8 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
      * Constructs an int pair container with a boolean representing a valid adapter position
      * @return IntPair
      */
-    private fun isValidIndexPair(): IntPair<Boolean> =
-            IntPair(adapterPosition, adapterPosition != RecyclerView.NO_POSITION)
+    private fun isValidIndexPair(): Pair<Int, Boolean> =
+            Pair(adapterPosition, adapterPosition != RecyclerView.NO_POSITION)
 
     /**
      * Load image, text, buttons, etc. in this method from the given parameter
@@ -77,7 +76,7 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
     protected fun performClick(data: T, v: View) {
         val pair = isValidIndexPair()
         if (pair.second && isClickable(data))
-            clickListener?.onItemClick(v, IntPair(pair.first, data))
+            clickListener?.onItemClick(v, Pair(pair.first, data))
     }
 
     /**
@@ -89,7 +88,7 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
     protected fun performLongClick(data: T, v: View): Boolean {
         val pair = isValidIndexPair()
         return when (pair.second && isLongClickable(data)) {
-            true -> { clickListener?.onItemLongClick(v, IntPair(pair.first, data)); true }
+            true -> { clickListener?.onItemLongClick(v, Pair(pair.first, data)); true }
             else -> false
         }
     }

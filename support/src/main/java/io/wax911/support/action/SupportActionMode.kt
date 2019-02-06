@@ -4,10 +4,10 @@ import android.view.ActionMode
 import io.wax911.support.action.event.ActionModeListener
 import io.wax911.support.action.contract.ISupportActionMode
 import io.wax911.support.action.decorator.SelectionDecorator
+import io.wax911.support.extension.replaceWith
 import io.wax911.support.presenter.SupportPresenter
 import io.wax911.support.recycler.adapter.SupportViewAdapter
 import io.wax911.support.recycler.holder.SupportViewHolder
-import io.wax911.support.replaceWith
 import java.util.*
 
 /**

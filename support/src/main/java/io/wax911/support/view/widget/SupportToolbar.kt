@@ -4,11 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.Toolbar
 import io.wax911.support.R
+import io.wax911.support.extension.getColorFromAttr
 import io.wax911.support.view.contract.CustomView
-import io.wax911.support.activity.SupportActivity
-import io.wax911.support.presenter.SupportPresenter
-import io.wax911.support.getColorFromAttr
-import io.wax911.support.isLightTheme
 
 class SupportToolbar : Toolbar, CustomView {
 

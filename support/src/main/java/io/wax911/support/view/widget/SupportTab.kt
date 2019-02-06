@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import com.google.android.material.tabs.TabLayout
 import io.wax911.support.R
+import io.wax911.support.extension.getColorFromAttr
 import io.wax911.support.view.contract.CustomView
-import io.wax911.support.getColorFromAttr
 
 class SupportTab: TabLayout, CustomView {
 

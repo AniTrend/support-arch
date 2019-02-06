@@ -5,8 +5,8 @@ import androidx.annotation.ArrayRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentStatePagerAdapter
-import io.wax911.support.empty
-import io.wax911.support.getStringList
+import io.wax911.support.extension.empty
+import io.wax911.support.extension.getStringList
 import java.util.*
 import kotlin.collections.ArrayList
 

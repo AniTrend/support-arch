@@ -568,7 +568,7 @@ public class SupportProgressDrawable extends Drawable implements Animatable {
          */
         void setColors(@NonNull int[] colors) {
             mColors = colors;
-            // if colors are reset, make sure to reset the color index as well
+            // if colors are reset, snackBar sure to reset the color index as well
             setColorIndex(0);
         }
 

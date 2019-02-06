@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import io.wax911.support.controller.SupportRequestClient
 import io.wax911.support.dao.SupportQuery
-import io.wax911.support.isConnectedToNetwork
+import io.wax911.support.extension.isConnectedToNetwork
 import io.wax911.support.repository.contract.ISupportRepository
 import io.wax911.support.util.SupportCoroutineUtil
 import kotlinx.coroutines.*
