@@ -34,7 +34,7 @@ buildscript {
         crashlytics = '2.6.8@aar'
         coroutinesCore = '1.1.1'
         coroutinesAndroid = '1.1.1'
-        materialDialogs = '2.0.0-rc11'
+        materialDialogs = '2.0.0-rc9'
 
         timber = '4.7.1'
     }
