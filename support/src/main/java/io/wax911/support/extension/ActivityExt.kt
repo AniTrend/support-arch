@@ -9,6 +9,8 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 
@@ -35,6 +37,16 @@ fun FragmentActivity.startSharedTransitionActivity(target : View, data : Intent)
         .makeSceneTransitionAnimation(this, participants)
     ActivityCompat.startActivity(this, data, transitionActivityOptions.toBundle())
 }
+
+/**
+ * Compares if this State is greater or equal to the given [Lifecycle.State].
+ *
+ * @param state State to compare with
+ * @return true if this State is greater or equal to the given [Lifecycle.State]
+ */
+fun LifecycleOwner.isStateAtLeast(state: Lifecycle.State) =
+    lifecycle.currentState.isAtLeast(state)
+
 
 inline fun <reified T : ViewModel> FragmentActivity.getViewModelOf() =
     ViewModelProviders.of(this).get(T::class.java)

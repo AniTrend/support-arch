@@ -28,9 +28,6 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     @IntegerRes
     protected var mColumnSize: Int = 0
 
-    protected var searchQuery : String? = null
-    protected var isLimitReached : Boolean = false
-
     @LayoutRes
     protected var inflateLayout: Int = R.layout.support_list
 
@@ -67,12 +64,6 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     }
 
     /**
-     * Called to do extra initialization on behalf of the onCreate method using saved instance
-     * @see onCreate
-     */
-    protected abstract fun initializeListComponents(savedInstanceState: Bundle?)
-
-    /**
      * Called to do initial creation of a fragment.  This is called after
      * [.onAttach] and before
      * [.onCreateView].
@@ -93,7 +84,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initializeListComponents(savedInstanceState)
+        initializeComponents(savedInstanceState)
     }
 
     /**
@@ -143,7 +134,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
 
     /**
      * Called when the Fragment is visible to the user.  This is generally
-     * tied to [Activity.onStart] of the containing
+     * tied to [SupportFragment.onStart] of the containing
      * Activity's lifecycle.
      */
     override fun onStart() {
@@ -165,7 +156,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * [.onActivityCreated].
      *
      *
-     * This corresponds to [ Activity.onSaveInstanceState(Bundle)][Activity.onSaveInstanceState] and most of the discussion there
+     * This corresponds to [ Activity.onSaveInstanceState(Bundle)][SupportFragment.onSaveInstanceState] and most of the discussion there
      * applies here as well.  Note however: *this method may be called
      * at any time before [.onDestroy]*.  There are many situations
      * where a fragment may be mostly torn down (such as when placed on the
@@ -209,7 +200,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
 
     /**
      * Called when the Fragment is no longer resumed.  This is generally
-     * tied to [Activity.onPause] of the containing
+     * tied to [SupportFragment.onPause] of the containing
      * Activity's lifecycle.
      */
     override fun onPause() {
@@ -220,7 +211,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     /**
      * Called when the fragment is visible to the user and actively running.
      * This is generally
-     * tied to [Activity.onResume] of the containing
+     * tied to [SupportFragment.onResume] of the containing
      * Activity's lifecycle.
      */
     override fun onResume() {
@@ -229,7 +220,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     }
 
     protected fun changeLayoutState(message: String?) {
-        if (isAtLeastState(Lifecycle.State.RESUMED)) {
+        if (isStateAtLeast(Lifecycle.State.RESUMED)) {
             supportRefreshLayout?.onResponseResetStates()
             if (presenter.isFirstPage()) {
                 progressLayout.showLoadedContent()
@@ -296,9 +287,10 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     }
 
     /**
-     * While paginating if our request was a success and
+     * Disables pagination if we're not on the first page & the last
+     * network/cache request was not successful
      */
-    protected fun setLimitReached() {
+    protected fun setPaginationLimitReached() {
         if (presenter.currentPage != 0) {
             supportRefreshLayout?.isLoading = false
             presenter.isPagingLimit = true
@@ -306,8 +298,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     }
 
     /**
-     * Set your adapter and call this method when you are done to the current
-     * parents data, then call this method after
+     * Sets up the [supportRecyclerView] with [SupportViewAdapter] and additional properties if needed,
+     * after it will change the state layout to empty or content.
      *
      * @param emptyText text that should be used when no data is available
      */
@@ -322,8 +314,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                 }
                 else -> {
                     supportRefreshLayout?.onResponseResetStates()
-                    if (!searchQuery.isNullOrEmpty())
-                        supportViewAdapter.filter.filter(searchQuery)
+                        supportViewAdapter.applyFilterIfRequired()
                 }
             }
             progressLayout.showLoadedContent()
@@ -355,7 +346,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
             }
             else -> {
                 if (presenter.isPager)
-                    setLimitReached()
+                    setPaginationLimitReached()
                 if (!supportViewAdapter.hasData())
                     context.showContentError(progressLayout, emptyText, retryButtonText(), stateLayoutOnClick)
                 supportRefreshLayout?.onResponseResetStates()
@@ -385,7 +376,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     @StringRes protected abstract fun retryButtonText() : Int
 
     /**
-     * Called when the data is changed.
+     * Called when the view model live data has been assigned a value.
+     *
      * @param model The new data
      */
     abstract override fun onChanged(model: VM?)

@@ -16,6 +16,8 @@ import io.wax911.support.presenter.SupportPresenter
 import io.wax911.support.recycler.holder.SupportViewHolder
 import io.wax911.support.extension.replaceWith
 import java.util.*
+import kotlin.properties.Delegates
+import kotlin.reflect.KProperty
 
 /**
  * Created by max on 2017/06/09.
@@ -35,27 +37,35 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
         }
 
     private var lastPosition: Int = 0
+    var searchQuery: String? by Delegates.observable(null) {
+            _: KProperty<*>, _: String?, _: String? -> applyFilterIfRequired()
+    }
 
     /**
      * Get currently set animation type for recycler view holder items,
      * if no custom animation is set @[ScaleAnimator]
-     * will be assigned in [.onAttachedToRecyclerView]
-     * <br></br>
+     * will be assigned in [onAttachedToRecyclerView]
      *
-     * @see SupportAnimator
+     * @see [SupportAnimator]
      */
     private var customSupportAnimator: SupportAnimator? = ScaleAnimator()
 
     protected val data: MutableList<T> by lazy { ArrayList<T>() }
     protected var clone: List<T>? = null
 
+    /**
+     * Return the stable ID for the item at <code>position</code>. If [hasStableIds]
+     * would return false this method should return [RecyclerView.NO_ID].
+     *
+     * The default implementation of this method returns [RecyclerView.NO_ID].
+     *
+     * @param position Adapter position to query
+     * @return the stable ID of the item at position
+     */
     override fun getItemId(position: Int): Long {
         return when (!hasStableIds()) {
             true -> super.getItemId(position)
-            else -> return when(data[position] != null) {
-                true -> data[position]!!.hashCode().toLong()
-                false -> 0
-            }
+            else -> data[position]?.hashCode()?.toLong() ?: 0
         }
     }
 
@@ -95,17 +105,44 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
 
     abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SupportViewHolder<T>
 
+    /**
+     * Called when a view created by this adapter has been attached to a window.
+     *
+     * This can be used as a reasonable signal that the view is about to be seen
+     * by the user. If the adapter previously freed any resources in [onViewDetachedFromWindow]
+     * those resources should be restored here.
+     *
+     * @param holder Holder of the view being attached
+     */
     override fun onViewAttachedToWindow(holder: SupportViewHolder<T>) {
         super.onViewAttachedToWindow(holder)
         if (holder.itemView.layoutParams is StaggeredGridLayoutManager.LayoutParams)
             setLayoutSpanSize(holder.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams, holder.adapterPosition)
     }
 
+    /**
+     * Called when a view created by this adapter has been detached from its window.
+     *
+     * <p>Becoming detached from the window is not necessarily a permanent condition;
+     * the consumer of an Adapter's views may choose to cache views offscreen while they
+     * are not visible, attaching and detaching them as appropriate.</p>
+     *
+     * @param holder Holder of the view being detached
+     */
     override fun onViewDetachedFromWindow(holder: SupportViewHolder<T>) {
         super.onViewDetachedFromWindow(holder)
         holder.itemView.clearAnimation()
     }
 
+    /**
+     * Called by RecyclerView when it starts observing this Adapter.
+     *
+     * Keep in mind that same adapter may be observed by multiple RecyclerViews.
+     *
+     * @param recyclerView The RecyclerView instance which started observing this adapter.
+     *
+     * @see [onDetachedFromRecyclerView]
+     */
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         val layoutManager = recyclerView.layoutManager
@@ -114,10 +151,10 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
     }
 
     /**
-     * Calls the the recycler view holder to perform view binding
-     * @see SupportViewHolder
-     * <br></br><br></br>
-     * default implemation is already done for you
+     * Calls the the recycler view holder to perform view binding,
+     * and selection mode decoration if [ISupportActionMode] is active
+     *
+     * @see [SupportViewHolder.onBindViewHolder]
      */
     override fun onBindViewHolder(holder: SupportViewHolder<T>, position: Int) {
         if (itemCount > 0) {
@@ -134,9 +171,11 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
 
     /**
      * Calls the the recycler view holder impl to perform view recycling
-     * @see SupportViewHolder
+     *
+     * @see [SupportViewHolder.onViewRecycled]
      */
-    override fun onViewRecycled(holder: SupportViewHolder<T>) = holder.onViewRecycled()
+    override fun onViewRecycled(holder: SupportViewHolder<T>) =
+        holder.onViewRecycled()
 
 
     /**
@@ -170,8 +209,8 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
          * @see .publishResult
          * @see android.widget.Filter.FilterResults
          */
-        override fun performFiltering(constraint: CharSequence?): FilterResults? = FilterResults().also {
-            it.values = Collections.EMPTY_LIST
+        override fun performFiltering(constraint: CharSequence?) = FilterResults().apply {
+            values = Collections.EMPTY_LIST
         }
 
         /**
@@ -187,24 +226,27 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
          * @see android.widget.Filter.FilterResults
          */
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            results?.also {
-                data.clear()
-                data += results.values as Collection<T>
-                notifyDataSetChanged()
+            when (results?.values) {
+                is Collection<*> -> {
+                    data.clear()
+                    data += results.values as Collection<T>
+                    notifyDataSetChanged()
+                }
             }
         }
     }
 
     /**
      * Returns the total number of items in the data set held by the adapter.
-     * <br>
      *
-     * @return The total number of items in this adapter.
+     * @return total number of items in this adapter.
      */
     override fun getItemCount(): Int = data.size
 
     /**
-     * Clears data sets and notifies the recycler observer about the changed data set
+     * Clears both the main data set and clone, the updates the recycler view
+     *
+     * @see [SupportViewAdapter.notifyDataSetChanged]
      */
     fun clearDataSet() {
         data.clear()
@@ -218,7 +260,7 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
     /**
      * Initial implementation is only specific for group types of recyclers,
      * in order to customize this an override is required.
-     * <br></br>
+     *
      * @param layoutManager grid layout manage for your recycler
      */
     private fun setLayoutSpanSize(layoutManager: GridLayoutManager) {
@@ -233,7 +275,7 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
     /**
      * Initial implementation is only specific for group types of recyclers,
      * in order to customize this an override is required.
-     * <br></br>
+     *
      * @param layoutParams StaggeredGridLayoutManager.LayoutParams for your recycler
      */
     private fun setLayoutSpanSize(layoutParams: StaggeredGridLayoutManager.LayoutParams, position: Int) {
@@ -241,7 +283,7 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
             layoutParams.isFullSpan = true
     }
 
-    protected fun isRecyclerStateType(viewType: Int): Boolean = when (viewType) {
+    protected fun isRecyclerStateType(@RecyclerType viewType: Int): Boolean = when (viewType) {
         RecyclerType.RECYCLER_TYPE_EMPTY, RecyclerType.RECYCLER_TYPE_LOADING,
         RecyclerType.RECYCLER_TYPE_HEADER -> true
         else -> false
@@ -250,17 +292,25 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
     protected fun isFullSpanItem(position: Int): Boolean = false
 
     private fun animateViewHolder(holder: SupportViewHolder<T>?, position: Int) {
-        holder?.also { h ->
+        holder?.apply {
             when (position > lastPosition) {
-                true -> customSupportAnimator?.also { a ->
-                    for (animator in a.getAnimators(h.itemView)) {
-                        animator.duration = a.getAnimationDuration().toLong()
-                        animator.interpolator = a.getInterpolator()
+                true -> customSupportAnimator?.apply {
+                    getAnimators(itemView).forEach { animator ->
+                        animator.duration = getAnimationDuration().toLong()
+                        animator.interpolator = getInterpolator()
                         animator.start()
                     }
                 }
             }
             lastPosition = position
         }
+    }
+
+    /**
+     * Applies a recycler filter if [searchQuery] is not null or empty
+     */
+    fun applyFilterIfRequired() {
+        if (!searchQuery.isNullOrBlank())
+            filter.filter(searchQuery)
     }
 }

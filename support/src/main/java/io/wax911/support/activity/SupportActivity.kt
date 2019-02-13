@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
 import io.wax911.support.view.contract.CompatView
 import io.wax911.support.fragment.SupportFragment
 import io.wax911.support.presenter.SupportPresenter
@@ -36,7 +35,9 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * override this method and set your own theme style, also if you wish
      * to apply the default navigation bar style for light themes
      */
-    protected fun configureActivity() = setThemeStyle()
+    protected fun configureActivity() {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         configureActivity()
@@ -46,13 +47,6 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    /**
-     * Changes the theme style depending on the selected theme
-     */
-    protected fun setThemeStyle() {
-
     }
 
     fun disableToolbarTitle() = actionBar?.setDisplayShowTitleEnabled(false)
@@ -91,7 +85,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         else if (ContextCompat.checkSelfPermission(this, manifestPermission) == PackageManager.PERMISSION_GRANTED)
             return true
         else if (!ActivityCompat.shouldShowRequestPermissionRationale(this, manifestPermission))
-            ActivityCompat.requestPermissions(this, arrayOf(manifestPermission), compatViewPermissionKey)
+            ActivityCompat.requestPermissions(this, arrayOf(manifestPermission), compatViewPermissionValue)
         return false
     }
 
@@ -145,15 +139,6 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      */
     override val coroutineDispatcher: CoroutineDispatcher
         get() = Dispatchers.Default
-
-    /**
-     * Compares if this State is at least equal to the given state.
-     * <br/>
-     *
-     * @param state to compare to the current state
-     */
-    protected fun isAtLeastState(state: Lifecycle.State): Boolean =
-            lifecycle.currentState.isAtLeast(state)
 
     /**
      * Called when the data is changed.

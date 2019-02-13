@@ -24,7 +24,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
         CompatView<VM, P>, SupportCoroutineUtil {
 
     @MenuRes
-    protected var inflateMenu: Int = 0
+    protected var inflateMenu: Int = CompatView.NO_MENU_ITEM
     protected var snackBar: Snackbar? = null
 
     protected val presenter: P by lazy { initPresenter() }
@@ -132,7 +132,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * @see .onOptionsItemSelected
      */
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        if (inflateMenu != 0)
+        if (inflateMenu != CompatView.NO_MENU_ITEM)
             inflater?.inflate(inflateMenu, menu)
     }
 
@@ -209,11 +209,6 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      */
     override val coroutineDispatcher: CoroutineDispatcher
         get() = Dispatchers.Default
-
-    protected fun isAtLeastState(state: Lifecycle.State): Boolean =
-            lifecycle.currentState.isAtLeast(state)
-
-    override fun getViewName(): String = this.toString()
 
     /**
      * Called when the data is changed.

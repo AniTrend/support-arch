@@ -8,6 +8,7 @@ interface ISupportAnalytics {
 
     fun logCurrentScreen(context: FragmentActivity, tag: String)
     fun logCurrentState(tag: String, bundle: Bundle)
+
     fun logException(throwable: Throwable)
     fun log(priority: Int = Log.VERBOSE, tag: String, message: String)
 
