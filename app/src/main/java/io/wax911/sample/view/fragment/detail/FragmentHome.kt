@@ -21,6 +21,18 @@ class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
     override fun initPresenter(): BasePresenter = BasePresenter.newInstance(context)
 
     /**
+     * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
+     * then this method will be called in [SupportFragment.onCreate]. Otherwise [SupportActivity.onPostCreate]
+     * invokes this function
+     *
+     * @see [SupportActivity.onPostCreate] and [SupportFragment.onCreate]
+     * @param
+     */
+    override fun initializeComponents(savedInstanceState: Bundle?) {
+
+    }
+
+    /**
      * Called to have the fragment instantiate its user interface view.
      * This is optional, and non-graphical fragments can return null (which
      * is the default implementation).  This will be called between

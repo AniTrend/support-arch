@@ -6,79 +6,25 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="cardColor">@color/colorPrimary</item>
-        <item name="drawerColor">@color/colorDrawer</item>
+        <item name="drawerColor">@color/primaryColor</item>
 
-        <item name="rootColor">@color/colorRoot</item>
-        <item name="lineColor">@color/colorLine</item>
-        <item name="titleColor">@color/colorTextTitle</item>
-        <item name="subtitleColor">@color/colorTextSubtitle</item>
-        <item name="contentColor">@color/colorTextContent</item>
+        <item name="rootColor">@color/colorPrimary</item>
+        <item name="lineColor">@color/colorPrimaryVariant</item>
+        <item name="titleColor">@color/primaryTextColor</item>
+        <item name="subtitleColor">@color/secondaryTextColor</item>
+        <item name="contentColor">@color/secondaryTextColor</item>
+        <item name="toolbarColor">@style/SupportTheme.ToolbarTheme</item>
 
         <item name="windowActionModeOverlay">true</item>
-        <item name="toolbarColor">@style/SupportTheme.ToolbarTheme</item>
-        <item name="android:textViewStyle">@style/FontFamilyTheme</item>
+        <item name="android:textViewStyle">@style/SupportTheme.FontFamily</item>
 
-        <item name="android:windowBackground">@color/colorPrimary</item>
-        <item name="android:popupMenuStyle">@style/SupportTheme.PopupMenuTheme</item>
+        <item name="android:listDivider">@color/primaryColor</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:popupMenuStyle">@style/SupportTheme.PopupTheme</item>
+
+        <item name="scrimBackground">@color/colorScrim</item>
     </style>
 
     <style name="SupportTheme.AppTheme" />
-
-    <style name="SupportTheme.PopupMenuTheme" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
-        <!--<item name="android:windowDisablePreview">true</item>-->
-        <!--<item name="overlapAnchor">false</item>-->
-        <item name="android:popupBackground">@color/colorPrimaryDark</item>
-    </style>
-
-    <style name="SupportTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
-
-    <style name="SupportTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
-
-    <style name="SupportTheme.ToolbarTheme">
-        <!-- android:textColorPrimary is the  color of the title text
-             in the Toolbar, in the Theme.AppCompat theme:  -->
-        <item name="android:textColorPrimary">?attr/titleColor</item>
-
-        <!-- android:textColorPrimaryInverse is the  color of the title
-             text in the Toolbar, in the Theme.AppCompat.Light theme:  -->
-        <!-- <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item> -->
-
-        <!-- android:actionMenuTextColor is the color of the text of
-              action (menu) items in the Toolbar, at least in the
-              Theme.AppCompat theme.
-              For some reason, they already get the textColorPrimary
-              when running on API 21, but not on older versions of
-              Android, so this is only necessary to support older
-              Android versions.-->
-        <item name="actionMenuTextColor">?attr/titleColor</item>
-        <!-- android:textColorSecondary is the color of the menu
-             overflow icon (three vertical dots) -->
-        <item name="android:textColorSecondary">?attr/subtitleColor</item>
-
-        <!-- This would set the toolbar's background color,
-              but setting this also changes the popup menu's background,
-              even if we define popupTheme for our <Toolbar> -->
-        <!-- <item name="android:background">@color/color_primary</item> -->
-    </style>
-
-    <style name="SupportTheme.PopupTheme" parent="@android:style/Widget.Holo.PopupMenu">
-        <item name="android:popupBackground">?attr/rootColor</item>
-    </style>
-
-    <style name="SupportTheme.Translucent">
-        <item name="android:windowBackground">@color/colorScrimTransparent</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowAnimationStyle">@null</item>
-    </style>
-
-    <!-- This will set the fade in animation on all your activities by default -->
-    <style name="SupportTheme.WindowAnimations">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-    </style>
 
 </resources>

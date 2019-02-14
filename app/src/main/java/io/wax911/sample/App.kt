@@ -3,11 +3,15 @@ package io.wax911.sample
 import android.app.Application
 import io.wax911.sample.util.AnalyticsUtil
 import io.wax911.support.analytic.contract.ISupportAnalytics
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 
 class App : Application() {
 
+    @Volatile
     var analyticsUtil: ISupportAnalytics? = null
 
     init {
@@ -42,10 +46,12 @@ class App : Application() {
      */
     override fun onCreate() {
         super.onCreate()
-        analyticsUtil = AnalyticsUtil.getInstance(this)
-        if (BuildConfig.DEBUG)
-            Timber.plant(Timber.DebugTree())
-        else
-            Timber.plant(analyticsUtil as AnalyticsUtil)
+        GlobalScope.launch(Dispatchers.IO) {
+            analyticsUtil = AnalyticsUtil.getInstance(this@App)
+            if (BuildConfig.DEBUG)
+                Timber.plant(Timber.DebugTree())
+            else
+                Timber.plant(analyticsUtil as AnalyticsUtil)
+        }
     }
 }

@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Color Light -->
-    <color name="colorPrimary">#FAFAFA</color>
-    <color name="colorPrimaryDark">#E0E0E0</color>
-    <color name="colorAccent">#54A5FA</color>
+    <!-- Material X Light Colors -->
 
-    <color name="colorGreyLight">#fafafa</color>
-    <color name="colorPattensBlue">#D8E1EA</color>
-    <color name="colorLinkWater">#CED2D6</color>
+    <color name="primaryColor">#fafafa</color>
+    <color name="primaryLightColor">#ffffff</color>
+    <color name="primaryDarkColor">#c7c7c7</color>
 
-    <color name="colorBlueLight">#00BCD4</color>
+    <color name="secondaryColor">#ffffff</color>
+    <color name="secondaryLightColor">#ffffff</color>
+    <color name="secondaryDarkColor">#cccccc</color>
 
-    <color name="colorStateRed">#D50000</color>
-    <color name="colorStateOrange">#FF6D00</color>
-    <color name="colorStateYellow">#fbc02d</color>
-    <color name="colorStateBlue">#0091EA</color>
-    <color name="colorStateGreen">#00C853</color>
+    <color name="primaryTextColor">#424242</color>
+    <color name="secondaryTextColor">#757575</color>
 
-    <!-- UI -->
-    <color name="colorRoot">#FAFAFA</color>
-    <color name="colorLine">#f1f1f1</color>
+    <color name="colorPrimary">@color/primaryColor</color>
+    <color name="colorPrimaryVariant">@color/primaryLightColor</color>
+    <color name="colorSecondary">@color/secondaryColor</color>
+    <color name="colorSecondaryVariant">@color/secondaryLightColor</color>
 
-    <color name="colorDrawer">#f1f1f1</color>
+    <color name="colorBackground">@color/primaryLightColor</color>
+    <color name="colorSurface">@color/primaryLightColor</color>
+    <color name="colorError">@color/colorStateRed</color>
 
-    <!--Content Colors-->
-    <color name="colorTextTitle">#424242</color>
-    <color name="colorTextSubtitle">#757575</color>
-    <color name="colorTextContent">#9e9e9e</color>
+    <color name="colorOnPrimary">@color/primaryLightColor</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="colorOnBackground">#000000</color>
+    <color name="colorOnSurface">#000000</color>
+    <color name="colorOnError">@color/primaryLightColor</color>
 
-    <color name="colorShortcutBackground">#EEEEEE</color>
+    <!-- State Light -->
 
-    <color name="colorScrimTransparent">#99323232</color>
+    <color name="colorStateRed">#E61919</color>
+    <color name="colorStateOrange">#F57C00</color>
+    <color name="colorStateYellow">#FBC02D</color>
+    <color name="colorStateBlue">#1976D2</color>
+    <color name="colorStateGreen">#388E3C</color>
+
     <color name="colorTransparentImageBackground">#46000000</color>
 
+    <color name="colorScrim">#52000000</color>
+
+    <color name="colorAccent">@color/colorStateBlue</color>
+
+    <color name="colorPrimaryDark">@color/primaryDarkColor</color>
 </resources>

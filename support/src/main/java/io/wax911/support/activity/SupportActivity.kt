@@ -2,6 +2,7 @@ package io.wax911.support.activity
 
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,9 +10,12 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import io.wax911.support.R
+import io.wax911.support.extension.getCompatColor
 import io.wax911.support.view.contract.CompatView
 import io.wax911.support.fragment.SupportFragment
 import io.wax911.support.presenter.SupportPresenter
@@ -31,17 +35,25 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     protected val viewModel: SupportViewModel<M?, *>? by lazy { initViewModel() }
 
     /**
-     * Some activities may have custom themes and if that's the case
-     * override this method and set your own theme style, also if you wish
-     * to apply the default navigation bar style for light themes
+     * Can be used to configure custom theme styling as desired
      */
     protected fun configureActivity() {
-
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
+                window.navigationBarColor = getCompatColor(R.color.colorPrimary)
+                window.decorView.systemUiVisibility += View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+        }*/
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         configureActivity()
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        initializeComponents(savedInstanceState)
     }
 
     override fun setSupportActionBar(toolbar: Toolbar?) {
@@ -52,11 +64,9 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     fun disableToolbarTitle() = actionBar?.setDisplayShowTitleEnabled(false)
 
     protected fun setTransparentStatusBar() {
-        when {
-            Build.VERSION.SDK_INT >= 21 -> {
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-            }
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
         }
     }
 

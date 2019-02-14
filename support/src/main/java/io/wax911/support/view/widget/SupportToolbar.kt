@@ -21,6 +21,6 @@ class SupportToolbar : Toolbar, CustomView {
      * additional attribute initialization
      */
     override fun onInit() {
-        setBackgroundColor(context.getColorFromAttr(R.attr.colorPrimary))
+
     }
 }

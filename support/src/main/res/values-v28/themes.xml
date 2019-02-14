@@ -3,6 +3,7 @@
 
     <style name="SupportTheme.AppTheme">
         <item name="android:windowLightNavigationBar">@bool/isLightNavigationBar</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
     </style>
 
 </resources>
