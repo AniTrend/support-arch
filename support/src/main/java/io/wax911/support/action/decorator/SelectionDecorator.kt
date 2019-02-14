@@ -26,7 +26,7 @@ interface SelectionDecorator<T> {
             isSelected -> when {
                 viewHolder.itemView is CardView -> viewHolder.itemView
                         .setCardBackgroundColor(
-                                viewHolder.context.getCompatColor(R.color.colorTextGrey2nd)
+                                viewHolder.context.getCompatColor(R.color.colorTextSubtitle)
                         )
                 viewHolder.itemView is CheckBox -> viewHolder.itemView.isChecked = true
                 else -> viewHolder.itemView.setBackgroundResource(R.drawable.selection_frame)

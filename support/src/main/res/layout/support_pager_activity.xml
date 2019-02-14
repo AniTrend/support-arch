@@ -8,7 +8,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/SupportThemeLight.AppBarOverlay">
+        android:theme="@style/SupportTheme.AppBarOverlay">
 
         <include layout="@layout/support_toolbar" />
 
