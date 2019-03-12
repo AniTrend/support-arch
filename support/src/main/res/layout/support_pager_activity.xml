@@ -12,6 +12,8 @@
 
         <include layout="@layout/support_toolbar" />
 
+        <include layout="@layout/support_tab" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/support_pager_content" />

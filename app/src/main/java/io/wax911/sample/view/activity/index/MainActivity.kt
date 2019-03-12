@@ -3,12 +3,14 @@ package io.wax911.sample.view.activity.index
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
@@ -16,9 +18,7 @@ import io.wax911.sample.util.StateUtil
 import io.wax911.sample.view.fragment.detail.FragmentHome
 import io.wax911.sample.view.fragment.list.FragmentHistory
 import io.wax911.support.custom.activity.SupportActivity
-import io.wax911.support.custom.presenter.SupportPresenter
-import io.wax911.support.custom.viewmodel.SupportViewModel
-import io.wax911.support.util.SupportStateUtil
+import io.wax911.support.util.SupportStateKeyUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -26,15 +26,18 @@ import kotlinx.android.synthetic.main.content_main.*
 class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.OnNavigationItemSelectedListener,
         BottomNavigationView.OnNavigationItemSelectedListener  {
 
-    private lateinit var mDrawerToggle: ActionBarDrawerToggle
 
     @IdRes
     private var selectedItem: Int = 0
     @StringRes
     private var selectedTitle: Int = 0
 
+    private lateinit var mDrawerToggle: ActionBarDrawerToggle
+    private var bottomDrawerBehavior: BottomSheetBehavior<View>? = null
+
     private val navigationListener = { item: MenuItem ->
-        drawerLayout.closeDrawer(GravityCompat.START)
+        if (item.groupId != R.id.nav_group_customization)
+            drawerLayout.closeDrawer(GravityCompat.START)
         when (item.itemId) {
             R.id.nav_theme -> presenter.supportPreference?.also {
                 it.toggleTheme()
@@ -81,16 +84,16 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(SupportStateUtil.key_navigation_selected, selectedItem)
-        outState.putInt(SupportStateUtil.key_navigation_title, selectedTitle)
+        outState.putInt(SupportStateKeyUtil.key_navigation_selected, selectedItem)
+        outState.putInt(SupportStateKeyUtil.key_navigation_title, selectedTitle)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SupportStateUtil.key_navigation_selected)
-            selectedTitle = savedInstanceState.getInt(SupportStateUtil.key_navigation_title)
+            selectedItem = savedInstanceState.getInt(SupportStateKeyUtil.key_navigation_selected)
+            selectedTitle = savedInstanceState.getInt(SupportStateKeyUtil.key_navigation_title)
         }
     }
 
@@ -128,11 +131,11 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
         when (menu) {
             R.id.nav_home -> {
                 selectedTitle = R.string.nav_home
-                supportFragment = FragmentHome.newInstance()
+                supportFragment = FragmentHome.newInstance(intent.extras)
             }
             R.id.nav_history -> {
                 selectedTitle = R.string.nav_history
-                supportFragment = FragmentHistory.newInstance()
+                supportFragment = FragmentHistory.newInstance(intent.extras)
             }
         }
 

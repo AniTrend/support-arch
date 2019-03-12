@@ -12,15 +12,16 @@ class SupportExtUnitTest {
 
     @Test
     fun capitalise_exception_isValid() {
-        val list = ArrayList<String>()
-        list.add("just")
-        val output = "this is just a normal sentence".capitalizeWords(list)
+        val exceptions = ArrayList<String>().apply {
+            add("just Sentence")
+        }
+        val output = "this is just a normal sentence".capitalizeWords(exceptions)
         assertEquals("This Is just A Normal Sentence", output)
     }
 
     @Test
     fun capitalise_isValid() {
-        val output = "this is just a normal sentence".capitalizeWords(ArrayList())
+        val output = "this is just a normal sentence".capitalizeWords()
         assertEquals("This Is Just A Normal Sentence", output)
     }
 }

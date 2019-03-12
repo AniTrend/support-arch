@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shortcuts xmlns:tools="http://schemas.android.com/tools"
+<shortcuts
     xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <shortcut
@@ -9,7 +9,7 @@
         android:shortcutShortLabel="@string/action_search">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.mxt.support.view.activity.index.SearchActivity"
-            android:targetPackage="com.mxt.support" />
+            android:targetClass="io.wax911.sample.view.activity.index.MainActivity"
+            android:targetPackage="io.wax911.sample" />
     </shortcut>
 </shortcuts>

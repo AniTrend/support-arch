@@ -7,13 +7,16 @@ import io.wax911.sample.R
 import io.wax911.sample.adapter.recycler.SimpleModelAdapter
 import io.wax911.sample.model.BaseModel
 import io.wax911.sample.presenter.BasePresenter
-import io.wax911.support.custom.fragment.SupportFragment
 import io.wax911.support.custom.fragment.SupportFragmentList
-import io.wax911.support.util.InstanceUtilNoArg
+import io.wax911.support.factory.InstanceCreator
 
 class FragmentHistory : SupportFragmentList<BaseModel, BasePresenter, List<BaseModel>>() {
 
-    companion object : InstanceUtilNoArg<SupportFragment<*, *, *>>({ FragmentHistory() })
+    companion object : InstanceCreator<FragmentHistory, Bundle?>({
+        val fragment = FragmentHistory()
+        fragment.arguments = it
+        fragment
+    })
 
     override fun initPresenter(): BasePresenter = BasePresenter.newInstance(requireContext())
 
@@ -23,7 +26,7 @@ class FragmentHistory : SupportFragmentList<BaseModel, BasePresenter, List<BaseM
      */
     override fun initializeListComponents(savedInstanceState: Bundle?) {
         mColumnSize = R.integer.single_list_size
-        supportViewAdapter = SimpleModelAdapter.newInstance()
+        supportViewAdapter = SimpleModelAdapter()
     }
 
     /**

@@ -3,7 +3,7 @@ package io.wax911.support.custom.viewmodel
 import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
-import io.wax911.support.base.dao.SupportRepository
+import io.wax911.support.repository.SupportRepository
 
 abstract class SupportViewModel<M, K> : ViewModel() {
 

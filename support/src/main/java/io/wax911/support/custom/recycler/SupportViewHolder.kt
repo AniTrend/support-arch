@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.annimon.stream.IntPair
 import io.wax911.support.base.event.ItemClickListener
-import io.wax911.support.util.SupportActionUtil
+import io.wax911.support.custom.action.contract.ISupportActionMode
 
 /**
  * Created by max on 2017/06/09.
@@ -15,7 +15,7 @@ import io.wax911.support.util.SupportActionUtil
 abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
 
     var clickListener: ItemClickListener<T>? = null
-    var supportActionUtil: SupportActionUtil<T>? = null
+    var supportActionMode: ISupportActionMode<T>? = null
 
     val context: Context by lazy { itemView.context.applicationContext }
 
@@ -62,8 +62,9 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
      * Applying selection styling on the desired item
      * @param model the current liveData item
      */
-    fun onBindSelectionState(model: T) = supportActionUtil?.let {
-        it.setBackgroundColor(this, it.selectedItems.contains(model))
+    fun onBindSelectionState(model: T) = supportActionMode?.apply {
+        getSelectionDecorator().setBackgroundColor(this@SupportViewHolder,
+                getAllSelectedItems().contains(model))
     }
 
     /**
@@ -83,7 +84,7 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
      * Called when a view has been clicked and held.
      *
      * @param v The view that was clicked and held.
-     * @return true if the supportActionUtil consumed the long click, false otherwise.
+     * @return true if the supportActionMode consumed the long click, false otherwise.
      */
     protected fun performLongClick(data: T, v: View): Boolean {
         val pair = isValidIndexPair()
@@ -94,10 +95,10 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
     }
 
     private fun isClickable(clicked: T): Boolean =
-            supportActionUtil?.isSelectionClickable(this, clicked) ?: true
+            supportActionMode?.isSelectionClickable(this, clicked) ?: true
 
 
 
     private fun isLongClickable(clicked: T): Boolean =
-            supportActionUtil?.isLongSelectionClickable(this, clicked) ?: true
+            supportActionMode?.isLongSelectionClickable(this, clicked) ?: true
 }

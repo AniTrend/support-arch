@@ -7,26 +7,34 @@ import android.util.Log
 import android.view.*
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.annimon.stream.IntPair
 import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.base.event.ActionModeListener
 import io.wax911.support.base.event.ItemClickListener
-import io.wax911.support.base.view.CompatView
+import io.wax911.support.custom.action.contract.ISupportActionMode
+import io.wax911.support.view.CompatView
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.custom.viewmodel.SupportViewModel
-import io.wax911.support.util.SupportActionUtil
+import io.wax911.support.custom.action.SupportActionMode
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
+import kotlin.coroutines.CoroutineContext
 
-abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, CompatView<VM, P>, ItemClickListener<M> {
+abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), CoroutineScope, ActionModeListener, CompatView<VM, P>, ItemClickListener<M> {
+
+    private lateinit var job: Job
 
     @MenuRes
     protected var inflateMenu: Int = 0
-    protected var snackbar: Snackbar? = null
+    protected var snackBar: Snackbar? = null
 
     protected val presenter: P by lazy { initPresenter() }
     protected val viewModel: SupportViewModel<VM?, *>? by lazy { initViewModel() }
-    protected val supportAction: SupportActionUtil<M> by lazy {
-        SupportActionUtil<M>(this, true)
+    protected val supportAction: ISupportActionMode<M> by lazy {
+        SupportActionMode<M>(this, presenter)
     }
 
     /**
@@ -50,6 +58,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        job = Job()
         retainInstance = true
     }
 
@@ -104,6 +113,16 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     /**
+     * Called when the fragment is no longer in use.  This is called
+     * after [.onStop] and before [.onDetach].
+     */
+    override fun onDestroy() {
+        job.cancel()
+        presenter.onDestroy()
+        super.onDestroy()
+    }
+
+    /**
      * Initialize the contents of the Fragment host's standard options menu.  You
      * should place your menu items in to <var>menu</var>.  For this method
      * to be called, you must have first called [.setHasOptionsMenu].  See
@@ -124,7 +143,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     override fun hasBackPressableAction(): Boolean {
-        if (!supportAction.selectedItems.isEmpty()) {
+        if (!supportAction.getAllSelectedItems().isEmpty()) {
             supportAction.clearSelection()
             return true
         }
@@ -132,9 +151,11 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     /**
-     * Handles what happens when an action mode selection changes
+     * Called when an item is selected or deselected.
+     *
+     * @param mode The current ActionMode being used
      */
-    override fun onSelectionChanged(actionMode: ActionMode, count: Int) {
+    override fun onSelectionChanged(mode: ActionMode?, count: Int) {
 
     }
 
@@ -167,7 +188,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      *
      * @param mode The current ActionMode
      * @param item The item that was clicked
-     * @return true if this supportActionUtil handled the event, false if the standard MenuItem
+     * @return true if this supportActionMode handled the event, false if the standard MenuItem
      * invocation should continue.
      */
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
@@ -186,6 +207,15 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         Log.d(getViewName(), "onSharedPreferenceChanged -> $key | Changed value")
     }
+
+    /**
+     * Context of this scope.
+     */
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Default
+
+    protected fun isAtLeastState(state: Lifecycle.State): Boolean =
+            lifecycle.currentState.isAtLeast(state)
 
     /**
      * When the target view from [View.OnClickListener]

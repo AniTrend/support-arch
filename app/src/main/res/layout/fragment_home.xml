@@ -11,6 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:layout_margin="@dimen/xl_margin"
-        android:text="Hello World"/>
+        android:text="@string/action_search"/>
 
 </androidx.appcompat.widget.ContentFrameLayout>

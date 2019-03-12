@@ -13,19 +13,22 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import io.wax911.support.base.view.CompatView
+import io.wax911.support.view.CompatView
 import io.wax911.support.custom.fragment.SupportFragment
 import io.wax911.support.custom.presenter.SupportPresenter
 import io.wax911.support.custom.viewmodel.SupportViewModel
 import io.wax911.support.isLightTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import org.greenrobot.eventbus.EventBus
+import kotlin.coroutines.CoroutineContext
 
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P> {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CoroutineScope, CompatView<M, P> {
+
+    private lateinit var job: Job
 
     private var isClosing: Boolean = false
-
-    protected var id: Long = -1
-    protected var offScreenLimit = 3
 
     protected var supportFragment : SupportFragment<*, *, *>? = null
 
@@ -40,6 +43,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     protected fun configureActivity() = setThemeStyle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        job = Job()
         configureActivity()
         super.onCreate(savedInstanceState)
     }
@@ -53,16 +57,8 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * Changes the theme style depending on the selected theme
      */
     private fun setThemeStyle() {
-        presenter.supportPreference?.also {
-            when (!it.getTheme().isLightTheme()) {
-                true -> when {
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ->
-                        window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-                    Build.VERSION.SDK_INT > Build.VERSION_CODES.O ->
-                        window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR)
-                }
-            }
-            setTheme(it.getTheme())
+        presenter.supportPreference?.apply {
+            setTheme(getTheme())
         }
     }
 
@@ -135,6 +131,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     }
 
     override fun onDestroy() {
+        job.cancel()
         presenter.onDestroy()
         super.onDestroy()
     }
@@ -149,6 +146,18 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         return super.onBackPressed()
     }
 
+    /**
+     * @return Context of this scope.
+     */
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Default
+
+    /**
+     * Compares if this State is at least equal to the given state.
+     * <br/>
+     *
+     * @param state to compare to the current state
+     */
     protected fun isAtLeastState(state: Lifecycle.State): Boolean =
             lifecycle.currentState.isAtLeast(state)
 
