@@ -9,6 +9,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import io.fabric.sdk.android.Fabric
 import io.wax911.support.analytic.contract.ISupportAnalytics
 import io.wax911.support.extension.empty
+import io.wax911.support.factory.InstanceCreator
 import io.wax911.support.factory.SingletonCreator
 import timber.log.Timber
 
@@ -86,7 +87,7 @@ class AnalyticsUtil private constructor(): Timber.Tree(), ISupportAnalytics {
         analytics?.resetAnalyticsData()
     }
 
-    companion object : SingletonCreator<AnalyticsUtil, Context?> ({
+    companion object : InstanceCreator<AnalyticsUtil, Context?> ({
         AnalyticsUtil().apply {
             try {
                 configureCrashAnalytics(it)

@@ -47,7 +47,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         GlobalScope.launch(Dispatchers.IO) {
-            analyticsUtil = AnalyticsUtil.getInstance(this@App)
+            analyticsUtil = AnalyticsUtil.newInstance(this@App)
             if (BuildConfig.DEBUG)
                 Timber.plant(Timber.DebugTree())
             else
