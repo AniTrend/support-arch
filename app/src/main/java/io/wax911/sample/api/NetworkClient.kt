@@ -1,8 +1,10 @@
 package io.wax911.sample.api
 
-import io.wax911.support.custom.controller.SupportRequestClient
+import io.wax911.support.controller.SupportRequestClient
 import io.wax911.support.extension.logError
-import io.wax911.support.model.ModelWrapper
+import io.wax911.support.factory.InstanceCreator
+import io.wax911.support.util.SupportCoroutineUtil
+import io.wax911.support.wrapper.ModelWrapper
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -13,11 +15,10 @@ class NetworkClient : SupportRequestClient() {
     /**
      * Executes the given retrofit call and returns a deferred result. This function call
      * will require that you call .await() to kick of the execution
-     * <br/>
      *
      * @param call retrofit call to execute
      */
-    override fun <T> executeUsingAsync(call: Call<T>): Deferred<ModelWrapper<T?>> = GlobalScope.async {
+    override fun <T> executeUsingAsync(call: Call<T>): Deferred<ModelWrapper<T?>> = async {
         try {
             callList.add(call)
             val response = call.execute()

@@ -1,5 +1,6 @@
 package io.wax911.support
 
+import io.wax911.support.extension.capitalizeWords
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

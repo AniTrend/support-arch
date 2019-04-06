@@ -4,8 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import io.wax911.support.custom.controller.SupportRequestClient
-import kotlinx.coroutines.Deferred
 
 /**
  * Repository contract

@@ -1,25 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    tools:context=".view.activity.index.MainActivity">
 
-    <include
-        layout="@layout/app_bar_main"
+    <include layout="@layout/content_main" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:elevation="@dimen/xl_margin"
+        android:hapticFeedbackEnabled="true"
+        android:backgroundTint="@color/colorPrimary"
+        app:hideOnScroll="true"
+        app:navigationIcon="@drawable/ic_menu_adaptable_24dp" />
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationDrawer"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingShortcutButton"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/main_drawer" />
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/bottomAppBar"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_code_white_24dp"/>
 
-</androidx.drawerlayout.widget.DrawerLayout>
+    <FrameLayout
+        android:id="@+id/bottomNavigationDrawer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/xl_margin"
+        app:behavior_hideable="true"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        tools:visibility="gone">
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_bottom_sheet"
+            app:headerLayout="@layout/nav_header_main"
+            app:menu="@menu/main_drawer"/>
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

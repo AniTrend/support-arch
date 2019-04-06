@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.wax911.support.custom.widget.SupportRefreshLayout
+    <io.wax911.support.view.widget.SupportRefreshLayout
         android:id="@+id/supportRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants">
 
-        <io.wax911.support.custom.recycler.SupportRecyclerView
+        <io.wax911.support.recycler.SupportRecyclerView
             android:id="@+id/supportRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"/>
 
-    </io.wax911.support.custom.widget.SupportRefreshLayout>
+    </io.wax911.support.view.widget.SupportRefreshLayout>
 
 </com.nguyenhoanglam.progresslayout.ProgressLayout>

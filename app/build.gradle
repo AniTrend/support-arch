@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id("io.fabric")
     id("kotlin-kapt")
     id("kotlin-android")
     id("kotlin-android-extensions")
@@ -27,10 +28,19 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        buildTypes.each {
+            it.buildConfigField("String", "API_URL", API_URL)
+            it.buildConfigField("String", "CLIENT_ID", CLIENT_ID)
+            it.buildConfigField("String", "CLIENT_SECRET", CLIENT_SECRET)
+            it.buildConfigField("int", "DATABASE_SCHEMA", DATABASE_SCHEMA)
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -38,9 +48,9 @@ androidExtensions {
     experimental = true
 }
 
-configurations.all {
+/*configurations.all {
     resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
-}
+}*/
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -58,6 +68,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint"
 
     /** Architecture Components */
+    implementation "androidx.core:core-ktx:$rootProject.coreX"
     implementation "android.arch.work:work-runtime:$rootProject.worker"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.anroidx"
     implementation "androidx.room:room-runtime:$rootProject.anroidx"
@@ -67,9 +78,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:${rootProject.firebase}"
 
     /** Crash Analytics */
-    implementation("com.crashlytics.sdk.android:crashlytics:${rootProject.crashlytics}") {
-        transitive = true
-    }
+    implementation "com.crashlytics.sdk.android:crashlytics:${rootProject.crashlytics}"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
@@ -95,6 +104,9 @@ dependencies {
     /** Flex Box */
     implementation "com.google.android:flexbox:$rootProject.flexBox"
 
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$rootProject.timber"
+
     // (Required) Writing tests for JUnit Jupiter
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.jupiter"
     // (Required) The instrumentation test companion library
@@ -105,3 +117,5 @@ dependencies {
     androidTestRuntimeOnly "org.junit.platform:junit-platform-runner:$rootProject.runner"
     androidTestRuntimeOnly "de.mannodermaus.junit5:android-instrumentation-test-runner:$rootProject.instrumentation"
 }
+
+apply plugin: 'com.google.gms.google-services'
