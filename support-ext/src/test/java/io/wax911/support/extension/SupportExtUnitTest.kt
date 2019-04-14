@@ -1,6 +1,5 @@
-package io.wax911.support.core
+package io.wax911.support.extension
 
-import io.wax911.support.extension.extension.capitalizeWords
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -14,10 +13,10 @@ class SupportExtUnitTest {
     @Test
     fun capitalise_exception_isValid() {
         val exceptions = ArrayList<String>().apply {
-            add("just Sentence")
+            add("just"); add("sentence")
         }
         val output = "this is just a normal sentence".capitalizeWords(exceptions)
-        assertEquals("This Is just A Normal Sentence", output)
+        assertEquals("This Is just A Normal sentence", output)
     }
 
     @Test

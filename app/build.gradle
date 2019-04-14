@@ -4,7 +4,6 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    id("de.mannodermaus.android-junit5")
 }
 
 android {
@@ -15,7 +14,6 @@ android {
         versionCode rootProject.versionCode
         versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
             annotationProcessorOptions {
@@ -109,15 +107,10 @@ dependencies {
     /** Timber */
     implementation "com.jakewharton.timber:timber:$rootProject.timber"
 
-    // (Required) Writing tests for JUnit Jupiter
-    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.jupiter"
-    // (Required) The instrumentation test companion library
-    androidTestImplementation "de.mannodermaus.junit5:android-instrumentation-test:$rootProject.instrumentation"
-
-    // (Required) Runtime dependencies to orchestrate the execution on-device
-    androidTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.jupiter"
-    androidTestRuntimeOnly "org.junit.platform:junit-platform-runner:$rootProject.runner"
-    androidTestRuntimeOnly "de.mannodermaus.junit5:android-instrumentation-test-runner:$rootProject.instrumentation"
+    /** Testing-only dependencies */
+    testImplementation "junit:junit:$rootProject.junit"
+    androidTestImplementation "androidx.test:runner:$rootProject.runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espresso"
 }
 
 apply plugin: 'com.google.gms.google-services'

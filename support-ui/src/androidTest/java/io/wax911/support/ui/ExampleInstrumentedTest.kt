@@ -1,9 +1,9 @@
-package io.wax911.sample
+package io.wax911.support.ui
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.runner.RunWith
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 
@@ -20,7 +20,6 @@ class ExampleInstrumentedTest {
 
     @Test
     fun useAppContext() {
-        // Context of the app under test.
-        Assert.assertEquals("io.wax911.sample.test", appContext.packageName)
+        assertEquals("io.wax911.support.ui.test", appContext.packageName)
     }
 }

@@ -2,8 +2,10 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    id("de.mannodermaus.android-junit5")
+    id("com.github.dcendents.android-maven")
 }
+
+group='com.github.wax911'
 
 android {
     compileSdkVersion rootProject.compileSdk
@@ -13,7 +15,6 @@ android {
         versionCode rootProject.versionCode
         versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -29,9 +30,9 @@ android {
     }
 }
 
-configurations.all {
+/*configurations.all {
     resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
-}
+}*/
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -57,13 +58,8 @@ dependencies {
     /** Event Bus Library */
     implementation "org.greenrobot:eventbus:$rootProject.eventBus"
 
-    // (Required) Writing tests for JUnit Jupiter
-    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.jupiter"
-    // (Required) The instrumentation test companion library
-    androidTestImplementation "de.mannodermaus.junit5:android-instrumentation-test:$rootProject.instrumentation"
-
-    // (Required) Runtime dependencies to orchestrate the execution on-device
-    androidTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.jupiter"
-    androidTestRuntimeOnly "org.junit.platform:junit-platform-runner:$rootProject.runner"
-    androidTestRuntimeOnly "de.mannodermaus.junit5:android-instrumentation-test-runner:$rootProject.instrumentation"
+    /** Testing-only dependencies */
+    testImplementation "junit:junit:$rootProject.junit"
+    androidTestImplementation "androidx.test:runner:$rootProject.runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espresso"
 }

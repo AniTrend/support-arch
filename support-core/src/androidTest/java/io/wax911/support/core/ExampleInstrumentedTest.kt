@@ -1,16 +1,19 @@
 package io.wax911.support.core
 
-import androidx.test.InstrumentationRegistry
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.runner.RunWith
 import org.junit.Assert.assertEquals
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.Test
+
 
 /**
  * Instrumented test, which will execute on an Android device.
  *
- * @see [Testing documentation](http://d.android.com/tools/testing)
+ * @see [Testing documentation](http://d.android.com/tools/testing).
  */
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
+@RunWith(AndroidJUnit4ClassRunner::class)
 class ExampleInstrumentedTest {
 
     private val appContext by lazy { InstrumentationRegistry.getInstrumentation().context }
@@ -18,6 +21,6 @@ class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
         // Context of the app under test.
-        assertEquals("io.wax911.support.test", appContext.packageName)
+        assertEquals("io.wax911.support.core.test", appContext.packageName)
     }
 }
