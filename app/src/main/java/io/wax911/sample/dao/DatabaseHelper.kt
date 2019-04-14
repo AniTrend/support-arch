@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import io.wax911.sample.BuildConfig
 import io.wax911.sample.R
 import io.wax911.sample.model.WebToken
-import io.wax911.support.factory.SingletonCreator
+import io.wax911.support.core.factory.SingletonCreator
 
 @Database(entities = [WebToken::class], version = BuildConfig.DATABASE_SCHEMA)
 abstract class DatabaseHelper : RoomDatabase() {

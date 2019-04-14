@@ -2,7 +2,7 @@ package io.wax911.sample
 
 import android.app.Application
 import io.wax911.sample.util.AnalyticsUtil
-import io.wax911.support.analytic.contract.ISupportAnalytics
+import io.wax911.support.core.analytic.contract.ISupportAnalytics
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

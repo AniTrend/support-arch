@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken
 import io.wax911.sample.App
 import io.wax911.sample.api.RetroFactory
 import io.wax911.sample.dao.DatabaseHelper
-import io.wax911.support.analytic.contract.ISupportAnalytics
+import io.wax911.support.core.analytic.contract.ISupportAnalytics
 import java.lang.reflect.Type
 
 /**
