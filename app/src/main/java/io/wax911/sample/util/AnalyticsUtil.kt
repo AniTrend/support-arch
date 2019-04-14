@@ -7,10 +7,9 @@ import androidx.fragment.app.FragmentActivity
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.fabric.sdk.android.Fabric
-import io.wax911.support.analytic.contract.ISupportAnalytics
+import io.wax911.support.core.analytic.contract.ISupportAnalytics
 import io.wax911.support.extension.empty
-import io.wax911.support.factory.InstanceCreator
-import io.wax911.support.factory.SingletonCreator
+import io.wax911.support.core.factory.InstanceCreator
 import timber.log.Timber
 
 class AnalyticsUtil private constructor(): Timber.Tree(), ISupportAnalytics {

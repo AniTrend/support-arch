@@ -8,7 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.wax911.sample.BuildConfig
 import io.wax911.sample.util.Settings
-import io.wax911.support.factory.SingletonCreator
+import io.wax911.support.core.factory.SingletonCreator
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

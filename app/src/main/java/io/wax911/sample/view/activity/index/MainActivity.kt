@@ -14,8 +14,8 @@ import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
 import io.wax911.sample.util.StateUtil
 import io.wax911.sample.view.fragment.detail.FragmentHome
-import io.wax911.support.activity.SupportActivity
-import io.wax911.support.util.SupportStateKeyStore
+import io.wax911.support.ui.activity.SupportActivity
+import io.wax911.support.core.util.SupportStateKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.OnNavigationItemSelectedListener {

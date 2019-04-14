@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
-import io.wax911.support.fragment.SupportFragment
-import io.wax911.support.factory.InstanceCreator
+import io.wax911.support.ui.fragment.SupportFragment
+import io.wax911.support.core.factory.InstanceCreator
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {

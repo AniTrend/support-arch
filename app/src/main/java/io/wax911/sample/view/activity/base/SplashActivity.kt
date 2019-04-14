@@ -5,9 +5,9 @@ import io.wax911.sample.R
 import io.wax911.sample.databinding.ActivitySplashBinding
 import io.wax911.sample.presenter.BasePresenter
 import io.wax911.sample.view.activity.index.MainActivity
-import io.wax911.support.activity.SupportActivity
+import io.wax911.support.ui.activity.SupportActivity
 import io.wax911.support.extension.startNewActivity
-import io.wax911.support.util.SupportDateUtil
+import io.wax911.support.extension.util.SupportDateUtil
 
 class SplashActivity : SupportActivity<Nothing, BasePresenter>() {
 

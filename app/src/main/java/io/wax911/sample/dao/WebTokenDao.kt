@@ -3,7 +3,7 @@ package io.wax911.sample.dao
 import androidx.room.Dao
 import androidx.room.Query
 import io.wax911.sample.model.WebToken
-import io.wax911.support.dao.SupportQuery
+import io.wax911.support.core.dao.SupportQuery
 
 @Dao
 interface WebTokenDao : SupportQuery<WebToken> {

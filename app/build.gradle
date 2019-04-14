@@ -56,6 +56,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':support-core')
+    implementation project(':support-ext')
+    implementation project(':support-ui')
 
     /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin"
