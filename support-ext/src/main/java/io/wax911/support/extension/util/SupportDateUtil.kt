@@ -1,22 +1,14 @@
-package io.wax911.support.util
+package io.wax911.support.extension.util
 
 import androidx.annotation.IntDef
 import com.annimon.stream.Collectors
 import com.annimon.stream.IntStream
-import io.wax911.support.attribute.SeasonType
+import io.wax911.support.extension.util.attribute.SeasonType
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 object SupportDateUtil {
-
-    private val seasons by lazy {
-        arrayOf(SeasonType.WINTER, SeasonType.WINTER,
-                SeasonType.SPRING, SeasonType.SPRING, SeasonType.SPRING,
-                SeasonType.SUMMER, SeasonType.SUMMER, SeasonType.SUMMER,
-                SeasonType.FALL, SeasonType.FALL, SeasonType.FALL,
-                SeasonType.WINTER)
-    }
 
     /**
      * Gets the current season title for menu

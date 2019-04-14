@@ -1,4 +1,4 @@
-package io.wax911.support.util
+package io.wax911.support.extension.util
 
 import android.annotation.TargetApi
 import android.content.Context

@@ -14,7 +14,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import io.wax911.support.R
 import okhttp3.Cache
 import java.io.File
 
@@ -183,12 +182,12 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor :
  * @param resource The resource id of the drawable or vector drawable
  * @return Drawable tinted with the tint color
  */
-fun Context.getTintedDrawable(@DrawableRes resource : Int) : Drawable? {
+fun Context.getTintedDrawableWithAttribute(@DrawableRes resource : Int, @AttrRes colorAttr: Int) : Drawable? {
     val originalDrawable = getCompatDrawable(resource)
     var drawable : Drawable? = null
     if (originalDrawable != null) {
         drawable = DrawableCompat.wrap(originalDrawable).mutate()
-        DrawableCompat.setTint(drawable, getColorFromAttr(R.attr.titleColor))
+        DrawableCompat.setTint(drawable, getColorFromAttr(colorAttr))
     }
     return drawable
 }
