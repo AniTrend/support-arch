@@ -36,6 +36,8 @@ configurations.all {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation project(':support-ext')
+
     /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesCore"
@@ -52,14 +54,8 @@ dependencies {
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
 
-    /** Java Streams Port */
-    implementation "com.annimon:stream:$rootProject.stream"
-
     /** Event Bus Library */
     implementation "org.greenrobot:eventbus:$rootProject.eventBus"
-
-    /** State Layout Library */
-    implementation "com.github.nguyenhoanglam:ProgressLayout:$rootProject.stateLayout"
 
     // (Required) Writing tests for JUnit Jupiter
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.jupiter"
