@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material X Light Colors -->
+
+    <color name="primaryColor">#fafafa</color>
+    <color name="primaryLightColor">#ffffff</color>
+    <color name="primaryDarkColor">#c7c7c7</color>
+
+    <color name="secondaryColor">#ffffff</color>
+    <color name="secondaryLightColor">#ffffff</color>
+    <color name="secondaryDarkColor">#cccccc</color>
+
+    <color name="primaryTextColor">#424242</color>
+    <color name="secondaryTextColor">#757575</color>
+
+    <color name="colorPrimary">@color/primaryColor</color>
+    <color name="colorPrimaryVariant">@color/primaryLightColor</color>
+    <color name="colorSecondary">@color/secondaryColor</color>
+    <color name="colorSecondaryVariant">@color/secondaryLightColor</color>
+
+    <color name="colorBackground">@color/primaryLightColor</color>
+    <color name="colorSurface">@color/primaryLightColor</color>
+    <color name="colorError">@color/colorStateRed</color>
+
+    <color name="colorOnPrimary">@color/primaryLightColor</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="colorOnBackground">#000000</color>
+    <color name="colorOnSurface">#000000</color>
+    <color name="colorOnError">@color/primaryLightColor</color>
+
+    <!-- State Light -->
+
+    <color name="colorStateRed">#E61919</color>
+    <color name="colorStateOrange">#F57C00</color>
+    <color name="colorStateYellow">#FBC02D</color>
+    <color name="colorStateBlue">#1976D2</color>
+    <color name="colorStateGreen">#388E3C</color>
+
+    <color name="colorTransparentImageBackground">#46000000</color>
+
+    <color name="colorScrim">#52000000</color>
+
+    <color name="colorAccent">@color/colorStateBlue</color>
+
+    <color name="colorPrimaryDark">@color/primaryDarkColor</color>
+</resources>

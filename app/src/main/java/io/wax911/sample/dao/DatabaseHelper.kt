@@ -6,14 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import io.wax911.sample.BuildConfig
 import io.wax911.sample.R
-import io.wax911.sample.model.BaseModel
 import io.wax911.sample.model.WebToken
-import io.wax911.support.factory.SingletonCreator
+import io.wax911.support.core.factory.SingletonCreator
 
-@Database(entities = [WebToken::class, BaseModel::class], version = BuildConfig.VERSION_CODE)
+@Database(entities = [WebToken::class], version = BuildConfig.DATABASE_SCHEMA)
 abstract class DatabaseHelper : RoomDatabase() {
     abstract fun webTokenDao(): WebTokenDao
-    abstract fun baseModelDao(): BaseModelDao
 
     companion object : SingletonCreator<DatabaseHelper, Context>({
         Room.databaseBuilder(it.applicationContext,

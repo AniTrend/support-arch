@@ -1,9 +1,9 @@
 plugins {
     id("com.android.application")
+    id("io.fabric")
     id("kotlin-kapt")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    id("de.mannodermaus.android-junit5")
 }
 
 android {
@@ -14,7 +14,6 @@ android {
         versionCode rootProject.versionCode
         versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
         vectorDrawables.useSupportLibrary = true
         javaCompileOptions {
             annotationProcessorOptions {
@@ -27,10 +26,19 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        buildTypes.each {
+            it.buildConfigField("String", "API_URL", API_URL)
+            it.buildConfigField("String", "CLIENT_ID", CLIENT_ID)
+            it.buildConfigField("String", "CLIENT_SECRET", CLIENT_SECRET)
+            it.buildConfigField("int", "DATABASE_SCHEMA", DATABASE_SCHEMA)
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -38,14 +46,16 @@ androidExtensions {
     experimental = true
 }
 
-configurations.all {
+/*configurations.all {
     resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
-}
+}*/
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(":support")
+    implementation project(':support-core')
+    implementation project(':support-ext')
+    implementation project(':support-ui')
 
     /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin"
@@ -58,6 +68,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint"
 
     /** Architecture Components */
+    implementation "androidx.core:core-ktx:$rootProject.coreX"
     implementation "android.arch.work:work-runtime:$rootProject.worker"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.anroidx"
     implementation "androidx.room:room-runtime:$rootProject.anroidx"
@@ -67,9 +78,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:${rootProject.firebase}"
 
     /** Crash Analytics */
-    implementation("com.crashlytics.sdk.android:crashlytics:${rootProject.crashlytics}") {
-        transitive = true
-    }
+    implementation "com.crashlytics.sdk.android:crashlytics:${rootProject.crashlytics}"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
@@ -95,13 +104,13 @@ dependencies {
     /** Flex Box */
     implementation "com.google.android:flexbox:$rootProject.flexBox"
 
-    // (Required) Writing tests for JUnit Jupiter
-    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:$rootProject.jupiter"
-    // (Required) The instrumentation test companion library
-    androidTestImplementation "de.mannodermaus.junit5:android-instrumentation-test:$rootProject.instrumentation"
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$rootProject.timber"
 
-    // (Required) Runtime dependencies to orchestrate the execution on-device
-    androidTestRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$rootProject.jupiter"
-    androidTestRuntimeOnly "org.junit.platform:junit-platform-runner:$rootProject.runner"
-    androidTestRuntimeOnly "de.mannodermaus.junit5:android-instrumentation-test-runner:$rootProject.instrumentation"
+    /** Testing-only dependencies */
+    testImplementation "junit:junit:$rootProject.junit"
+    androidTestImplementation "androidx.test:runner:$rootProject.runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espresso"
 }
+
+apply plugin: 'com.google.gms.google-services'

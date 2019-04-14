@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.R
 import io.wax911.sample.presenter.BasePresenter
-import io.wax911.support.custom.fragment.SupportFragment
-import io.wax911.support.factory.InstanceCreator
+import io.wax911.support.ui.fragment.SupportFragment
+import io.wax911.support.core.factory.InstanceCreator
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
@@ -19,6 +19,18 @@ class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
     })
 
     override fun initPresenter(): BasePresenter = BasePresenter.newInstance(context)
+
+    /**
+     * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
+     * then this method will be called in [SupportFragment.onCreate]. Otherwise [SupportActivity.onPostCreate]
+     * invokes this function
+     *
+     * @see [SupportActivity.onPostCreate] and [SupportFragment.onCreate]
+     * @param
+     */
+    override fun initializeComponents(savedInstanceState: Bundle?) {
+
+    }
 
     /**
      * Called to have the fragment instantiate its user interface view.
@@ -62,11 +74,11 @@ class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
      * Update views or bind a liveData to them
      */
     override fun updateUI() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun makeRequest() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     /**

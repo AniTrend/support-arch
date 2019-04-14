@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light Application Theme -->
+    <style name="SupportTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="cardColor">@color/colorPrimary</item>
+        <item name="drawerColor">@color/primaryColor</item>
+
+        <item name="rootColor">@color/colorPrimary</item>
+        <item name="lineColor">@color/colorPrimaryVariant</item>
+        <item name="titleColor">@color/primaryTextColor</item>
+        <item name="subtitleColor">@color/secondaryTextColor</item>
+        <item name="contentColor">@color/secondaryTextColor</item>
+        <item name="toolbarColor">@style/SupportTheme.ToolbarTheme</item>
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:textViewStyle">@style/SupportTheme.FontFamily</item>
+
+        <item name="android:listDivider">@color/primaryColor</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:popupMenuStyle">@style/SupportTheme.PopupTheme</item>
+
+        <item name="scrimBackground">@color/colorScrim</item>
+    </style>
+
+    <style name="SupportTheme.AppTheme" />
+
+</resources>

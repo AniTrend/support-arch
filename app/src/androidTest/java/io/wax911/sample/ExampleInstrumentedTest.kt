@@ -1,17 +1,19 @@
 package io.wax911.sample
 
-import androidx.test.InstrumentationRegistry
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.runner.RunWith
 import org.junit.Assert
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.Test
 
 
 /**
  * Instrumented test, which will execute on an Android device.
  *
- * See [testing documentation](http://d.android.com/tools/testing).
+ * @see [Testing documentation](http://d.android.com/tools/testing).
  */
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+
+@RunWith(AndroidJUnit4ClassRunner::class)
 class ExampleInstrumentedTest {
 
     private val appContext by lazy { InstrumentationRegistry.getInstrumentation().context }

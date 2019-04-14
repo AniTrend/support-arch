@@ -5,14 +5,24 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class WebToken(
-        @PrimaryKey val id: Long,
-        val refresh_token: String,
+        @PrimaryKey var id: Long = 0,
         val access_token: String,
-        val token_type: String,
         val expires_in: Long,
-        val expires: Long) : Cloneable {
+        var expiry_time: Long = 0,
+        val token_type: String,
+        val scope: String,
+        val refresh_token: String) : Cloneable {
 
-    fun getHeader() : String = "$token_type $access_token"
+    fun calculateExpires() {
+        expiry_time = (System.currentTimeMillis() / 1000L) + ((expires_in - 1500))
+    }
+
+    fun hasExpired(): Boolean {
+        val currentSystemTime = (System.currentTimeMillis() / 1000L)
+        return expiry_time < currentSystemTime
+    }
+
+    fun getHeader() = "$token_type $access_token"
 
     override fun clone(): WebToken {
         super.clone()

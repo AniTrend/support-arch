@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<io.wax911.support.custom.widget.SupportToolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/supportToolbar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="?attr/toolbarColor" />
