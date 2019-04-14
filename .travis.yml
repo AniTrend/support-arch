@@ -36,6 +36,10 @@ licenses:
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  
+before_script:
+  - mv ./.travic-ci/services ./app/google-services.json
+  - mv ./.travic-ci/secrets ./secrets.properties
 
 cache:
   directories:
