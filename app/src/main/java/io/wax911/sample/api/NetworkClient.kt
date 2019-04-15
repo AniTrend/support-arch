@@ -1,12 +1,11 @@
 package io.wax911.sample.api
 
+import io.wax911.sample.extension.logError
 import io.wax911.support.core.controller.SupportRequestClient
-import io.wax911.support.extension.logError
 import io.wax911.support.core.wrapper.ModelWrapper
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import retrofit2.Call
-import timber.log.Timber
 
 class NetworkClient : SupportRequestClient() {
 
@@ -22,7 +21,7 @@ class NetworkClient : SupportRequestClient() {
             val response = call.execute()
 
             if (!response.isSuccessful)
-                Timber.d(response.errorBody().logError())
+                response.errorBody().logError()
 
             return@async ModelWrapper<T?>(response.code(),
                     response.body(),

@@ -174,8 +174,10 @@ abstract class SupportViewAdapter<T> : RecyclerView.Adapter<SupportViewHolder<T>
      *
      * @see [SupportViewHolder.onViewRecycled]
      */
-    override fun onViewRecycled(holder: SupportViewHolder<T>) =
+    override fun onViewRecycled(holder: SupportViewHolder<T>) {
+        holder.clickListener = null
         holder.onViewRecycled()
+    }
 
 
     /**

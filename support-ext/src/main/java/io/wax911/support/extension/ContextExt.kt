@@ -14,8 +14,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import okhttp3.Cache
-import java.io.File
 
 /**
  * Exactly whether a device is low-RAM is ultimately up to the device configuration, but currently
@@ -41,17 +39,6 @@ fun Context?.isConnectedToNetwork() : Boolean = this?.let {
         .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
     return connectivityManager?.activeNetworkInfo?.isConnected ?: false
 } ?: false
-
-/**
- * Creates an abstract file that will be used by OkHttp to cache HTTP and HTTPS responses
- * to the filesystem so they may be reused, saving time and bandwidth.
- *
- * @return Cache object
- */
-fun Context?.getOkHttpCache(cacheLimit: Long) : Cache? = this?.let {
-    val cacheDirectory = File(it.cacheDir, "response-cache")
-    return Cache(cacheDirectory, cacheLimit)
-}
 
 /**
  * Start a new activity from context and avoid potential crashes from early API levels

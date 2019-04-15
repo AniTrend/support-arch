@@ -32,8 +32,6 @@ dependencies {
 
     /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesAndroid"
 
     /** Material Design */
     implementation "com.google.android.material:material:$rootProject.material"
@@ -43,10 +41,6 @@ dependencies {
 
     /** Java Streams Port */
     implementation "com.annimon:stream:$rootProject.stream"
-
-    /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
-
 
     /** Testing-only dependencies */
     testImplementation "junit:junit:$rootProject.junit"

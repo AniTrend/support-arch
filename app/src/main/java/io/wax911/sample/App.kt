@@ -11,8 +11,9 @@ import timber.log.Timber
 
 class App : Application() {
 
-    @Volatile
-    var analyticsUtil: ISupportAnalytics? = null
+    val analyticsUtil: ISupportAnalytics by lazy {
+        AnalyticsUtil.newInstance(this)
+    }
 
     init {
         EventBus.builder().logNoSubscriberMessages(BuildConfig.DEBUG)
@@ -47,11 +48,10 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         GlobalScope.launch(Dispatchers.IO) {
-            analyticsUtil = AnalyticsUtil.newInstance(this@App)
-            if (BuildConfig.DEBUG)
-                Timber.plant(Timber.DebugTree())
-            else
-                Timber.plant(analyticsUtil as AnalyticsUtil)
+            when (BuildConfig.DEBUG) {
+                true -> Timber.plant(Timber.DebugTree())
+                else -> Timber.plant(analyticsUtil as AnalyticsUtil)
+            }
         }
     }
 }
