@@ -18,6 +18,15 @@ abstract class SupportRequestClient: SupportCoroutineUtil {
     abstract fun <T> executeUsingAsync(call: Call<T>): Deferred<RetroWrapper<T?>>
 
     /**
+     * Executes the given retrofit call and returns a result. This function call
+     * will require that you execute it in a async context to avoid exceptions
+     * caused by running network calls on the main thread
+     *
+     * @param call retrofit call to execute
+     */
+    abstract fun <T> executeUsing(call: Call<T>): RetroWrapper<T?>
+
+    /**
      * Cancels all the call requests that were used in the executeUsing function
      *
      * @see [io.wax911.support.core.controller.SupportRequestClient.executeUsingAsync]
