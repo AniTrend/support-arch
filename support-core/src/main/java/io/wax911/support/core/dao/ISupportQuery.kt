@@ -5,14 +5,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Update
 
-interface SupportQuery<T> {
+interface ISupportQuery<T> {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(attribute: T)
+    fun insert(vararg attribute: T)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(attribute: T)
+    fun update(vararg attribute: T)
 
     @Delete
-    fun delete(attribute: T)
+    fun delete(vararg attribute: T)
 }

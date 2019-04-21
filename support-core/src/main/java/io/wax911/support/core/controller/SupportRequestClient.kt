@@ -1,7 +1,7 @@
 package io.wax911.support.core.controller
 
 import io.wax911.support.core.util.SupportCoroutineUtil
-import io.wax911.support.core.wrapper.ModelWrapper
+import io.wax911.support.core.wrapper.RetroWrapper
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
 
@@ -15,7 +15,7 @@ abstract class SupportRequestClient: SupportCoroutineUtil {
      *
      * @param call retrofit call to execute
      */
-    abstract fun <T> executeUsingAsync(call: Call<T>): Deferred<ModelWrapper<T?>>
+    abstract fun <T> executeUsingAsync(call: Call<T>): Deferred<RetroWrapper<T?>>
 
     /**
      * Cancels all the call requests that were used in the executeUsing function

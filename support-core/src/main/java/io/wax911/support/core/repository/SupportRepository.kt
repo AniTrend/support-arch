@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import io.wax911.support.core.controller.SupportRequestClient
-import io.wax911.support.core.dao.SupportQuery
+import io.wax911.support.core.dao.ISupportQuery
 import io.wax911.support.core.repository.contract.ISupportRepository
 import io.wax911.support.core.util.SupportCoroutineUtil
 import io.wax911.support.extension.isConnectedToNetwork
@@ -14,7 +14,7 @@ import kotlinx.coroutines.*
 
 abstract class SupportRepository<K, V>: ISupportRepository<K, V>, SupportCoroutineUtil {
 
-    protected var modelDao: SupportQuery<V>? = null
+    protected var modelDao: ISupportQuery<V>? = null
     protected val networkClient: SupportRequestClient by lazy { initNetworkClient() }
 
     val liveData : MutableLiveData<V?> by lazy { MutableLiveData<V?>() }
