@@ -27,10 +27,6 @@ android {
     }
 }
 
-/*configurations.all {
-    resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
-}*/
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -48,12 +44,16 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.anroidx"
     implementation "android.arch.work:work-runtime:$rootProject.worker"
     implementation "androidx.room:room-runtime:$rootProject.anroidx"
+    implementation "android.arch.paging:runtime:$paging"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
 
     /** Event Bus Library */
     implementation "org.greenrobot:eventbus:$rootProject.eventBus"
+
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$timber"
 
     /** Testing-only dependencies */
     testImplementation "junit:junit:$rootProject.junit"

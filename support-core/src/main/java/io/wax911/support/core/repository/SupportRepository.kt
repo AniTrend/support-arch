@@ -25,7 +25,7 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V>, SupportCorouti
      *
      * @param model item which should be saved
      */
-    override fun save(model : V) { modelDao?.insert(model) }
+    override suspend fun save(model : V) { modelDao?.insert(model) }
 
     /**
      * Updates the given model to the database
@@ -33,7 +33,7 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V>, SupportCorouti
      *
      * @param model item which should be updated
      */
-    override fun update(model : V) { modelDao?.update(model) }
+    override suspend fun update(model : V) { modelDao?.update(model) }
 
     /**
      * Deletes the given model from the database
@@ -41,7 +41,7 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V>, SupportCorouti
      *
      * @param model item which should be deleted
      */
-    override fun delete(model : V) { modelDao?.delete(model) }
+    override suspend fun delete(model : V) { modelDao?.delete(model) }
 
     /**
      * Sets the given life cycle owner to observe changes in the live data that

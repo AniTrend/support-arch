@@ -7,22 +7,29 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentStatePagerAdapter
 import io.wax911.support.extension.empty
 import io.wax911.support.extension.getStringList
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
-abstract class SupportPageAdapter(protected val context: FragmentActivity): FragmentStatePagerAdapter(context.supportFragmentManager) {
+abstract class SupportPageAdapter(
+    protected val context: FragmentActivity
+): FragmentStatePagerAdapter(context.supportFragmentManager) {
 
-    val bundle by lazy { Bundle() }
-    val titles: ArrayList<String> by lazy { ArrayList<String>() }
+    val titles by lazy {
+        ArrayList<String>()
+    }
+
+    val bundle by lazy {
+        Bundle()
+    }
 
     /**
      * Sets the given array resources as standard strings titles
-     * <br/>
      *
      * @param titleRes array resource of which titles to use
      */
     fun setPagerTitles(@ArrayRes titleRes: Int) {
-        if (titles.size > 0)
+        if (titles.isNotEmpty())
             titles.clear()
         titles.addAll(context.getStringList(titleRes))
     }
@@ -51,6 +58,7 @@ abstract class SupportPageAdapter(protected val context: FragmentActivity): Frag
     override fun getPageTitle(position: Int): CharSequence {
         if (position <= titles.size)
             return titles[position].toUpperCase(Locale.getDefault())
+        Timber.tag(toString()).w("Page title at position: $position doesn't have a corresponding title, returning empty string")
         return String.empty()
     }
 }

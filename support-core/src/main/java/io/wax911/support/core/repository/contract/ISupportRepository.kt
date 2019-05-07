@@ -16,7 +16,7 @@ interface ISupportRepository<K, V> {
      *
      * @param model item which should be saved
      */
-    fun save(model : V)
+    suspend fun save(model : V)
 
     /**
      * Updates the given model to the database
@@ -24,17 +24,17 @@ interface ISupportRepository<K, V> {
      *
      * @param model item which should be updated
      */
-    fun update(model : V)
+    suspend fun update(model : V)
 
     /**
      * Find any specific items from our database using a key
      */
-    fun find(key : K) : V? = null
+    suspend fun find(key : K) : V? = null
 
     /**
      * Find any specific items from our database
      */
-    fun find() : V? = null
+    suspend fun find() : V? = null
 
     /**
      * Deletes the given model from the database
@@ -42,7 +42,7 @@ interface ISupportRepository<K, V> {
      *
      * @param model item which should be deleted
      */
-    fun delete(model : V)
+    suspend fun delete(model : V)
 
 
     /**

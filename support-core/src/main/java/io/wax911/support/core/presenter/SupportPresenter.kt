@@ -7,21 +7,14 @@ import io.wax911.support.core.preference.SupportPreference
 import io.wax911.support.core.preference.event.OnSharedPreferencesLifecycleBind
 import io.wax911.support.core.recycler.event.SupportScrollListener
 import io.wax911.support.core.util.SupportCoroutineUtil
-import io.wax911.support.core.util.SupportLifecycleUtil
 import org.greenrobot.eventbus.EventBus
 
-abstract class SupportPresenter<S : SupportPreference>(protected var context: Context?) : SupportScrollListener(),
-    OnSharedPreferencesLifecycleBind, SupportCoroutineUtil, SupportLifecycleUtil.LifecycleCallback {
-
-    init {
-        SupportLifecycleUtil(context).apply {
-            lifecycleCallback = this@SupportPresenter
-        }
-    }
+abstract class SupportPresenter<S : SupportPreference>(
+    protected val context: Context?,
+    protected val supportPreference: S?
+) : SupportScrollListener(), OnSharedPreferencesLifecycleBind, SupportCoroutineUtil {
 
     val bundle by lazy { Bundle() }
-
-    val supportPreference: S? by lazy { createPreference() }
 
     /**
      * Enables or disables action mode, behaviour should be implemented in your adapter, in
@@ -56,37 +49,6 @@ abstract class SupportPresenter<S : SupportPreference>(protected var context: Co
         supportPreference?.sharedPreferences
                 ?.registerOnSharedPreferenceChangeListener(changeListener)
     }
-
-    /**
-     * Called when the parent lifecycle owners state changes to
-     * [androidx.fragment.app.FragmentActivity.onPause]
-     *
-     * @see [androidx.lifecycle.Lifecycle]
-     */
-    override fun onParentPaused() { }
-
-    /**
-     * Called when the parent lifecycle owners state changes to
-     * [androidx.fragment.app.FragmentActivity.onResume]
-     *
-     * @see [androidx.lifecycle.Lifecycle]
-     */
-    override fun onParentResumed() { }
-
-    /**
-     * Called when the parent lifecycle owners state changes to
-     * [androidx.fragment.app.FragmentActivity.onDestroy]
-     *
-     * @see [androidx.lifecycle.Lifecycle]
-     */
-    override fun onParentDestroyed() = cancelAllChildren()
-
-    /**
-     * Provides the preference object to the lazy initializer
-     *
-     * @return instance of the preference class
-     */
-    protected abstract fun createPreference() : S?
 
     companion object {
 

@@ -28,10 +28,10 @@ interface SupportCoroutineUtil : CoroutineScope {
     /**
      * Coroutine dispatcher specification
      *
-     * @return [kotlinx.coroutines.Dispatchers.IO] by default
+     * @return [kotlinx.coroutines.Dispatchers.Default] by default
      */
     val coroutineDispatcher: CoroutineDispatcher
-        get() = Dispatchers.IO
+        get() = Dispatchers.Default
 
     /**
      * For more details regarding how cancellation is handled

@@ -19,21 +19,20 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPrefere
         get() = 110
 
     /**
-     * Used by [SupportFragment.presenter] and [SupportActivity.presenter] lazy delegate
-     * to create a presenter extending [SupportPresenter]
+     * Should be created lazily through injection or lazy delegate
      *
-     * @return [SupportPresenter] that will be used by the fragment activity
+     * @return presenter of the generic type specified
      */
-    fun initPresenter() : P
+    val presenter: P
+
 
     /**
-     * @return the target view model, assuming that the fragment activity needs one
+     * Should be created lazily through injection or lazy delegate
+     *
+     * @return view model of the given type
      */
-    fun initViewModel() : SupportViewModel<VM?, *>? {
-        throw NotImplementedError("Did you forget to override " +
-                "`initViewModel() : SupportViewModel<VM?, *>?` " +
-                "in your activity/fragment -> ${getViewName()}")
-    }
+    val viewModel: SupportViewModel<VM?, *>?
+        get() = null
 
     /**
      * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]

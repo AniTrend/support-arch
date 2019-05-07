@@ -5,14 +5,12 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import io.wax911.support.core.presenter.SupportPresenter
 
-abstract class SupportWorker<P : SupportPresenter<*>>(context: Context, workerParameters: WorkerParameters): Worker(context, workerParameters) {
+abstract class SupportWorker<P : SupportPresenter<*>>(
+    context: Context,
+    workerParameters: WorkerParameters
+): Worker(context, workerParameters) {
 
-    protected val presenter by lazy { initPresenter() }
-
-    /**
-     * @return the presenter that will be used by the worker
-     */
-    protected abstract fun initPresenter(): P
+    protected open val presenter: P? = null
 
     /**
      * Override this method to do your actual background processing.  This method is called on a
