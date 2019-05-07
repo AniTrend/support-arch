@@ -2,7 +2,6 @@ package io.wax911.support.ui.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.nguyenhoanglam.progresslayout.ProgressLayout
-import io.wax911.support.ui.R
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.recycler.adapter.SupportViewAdapter
 import io.wax911.support.core.recycler.event.RecyclerLoadListener
@@ -22,10 +20,12 @@ import io.wax911.support.core.util.SupportStateKeyStore
 import io.wax911.support.extension.getCompatDrawable
 import io.wax911.support.extension.isStateAtLeast
 import io.wax911.support.extension.snackBar
+import io.wax911.support.ui.R
 import io.wax911.support.ui.extension.*
 import io.wax911.support.ui.recycler.SupportRecyclerView
 import io.wax911.support.ui.view.widget.SupportRefreshLayout
 import kotlinx.android.synthetic.main.support_list.*
+import timber.log.Timber
 
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFragment<M, P, VM>(),
         RecyclerLoadListener, SupportRefreshLayout.OnRefreshAndLoadListener, ItemClickListener<M> {
@@ -43,7 +43,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     protected lateinit var supportRecyclerView: SupportRecyclerView
 
     private val stateLayoutOnClick by lazy {
-        android.view.View.OnClickListener {
+        View.OnClickListener {
             resetWidgetStates()
             progressLayout.showContentLoading()
             onRefresh()
@@ -51,7 +51,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     }
 
     private val snackBarOnClickListener by lazy {
-        android.view.View.OnClickListener {
+        View.OnClickListener {
             resetWidgetStates()
             supportRefreshLayout.isLoading = true
             makeRequest()
@@ -137,9 +137,9 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         supportRecyclerView.layoutManager = StaggeredGridLayoutManager(
                 resources.getInteger(mColumnSize), StaggeredGridLayoutManager.VERTICAL)
 
-        supportRefreshLayout.also {
-            it.configureWidgetBehaviorWith(activity, presenter)
-            it.setOnRefreshAndLoadListener(this)
+        supportRefreshLayout.apply {
+            configureWidgetBehaviorWith(activity, presenter)
+            setOnRefreshAndLoadListener(this@SupportFragmentList)
         }
     }
 
@@ -279,12 +279,10 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                     supportRecyclerView.addOnScrollListener(presenter)
                 }
                 else ->
-                    Log.d(getViewName(), "attachScrollListener() already has " +
-                            "OnScrollListener set, skipping this step")
+                    Timber.tag(getViewName()).d("attachScrollListener() already has OnScrollListener set, skipping this step")
             }
             else ->
-                Log.d(getViewName(), "Skipping attachScrollListener() " +
-                        "presenter.isPager -> ${presenter.isPager}")
+                Timber.tag(getViewName()).d("Skipping attachScrollListener() presenter.isPager -> ${presenter.isPager}")
         }
     }
 
@@ -292,8 +290,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         when {
             presenter.isPager -> supportRecyclerView.clearOnScrollListeners()
             else ->
-                Log.d(getViewName(), "Skipping detachScrollListener() " +
-                        "presenter.isPager -> ${presenter.isPager}")
+                Timber.tag(getViewName()).d( "Skipping detachScrollListener() presenter.isPager -> ${presenter.isPager}")
         }
     }
 

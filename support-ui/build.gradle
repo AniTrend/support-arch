@@ -52,6 +52,8 @@ dependencies {
     /** State Layout Library */
     implementation "com.github.nguyenhoanglam:ProgressLayout:$rootProject.stateLayout"
 
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$timber"
 
     /** Testing-only dependencies */
     testImplementation "junit:junit:$rootProject.junit"

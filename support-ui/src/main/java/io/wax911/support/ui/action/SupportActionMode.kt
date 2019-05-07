@@ -13,8 +13,10 @@ import java.util.*
  * Created by max on 2017/07/17.
  * Custom action mode holder class
  */
-class SupportActionMode<T>(private val actionModeListener: ActionModeListener?,
-                           var presenter: SupportPresenter<*>): ISupportActionMode<T> {
+class SupportActionMode<T>(
+    private val actionModeListener: ActionModeListener?,
+    private val presenter: SupportPresenter<*>?
+): ISupportActionMode<T> {
 
     private var actionMode: ActionMode? = null
 
@@ -22,7 +24,10 @@ class SupportActionMode<T>(private val actionModeListener: ActionModeListener?,
 
     private val selectedItems: MutableList<T> by lazy { ArrayList<T>() }
 
-    private var selectionDecorator: SelectionDecorator<T> = object: SelectionDecorator<T> { }
+    private var selectionDecorator: SelectionDecorator<T> =
+        object: SelectionDecorator<T> {
+
+        }
 
     private fun startActionMode(viewHolder: SupportViewHolder<T>) {
         if (selectedItems.isEmpty())
@@ -78,7 +83,7 @@ class SupportActionMode<T>(private val actionModeListener: ActionModeListener?,
      *  @see SupportViewHolder.isClickable
      */
     override fun isSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T) = when {
-        !presenter.isActionModeEnabled || selectedItems.isEmpty() -> true
+        presenter?.isActionModeEnabled != true || selectedItems.isEmpty() -> true
         else -> when (selectedItems.contains(objectItem)) {
             true -> { deselectItem(viewHolder, objectItem); false }
             else -> { selectItem(viewHolder, objectItem); false }
@@ -98,7 +103,7 @@ class SupportActionMode<T>(private val actionModeListener: ActionModeListener?,
      * @see SupportViewHolder.isLongClickable
      */
     override fun isLongSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T) = when {
-        !presenter.isActionModeEnabled -> false
+        presenter?.isActionModeEnabled != true -> false
         else ->  when (selectedItems.contains(objectItem)) {
             true -> { deselectItem(viewHolder, objectItem); true }
             else -> { selectItem(viewHolder, objectItem); true }

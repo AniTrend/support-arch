@@ -3,21 +3,18 @@ package io.wax911.support.ui.fragment
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import io.wax911.support.core.action.event.ActionModeListener
 import io.wax911.support.core.action.contract.ISupportActionMode
-import io.wax911.support.core.view.contract.CompatView
+import io.wax911.support.core.action.event.ActionModeListener
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.viewmodel.SupportViewModel
-import io.wax911.support.ui.action.SupportActionMode
 import io.wax911.support.core.util.SupportCoroutineUtil
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import io.wax911.support.core.view.contract.CompatView
+import io.wax911.support.ui.action.SupportActionMode
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener,
         CompatView<VM, P>, SupportCoroutineUtil {
@@ -26,10 +23,11 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     protected var inflateMenu: Int = CompatView.NO_MENU_ITEM
     protected var snackBar: Snackbar? = null
 
-    protected val presenter: P by lazy { initPresenter() }
-    protected val viewModel: SupportViewModel<VM?, *>? by lazy { initViewModel() }
     protected val supportAction: ISupportActionMode<M> by lazy {
-        SupportActionMode<M>(this, presenter)
+        SupportActionMode<M>(
+            actionModeListener = this,
+            presenter = presenter
+        )
     }
 
     /**
@@ -136,7 +134,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     override fun hasBackPressableAction(): Boolean {
-        if (!supportAction.getAllSelectedItems().isEmpty()) {
+        if (supportAction.getAllSelectedItems().isNotEmpty()) {
             supportAction.clearSelection()
             return true
         }
@@ -198,16 +196,8 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        Log.d(getViewName(), "onSharedPreferenceChanged -> $key | Changed value")
+        Timber.tag(getViewName()).d("onSharedPreferenceChanged -> $key | Changed value")
     }
-
-    /**
-     * Coroutine dispatcher specification
-     *
-     * @return [kotlinx.coroutines.Dispatchers.IO] by default
-     */
-    override val coroutineDispatcher: CoroutineDispatcher
-        get() = Dispatchers.Default
 
     /**
      * Called when the data is changed.
