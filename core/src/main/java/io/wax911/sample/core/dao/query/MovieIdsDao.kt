@@ -1,0 +1,13 @@
+package io.wax911.sample.core.dao.query
+
+import androidx.room.Dao
+import androidx.room.Query
+import io.wax911.sample.core.model.movie.contract.MovieIds
+import io.wax911.support.core.dao.ISupportQuery
+
+@Dao
+interface MovieIdsDao: ISupportQuery<MovieIds> {
+
+    @Query("select count(trakt) from MovieIds")
+    fun count(): Int
+}

@@ -1,4 +1,4 @@
-package io.wax911.sample.util
+package io.wax911.sample.core.util
 
 object StateUtil  {
 

@@ -1,4 +1,4 @@
-package io.wax911.sample.extension
+package io.wax911.sample.core.extension
 
 import okhttp3.ResponseBody
 import timber.log.Timber
