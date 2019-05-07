@@ -39,8 +39,8 @@ dependencies {
     /** Architecture Components */
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.anroidx"
 
-    /** Java Streams Port */
-    implementation "com.annimon:stream:$rootProject.stream"
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$timber"
 
     /** Testing-only dependencies */
     testImplementation "junit:junit:$rootProject.junit"

@@ -1,8 +1,6 @@
 package io.wax911.support.extension.util
 
 import androidx.annotation.IntDef
-import com.annimon.stream.Collectors
-import com.annimon.stream.IntStream
 import io.wax911.support.extension.util.attribute.SeasonType
 import java.text.SimpleDateFormat
 import java.util.*
@@ -75,8 +73,10 @@ object SupportDateUtil {
      * @param endDelta End difference plus or minus the current year
      */
     fun getYearRanges(start: Int, endDelta: Int): List<Int> =
-        IntStream.range(start, getCurrentYear(endDelta))
-                .boxed().collect(Collectors.toList<Int>())
+        IntRange(
+            start = start,
+            endInclusive = getCurrentYear(endDelta)
+        ).map { value -> value }
 
 
     /**
