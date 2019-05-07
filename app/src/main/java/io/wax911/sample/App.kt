@@ -1,19 +1,25 @@
 package io.wax911.sample
 
 import android.app.Application
+import io.wax911.sample.core.koin.coreModules
+import io.wax911.sample.core.koin.corePresenterModules
+import io.wax911.sample.core.koin.coreRepositoryModules
+import io.wax911.sample.core.koin.coreViewModelModules
+import io.wax911.sample.koin.appModules
 import io.wax911.sample.util.AnalyticsUtil
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import io.wax911.support.core.util.SupportCoroutineUtil
+import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
-class App : Application() {
+class App : Application(), SupportCoroutineUtil {
 
-    val analyticsUtil: ISupportAnalytics by lazy {
-        AnalyticsUtil.newInstance(this)
-    }
+    val analyticsUtil: ISupportAnalytics by inject()
 
     init {
         EventBus.builder().logNoSubscriberMessages(BuildConfig.DEBUG)
@@ -47,7 +53,20 @@ class App : Application() {
      */
     override fun onCreate() {
         super.onCreate()
-        GlobalScope.launch(Dispatchers.IO) {
+        startKoin {
+            androidLogger()
+            androidContext(
+                applicationContext
+            )
+            modules(
+                appModules,
+                coreModules,
+                coreViewModelModules,
+                corePresenterModules,
+                coreRepositoryModules
+            )
+        }
+        launch {
             when (BuildConfig.DEBUG) {
                 true -> Timber.plant(Timber.DebugTree())
                 else -> Timber.plant(analyticsUtil as AnalyticsUtil)

@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.R
-import io.wax911.sample.presenter.BasePresenter
+import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.support.ui.fragment.SupportFragment
 import io.wax911.support.core.factory.InstanceCreator
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.koin.android.ext.android.inject
 
-class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
+class FragmentHome : SupportFragment<Nothing, CorePresenter, Nothing>()  {
 
     companion object : InstanceCreator<FragmentHome, Bundle?>({
         val fragment = FragmentHome()
@@ -18,7 +19,12 @@ class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
         fragment
     })
 
-    override fun initPresenter(): BasePresenter = BasePresenter.newInstance(context)
+    /**
+     * Should be created lazily through injection or lazy delegate
+     *
+     * @return presenter of the generic type specified
+     */
+    override val presenter: CorePresenter by inject()
 
     /**
      * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]

@@ -11,14 +11,15 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import io.wax911.sample.R
-import io.wax911.sample.presenter.BasePresenter
-import io.wax911.sample.util.StateUtil
+import io.wax911.sample.core.presenter.CorePresenter
+import io.wax911.sample.core.util.StateUtil
 import io.wax911.sample.view.fragment.detail.FragmentHome
 import io.wax911.support.ui.activity.SupportActivity
 import io.wax911.support.core.util.SupportStateKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
 
-class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : SupportActivity<Nothing, CorePresenter>(), NavigationView.OnNavigationItemSelectedListener {
 
     private val bottomDrawerBehavior: BottomSheetBehavior<FrameLayout> by lazy {
         BottomSheetBehavior.from(bottomNavigationDrawer)
@@ -26,13 +27,16 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
 
     @IdRes
     private var selectedItem: Int = R.id.nav_home
+
     @StringRes
     private var selectedTitle: Int = R.string.nav_home
 
     /**
-     * @return the presenter that will be used by the fragment activity
+     * Should be created lazily through injection or lazy delegate
+     *
+     * @return presenter of the generic type specified
      */
-    override fun initPresenter(): BasePresenter = BasePresenter.newInstance(this)
+    override val presenter: CorePresenter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
