@@ -26,6 +26,7 @@ import io.wax911.support.core.factory.InstanceCreator
     entities = [
         JsonWebToken::class, Language::class, Genre::class, Country::class,
         Show::class, Movie::class, ShowIds::class, MovieIds::class,
+        TrendingShow::class, TrendingMovie::class
     ],
     version = BuildConfig.DATABASE_SCHEMA_VERSION
 )
@@ -46,6 +47,9 @@ abstract class DatabaseHelper : RoomDatabase() {
 
     abstract fun showIdsDao(): ShowIdsDao
     abstract fun movieIdsDao(): MovieIdsDao
+
+    abstract fun trendingShowDao(): TrendingShowDao
+    abstract fun trendingMovieDao(): TrendingMovieDao
 
     companion object : InstanceCreator<DatabaseHelper, Context>({ context ->
         Room.databaseBuilder(
