@@ -6,7 +6,6 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.nguyenhoanglam.progresslayout.ProgressLayout
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.recycler.adapter.SupportViewAdapter
 import io.wax911.support.extension.getColorFromAttr
@@ -51,8 +50,8 @@ fun SupportRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?,
     setDragTriggerDistance(SupportRefreshLayout.DIRECTION_BOTTOM, (it.resources.getNavigationBarHeight()))
     setProgressBackgroundColorSchemeColor(it.getColorFromAttr(R.attr.rootColor))
     setColorSchemeColors(it.getColorFromAttr(R.attr.contentColor))
-    setPermitRefresh(presenter.isPager)
-    setPermitLoad(false)
+    setRefreshEnabled(presenter.isPager)
+    setLoadEnabled(false)
     gone()
 }
 
@@ -62,28 +61,4 @@ fun SupportRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?,
 fun SupportRefreshLayout.onResponseResetStates() {
     if (isRefreshing) isRefreshing = false
     if (isLoading) isLoading = false
-}
-
-fun Context?.showContentError(progressLayout: ProgressLayout, @StringRes message: Int, @StringRes retryButtonText : Int,
-                              stateLayoutOnClick: View.OnClickListener) = this?.also {
-    when {
-        progressLayout.isLoading || progressLayout.isEmpty || progressLayout.isContent -> {
-            progressLayout.showError(getCompatDrawable(R.drawable.ic_support_empty_state),
-                it.getString(message), it.getString(retryButtonText), stateLayoutOnClick)
-        }
-        else -> {
-        }
-    }
-}
-
-fun ProgressLayout.showContentLoading() = when {
-    isContent || isEmpty ||
-            isError -> showLoading()
-    else -> { }
-}
-
-fun ProgressLayout.showLoadedContent() = when {
-    isLoading || isEmpty ||
-            isError -> showContent()
-    else -> { }
 }

@@ -13,7 +13,6 @@ import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.util.SupportCoroutineUtil
 import io.wax911.support.core.view.contract.CompatView
 import io.wax911.support.ui.action.SupportActionMode
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener,
@@ -75,23 +74,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      */
     override fun onStart() {
         super.onStart()
-        if (shouldSubscribe()) {
-            if (!EventBus.getDefault().isRegistered(this))
-                EventBus.getDefault().register(this)
-        }
-        if (!shouldDisableMenu())
-            setHasOptionsMenu(true)
-    }
-
-    /**
-     * Called when the Fragment is no longer started.  This is generally
-     * tied to [Activity.onStop] of the containing
-     * Activity's lifecycle.
-     */
-    override fun onStop() {
-        if (EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().unregister(this)
-        super.onStop()
+        setHasOptionsMenu(isMenuEnabled)
     }
 
     override fun onPause() {
@@ -128,9 +111,9 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      *
      * @see .onOptionsItemSelected
      */
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (inflateMenu != CompatView.NO_MENU_ITEM)
-            inflater?.inflate(inflateMenu, menu)
+            inflater.inflate(inflateMenu, menu)
     }
 
     override fun hasBackPressableAction(): Boolean {

@@ -2,29 +2,18 @@ package io.wax911.support.ui.view.widget
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.PixelFormat
-import android.graphics.Rect
-import android.graphics.RectF
+import android.graphics.*
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.animation.Animation
-import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
 import android.view.animation.Transformation
-
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
-import java.util.ArrayList
-
 import androidx.annotation.IntDef
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import io.wax911.support.ui.view.widget.SupportProgressDrawable.ProgressDrawableSize.Companion.DEFAULT
+import io.wax911.support.ui.view.widget.SupportProgressDrawable.ProgressDrawableSize.Companion.LARGE
+import java.util.*
 
 /**
  * Material progress drawable.
@@ -33,34 +22,15 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
  */
 
 class SupportProgressDrawable(context: Context, private val mParent: View) : Drawable(), Animatable {
+    
     /** The list of animators operating on this drawable.  */
-    private val mAnimators = ArrayList<Animation>()
+    private val mAnimators by lazy(LazyThreadSafetyMode.NONE) { 
+        ArrayList<Animation>() 
+    }
 
     /** The indicator ring, used to manage animation state.  */
-    private val mRing: Ring
-
-    /** Canvas rotation in degrees.  */
-    private var rotation: Float = 0.toFloat()
-        internal set(rotation) {
-            field = rotation
-            invalidateSelf()
-        }
-
-    private val mResources: Resources
-    private var mAnimation: Animation? = null
-    private var mRotationCount: Float = 0.toFloat()
-    private var mWidth: Double = 0.toDouble()
-    private var mHeight: Double = 0.toDouble()
-    private var mFinishing: Boolean = false
-
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef(LARGE, DEFAULT)
-    internal annotation class ProgressDrawableSize
-
-    init {
-        mResources = context.resources
-
-        val mCallback = object : Drawable.Callback {
+    private val mRing: Ring by lazy(LazyThreadSafetyMode.NONE) {
+        Ring(object : Callback {
             override fun invalidateDrawable(d: Drawable) {
                 invalidateSelf()
             }
@@ -72,13 +42,117 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
             override fun unscheduleDrawable(d: Drawable, what: Runnable) {
                 unscheduleSelf(what)
             }
+        }, this@SupportProgressDrawable).also {
+            it.setColors(intArrayOf(Color.BLACK))
         }
-        mRing = Ring(mCallback)
-        val COLORS = intArrayOf(Color.BLACK)
-        mRing.setColors(COLORS)
+    }
 
+    private val mAnimation by lazy(LazyThreadSafetyMode.NONE) {
+        object : Animation() {
+            public override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
+                when {
+                    mFinishing -> applyFinishTranslation(interpolatedTime, mRing)
+                    else -> {
+                        // The minProgressArc is calculated from 0 to create an
+                        // angle that matches the stroke width.
+                        val minProgressArc = getMinProgressArc(mRing)
+                        val startingEndTrim = mRing.startingEndTrim
+                        val startingTrim = mRing.startingStartTrim
+                        val startingRotation = mRing.startingRotation
+
+                        updateRingColor(interpolatedTime, mRing)
+
+                        // Moving the start trim only occurs in the first 50% of a
+                        // single ring animation
+                        if (interpolatedTime <= START_TRIM_DURATION_OFFSET) {
+                            // scale the interpolatedTime so that the full
+                            // transformation from 0 - 1 takes place in the
+                            // remaining time
+                            val scaledTime = interpolatedTime / (1.0f - START_TRIM_DURATION_OFFSET)
+                            val startTrim = startingTrim + (MAX_PROGRESS_ARC - minProgressArc) * MATERIAL_INTERPOLATOR
+                                .getInterpolation(scaledTime)
+                            mRing.startTrim = startTrim
+                        }
+
+                        // Moving the end trim starts after 50% of a single ring
+                        // animation completes
+                        if (interpolatedTime > END_TRIM_START_DELAY_OFFSET) {
+                            // scale the interpolatedTime so that the full
+                            // transformation from 0 - 1 takes place in the
+                            // remaining time
+                            val minArc = MAX_PROGRESS_ARC - minProgressArc
+                            val scaledTime =
+                                (interpolatedTime - START_TRIM_DURATION_OFFSET) / (1.0f - START_TRIM_DURATION_OFFSET)
+                            val endTrim = startingEndTrim + minArc * MATERIAL_INTERPOLATOR.getInterpolation(scaledTime)
+                            mRing.endTrim = endTrim
+                        }
+
+                        val rotation = startingRotation + 0.25f * interpolatedTime
+                        mRing.rotation = rotation
+
+                    }
+                }
+            }
+        }.apply {
+            repeatCount = Animation.INFINITE
+            repeatMode = Animation.RESTART
+            interpolator = LINEAR_INTERPOLATOR
+            setAnimationListener(
+                object : Animation.AnimationListener {
+
+                    override fun onAnimationStart(animation: Animation) {
+                        mRotationCount = 0f
+                    }
+
+                    override fun onAnimationEnd(animation: Animation) {
+                        // do nothing
+                    }
+
+                    override fun onAnimationRepeat(animation: Animation) {
+                        mRing.storeOriginals()
+                        mRing.goToNextColor()
+                        mRing.startTrim = mRing.endTrim
+                        if (mFinishing) {
+                            // finished closing the last ring from the swipe gesture; go
+                            // into progress mode
+                            mFinishing = false
+                            animation.duration = ANIMATION_DURATION.toLong()
+                            mRing.setShowArrow(false)
+                        } else {
+                            mRotationCount = (mRotationCount + 1) % NUM_POINTS
+                        }
+                    }
+                }
+            )
+        }
+    }
+
+    /** Canvas rotation in degrees.  */
+    private var rotation: Float = 0.toFloat()
+        set(rotation) {
+            field = rotation
+            invalidateSelf()
+        }
+
+    private val mResources: Resources = context.resources
+    private var mRotationCount: Float = 0.toFloat()
+    private var mWidth: Double = 0.toDouble()
+    private var mHeight: Double = 0.toDouble()
+    private var mFinishing: Boolean = false
+
+    @IntDef(LARGE, DEFAULT)
+    @Retention(AnnotationRetention.SOURCE)
+    internal annotation class ProgressDrawableSize {
+        companion object {
+            // Maps to ProgressBar.Large style
+            const val LARGE = 0
+            // Maps to ProgressBar default style
+            const val DEFAULT = 1
+        }
+    }
+
+    init {
         updateSizes(DEFAULT)
-        setupAnimators()
     }
 
     private fun setSizeParameters(
@@ -102,17 +176,19 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
      * Set the overall size for the progress spinner. This updates the radius
      * and stroke width of the ring.
      *
-     * @param size One of [SupportProgressDrawable.LARGE] or
-     * [SupportProgressDrawable.DEFAULT]
+     * @param size One of [LARGE] or [DEFAULT]
      */
     private fun updateSizes(@ProgressDrawableSize size: Int) {
-        if (size == LARGE) {
-            setSizeParameters(
-                CIRCLE_DIAMETER_LARGE.toDouble(), CIRCLE_DIAMETER_LARGE.toDouble(), CENTER_RADIUS_LARGE.toDouble(),
-                STROKE_WIDTH_LARGE.toDouble(), ARROW_WIDTH_LARGE.toFloat(), ARROW_HEIGHT_LARGE.toFloat()
+        when (size) {
+            LARGE -> setSizeParameters(
+                CIRCLE_DIAMETER_LARGE.toDouble(),
+                CIRCLE_DIAMETER_LARGE.toDouble(),
+                CENTER_RADIUS_LARGE.toDouble(),
+                STROKE_WIDTH_LARGE.toDouble(),
+                ARROW_WIDTH_LARGE.toFloat(),
+                ARROW_HEIGHT_LARGE.toFloat()
             )
-        } else {
-            setSizeParameters(
+            else -> setSizeParameters(
                 CIRCLE_DIAMETER.toDouble(),
                 CIRCLE_DIAMETER.toDouble(),
                 CENTER_RADIUS.toDouble(),
@@ -221,24 +297,24 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
     }
 
     override fun start() {
-        mAnimation!!.reset()
+        mAnimation.reset()
         mRing.storeOriginals()
         // Already showing some part of the ring
         if (mRing.endTrim != mRing.startTrim) {
             mFinishing = true
-            mAnimation!!.duration = (ANIMATION_DURATION / 2).toLong()
+            mAnimation.duration = (ANIMATION_DURATION / 2).toLong()
             mParent.startAnimation(mAnimation)
         } else {
             mRing.setColorIndex(0)
             mRing.resetOriginals()
-            mAnimation!!.duration = ANIMATION_DURATION.toLong()
+            mAnimation.duration = ANIMATION_DURATION.toLong()
             mParent.startAnimation(mAnimation)
         }
     }
 
     override fun stop() {
         mParent.clearAnimation()
-        rotation = 0
+        rotation = 0F
         mRing.setShowArrow(false)
         mRing.setColorIndex(0)
         mRing.resetOriginals()
@@ -303,91 +379,26 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
         ring.rotation = rotation
     }
 
-    private fun setupAnimators() {
-        val ring = mRing
-        val animation = object : Animation() {
-            public override fun applyTransformation(interpolatedTime: Float, t: Transformation) {
-                if (mFinishing) {
-                    applyFinishTranslation(interpolatedTime, ring)
-                } else {
-                    // The minProgressArc is calculated from 0 to create an
-                    // angle that matches the stroke width.
-                    val minProgressArc = getMinProgressArc(ring)
-                    val startingEndTrim = ring.startingEndTrim
-                    val startingTrim = ring.startingStartTrim
-                    val startingRotation = ring.startingRotation
+    private class Ring internal constructor(private val mCallback: Callback, private val drawable: Drawable) {
 
-                    updateRingColor(interpolatedTime, ring)
+        private val mTempBounds by lazy(LazyThreadSafetyMode.NONE) {
+            RectF()
+        }
 
-                    // Moving the start trim only occurs in the first 50% of a
-                    // single ring animation
-                    if (interpolatedTime <= START_TRIM_DURATION_OFFSET) {
-                        // scale the interpolatedTime so that the full
-                        // transformation from 0 - 1 takes place in the
-                        // remaining time
-                        val scaledTime = interpolatedTime / (1.0f - START_TRIM_DURATION_OFFSET)
-                        val startTrim = startingTrim + (MAX_PROGRESS_ARC - minProgressArc) * MATERIAL_INTERPOLATOR
-                            .getInterpolation(scaledTime)
-                        ring.startTrim = startTrim
-                    }
-
-                    // Moving the end trim starts after 50% of a single ring
-                    // animation completes
-                    if (interpolatedTime > END_TRIM_START_DELAY_OFFSET) {
-                        // scale the interpolatedTime so that the full
-                        // transformation from 0 - 1 takes place in the
-                        // remaining time
-                        val minArc = MAX_PROGRESS_ARC - minProgressArc
-                        val scaledTime =
-                            (interpolatedTime - START_TRIM_DURATION_OFFSET) / (1.0f - START_TRIM_DURATION_OFFSET)
-                        val endTrim = startingEndTrim + minArc * MATERIAL_INTERPOLATOR.getInterpolation(scaledTime)
-                        ring.endTrim = endTrim
-                    }
-
-                    var rotation = startingRotation + 0.25f * interpolatedTime
-                    ring.rotation = rotation
-
-                    val groupRotation =
-                        FULL_ROTATION / NUM_POINTS * interpolatedTime + FULL_ROTATION * (mRotationCount / NUM_POINTS)
-                    rotation = groupRotation
-                }
+        private val mPaint by lazy(LazyThreadSafetyMode.NONE) {
+            Paint().also {
+                it.strokeCap = Paint.Cap.SQUARE
+                it.isAntiAlias = true
+                it.style = Paint.Style.STROKE
             }
         }
-        animation.repeatCount = Animation.INFINITE
-        animation.repeatMode = Animation.RESTART
-        animation.interpolator = LINEAR_INTERPOLATOR
-        animation.setAnimationListener(object : Animation.AnimationListener {
 
-            override fun onAnimationStart(animation: Animation) {
-                mRotationCount = 0f
+        private val mArrowPaint by lazy(LazyThreadSafetyMode.NONE) {
+            Paint().also {
+                it.style = Paint.Style.FILL
+                it.isAntiAlias = true
             }
-
-            override fun onAnimationEnd(animation: Animation) {
-                // do nothing
-            }
-
-            override fun onAnimationRepeat(animation: Animation) {
-                ring.storeOriginals()
-                ring.goToNextColor()
-                ring.startTrim = ring.endTrim
-                if (mFinishing) {
-                    // finished closing the last ring from the swipe gesture; go
-                    // into progress mode
-                    mFinishing = false
-                    animation.duration = ANIMATION_DURATION.toLong()
-                    ring.setShowArrow(false)
-                } else {
-                    mRotationCount = (mRotationCount + 1) % NUM_POINTS
-                }
-            }
-        })
-        mAnimation = animation
-    }
-
-    private class Ring internal constructor(private val mCallback: Drawable.Callback) {
-        private val mTempBounds = RectF()
-        private val mPaint = Paint()
-        private val mArrowPaint = Paint()
+        }
 
         internal var startTrim = 0.0f
             set(startTrim) {
@@ -404,8 +415,9 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
                 field = rotation
                 invalidateSelf()
             }
+
         /**
-         * @param strokeWidth Set the stroke width of the progress spinner in pixels.
+         * Set the stroke width of the progress spinner in pixels.
          */
         internal var strokeWidth = 5.0f
             set(strokeWidth) {
@@ -416,7 +428,7 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
         var insets = 2.5f
             private set
 
-        private var mColors: IntArray? = null
+        private lateinit var mColors: IntArray
         // mColorIndex represents the offset into the available mColors that the
         // progress circle should currently display. As the progress circle is
         // animating, the mColorIndex moves by one to the next available color.
@@ -433,19 +445,11 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
         private var mShowArrow: Boolean = false
         private var mArrow: Path? = null
         private var mArrowScale: Float = 0.toFloat()
-        /**
-         * @param centerRadius Inner radius in px of the circle the progress
-         * spinner arc traces.
-         */
+
         internal var centerRadius: Double = 0.toDouble()
         private var mArrowWidth: Int = 0
         private var mArrowHeight: Int = 0
-        /**
-         * @return Current alpha of the progress spinner and arrowhead.
-         */
-        /**
-         * @param alpha Set the alpha of the progress spinner and associated arrowhead.
-         */
+
         internal var alpha: Int = 0
         private val mCirclePaint = Paint(Paint.ANTI_ALIAS_FLAG)
         private var mBackgroundColor: Int = 0
@@ -455,23 +459,13 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
          * @return int describing the next color the progress spinner should use when drawing.
          */
         internal val nextColor: Int
-            get() = mColors!![nextColorIndex]
+            get() = mColors[nextColorIndex]
 
         private val nextColorIndex: Int
-            get() = (mColorIndex + 1) % mColors!!.size
+            get() = (mColorIndex + 1) % mColors.size
 
         internal val startingColor: Int
-            get() = mColors!![mColorIndex]
-
-        init {
-
-            mPaint.strokeCap = Paint.Cap.SQUARE
-            mPaint.isAntiAlias = true
-            mPaint.style = Paint.Style.STROKE
-
-            mArrowPaint.style = Paint.Style.FILL
-            mArrowPaint.isAntiAlias = true
-        }
+            get() = mColors[mColorIndex]
 
         internal fun setBackgroundColor(color: Int) {
             mBackgroundColor = color
@@ -519,9 +513,9 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
             if (mShowArrow) {
                 if (mArrow == null) {
                     mArrow = Path()
-                    mArrow!!.fillType = Path.FillType.EVEN_ODD
+                    mArrow?.fillType = Path.FillType.EVEN_ODD
                 } else {
-                    mArrow!!.reset()
+                    mArrow?.reset()
                 }
 
                 // Adjust the position of the triangle so that it is inset as
@@ -534,11 +528,11 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
                 // where concatenating a rotation matrix to a scale matrix
                 // ignored a starting negative rotation. This appears to have
                 // been fixed as of API 21.
-                mArrow!!.moveTo(0f, 0f)
-                mArrow!!.lineTo(mArrowWidth * mArrowScale, 0f)
-                mArrow!!.lineTo(mArrowWidth * mArrowScale / 2, mArrowHeight * mArrowScale)
-                mArrow!!.offset(x - inset, y)
-                mArrow!!.close()
+                mArrow?.moveTo(0f, 0f)
+                mArrow?.lineTo(mArrowWidth * mArrowScale, 0f)
+                mArrow?.lineTo(mArrowWidth * mArrowScale / 2, mArrowHeight * mArrowScale)
+                mArrow?.offset(x - inset, y)
+                mArrow?.close()
                 // draw a triangle
                 mArrowPaint.color = mCurrentColor
                 c.rotate(
@@ -577,7 +571,7 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
          */
         internal fun setColorIndex(index: Int) {
             mColorIndex = index
-            mCurrentColor = mColors!![mColorIndex]
+            mCurrentColor = mColors[mColorIndex]
         }
 
         /**
@@ -596,10 +590,10 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
         internal fun setInsets(width: Int, height: Int) {
             val minEdge = Math.min(width, height).toFloat()
             val insets: Float
-            if (centerRadius <= 0 || minEdge < 0) {
-                insets = Math.ceil((strokeWidth / 2.0f).toDouble()).toFloat()
+            insets = if (centerRadius <= 0 || minEdge < 0) {
+                Math.ceil((strokeWidth / 2.0f).toDouble()).toFloat()
             } else {
-                insets = (minEdge / 2.0f - centerRadius).toFloat()
+                (minEdge / 2.0f - centerRadius).toFloat()
             }
             this.insets = insets
         }
@@ -641,59 +635,60 @@ class SupportProgressDrawable(context: Context, private val mParent: View) : Dra
             startingStartTrim = 0f
             startingEndTrim = 0f
             startingRotation = 0f
-            startTrim = 0
-            endTrim = 0
-            rotation = 0
+            startTrim = 0f
+            endTrim = 0f
+            rotation = 0f
         }
 
         private fun invalidateSelf() {
-            mCallback.invalidateDrawable(null!!)
+            mCallback.invalidateDrawable(drawable)
         }
     }
 
     companion object {
 
-        private val LINEAR_INTERPOLATOR = LinearInterpolator()
-        private val MATERIAL_INTERPOLATOR = FastOutSlowInInterpolator()
+        private val LINEAR_INTERPOLATOR by lazy(LazyThreadSafetyMode.NONE) {
+            LinearInterpolator()
+        }
 
-        private val FULL_ROTATION = 1080.0f
-        // Maps to ProgressBar.Large style
-        private val LARGE = 0
+        private val MATERIAL_INTERPOLATOR by lazy(LazyThreadSafetyMode.NONE) {
+            FastOutSlowInInterpolator()
+        }
+
+        private const val FULL_ROTATION = 1080.0f
+
         // Maps to ProgressBar default style
-        private val DEFAULT = 1
-
-        // Maps to ProgressBar default style
-        private val CIRCLE_DIAMETER = 40
-        private val CENTER_RADIUS = 8.75f //should add up to 10 when + stroke_width
-        private val STROKE_WIDTH = 2.5f
+        private const val CIRCLE_DIAMETER = 40
+        private const val CENTER_RADIUS = 8.75f //should add up to 10 when + stroke_width
+        private const val STROKE_WIDTH = 2.5f
 
         // Maps to ProgressBar.Large style
-        private val CIRCLE_DIAMETER_LARGE = 56
-        private val CENTER_RADIUS_LARGE = 12.5f
-        private val STROKE_WIDTH_LARGE = 3f
+        private const val CIRCLE_DIAMETER_LARGE = 56
+        private const val CENTER_RADIUS_LARGE = 12.5f
+        private const val STROKE_WIDTH_LARGE = 3f
 
         /**
          * The value in the linear interpolator for animating the drawable at which
          * the color transition should start
          */
-        private val COLOR_START_DELAY_OFFSET = 0.75f
-        private val END_TRIM_START_DELAY_OFFSET = 0.5f
-        private val START_TRIM_DURATION_OFFSET = 0.5f
+        private const val COLOR_START_DELAY_OFFSET = 0.75f
+        private const val END_TRIM_START_DELAY_OFFSET = 0.5f
+        private const val START_TRIM_DURATION_OFFSET = 0.5f
 
         /** The duration of a single progress spin in milliseconds.  */
-        private val ANIMATION_DURATION = 1332
+        private const val ANIMATION_DURATION = 1332
 
         /** The number of points in the progress "star".  */
-        private val NUM_POINTS = 5f
+        private const val NUM_POINTS = 5f
 
         /** Layout info for the arrowhead in dp  */
-        private val ARROW_WIDTH = 10
-        private val ARROW_HEIGHT = 5
-        private val ARROW_OFFSET_ANGLE = 5f
+        private const val ARROW_WIDTH = 10
+        private const val ARROW_HEIGHT = 5
+        private const val ARROW_OFFSET_ANGLE = 5f
 
         /** Layout info for the arrowhead for the large spinner in dp  */
-        private val ARROW_WIDTH_LARGE = 12
-        private val ARROW_HEIGHT_LARGE = 6
-        private val MAX_PROGRESS_ARC = .8f
+        private const val ARROW_WIDTH_LARGE = 12
+        private const val ARROW_HEIGHT_LARGE = 6
+        private const val MAX_PROGRESS_ARC = .8f
     }
 }

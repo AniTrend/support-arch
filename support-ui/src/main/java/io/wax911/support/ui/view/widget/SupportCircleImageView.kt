@@ -1,18 +1,15 @@
 package io.wax911.support.ui.view.widget
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RadialGradient
-import android.graphics.Shader
+import android.graphics.*
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.util.AttributeSet
+import android.view.View
 import android.view.animation.Animation
-
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.ViewCompat
+import io.wax911.support.extension.getCompatColor
 
 /**
  * Circle image view.
@@ -23,14 +20,14 @@ import androidx.core.view.ViewCompat
 
 class SupportCircleImageView : AppCompatImageView {
 
-    private var mListener: Animation.AnimationListener? = null
+    var animationListener: Animation.AnimationListener? = null
     private var mShadowRadius: Int = 0
 
-    constructor(context: Context) : super(context) {}
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     constructor(context: Context, color: Int, radius: Float) : super(context) {
         val density = getContext().resources.displayMetrics.density
@@ -57,7 +54,7 @@ class SupportCircleImageView : AppCompatImageView {
             setPadding(padding, padding, padding, padding)
         }
         circle.paint.color = color
-        setBackgroundDrawable(circle)
+        background = circle
     }
 
     private fun elevationSupported(): Boolean {
@@ -71,22 +68,14 @@ class SupportCircleImageView : AppCompatImageView {
         }
     }
 
-    fun setAnimationListener(listener: Animation.AnimationListener) {
-        mListener = listener
-    }
-
     public override fun onAnimationStart() {
         super.onAnimationStart()
-        if (mListener != null) {
-            mListener!!.onAnimationStart(animation)
-        }
+        animationListener?.onAnimationStart(animation)
     }
 
     public override fun onAnimationEnd() {
         super.onAnimationEnd()
-        if (mListener != null) {
-            mListener!!.onAnimationEnd(animation)
-        }
+        animationListener?.onAnimationEnd(animation)
     }
 
     /**
@@ -95,29 +84,28 @@ class SupportCircleImageView : AppCompatImageView {
      * @param colorRes Id of a color resource.
      */
     fun setBackgroundColorRes(colorRes: Int) {
-        setBackgroundColor(context.resources.getColor(colorRes))
+        setBackgroundColor(context.getCompatColor(colorRes))
     }
 
     override fun setBackgroundColor(color: Int) {
-        if (background is ShapeDrawable) {
+        if (background is ShapeDrawable)
             (background as ShapeDrawable).paint.color = color
-        }
     }
 
-    private inner class OvalShadow internal constructor(shadowRadius: Int, private val mCircleDiameter: Int) :
-        OvalShape() {
-        private val mRadialGradient: RadialGradient
-        private val mShadowPaint: Paint
-
-        init {
-            mShadowPaint = Paint()
-            mShadowRadius = shadowRadius
-            mRadialGradient = RadialGradient(
+    private inner class OvalShadow internal constructor(shadowRadius: Int, private val mCircleDiameter: Int) : OvalShape() {
+        private val mRadialGradient by lazy(LazyThreadSafetyMode.NONE) {
+            RadialGradient(
                 (mCircleDiameter / 2).toFloat(), (mCircleDiameter / 2).toFloat(),
-                mShadowRadius.toFloat(), intArrayOf(FILL_SHADOW_COLOR, Color.TRANSPARENT), null, Shader.TileMode.CLAMP
+                shadowRadius.toFloat(), intArrayOf(FILL_SHADOW_COLOR, Color.TRANSPARENT), null, Shader.TileMode.CLAMP
             )
-            mShadowPaint.shader = mRadialGradient
         }
+        private val mShadowPaint by lazy(LazyThreadSafetyMode.NONE) {
+            Paint().also {
+                it.shader = mRadialGradient
+            }
+        }
+
+        init { mShadowRadius = shadowRadius }
 
         override fun draw(canvas: Canvas, paint: Paint) {
             val viewWidth = this@SupportCircleImageView.width
@@ -137,12 +125,12 @@ class SupportCircleImageView : AppCompatImageView {
 
     companion object {
 
-        private val KEY_SHADOW_COLOR = 0x1E000000
-        private val FILL_SHADOW_COLOR = 0x3D000000
+        private const val KEY_SHADOW_COLOR = 0x1E000000
+        private const val FILL_SHADOW_COLOR = 0x3D000000
         // PX
-        private val X_OFFSET = 0f
-        private val Y_OFFSET = 1.75f
-        private val SHADOW_RADIUS = 3.5f
-        private val SHADOW_ELEVATION = 4
+        private const val X_OFFSET = 0f
+        private const val Y_OFFSET = 1.75f
+        private const val SHADOW_RADIUS = 3.5f
+        private const val SHADOW_ELEVATION = 4
     }
 }

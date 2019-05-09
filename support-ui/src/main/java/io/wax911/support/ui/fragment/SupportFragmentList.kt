@@ -11,7 +11,6 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.nguyenhoanglam.progresslayout.ProgressLayout
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.recycler.adapter.SupportViewAdapter
 import io.wax911.support.core.recycler.event.RecyclerLoadListener
@@ -24,6 +23,7 @@ import io.wax911.support.ui.R
 import io.wax911.support.ui.extension.*
 import io.wax911.support.ui.recycler.SupportRecyclerView
 import io.wax911.support.ui.view.widget.SupportRefreshLayout
+import io.wax911.support.ui.view.widget.SupportStateLayout
 import kotlinx.android.synthetic.main.support_list.*
 import timber.log.Timber
 
@@ -38,14 +38,14 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
 
     protected lateinit var supportViewAdapter: SupportViewAdapter<M>
 
-    protected lateinit var progressLayout: ProgressLayout
+    protected lateinit var progressLayout: SupportStateLayout
     protected lateinit var supportRefreshLayout: SupportRefreshLayout
     protected lateinit var supportRecyclerView: SupportRecyclerView
 
     private val stateLayoutOnClick by lazy {
         View.OnClickListener {
             resetWidgetStates()
-            progressLayout.showContentLoading()
+            progressLayout.isLoading = true
             onRefresh()
         }
     }
@@ -150,7 +150,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     override fun onStart() {
         super.onStart()
-        progressLayout.showContentLoading()
+        progressLayout.isLoading = true
         when (!supportViewAdapter.hasData()) {
             true -> onRefresh()
             else -> updateUI()
@@ -205,7 +205,6 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
             presenter.isPagingLimit = it.getBoolean(SupportStateKeyStore.key_pagination_limit)
 
             presenter.currentPage = it.getInt(SupportStateKeyStore.arg_page)
-            presenter.currentOffset = it.getInt(SupportStateKeyStore.arg_page_offset)
         }
     }
 
@@ -234,13 +233,15 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         if (isStateAtLeast(Lifecycle.State.RESUMED)) {
             supportRefreshLayout.onResponseResetStates()
             if (presenter.isFirstPage()) {
-                progressLayout.showLoadedContent()
+                progressLayout.showLoading()
                 snackBar = progressLayout.snackBar(message!!, Snackbar.LENGTH_INDEFINITE)
                         .setAction(retryButtonText(), snackBarOnClickListener)
                 snackBar?.show()
             } else {
-                progressLayout.showError(context?.getCompatDrawable(R.drawable.ic_support_empty_state),
-                        message, context?.getString(retryButtonText()), stateLayoutOnClick)
+                progressLayout.showError(
+                    errorMessage = message,
+                    onClickListener = stateLayoutOnClick
+                )
             }
         }
     }
@@ -275,7 +276,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                 true -> {
                     val layoutManager =
                             supportRecyclerView.layoutManager as StaggeredGridLayoutManager
-                    presenter.initListener(layoutManager, this)
+                    presenter.staggeredGridLayoutManager = layoutManager
+                    presenter.recyclerLoadListener = this
                     supportRecyclerView.addOnScrollListener(presenter)
                 }
                 else ->
@@ -288,7 +290,10 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
 
     protected fun detachScrollListener() {
         when {
-            presenter.isPager -> supportRecyclerView.clearOnScrollListeners()
+            presenter.isPager -> {
+                supportRecyclerView.clearOnScrollListeners()
+                presenter.recyclerLoadListener = null
+            }
             else ->
                 Timber.tag(getViewName()).d( "Skipping detachScrollListener() presenter.isPager -> ${presenter.isPager}")
         }
@@ -325,7 +330,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                         supportViewAdapter.applyFilterIfRequired()
                 }
             }
-            progressLayout.showLoadedContent()
+            progressLayout.isLoading = false
         }
         else -> changeLayoutState(context?.getString(emptyText))
     }
@@ -356,19 +361,14 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                 if (presenter.isPager)
                     setPaginationLimitReached()
                 if (!supportViewAdapter.hasData())
-                    context.showContentError(progressLayout, emptyText, retryButtonText(), stateLayoutOnClick)
+                    progressLayout.showError(
+                        errorMessage =  emptyText,
+                        onClickListener = stateLayoutOnClick
+                    )
                 supportRefreshLayout.onResponseResetStates()
             }
         }
     }
-
-    /**
-     * Returns a boolean that either allows or dis-allows this current fragment
-     * from refreshing when preferences have been changed.
-     *
-     * @param key preference key that has been changed
-     * */
-    protected fun isPreferenceKeyValid(key: String) = true
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         super.onSharedPreferenceChanged(sharedPreferences, key)

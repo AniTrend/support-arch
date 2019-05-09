@@ -15,7 +15,6 @@ import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.util.SupportCoroutineUtil
 import io.wax911.support.core.view.contract.CompatView
 import io.wax911.support.ui.fragment.SupportFragment
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 
 abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P>, SupportCoroutineUtil {
@@ -87,34 +86,6 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         else if (!ActivityCompat.shouldShowRequestPermissionRationale(this, manifestPermission))
             ActivityCompat.requestPermissions(this, arrayOf(manifestPermission), compatViewPermissionValue)
         return false
-    }
-
-    /**
-     * Dispatch onResume() to fragments.  Note that for better inter-operation
-     * with older versions of the platform, at the point of this call the
-     * fragments attached to the activity are *not* resumed.  This means
-     * that in some cases the previous state may still be saved, not allowing
-     * fragment transactions that modify the state.  To correctly interact
-     * with fragments in their proper state, you should instead override
-     * [.onResumeFragments].
-     */
-    override fun onResume() {
-        super.onResume()
-        if (shouldSubscribe()) {
-            if (!EventBus.getDefault().isRegistered(this))
-                EventBus.getDefault().register(this)
-        }
-    }
-
-    /**
-     * Dispatch onPause() to fragments.
-     */
-    override fun onPause() {
-        if (shouldSubscribe()) {
-            if (EventBus.getDefault().isRegistered(this))
-                EventBus.getDefault().unregister(this)
-        }
-        super.onPause()
     }
 
     override fun onDestroy() {

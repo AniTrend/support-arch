@@ -44,20 +44,44 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
     private var mLoading = false
     private var mRefreshEnabled = true
     private var mLoadEnabled = true
-    private val mTouchSlop: Int
-    private val mDragTriggerDistances = floatArrayOf(-1f, -1f)
+
+    private val mTouchSlop: Int by lazy {
+        ViewConfiguration.get(context).scaledTouchSlop
+    }
+
+    private val mDragTriggerDistances by lazy {
+        floatArrayOf(-1f, -1f)
+    }
 
     // If nested scrolling is enabled, the total amount that needed to be
     // consumed by this as the nested scrolling parent is used in place of the
     // overscroll determined by MOVE events in the onTouch handler
     private var mTotalUnconsumed: Float = 0.toFloat()
-    private val mNestedScrollingParentHelper: NestedScrollingParentHelper
-    private val mNestedScrollingChildHelper: NestedScrollingChildHelper
-    private val mParentScrollConsumed = IntArray(2)
-    private val mParentOffsetInWindow = IntArray(2)
+
+    private val mNestedScrollingParentHelper by lazy {
+        NestedScrollingParentHelper(this@SupportRefreshLayout)
+    }
+
+    private val mNestedScrollingChildHelper by lazy {
+        NestedScrollingChildHelper(this@SupportRefreshLayout).also {
+            it.isNestedScrollingEnabled = true
+        }
+    }
+
+    private val mParentScrollConsumed by lazy {
+        IntArray(2)
+    }
+
+    private val mParentOffsetInWindow by lazy {
+        IntArray(2)
+    }
+
     private var mNestedScrollInProgress: Boolean = false
 
-    private val mMediumAnimationDuration: Int
+    private val mMediumAnimationDuration by lazy {
+        resources.getInteger(android.R.integer.config_mediumAnimTime)
+    }
+
     private var mDragOffsetDistance: Int = 0
     // Whether or not the starting offset has been determined.
     private var mOriginalOffsetCalculated = false
@@ -70,13 +94,16 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
     // Target is returning to its start offset because it was cancelled or a
     // refresh was triggered.
     private var mReturningToStart: Boolean = false
-    private val mDecelerateInterpolator: DecelerateInterpolator
+
+    private val mDecelerateInterpolator by lazy {
+        DecelerateInterpolator(DECELERATE_INTERPOLATION_FACTOR)
+    }
 
     private var mCircleViews: Array<SupportCircleImageView>? = null
 
     protected var mFrom: Int = 0
 
-    private var mStartingScale: Float = 0.toFloat()
+    private var mStartingScale: Float = 0f
 
     private var mProgress: Array<SupportProgressDrawable>? = null
 
@@ -92,8 +119,31 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
 
     private var mNotify: Boolean = false
 
-    private val mCircleWidth: Int
-    private val mCircleHeight: Int
+    private val mCircleWidth by lazy {
+        val metrics = resources.displayMetrics
+        (CIRCLE_DIAMETER * metrics.density).toInt()
+    }
+
+    private val mCircleHeight by lazy {
+        val metrics = resources.displayMetrics
+        (CIRCLE_DIAMETER * metrics.density).toInt()
+    }
+
+    init {
+        setWillNotDraw(false)
+
+        val metrics = resources.displayMetrics
+        mDragTriggerDistances[DIRECTION_TOP] = DEFAULT_CIRCLE_TARGET * metrics.density
+        mDragTriggerDistances[DIRECTION_BOTTOM] = DEFAULT_CIRCLE_TARGET * metrics.density
+
+        createProgressView()
+        isChildrenDrawingOrderEnabled = true
+        isNestedScrollingEnabled = true
+
+        val a = context.obtainStyledAttributes(attrs, LAYOUT_ATTRS)
+        isEnabled = a.getBoolean(0, true)
+        a.recycle()
+    }
 
     /**
      * @return Whether the BothWaySwipeRefreshWidget is actively showing refresh
@@ -108,7 +158,8 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
      * @param refreshing Whether or not the view should show refresh progress.
      */
     // scale and show
-    /* notify */ var isRefreshing: Boolean
+    /* notify */
+    var isRefreshing: Boolean
         get() = mRefreshing
         set(refreshing) {
             if (refreshing && (mRefreshing || mLoading)) {
@@ -139,7 +190,8 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
      * @param loading Whether or not the view should show load progress.
      */
     // scale and show
-    /* notify */ var isLoading: Boolean
+    /* notify */
+    var isLoading: Boolean
         get() = mLoading
         set(loading) {
             if (loading && (mRefreshing || mLoading)) {
@@ -239,34 +291,6 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
         }
     }
 
-    init {
-
-        mTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
-
-        mMediumAnimationDuration = resources.getInteger(android.R.integer.config_mediumAnimTime)
-
-        setWillNotDraw(false)
-        mDecelerateInterpolator = DecelerateInterpolator(DECELERATE_INTERPOLATION_FACTOR)
-
-        val metrics = resources.displayMetrics
-        mCircleWidth = (CIRCLE_DIAMETER * metrics.density).toInt()
-        mCircleHeight = (CIRCLE_DIAMETER * metrics.density).toInt()
-        mDragTriggerDistances[DIRECTION_TOP] = DEFAULT_CIRCLE_TARGET * metrics.density
-        mDragTriggerDistances[DIRECTION_BOTTOM] = DEFAULT_CIRCLE_TARGET * metrics.density
-
-        createProgressView()
-        isChildrenDrawingOrderEnabled = true
-
-        mNestedScrollingParentHelper = NestedScrollingParentHelper(this)
-        mNestedScrollingChildHelper = NestedScrollingChildHelper(this)
-        mNestedScrollingChildHelper.isNestedScrollingEnabled = true
-        isNestedScrollingEnabled = true
-
-        val a = context.obtainStyledAttributes(attrs, LAYOUT_ATTRS)
-        isEnabled = a.getBoolean(0, true)
-        a.recycle()
-    }
-
     private fun createProgressView() {
         this.mCircleViews = arrayOf(
             SupportCircleImageView(context, CIRCLE_BG_LIGHT, CIRCLE_DIAMETER / 2f),
@@ -304,11 +328,10 @@ class SupportRefreshLayout @JvmOverloads constructor(context: Context, attrs: At
     }
 
     fun setDragTriggerDistance(dir: Int, distance: Int) {
-        var distance = distance
-        if (dir == DIRECTION_BOTTOM) {
-            distance += mCircleHeight
-        }
-        mDragTriggerDistances[dir] = distance.toFloat()
+        var triggerDistance = distance
+        if (dir == DIRECTION_BOTTOM)
+            triggerDistance += mCircleHeight
+        mDragTriggerDistances[dir] = triggerDistance.toFloat()
     }
 
     // draw.
