@@ -35,6 +35,12 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPrefere
         get() = null
 
     /**
+     * Used to dynamically enable or disable context menu
+     */
+    val isMenuEnabled: Boolean
+        get() = true
+
+    /**
      * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
      * then this method will be called in [SupportFragment.onCreate]. Otherwise [SupportActivity.onPostCreate]
      * invokes this function
@@ -44,8 +50,6 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPrefere
      */
     fun initializeComponents(savedInstanceState: Bundle?)
 
-    fun shouldDisableMenu() : Boolean = false
-    fun shouldSubscribe() : Boolean = false
 
     /**
      * Handles the updating of views, binding, creation or state change, depending on the context
@@ -90,6 +94,14 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPrefere
      * @return [Boolean] true or false depending on the override implementation
      */
     fun hasBackPressableAction(): Boolean = false
+
+    /**
+     * Returns a boolean that either allows or dis-allows this current fragment
+     * from refreshing when preferences have been changed.
+     *
+     * @param key preference key that has been changed
+     */
+    fun isPreferenceKeyValid(key: String) = true
 
     companion object {
 

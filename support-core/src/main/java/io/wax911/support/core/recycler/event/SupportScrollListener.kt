@@ -15,12 +15,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
  */
 abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
 
+    var recyclerLoadListener: RecyclerLoadListener? = null
+    var gridLayoutManager: GridLayoutManager? = null
+    var staggeredGridLayoutManager: StaggeredGridLayoutManager? = null
+
     var isPagingLimit = false
     var isPager = true
-
-    private var mLoadListener: RecyclerLoadListener? = null
-    private var mGridLayoutManager: GridLayoutManager? = null
-    private var mStaggeredGridLayoutManager: StaggeredGridLayoutManager? = null
 
     private var mPreviousTotal = 0 // The total number of items in the dataset after the last load
     private var mLoading = true // True if still waiting for the last set of data to load.
@@ -35,6 +35,7 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
      * @return the current pagination offset
      */
     var currentOffset = 0
+        private set
 
     /**
      * @return true if this is the first page and also this is a paging fragment
@@ -42,15 +43,6 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
     fun isFirstPage() : Boolean =
             currentPage == 1 && isPager
 
-    fun initListener(gridLayoutManager: GridLayoutManager, mLoadListener: RecyclerLoadListener) {
-        mGridLayoutManager = gridLayoutManager
-        this.mLoadListener = mLoadListener
-    }
-
-    fun initListener(staggeredGridLayoutManager: StaggeredGridLayoutManager, mLoadListener: RecyclerLoadListener) {
-        mStaggeredGridLayoutManager = staggeredGridLayoutManager
-        this.mLoadListener = mLoadListener
-    }
 
     /**
      * Provides pagination size for calculating offsets
@@ -65,11 +57,11 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
         val mVisibleItemCount = recyclerView.childCount
 
         //minimum allowed threshold before next page reload request
-        mGridLayoutManager?.let {
+        gridLayoutManager?.also {
             mTotalItemCount = it.itemCount
             mFirstVisibleItem = it.findFirstVisibleItemPosition()
         }
-        mStaggeredGridLayoutManager?.let {
+        staggeredGridLayoutManager?.also {
             mTotalItemCount = it.itemCount
             val firstPositions = it.findFirstVisibleItemPositions(null)
             if(firstPositions != null && firstPositions.isNotEmpty())
@@ -78,7 +70,7 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
 
         //minimum allowed threshold before next page reload request
         when (mLoading) {
-            true -> when (mTotalItemCount > mPreviousTotal ) {
+            true -> when (mTotalItemCount > mPreviousTotal) {
                 true -> {
                     mLoading = false
                     mPreviousTotal = mTotalItemCount
@@ -87,9 +79,9 @@ abstract class SupportScrollListener : RecyclerView.OnScrollListener() {
             false -> when (mTotalItemCount - mVisibleItemCount <= mFirstVisibleItem + mVisibleThreshold) {
                 true -> {
                     currentPage++
-                    currentOffset += paginationSize()
-                    mLoadListener!!.onLoadMore()
                     mLoading = true
+                    currentOffset = currentPage * paginationSize()
+                    recyclerLoadListener?.onLoadMore()
                 }
             }
         }

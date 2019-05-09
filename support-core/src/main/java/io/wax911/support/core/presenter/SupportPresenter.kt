@@ -7,11 +7,10 @@ import io.wax911.support.core.preference.SupportPreference
 import io.wax911.support.core.preference.event.OnSharedPreferencesLifecycleBind
 import io.wax911.support.core.recycler.event.SupportScrollListener
 import io.wax911.support.core.util.SupportCoroutineUtil
-import org.greenrobot.eventbus.EventBus
 
 abstract class SupportPresenter<S : SupportPreference>(
     protected val context: Context?,
-    protected val supportPreference: S?
+    val supportPreference: S?
 ) : SupportScrollListener(), OnSharedPreferencesLifecycleBind, SupportCoroutineUtil {
 
     val bundle by lazy { Bundle() }
@@ -48,20 +47,5 @@ abstract class SupportPresenter<S : SupportPreference>(
     override fun onResume(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
         supportPreference?.sharedPreferences
                 ?.registerOnSharedPreferenceChangeListener(changeListener)
-    }
-
-    companion object {
-
-        /**
-         * Trigger all subscribers that may be listening. This method makes use of sticky broadcasts
-         * in case all subscribed listeners were not loaded in time for the broadcast
-         *
-         * @param param the object of type T to send
-         * @param isSticky set true to snackBar sticky post
-         */
-        fun <T> notifyAllListeners(param : T, isSticky: Boolean = false) = when {
-            isSticky -> EventBus.getDefault().postSticky(param)
-            else -> EventBus.getDefault().post(param)
-        }
     }
 }
