@@ -1,4 +1,4 @@
-package io.wax911.sample.core.model.meta
+package io.wax911.sample.core.model.attribute
 
 import android.os.Parcelable
 import androidx.room.Entity

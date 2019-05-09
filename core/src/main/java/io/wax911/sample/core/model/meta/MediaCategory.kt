@@ -3,10 +3,10 @@ package io.wax911.sample.core.model.meta
 import androidx.annotation.StringDef
 
 @StringDef(
-    MetaCategory.MOVIES, MetaCategory.SHOWS
+    MediaCategory.MOVIES, MediaCategory.SHOWS
 )
 @Retention(AnnotationRetention.SOURCE)
-annotation class MetaCategory {
+annotation class MediaCategory {
     companion object {
         const val MOVIES = "movies"
         const val SHOWS = "shows"

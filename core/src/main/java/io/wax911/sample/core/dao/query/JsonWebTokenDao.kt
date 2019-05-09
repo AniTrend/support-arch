@@ -9,11 +9,11 @@ import io.wax911.support.core.dao.ISupportQuery
 interface JsonWebTokenDao: ISupportQuery<JsonWebToken?> {
 
     @Query("select count(id) from JsonWebToken")
-    fun count(): Int
+    suspend fun count(): Int
 
     @Query("select * from JsonWebToken order by id asc limit 1")
-    fun findLatest(): JsonWebToken?
+    suspend fun findLatest(): JsonWebToken?
 
     @Query("select * from JsonWebToken limit :limit offset :offset")
-    fun findAll(offset: Int, limit: Int): List<JsonWebToken>?
+    suspend fun findAll(offset: Int, limit: Int): List<JsonWebToken>?
 }

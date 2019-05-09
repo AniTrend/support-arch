@@ -9,5 +9,5 @@ import io.wax911.support.core.dao.ISupportQuery
 interface ShowIdsDao: ISupportQuery<ShowIds> {
 
     @Query("select count(trakt) from ShowIds")
-    fun count(): Int
+    suspend fun count(): Int
 }

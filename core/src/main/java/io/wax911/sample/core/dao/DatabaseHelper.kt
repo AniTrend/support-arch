@@ -11,9 +11,11 @@ import io.wax911.sample.core.auth.model.JsonWebToken
 import io.wax911.sample.core.dao.converter.*
 import io.wax911.sample.core.dao.migration.MIGRATION_1_2
 import io.wax911.sample.core.dao.query.*
-import io.wax911.sample.core.model.meta.Country
-import io.wax911.sample.core.model.meta.Genre
-import io.wax911.sample.core.model.meta.Language
+import io.wax911.sample.core.data.entitiy.trending.TrendingMovie
+import io.wax911.sample.core.data.entitiy.trending.TrendingShow
+import io.wax911.sample.core.model.attribute.Country
+import io.wax911.sample.core.model.attribute.Genre
+import io.wax911.sample.core.model.attribute.Language
 import io.wax911.sample.core.model.movie.Movie
 import io.wax911.sample.core.model.movie.contract.MovieIds
 import io.wax911.sample.core.model.show.Show
@@ -23,7 +25,7 @@ import io.wax911.support.core.factory.InstanceCreator
 @Database(
     entities = [
         JsonWebToken::class, Language::class, Genre::class, Country::class,
-        Show::class, Movie::class, ShowIds::class, MovieIds::class
+        Show::class, Movie::class, ShowIds::class, MovieIds::class,
     ],
     version = BuildConfig.DATABASE_SCHEMA_VERSION
 )
