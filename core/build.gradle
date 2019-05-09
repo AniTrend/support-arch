@@ -81,18 +81,16 @@ dependencies {
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
-    implementation "android.arch.work:work-runtime:$worker"
+    implementation "androidx.work:work-runtime-ktx:$workerKtx"
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
     implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
-    implementation "android.arch.paging:runtime:$paging"
-    implementation "androidx.room:room-runtime:$anroidx"
-    kapt "androidx.room:room-compiler:$anroidx"
+    implementation "androidx.paging:paging-runtime:$paging"
+    implementation "androidx.room:room-runtime:$room"
+    implementation "androidx.room:room-ktx:$room"
+    kapt "androidx.room:room-compiler:$room"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
-
-    /** Event Bus Library */
-    implementation "org.greenrobot:eventbus:$eventBus"
 
     /** Timber */
     implementation "com.jakewharton.timber:timber:$timber"
