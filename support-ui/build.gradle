@@ -42,9 +42,9 @@ dependencies {
     implementation "com.google.android.material:material:$material"
 
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-extensions:$anroidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.room:room-runtime:$anroidx"
+    implementation "androidx.room:room-runtime:$androidx"
 
     /** Timber */
     implementation "com.jakewharton.timber:timber:$timber"

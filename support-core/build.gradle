@@ -41,7 +41,7 @@ dependencies {
     implementation "com.google.android.material:material:$material"
 
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-extensions:$anroidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
     implementation "androidx.room:room-ktx:$room"
     implementation "androidx.room:room-runtime:$room"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"

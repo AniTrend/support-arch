@@ -82,7 +82,7 @@ dependencies {
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
     implementation "android.arch.work:work-runtime:$worker"
-    implementation "androidx.lifecycle:lifecycle-extensions:$anroidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
     implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
     implementation "android.arch.paging:runtime:$paging"
     implementation "androidx.room:room-runtime:$anroidx"
