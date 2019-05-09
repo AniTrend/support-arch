@@ -1,4 +1,4 @@
-package io.wax911.sample.view.fragment.detail
+package io.wax911.sample.view.fragment.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.R
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.support.ui.fragment.SupportFragment
 import io.wax911.support.core.factory.InstanceCreator
-import kotlinx.android.synthetic.main.fragment_home.*
+import io.wax911.support.ui.fragment.SupportFragment
+import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.android.ext.android.inject
 
-class FragmentHome: SupportFragment<Nothing, CorePresenter, Nothing>()  {
+class FragmentHistory: SupportFragment<Nothing, CorePresenter, Nothing>() {
 
     /**
      * Should be created lazily through injection or lazy delegate
@@ -53,7 +53,7 @@ class FragmentHome: SupportFragment<Nothing, CorePresenter, Nothing>()  {
      * @return Return the View for the fragment's UI, or null.
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.fragment_home, container, false)
+        inflater.inflate(R.layout.fragment_history, container, false)
 
     /**
      * Called immediately after [.onCreateView]
@@ -67,7 +67,10 @@ class FragmentHome: SupportFragment<Nothing, CorePresenter, Nothing>()  {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        helloButton.setOnClickListener {  }
+        container.showLoading(
+            drawableRes = R.drawable.ic_support_empty_state,
+            loadingMessage = R.string.Loading
+        )
     }
 
     /**
@@ -89,8 +92,8 @@ class FragmentHome: SupportFragment<Nothing, CorePresenter, Nothing>()  {
 
     }
 
-    companion object : InstanceCreator<FragmentHome, Bundle?>({
-        val fragment = FragmentHome()
+    companion object : InstanceCreator<FragmentHistory, Bundle?>({
+        val fragment = FragmentHistory()
         fragment.arguments = it
         fragment
     })

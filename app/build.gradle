@@ -1,17 +1,18 @@
 plugins {
     id("com.android.application")
-    id("kotlin-kapt")
     id("kotlin-android")
     id("kotlin-android-extensions")
+    id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
-    compileSdkVersion rootProject.compileSdk
+    compileSdkVersion compileSdk
     defaultConfig {
-        minSdkVersion rootProject.minSdk
-        targetSdkVersion rootProject.targetSdk
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode versionCode
+        versionName versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -34,10 +35,6 @@ androidExtensions {
     experimental = true
 }
 
-/*configurations.all {
-    resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
-}*/
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -54,7 +51,7 @@ dependencies {
     implementation "org.koin:koin-androidx-viewmodel:$koin"
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
@@ -65,12 +62,11 @@ dependencies {
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
-    implementation "android.arch.work:work-runtime:$worker"
-    implementation "androidx.lifecycle:lifecycle-extensions:$anroidx"
-    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
-    implementation "android.arch.paging:runtime:$paging"
-    implementation "androidx.room:room-runtime:$anroidx"
-    kapt "androidx.room:room-compiler:$anroidx"
+    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
+    implementation "androidx.work:work-runtime-ktx:$workerKtx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
 
     /** Fire-base Libraries */
     implementation "com.google.firebase:firebase-core:$firebase"
@@ -80,26 +76,9 @@ dependencies {
         transitive = true
     }
 
-    /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:$retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
-
     /** Glide Libraries */
     implementation "com.github.bumptech.glide:glide:$glide"
     kapt "com.github.bumptech.glide:compiler:$glide"
-
-    /** Java Streams Port */
-    implementation "com.annimon:stream:$stream"
-
-    /** Event Bus Library */
-    implementation "org.greenrobot:eventbus:$eventBus"
-
-    /** State Layout Library */
-    implementation "com.github.nguyenhoanglam:ProgressLayout:$stateLayout"
-
-    /** Flex Box */
-    implementation "com.google.android:flexbox:$flexBox"
 
     /** Timber */
     implementation "com.jakewharton.timber:timber:$timber"
@@ -107,6 +86,8 @@ dependencies {
     /** Material Dialogs */
     implementation "com.afollestad.material-dialogs:core:$materialDialogs"
     implementation "com.afollestad.material-dialogs:input:$materialDialogs"
+    implementation "com.afollestad.material-dialogs:lifecycle:$materialDialogs"
+    implementation "com.afollestad.material-dialogs:bottomsheets:$materialDialogs"
 
     /** Flex Box */
     implementation "com.google.android:flexbox:$flexBox"

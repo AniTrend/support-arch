@@ -10,7 +10,6 @@ import io.wax911.sample.util.AnalyticsUtil
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
 import io.wax911.support.core.util.SupportCoroutineUtil
 import kotlinx.coroutines.*
-import org.greenrobot.eventbus.EventBus
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -20,14 +19,6 @@ import timber.log.Timber
 class App : Application(), SupportCoroutineUtil {
 
     val analyticsUtil: ISupportAnalytics by inject()
-
-    init {
-        EventBus.builder().logNoSubscriberMessages(BuildConfig.DEBUG)
-                .sendNoSubscriberEvent(BuildConfig.DEBUG)
-                .sendSubscriberExceptionEvent(BuildConfig.DEBUG)
-                .throwSubscriberException(BuildConfig.DEBUG)
-                .installDefaultEventBus()
-    }
 
     /**
      * Called when the application is starting, before any activity, service,
