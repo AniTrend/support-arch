@@ -2,11 +2,12 @@ package io.wax911.sample.core.api
 
 import io.wax911.sample.core.extension.logError
 import io.wax911.support.core.controller.SupportRequestClient
-import io.wax911.support.core.wrapper.RequestResult
+import io.wax911.support.core.view.model.UiModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import retrofit2.Call
 
+@Deprecated("Use data source for handling responses and error validation")
 class NetworkClient : SupportRequestClient() {
     /**
      * Executes the given retrofit call and returns a result. This function call
@@ -15,21 +16,18 @@ class NetworkClient : SupportRequestClient() {
      *
      * @param call retrofit call to execute
      */
-    override fun <T> executeUsing(call: Call<T>): RequestResult<T?> {
-        try {
+    override fun <T> executeUsing(call: Call<T>): T? {
+        return try {
             callList.add(call)
             val response = call.execute()
 
             if (!response.isSuccessful)
                 response.errorBody().logError()
 
-            return RequestResult(response.code(),
-                response.body(),
-                response.headers(),
-                response.errorBody())
+            null
         } catch (e: Exception) {
             e.printStackTrace()
-            return RequestResult()
+            null
         }
     }
 
@@ -39,7 +37,7 @@ class NetworkClient : SupportRequestClient() {
      *
      * @param call retrofit call to execute
      */
-    override fun <T> executeUsingAsync(call: Call<T>): Deferred<RequestResult<T?>> = async {
+    override fun <T> executeUsingAsync(call: Call<T>): Deferred<T?> = async {
         return@async executeUsing(call)
     }
 }

@@ -3,10 +3,11 @@ package io.wax911.support.core.preference
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import io.wax911.support.extension.LAZY_MODE_UNSAFE
 
 abstract class SupportPreference constructor(context: Context) {
 
-    val sharedPreferences: SharedPreferences by lazy {
+    val sharedPreferences: SharedPreferences by lazy(LAZY_MODE_UNSAFE) {
         PreferenceManager.getDefaultSharedPreferences(context)
     }
 

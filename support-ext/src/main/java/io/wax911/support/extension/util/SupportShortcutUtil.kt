@@ -13,9 +13,8 @@ import androidx.annotation.RequiresApi
 @RequiresApi(Build.VERSION_CODES.N_MR1)
 abstract class SupportShortcutUtil private constructor(protected val context: Context) {
 
-    protected val shortcutManager: ShortcutManager by lazy {
+    protected val shortcutManager: ShortcutManager =
         context.getSystemService(ShortcutManager::class.java)
-    }
 
     protected fun <S> createIntentAction(targetActivity: Class<S>, param: Bundle): Intent {
         return Intent(context, targetActivity).apply {

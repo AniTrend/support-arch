@@ -1,20 +1,13 @@
 package io.wax911.support.ui.extension
 
-import android.content.Context
-import android.view.View
-import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.recycler.adapter.SupportViewAdapter
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.wax911.support.extension.getColorFromAttr
-import io.wax911.support.extension.getCompatDrawable
-import io.wax911.support.extension.getNavigationBarHeight
-import io.wax911.support.extension.gone
 import io.wax911.support.ui.R
 import io.wax911.support.ui.recycler.SupportRecyclerView
-import io.wax911.support.ui.view.widget.SupportRefreshLayout
+import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 
 /**
  * Sets up a recycler view by handling all the boilerplate code associated with it using
@@ -46,19 +39,14 @@ fun SupportRecyclerView.setUpWith(supportAdapter: SupportViewAdapter<*>, vertica
 /**
  * This method applies the most common configuration for the widget, things like direction, colors, behavior etc.
  */
-fun SupportRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?, presenter : SupportPresenter<*>) = context?.also {
-    setDragTriggerDistance(SupportRefreshLayout.DIRECTION_BOTTOM, (it.resources.getNavigationBarHeight()))
+fun SwipeRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?) = context?.also {
     setProgressBackgroundColorSchemeColor(it.getColorFromAttr(R.attr.rootColor))
     setColorSchemeColors(it.getColorFromAttr(R.attr.contentColor))
-    setRefreshEnabled(presenter.isPager)
-    setLoadEnabled(false)
-    gone()
 }
 
 /**
  * Resets the refreshing or loading states when called, common use case would be after a network response
  */
-fun SupportRefreshLayout.onResponseResetStates() {
+fun SwipeRefreshLayout.onResponseResetStates() {
     if (isRefreshing) isRefreshing = false
-    if (isLoading) isLoading = false
 }

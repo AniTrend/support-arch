@@ -11,6 +11,7 @@ import io.wax911.support.extension.getLayoutInflater
 import io.wax911.support.extension.gone
 import io.wax911.support.extension.visible
 import io.wax911.support.core.view.contract.CustomView
+import io.wax911.support.core.view.model.contract.SupportStateType
 import io.wax911.support.ui.R
 import kotlinx.android.synthetic.main.support_layout_state.view.*
 
@@ -80,20 +81,6 @@ class SupportStateLayout : FrameLayout, CustomView {
         else -> {
             stateLinearContent.visible()
             stateProgress.gone()
-        }
-    }
-
-    @IntDef(
-        SupportStateType.LOADING,
-        SupportStateType.CONTENT,
-        SupportStateType.ERROR
-    )
-    @Retention(AnnotationRetention.SOURCE)
-    internal annotation class SupportStateType {
-        companion object {
-            const val LOADING = 0
-            const val CONTENT = 1
-            const val ERROR = 2
         }
     }
 }

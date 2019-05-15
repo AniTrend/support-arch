@@ -2,7 +2,8 @@ package io.wax911.support.core.repository
 
 import androidx.room.RoomDatabase
 
-interface CompanionRepository<R: SupportRepository<*, *>> {
+@Deprecated("Make use of koin dependency injection")
+interface CompanionRepository<R: SupportRepository<*>> {
 
     /**
      * Returns the repository that should be used by the view model. A cast of the database may

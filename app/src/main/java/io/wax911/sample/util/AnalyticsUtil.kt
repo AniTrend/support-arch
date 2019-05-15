@@ -23,9 +23,9 @@ class AnalyticsUtil private constructor(): Timber.Tree(), ISupportAnalytics {
      * @param priority Log level. See [Log] for constants.
      * @param tag Explicit or inferred tag. May be `null`.
      * @param message Formatted log message. May be `null`, but then `t` will not be.
-     * @param t Accompanying exceptions. May be `null`, but then `message` will not be.
+     * @param throwable Accompanying exceptions. May be `null`, but then `message` will not be.
      */
-    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+    override fun log(priority: Int, tag: String?, message: String, throwable: Throwable?) {
         if (priority < Log.INFO)
             return
 
@@ -33,11 +33,9 @@ class AnalyticsUtil private constructor(): Timber.Tree(), ISupportAnalytics {
         Crashlytics.setString(TAG, tag)
         Crashlytics.setString(MESSAGE, message)
 
-        when (t) {
-            null ->
-                log(priority, tag, message)
-            else ->
-                logException(t)
+        when (throwable) {
+            null -> log(priority, tag, message)
+            else -> logException(throwable)
         }
     }
 
@@ -72,7 +70,7 @@ class AnalyticsUtil private constructor(): Timber.Tree(), ISupportAnalytics {
     override fun logException(throwable: Throwable) =
             Crashlytics.logException(throwable)
 
-    override fun log(priority: Int, tag: String, message: String) =
+    override fun log(priority: Int, tag: String?, message: String) =
             Crashlytics.log(priority, tag, message)
 
     override fun clearUserSession() =

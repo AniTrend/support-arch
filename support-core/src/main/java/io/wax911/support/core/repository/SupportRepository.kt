@@ -1,75 +1,29 @@
 package io.wax911.support.core.repository
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import io.wax911.support.core.controller.SupportRequestClient
-import io.wax911.support.core.dao.ISupportQuery
+import androidx.lifecycle.LiveData
 import io.wax911.support.core.repository.contract.ISupportRepository
-import io.wax911.support.core.util.SupportCoroutineUtil
-import io.wax911.support.extension.isConnectedToNetwork
-import kotlinx.coroutines.*
+import io.wax911.support.core.view.model.NetworkState
+import io.wax911.support.core.view.model.UiModel
+import retrofit2.Response
+import timber.log.Timber
 
-abstract class SupportRepository<K, V>: ISupportRepository<K, V>, SupportCoroutineUtil {
+abstract class SupportRepository<V, R>(context: Context): ISupportRepository<V> {
 
-    protected var modelDao: ISupportQuery<V>? = null
-    protected val networkClient: SupportRequestClient by lazy { initNetworkClient() }
+    override val connectivityManager: ConnectivityManager? = context.getSystemService(
+        Context.CONNECTIVITY_SERVICE
+    ) as ConnectivityManager?
 
-    val liveData : MutableLiveData<V?> by lazy { MutableLiveData<V?>() }
-
-    /**
-     * Saves the given model to the database
-     * <br/>
-     *
-     * @param model item which should be saved
-     */
-    override suspend fun save(model : V) { modelDao?.insert(model) }
 
     /**
-     * Updates the given model to the database
-     * <br/>
-     *
-     * @param model item which should be updated
-     */
-    override suspend fun update(model : V) { modelDao?.update(model) }
-
-    /**
-     * Deletes the given model from the database
-     * <br/>
-     *
-     * @param model item which should be deleted
-     */
-    override suspend fun delete(model : V) { modelDao?.delete(model) }
-
-    /**
-     * Sets the given life cycle owner to observe changes in the live data that
-     * currently exists in this repository.
-     * <br/>
-     *
-     * @param context any valid life cycle owner such as a FragmentActivity descendant
-     * @param observer any observer that shares the same value type as this repository
-     */
-    override fun registerObserver(context: LifecycleOwner, observer: Observer<V?>) {
-        if (!liveData.hasActiveObservers())
-            liveData.observe(context, observer)
-    }
-
-    /**
-     * Requires the network client to be created in the implementing repo,
-     * to access the created client.
-     *
-     * @see networkClient
-     */
-    protected abstract fun initNetworkClient(): SupportRequestClient
-
-    /**
-     * Creates the network client for implementing class using the given parameters
+     * When the application is connected to the internet this method is called to resolve the
+     * kind of content that needs to be fetched from the network using the given parameters
      *
      * @param bundle bundle of parameters for the request
      */
-    protected abstract fun createNetworkClientRequestAsync(bundle: Bundle, context: Context): Deferred<Unit>
+    protected abstract fun requestFromNetwork(bundle: Bundle): UiModel<V>
 
     /**
      * When the application is not connected to the internet this method is called to resolve the
@@ -77,20 +31,22 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V>, SupportCorouti
      *
      * @param bundle bundle of parameters for the request
      */
-    protected abstract fun requestFromCacheAsync(bundle: Bundle, context: Context): Deferred<Unit>
+    protected abstract fun requestFromCache(bundle: Bundle): UiModel<V>
 
     /**
-     * Dispatches the results to be set to the live data to a UI thread
+     * When refresh is called, we simply run a fresh network request and when it arrives, clear
+     * the database table and insert all new items in a transaction.
      *
-     * @param results data that needs to be sent to the view responsible for creating the request
+     * Since the PagedList already uses a database bound data source, it will automatically be
+     * updated after the database transaction is finished.
      */
-    protected suspend fun publishResult(results : V?) = withContext(Dispatchers.Main) {
-        try {
-            liveData.value = results
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
+    protected abstract fun refresh(bundle: Bundle): LiveData<NetworkState>
+
+
+    /**
+     * Inserts the response into the database while also assigning position indices to items.
+     */
+    protected abstract fun insertResultIntoDb(bundle: Bundle, value: Response<R?>)
 
 
     /**
@@ -98,23 +54,11 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V>, SupportCorouti
      * an active internet connection then data is requested from the database
      *
      * @param bundle bundle of parameters for the request
-     * @param context any valid context
      */
-    override fun requestFromNetwork(bundle: Bundle, context: Context?) {
-        context?.apply {
-            async {
-                when (isConnectedToNetwork()) {
-                    true -> createNetworkClientRequestAsync(bundle, this@apply).await()
-                    false -> requestFromCacheAsync(bundle, this@apply).await()
-                }
-            }.invokeOnCompletion { cause : Throwable? ->
-                cause?.apply {
-                    printStackTrace()
-                    launch {
-                        publishResult(null)
-                    }
-                }
-            }
+    override fun invokeRequest(bundle: Bundle): UiModel<V> {
+        return when (isConnectedToActiveNetwork()) {
+            true -> requestFromNetwork(bundle)
+            else -> requestFromCache(bundle)
         }
     }
 
@@ -122,10 +66,18 @@ abstract class SupportRepository<K, V>: ISupportRepository<K, V>, SupportCorouti
      * Deals with cancellation of any pending or on going operations
      * that the repository is busy with
      *
-     * @see [io.wax911.support.controller.SupportRequestClient.cancel]
+     * @see [io.wax911.support.core.controller.contract.ISupportRequestClient.cancel]
      */
     override fun onCleared() {
         networkClient.cancel()
-        cancelAllChildren()
+    }
+
+    private fun isConnectedToActiveNetwork(): Boolean {
+        return try {
+            connectivityManager?.activeNetworkInfo?.isConnected ?: false
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to check internet connectivity")
+            false
+        }
     }
 }

@@ -1,10 +1,7 @@
 package io.wax911.sample
 
 import android.app.Application
-import io.wax911.sample.core.koin.coreModules
-import io.wax911.sample.core.koin.corePresenterModules
-import io.wax911.sample.core.koin.coreRepositoryModules
-import io.wax911.sample.core.koin.coreViewModelModules
+import io.wax911.sample.core.koin.*
 import io.wax911.sample.koin.appModules
 import io.wax911.sample.util.AnalyticsUtil
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
@@ -52,6 +49,7 @@ class App : Application(), SupportCoroutineUtil {
             modules(
                 appModules,
                 coreModules,
+                coreNetworkModules,
                 coreViewModelModules,
                 corePresenterModules,
                 coreRepositoryModules
