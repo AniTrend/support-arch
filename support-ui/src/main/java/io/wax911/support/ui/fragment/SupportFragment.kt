@@ -7,12 +7,13 @@ import android.view.*
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import io.wax911.support.core.action.contract.ISupportActionMode
-import io.wax911.support.core.action.event.ActionModeListener
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.util.SupportCoroutineUtil
 import io.wax911.support.core.view.contract.CompatView
+import io.wax911.support.extension.LAZY_MODE_UNSAFE
 import io.wax911.support.ui.action.SupportActionMode
+import io.wax911.support.ui.action.contract.ISupportActionMode
+import io.wax911.support.ui.action.event.ActionModeListener
 import timber.log.Timber
 
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener,
@@ -22,10 +23,10 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     protected var inflateMenu: Int = CompatView.NO_MENU_ITEM
     protected var snackBar: Snackbar? = null
 
-    protected val supportAction: ISupportActionMode<M> by lazy {
+    protected val supportAction: ISupportActionMode<M> by lazy(LAZY_MODE_UNSAFE) {
         SupportActionMode<M>(
             actionModeListener = this,
-            presenter = presenter
+            presenter = supportPresenter
         )
     }
 
@@ -78,13 +79,13 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     override fun onPause() {
-        presenter.onPause(this)
+        supportPresenter.onPause(this)
         super.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.onResume(this)
+        supportPresenter.onResume(this)
     }
 
     /**
@@ -183,8 +184,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     /**
-     * Called when the data is changed.
-     * @param model The new data
+     * Invoke view model observer to watch for changes
      */
-    abstract override fun onChanged(model: VM?)
+    protected abstract fun setUpViewModelObserver()
 }

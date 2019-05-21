@@ -15,7 +15,7 @@
         style="?android:attr/progressBarStyleSmall"
         android:layout_marginEnd="@dimen/md_margin" />
 
-    <io.wax911.support.ui.view.widget.SingleLineTextView
+    <io.wax911.support.ui.view.text.SingleLineTextView
         android:id="@+id/stateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

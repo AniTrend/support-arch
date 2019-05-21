@@ -5,9 +5,11 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.repository.SupportRepository
+import io.wax911.support.core.view.model.UiModel
 import io.wax911.support.core.viewmodel.SupportViewModel
 
-interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPreferences.OnSharedPreferenceChangeListener {
+interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>,
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
      * A simple value that can be used when making permission requests,
@@ -21,9 +23,9 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPrefere
     /**
      * Should be created lazily through injection or lazy delegate
      *
-     * @return presenter of the generic type specified
+     * @return supportPresenter of the generic type specified
      */
-    val presenter: P
+    val supportPresenter: P
 
 
     /**
@@ -31,7 +33,7 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPrefere
      *
      * @return view model of the given type
      */
-    val viewModel: SupportViewModel<VM?, *>?
+    val supportViewModel: SupportViewModel<VM?>?
         get() = null
 
     /**

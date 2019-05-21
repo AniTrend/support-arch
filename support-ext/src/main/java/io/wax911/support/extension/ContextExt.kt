@@ -34,6 +34,7 @@ fun Context?.isLowRamDevice() : Boolean = this?.let {
  *
  * @return true if network connectivity exists, false otherwise.
  */
+@Deprecated("Will be deprecated in Android Q")
 fun Context?.isConnectedToNetwork() : Boolean = this?.let {
     val connectivityManager = it
         .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?

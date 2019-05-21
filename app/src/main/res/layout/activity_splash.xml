@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         tools:context="io.wax911.sample.view.activity.base.SplashActivity">
 
-        <io.wax911.support.ui.view.widget.SingleLineTextView
+        <io.wax911.support.ui.view.text.SingleLineTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <io.wax911.support.ui.view.widget.SingleLineTextView
+        <io.wax911.support.ui.view.text.SingleLineTextView
             android:id="@+id/splash_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

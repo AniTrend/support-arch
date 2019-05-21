@@ -35,7 +35,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginEnd="@dimen/lg_margin" />
 
-            <io.wax911.support.ui.view.widget.SingleLineTextView
+            <io.wax911.support.ui.view.text.SingleLineTextView
                 android:id="@+id/stateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

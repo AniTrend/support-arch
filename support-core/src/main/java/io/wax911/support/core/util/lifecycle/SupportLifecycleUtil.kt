@@ -17,14 +17,13 @@ class SupportLifecycleUtil(
 
     var lifecycleCallback: ILifecycleCallback? = null
 
-    private val lifecycle by lazy {
-        context?.let {
-            if (it is FragmentActivity)
-                return@lazy it.lifecycle
-            else
-                null
+    private val lifecycle = context?.let {
+        when (it) {
+            is FragmentActivity -> it.lifecycle
+            else -> null
         }
     }
+
 
     init {
         lifecycle?.addObserver(this)

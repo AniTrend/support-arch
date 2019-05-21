@@ -66,4 +66,9 @@ class SupportRecyclerView : RecyclerView, CustomView {
     override fun onInit() {
 
     }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        onViewRecycled()
+    }
 }

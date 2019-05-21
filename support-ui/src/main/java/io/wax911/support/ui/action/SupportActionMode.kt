@@ -1,12 +1,12 @@
 package io.wax911.support.ui.action
 
 import android.view.ActionMode
-import io.wax911.support.core.action.event.ActionModeListener
-import io.wax911.support.core.action.contract.ISupportActionMode
-import io.wax911.support.core.action.decorator.SelectionDecorator
+import io.wax911.support.ui.action.event.ActionModeListener
+import io.wax911.support.ui.action.contract.ISupportActionMode
+import io.wax911.support.ui.action.decorator.SelectionDecorator
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.recycler.adapter.SupportViewAdapter
-import io.wax911.support.core.recycler.holder.SupportViewHolder
+import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
+import io.wax911.support.ui.recycler.holder.SupportViewHolder
 import java.util.*
 
 /**
@@ -22,7 +22,7 @@ class SupportActionMode<T>(
 
     private var supportViewAdapter: SupportViewAdapter<*>? = null
 
-    private val selectedItems: MutableList<T> by lazy { ArrayList<T>() }
+    private val selectedItems: MutableList<T> = ArrayList()
 
     private var selectionDecorator: SelectionDecorator<T> =
         object: SelectionDecorator<T> {

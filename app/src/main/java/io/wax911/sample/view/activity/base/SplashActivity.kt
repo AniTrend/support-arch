@@ -14,10 +14,13 @@ class SplashActivity : SupportActivity<Nothing, CorePresenter>() {
 
     private var binding: ActivitySplashBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-    }
+
+    /**
+     * Should be created lazily through injection or lazy delegate
+     *
+     * @return supportPresenter of the generic type specified
+     */
+    override val supportPresenter: CorePresenter by inject()
 
     /**
      * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
@@ -33,12 +36,10 @@ class SplashActivity : SupportActivity<Nothing, CorePresenter>() {
         makeRequest()
     }
 
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return presenter of the generic type specified
-     */
-    override val presenter: CorePresenter by inject()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+    }
 
     override fun updateUI() {
         startNewActivity<MainActivity>(intent.extras)

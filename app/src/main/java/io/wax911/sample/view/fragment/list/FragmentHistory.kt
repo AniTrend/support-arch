@@ -5,20 +5,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.R
+import io.wax911.sample.core.model.show.Show
 import io.wax911.sample.core.presenter.CorePresenter
+import io.wax911.sample.core.repository.show.ShowRequestType
+import io.wax911.sample.core.util.StateUtil
 import io.wax911.support.core.factory.InstanceCreator
+import io.wax911.support.core.util.SupportStateKeyStore
+import io.wax911.support.core.viewmodel.SupportViewModel
 import io.wax911.support.ui.fragment.SupportFragment
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FragmentHistory: SupportFragment<Nothing, CorePresenter, Nothing>() {
+class FragmentHistory: SupportFragment<Nothing, CorePresenter, List<Show>>() {
 
     /**
      * Should be created lazily through injection or lazy delegate
      *
-     * @return presenter of the generic type specified
+     * @return supportPresenter of the generic type specified
      */
-    override val presenter: CorePresenter by inject()
+    override val supportPresenter: CorePresenter by inject()
+
+    override val supportViewModel: SupportViewModel<List<Show>?>? by viewModel()
 
     /**
      * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
@@ -74,6 +82,13 @@ class FragmentHistory: SupportFragment<Nothing, CorePresenter, Nothing>() {
     }
 
     /**
+     * Invoke view model observer to watch for changes
+     */
+    override fun setUpViewModelObserver() {
+        supportViewModel?.model?.observe(this, this)
+    }
+
+    /**
      * Update views or bind a liveData to them
      */
     override fun updateUI() {
@@ -81,14 +96,16 @@ class FragmentHistory: SupportFragment<Nothing, CorePresenter, Nothing>() {
     }
 
     override fun makeRequest() {
-
+        supportViewModel?.queryFor(Bundle().apply {
+            StateUtil.arg_request_type to ShowRequestType.SHOW_TYPE_POPULAR
+        })
     }
 
     /**
      * Called when the data is changed.
      * @param model The new data
      */
-    override fun onChanged(model: Nothing?) {
+    override fun onChanged(model: List<Show>?) {
 
     }
 

@@ -8,6 +8,7 @@ import java.lang.reflect.Type
 inline fun <reified T> getTypeToken(): Type =
     object : TypeToken<T>() {}.type
 
+@Deprecated("Use the koin `by inject()` varient")
 inline fun <reified T> Context.getEndPointOf() : T =
-    RetroFactory.getInstance(this)
-        .retrofit.create(T::class.java)
+    RetroFactory.newInstance(this)
+        .createService(T::class.java)

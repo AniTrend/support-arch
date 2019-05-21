@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <io.wax911.support.ui.view.widget.SupportRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/supportRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +17,6 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical"/>
 
-    </io.wax911.support.ui.view.widget.SupportRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </io.wax911.support.ui.view.widget.SupportStateLayout>

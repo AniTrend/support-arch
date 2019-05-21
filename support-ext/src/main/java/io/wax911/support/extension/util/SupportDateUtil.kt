@@ -1,6 +1,7 @@
 package io.wax911.support.extension.util
 
 import androidx.annotation.IntDef
+import io.wax911.support.extension.LAZY_MODE_UNSAFE
 import io.wax911.support.extension.util.attribute.SeasonType
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,14 +14,13 @@ object SupportDateUtil {
      *
      * @return Season name
      */
-    val currentSeasonIndex by lazy {
-        SeasonType.ALL.indexOf(currentSeason)
-    }
+    val currentSeasonIndex = SeasonType.ALL.indexOf(currentSeason)
+
 
     /**
      * Returns the calendar object
      */
-    val calendar by lazy {
+    private val calendar by lazy(LAZY_MODE_UNSAFE) {
         Calendar.getInstance()
     }
 
@@ -31,7 +31,7 @@ object SupportDateUtil {
      */
     val currentSeason: String
         @SeasonType get() {
-            val month = Calendar.getInstance().get(Calendar.MONTH)
+            val month = calendar.get(Calendar.MONTH)
             return when (month) {
                 in 0..1 -> SeasonType.WINTER
                 in 2..4 -> SeasonType.SPRING
