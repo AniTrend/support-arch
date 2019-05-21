@@ -1,8 +1,10 @@
 package io.wax911.support.core.controller
 
 import io.wax911.support.core.util.SupportCoroutineUtil
-import io.wax911.support.core.wrapper.ModelWrapper
+import io.wax911.support.core.wrapper.RequestResult
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
 import retrofit2.Call
 
 abstract class SupportRequestClient: SupportCoroutineUtil {
@@ -15,7 +17,16 @@ abstract class SupportRequestClient: SupportCoroutineUtil {
      *
      * @param call retrofit call to execute
      */
-    abstract fun <T> executeUsingAsync(call: Call<T>): Deferred<ModelWrapper<T?>>
+    abstract fun <T> executeUsingAsync(call: Call<T>): Deferred<RequestResult<T?>>
+
+    /**
+     * Executes the given retrofit call and returns a result. This function call
+     * will require that you execute it in a async context to avoid exceptions
+     * caused by running network calls on the main thread
+     *
+     * @param call retrofit call to execute
+     */
+    abstract fun <T> executeUsing(call: Call<T>): RequestResult<T?>
 
     /**
      * Cancels all the call requests that were used in the executeUsing function
@@ -30,4 +41,12 @@ abstract class SupportRequestClient: SupportCoroutineUtil {
             e.printStackTrace()
         }
     }
+
+    /**
+     * Coroutine dispatcher specification
+     *
+     * @return [kotlinx.coroutines.Dispatchers.Default] by default
+     */
+    override val coroutineDispatcher: CoroutineDispatcher =
+        Dispatchers.IO
 }

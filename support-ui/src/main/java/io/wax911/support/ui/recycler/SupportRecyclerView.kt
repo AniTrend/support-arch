@@ -41,7 +41,7 @@ class SupportRecyclerView : RecyclerView, CustomView {
      *
      * @param listener listener to set or null to clear
      */
-    override fun addOnScrollListener(listener: RecyclerView.OnScrollListener) {
+    override fun addOnScrollListener(listener: OnScrollListener) {
         super.addOnScrollListener(listener)
         isListenerPresent = true
     }
@@ -54,7 +54,9 @@ class SupportRecyclerView : RecyclerView, CustomView {
         isListenerPresent = false
     }
 
-    /*To avoid multiple instances of scroll listener from being added*/
+    /**
+     * To avoid multiple instances of scroll listener from being added
+     */
     fun hasOnScrollListener() = isListenerPresent
 
 

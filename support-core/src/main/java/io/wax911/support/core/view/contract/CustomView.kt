@@ -1,14 +1,14 @@
 package io.wax911.support.core.view.contract
 
 import io.wax911.support.core.util.SupportCoroutineUtil
-import io.wax911.support.core.util.SupportLifecycleUtil
+import io.wax911.support.core.util.lifecycle.SupportLifecycleUtil
+import io.wax911.support.core.util.lifecycle.contract.ILifecycleCallback
 
 /**
  * Created by max on 2017/06/24.
  * Designed to init constructors for custom views and provide coroutine contexts
  */
-
-interface CustomView: SupportCoroutineUtil, SupportLifecycleUtil.LifecycleCallback {
+interface CustomView: SupportCoroutineUtil, ILifecycleCallback {
 
     /**
      * Callable in view constructors to perform view inflation and

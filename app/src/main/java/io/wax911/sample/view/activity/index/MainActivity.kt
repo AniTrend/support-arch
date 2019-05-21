@@ -8,37 +8,44 @@ import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.commit
+import androidx.fragment.app.transaction
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import io.wax911.sample.R
-import io.wax911.sample.presenter.BasePresenter
-import io.wax911.sample.util.StateUtil
+import io.wax911.sample.core.presenter.CorePresenter
+import io.wax911.sample.core.util.StateUtil
 import io.wax911.sample.view.fragment.detail.FragmentHome
+import io.wax911.sample.view.fragment.list.FragmentHistory
 import io.wax911.support.ui.activity.SupportActivity
 import io.wax911.support.core.util.SupportStateKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
 
-class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : SupportActivity<Nothing, CorePresenter>(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val bottomDrawerBehavior: BottomSheetBehavior<FrameLayout> by lazy {
+    private val bottomDrawerBehavior: BottomSheetBehavior<FrameLayout>? by lazy {
         BottomSheetBehavior.from(bottomNavigationDrawer)
     }
 
     @IdRes
     private var selectedItem: Int = R.id.nav_home
+
     @StringRes
     private var selectedTitle: Int = R.string.nav_home
 
     /**
-     * @return the presenter that will be used by the fragment activity
+     * Should be created lazily through injection or lazy delegate
+     *
+     * @return presenter of the generic type specified
      */
-    override fun initPresenter(): BasePresenter = BasePresenter.newInstance(this)
+    override val presenter: CorePresenter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(bottomAppBar)
-        bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
         if (intent.hasExtra(StateUtil.arg_redirect))
             selectedItem = intent.getIntExtra(StateUtil.arg_redirect, R.id.nav_home)
     }
@@ -54,7 +61,7 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
     override fun initializeComponents(savedInstanceState: Bundle?) {
         bottomAppBar.apply {
             setNavigationOnClickListener {
-                bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HALF_EXPANDED
             }
         }
         floatingShortcutButton.setOnClickListener {
@@ -82,10 +89,10 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
     }
 
     override fun onBackPressed() {
-        when (bottomDrawerBehavior.state) {
+        when (bottomDrawerBehavior?.state) {
             BottomSheetBehavior.STATE_EXPANDED,
             BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-                bottomDrawerBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
                 return
             }
             else -> super.onBackPressed()
@@ -121,10 +128,12 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
     private fun onNavigate(@IdRes menu: Int) {
         when (menu) {
             R.id.nav_theme -> {
-                if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES)
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                else
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                when (AppCompatDelegate.getDefaultNightMode()) {
+                    AppCompatDelegate.MODE_NIGHT_YES ->
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    else ->
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
                 recreate()
             }
             R.id.nav_about -> Toast.makeText(this@MainActivity, "About", Toast.LENGTH_SHORT).show()
@@ -135,17 +144,17 @@ class MainActivity : SupportActivity<Nothing, BasePresenter>(), NavigationView.O
             }
             R.id.nav_history -> {
                 selectedTitle = R.string.nav_history
-                supportFragment = null
+                supportFragment = FragmentHistory.newInstance(intent.extras)
             }
         }
 
-        if (supportFragment != null) {
-            bottomAppBar.setTitle(selectedTitle)
-            val fragmentManager = supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.contentFrame, supportFragment!!, supportFragment!!.tag)
-            fragmentTransaction.commit()
-            bottomDrawerBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomAppBar.setTitle(selectedTitle)
+        bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+
+        supportFragment?.apply {
+            supportFragmentManager.commit {
+                replace(R.id.contentFrame, this@apply, tag)
+            }
         }
     }
 

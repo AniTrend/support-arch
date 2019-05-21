@@ -38,8 +38,7 @@ before_cache:
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
   
 before_script:
-  - mv .travic-ci/secrets ./secrets.properties
-  - mv .travic-ci/services ./app/google-services.json
+  - cp .travis-ci/secrets ./core/.config/secrets.properties
 
 cache:
   directories:

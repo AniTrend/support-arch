@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.ColorRes
@@ -12,24 +11,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import io.wax911.support.core.view.contract.CompatView
-import io.wax911.support.ui.fragment.SupportFragment
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.util.SupportCoroutineUtil
-import io.wax911.support.core.viewmodel.SupportViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import org.greenrobot.eventbus.EventBus
+import io.wax911.support.core.view.contract.CompatView
+import io.wax911.support.ui.fragment.SupportFragment
+import timber.log.Timber
 
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P>,
-    SupportCoroutineUtil {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P>, SupportCoroutineUtil {
 
     private var isClosing: Boolean = false
 
     protected var supportFragment : SupportFragment<*, *, *>? = null
-
-    protected val presenter: P by lazy { initPresenter() }
-    protected val viewModel: SupportViewModel<M?, *>? by lazy { initViewModel() }
 
     /**
      * Can be used to configure custom theme styling as desired
@@ -96,34 +88,6 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         return false
     }
 
-    /**
-     * Dispatch onResume() to fragments.  Note that for better inter-operation
-     * with older versions of the platform, at the point of this call the
-     * fragments attached to the activity are *not* resumed.  This means
-     * that in some cases the previous state may still be saved, not allowing
-     * fragment transactions that modify the state.  To correctly interact
-     * with fragments in their proper state, you should instead override
-     * [.onResumeFragments].
-     */
-    override fun onResume() {
-        super.onResume()
-        if (shouldSubscribe()) {
-            if (!EventBus.getDefault().isRegistered(this))
-                EventBus.getDefault().register(this)
-        }
-    }
-
-    /**
-     * Dispatch onPause() to fragments.
-     */
-    override fun onPause() {
-        if (shouldSubscribe()) {
-            if (EventBus.getDefault().isRegistered(this))
-                EventBus.getDefault().unregister(this)
-        }
-        super.onPause()
-    }
-
     override fun onDestroy() {
         cancelAllChildren()
         super.onDestroy()
@@ -140,23 +104,15 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     }
 
     /**
-     * Coroutine dispatcher specification
-     *
-     * @return [kotlinx.coroutines.Dispatchers.IO] by default
-     */
-    override val coroutineDispatcher: CoroutineDispatcher
-        get() = Dispatchers.Default
-
-    /**
      * Called when the data is changed.
      * @param data The new data
      */
     override fun onChanged(data: M?) {
-        Log.i(getViewName(), "onChanged() from view liveData has received data")
+        Timber.tag(getViewName()).i("onChanged() from view liveData has received data")
     }
 
     override fun onSharedPreferenceChanged(preference: SharedPreferences?, key: String?) {
         if (!key.isNullOrEmpty())
-            Log.d(getViewName(), "onSharedPreferenceChanged -> $key | Changed value")
+            Timber.tag(getViewName()).d("onSharedPreferenceChanged -> $key | Changed value")
     }
 }

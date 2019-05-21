@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion rootProject.compileSdk
+    compileSdkVersion compileSdk
     defaultConfig {
-        minSdkVersion rootProject.minSdk
-        targetSdkVersion rootProject.targetSdk
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode versionCode
+        versionName versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -31,19 +31,19 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
     /** Material Design */
-    implementation "com.google.android.material:material:$rootProject.material"
+    implementation "com.google.android.material:material:$material"
 
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.anroidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
 
-    /** Java Streams Port */
-    implementation "com.annimon:stream:$rootProject.stream"
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$timber"
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$rootProject.junit"
-    androidTestImplementation "androidx.test:runner:$rootProject.runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espresso"
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "androidx.test:runner:$runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }

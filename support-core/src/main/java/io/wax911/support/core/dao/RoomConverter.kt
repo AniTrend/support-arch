@@ -5,7 +5,7 @@ interface RoomConverter<T> {
     /**
      * Convert database types back to the original type
      *
-     ** @see androidx.room.TypeConverter
+     * @see androidx.room.TypeConverter
      * @param dbValue saved database value type
      */
     fun fromDatabaseValue(dbValue : String) : T?

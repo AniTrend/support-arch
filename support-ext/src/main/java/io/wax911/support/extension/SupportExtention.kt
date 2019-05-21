@@ -34,13 +34,4 @@ fun String?.capitalizeWords(exceptions: List<String>? = null) : String = when {
     else -> String.empty()
 }
 
-/**
- * Does an equality check as well as a nullability check
- *
- * @return true if two objects are the same otherwise
- *         false if one of them is null or both are not equal
- */
-fun Any?.equal(b : Any?) : Boolean =
-        this != null && b != null && this == b
-
 
