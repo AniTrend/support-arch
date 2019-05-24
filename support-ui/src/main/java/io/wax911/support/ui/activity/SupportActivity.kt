@@ -12,12 +12,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.util.SupportCoroutineUtil
+import io.wax911.support.core.util.SupportCoroutineHelper
 import io.wax911.support.core.view.contract.CompatView
 import io.wax911.support.ui.fragment.SupportFragment
 import timber.log.Timber
 
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P>, SupportCoroutineUtil {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P>, SupportCoroutineHelper {
 
     private var isClosing: Boolean = false
 
@@ -26,13 +26,8 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     /**
      * Can be used to configure custom theme styling as desired
      */
-    protected fun configureActivity() {
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
-                window.navigationBarColor = getCompatColor(R.color.colorPrimary)
-                window.decorView.systemUiVisibility += View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            }
-        }*/
+    protected open fun configureActivity() {
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

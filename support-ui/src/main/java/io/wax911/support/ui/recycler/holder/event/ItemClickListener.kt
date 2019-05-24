@@ -16,7 +16,7 @@ interface ItemClickListener<T> {
      * @param target view that has been clicked
      * @param data the liveData that at the click index
      */
-    fun onItemClick(target: View, data: Pair<Int ,T>)
+    fun onItemClick(target: View, data: Pair<Int ,T?>)
 
     /**
      * When the target view from [View.OnLongClickListener]
@@ -25,5 +25,5 @@ interface ItemClickListener<T> {
      * @param target view that has been long clicked
      * @param data the liveData that at the long click index
      */
-    fun onItemLongClick(target: View, data: Pair<Int ,T>)
+    fun onItemLongClick(target: View, data: Pair<Int ,T?>)
 }

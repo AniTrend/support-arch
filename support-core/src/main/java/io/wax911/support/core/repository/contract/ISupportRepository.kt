@@ -2,18 +2,16 @@ package io.wax911.support.core.repository.contract
 
 import android.net.ConnectivityManager
 import android.os.Bundle
-import io.wax911.support.core.controller.contract.ISupportRequestClient
-import io.wax911.support.core.util.SupportCoroutineUtil
+import io.wax911.support.core.util.SupportCoroutineHelper
 import io.wax911.support.core.view.model.UiModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import org.koin.core.KoinComponent
 
 /**
  * Repository contract
  */
-interface ISupportRepository<V> : SupportCoroutineUtil {
-
-    val networkClient: ISupportRequestClient
+interface ISupportRepository<V> : SupportCoroutineHelper, KoinComponent {
 
     val connectivityManager: ConnectivityManager?
 

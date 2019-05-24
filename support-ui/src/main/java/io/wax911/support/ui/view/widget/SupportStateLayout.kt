@@ -3,6 +3,7 @@ package io.wax911.support.ui.view.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import android.widget.ViewFlipper
 import androidx.annotation.DrawableRes
 import androidx.annotation.IntDef
 import androidx.annotation.StringRes
@@ -14,41 +15,32 @@ import io.wax911.support.core.view.contract.CustomView
 import io.wax911.support.core.view.model.contract.SupportStateType
 import io.wax911.support.ui.R
 import kotlinx.android.synthetic.main.support_layout_state.view.*
+import timber.log.Timber
 
 /**
  * A state layout that supports nesting of children using a frame layout
- *
- * TODO: Implement view flipper as the base parent
  */
-class SupportStateLayout : FrameLayout, CustomView {
+class SupportStateLayout : ViewFlipper, CustomView {
 
     constructor(context: Context) :
             super(context) { onInit() }
     constructor(context: Context, attrs: AttributeSet?) :
             super(context, attrs) { onInit() }
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) { onInit() }
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) :
-            super(context, attrs, defStyleAttr, defStyleRes) { onInit() }
 
     var isLoading = false
-        set(value) {
-            field = value
-            // Does some interesting things
-            if (value) showLoading()
-            else showContent()
-        }
+        private set
 
     /**
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization
      */
     override fun onInit() {
+        setInAnimation(context, android.R.anim.fade_in)
+        setOutAnimation(context, android.R.anim.fade_out)
         context.getLayoutInflater().inflate(R.layout.support_layout_state, this, true)
     }
 
-    fun showLoading(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, @StringRes loadingMessage: Int = 0) {
+    fun showLoading(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, @StringRes loadingMessage: Int) {
         stateImage.setImageDrawable(context.getCompatDrawable(drawableRes))
         stateText.text = context.getString(loadingMessage)
         onStateChanged(SupportStateType.LOADING)
@@ -70,17 +62,33 @@ class SupportStateLayout : FrameLayout, CustomView {
         onStateChanged(SupportStateType.ERROR)
     }
 
-    private fun onStateChanged(@SupportStateType state : Int) = when (state) {
-        SupportStateType.CONTENT -> {
-            stateLinearContent.gone()
+    private fun onStateChanged(@SupportStateType state : Int) {
+        Timber.tag(toString()).i("onStateChanged(@SupportStateType state : Int) -> Current displayed child $displayedChild")
+        when (state) {
+            SupportStateType.CONTENT -> {
+                isLoading = false
+                stateLinearContent.gone()
+                if (displayedChild != DEFAULT_VIEW)
+                    showNext()
+            }
+            SupportStateType.LOADING -> {
+                isLoading = true
+                stateLinearContent.visible()
+                stateProgress.visible()
+                if (displayedChild != DEFAULT_VIEW)
+                    showPrevious()
+            }
+            else -> {
+                isLoading = false
+                stateLinearContent.visible()
+                stateProgress.gone()
+                if (displayedChild == DEFAULT_VIEW)
+                    showPrevious()
+            }
         }
-        SupportStateType.LOADING -> {
-            stateLinearContent.visible()
-            stateProgress.visible()
-        }
-        else -> {
-            stateLinearContent.visible()
-            stateProgress.gone()
-        }
+    }
+
+    companion object {
+        const val DEFAULT_VIEW = 1
     }
 }

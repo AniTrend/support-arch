@@ -7,11 +7,11 @@ import io.wax911.sample.core.auth.contract.IAuthenticationHelper
 import io.wax911.sample.core.dao.DatabaseHelper
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.repository.movie.MovieRepository
-import io.wax911.sample.core.repository.show.PopularShowRepository
+import io.wax911.sample.core.repository.show.ShowRepository
 import io.wax911.sample.core.util.Settings
 import io.wax911.sample.core.viewmodel.movie.MovieViewModel
 import io.wax911.sample.core.viewmodel.show.ShowViewModel
-import io.wax911.support.core.controller.SupportRequestClient
+import io.wax911.support.core.controller.contract.ISupportRequestClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -37,7 +37,7 @@ val coreModules = module {
 }
 
 val coreNetworkModules = module {
-    factory<SupportRequestClient> {
+    factory<ISupportRequestClient> {
         NetworkClient()
     }
 
@@ -68,7 +68,7 @@ val coreViewModelModules = module {
 
 val coreRepositoryModules = module {
     factory {
-        PopularShowRepository(
+        ShowRepository(
             context = androidContext()
         )
     }

@@ -1,5 +1,6 @@
 package io.wax911.support.ui.recycler.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -16,6 +17,7 @@ import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.ui.R
 import io.wax911.support.core.view.model.NetworkState
 import io.wax911.support.core.view.model.contract.SupportStateType
+import io.wax911.support.extension.getLayoutInflater
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import java.util.*
@@ -97,7 +99,28 @@ abstract class SupportViewAdapter<T>(
         }
     }
 
-    abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SupportViewHolder<T>
+    /**
+     * Should provide the required view holder, this function is a substitute for [onCreateViewHolder] which now
+     * has extended functionality
+     */
+    abstract fun createDefaultViewHolder(parent: ViewGroup, @LayoutRes viewType: Int, layoutInflater: LayoutInflater): SupportViewHolder<T>
+
+    /**
+     * Overridden implementation creates a default loading footer view when the [viewType] is
+     * [R.layout.support_layout_state_footer] otherwise [createDefaultViewHolder] is called to
+     * resolve the view holder type
+     */
+    override fun onCreateViewHolder(parent: ViewGroup, @LayoutRes viewType: Int): SupportViewHolder<T> {
+        val layoutInflater = parent.context.getLayoutInflater()
+        return when (viewType) {
+            R.layout.support_layout_state_footer -> {
+                return SupportFooterViewHolder(layoutInflater.inflate(
+                    R.layout.support_layout_state_footer, parent, false)
+                )
+            }
+            else -> createDefaultViewHolder(parent, viewType, layoutInflater)
+        }
+    }
 
     /**
      * Called when a view created by this adapter has been attached to a window.
@@ -156,6 +179,8 @@ abstract class SupportViewAdapter<T>(
     override fun onBindViewHolder(holder: SupportViewHolder<T>, position: Int) {
         when (getItemViewType(position)) {
             R.layout.support_layout_state_footer ->
+                holder.onBindViewHolder(null)
+            else ->
                 holder.onBindViewHolder(getItem(position))
         }
     }
@@ -217,6 +242,8 @@ abstract class SupportViewAdapter<T>(
     override fun getItemCount(): Int {
         return super.getItemCount() + if (hasExtraRow()) 1 else 0
     }
+
+    fun isEmpty(): Boolean = super.getItemCount() < 1
 
     /**
      * Returns a filter that can be used to constrain data with a filtering

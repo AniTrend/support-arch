@@ -13,24 +13,24 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import io.wax911.sample.R
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.core.util.StateUtil
-import io.wax911.sample.view.fragment.detail.FragmentHome
+import io.wax911.sample.core.view.TraktTrendActivity
 import io.wax911.sample.view.fragment.list.FragmentHistory
+import io.wax911.sample.view.fragment.list.FragmentPopularShows
 import io.wax911.support.ui.activity.SupportActivity
-import io.wax911.support.core.util.SupportStateKeyStore
+import io.wax911.support.core.util.SupportKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
-class MainActivity : SupportActivity<Nothing, CorePresenter>(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val bottomDrawerBehavior: BottomSheetBehavior<FrameLayout>? =
-        BottomSheetBehavior.from(bottomNavigationDrawer)
+    private val bottomDrawerBehavior: BottomSheetBehavior<FrameLayout>?
+        get() = BottomSheetBehavior.from(bottomNavigationDrawer)
 
     @IdRes
-    private var selectedItem: Int = R.id.nav_home
+    private var selectedItem: Int = R.id.nav_popular_series
 
     @StringRes
-    private var selectedTitle: Int = R.string.nav_home
+    private var selectedTitle: Int = R.string.nav_popular_series
 
     /**
      * Should be created lazily through injection or lazy delegate
@@ -44,8 +44,8 @@ class MainActivity : SupportActivity<Nothing, CorePresenter>(), NavigationView.O
         setContentView(R.layout.activity_main)
         setSupportActionBar(bottomAppBar)
         bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
-        if (intent.hasExtra(StateUtil.arg_redirect))
-            selectedItem = intent.getIntExtra(StateUtil.arg_redirect, R.id.nav_home)
+        if (intent.hasExtra(SupportKeyStore.arg_redirect))
+            selectedItem = intent.getIntExtra(SupportKeyStore.arg_redirect, R.id.nav_popular_series)
     }
 
     /**
@@ -73,16 +73,16 @@ class MainActivity : SupportActivity<Nothing, CorePresenter>(), NavigationView.O
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(SupportStateKeyStore.key_navigation_selected, selectedItem)
-        outState.putInt(SupportStateKeyStore.key_navigation_title, selectedTitle)
+        outState.putInt(SupportKeyStore.key_navigation_selected, selectedItem)
+        outState.putInt(SupportKeyStore.key_navigation_title, selectedTitle)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SupportStateKeyStore.key_navigation_selected)
-            selectedTitle = savedInstanceState.getInt(SupportStateKeyStore.key_navigation_title)
+            selectedItem = savedInstanceState.getInt(SupportKeyStore.key_navigation_selected)
+            selectedTitle = savedInstanceState.getInt(SupportKeyStore.key_navigation_title)
         }
     }
 
@@ -136,12 +136,12 @@ class MainActivity : SupportActivity<Nothing, CorePresenter>(), NavigationView.O
             }
             R.id.nav_about -> Toast.makeText(this@MainActivity, "About", Toast.LENGTH_SHORT).show()
             R.id.nav_contact -> Toast.makeText(this@MainActivity, "Contact", Toast.LENGTH_SHORT).show()
-            R.id.nav_home -> {
-                selectedTitle = R.string.nav_home
-                supportFragment = FragmentHome.newInstance(intent.extras)
+            R.id.nav_popular_series -> {
+                selectedTitle = R.string.nav_popular_series
+                supportFragment = FragmentPopularShows.newInstance(intent.extras)
             }
-            R.id.nav_history -> {
-                selectedTitle = R.string.nav_history
+            R.id.nav_popular_movies -> {
+                selectedTitle = R.string.nav_popular_movies
                 supportFragment = FragmentHistory.newInstance(intent.extras)
             }
         }
@@ -160,7 +160,7 @@ class MainActivity : SupportActivity<Nothing, CorePresenter>(), NavigationView.O
         if (selectedItem != 0)
             onNavigate(selectedItem)
         else
-            onNavigate(R.id.nav_home)
+            onNavigate(R.id.nav_popular_series)
     }
 
     override fun makeRequest() {

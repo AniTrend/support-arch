@@ -14,15 +14,16 @@ object SupportDateUtil {
      *
      * @return Season name
      */
-    val currentSeasonIndex = SeasonType.ALL.indexOf(currentSeason)
+    val currentSeasonIndex
+        get() =  SeasonType.ALL.indexOf(currentSeason)
 
 
     /**
      * Returns the calendar object
      */
-    private val calendar by lazy(LAZY_MODE_UNSAFE) {
-        Calendar.getInstance()
-    }
+    private val calendar
+        get() =  Calendar.getInstance()
+
 
     /**
      * Gets current season title

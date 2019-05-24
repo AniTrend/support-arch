@@ -1,9 +1,10 @@
 package io.wax911.sample.core.model.contract
 
-import java.time.OffsetDateTime
+import io.wax911.sample.core.util.ThumbnailHelper
 
 interface TraktEntity {
 
+    val id: Int
     val title: String
     val year: Int
 
@@ -15,8 +16,10 @@ interface TraktEntity {
     val homepage: String?
     val rating: Double?
     val votes: Int?
-    val updated_at: OffsetDateTime?
+    val updated_at: String?
     val language: String?
     val genres: List<String>?
     val certification: String?
+
+    fun getBanner() = ThumbnailHelper.getThumbnailFromUrl(trailer)
 }

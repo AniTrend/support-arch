@@ -7,7 +7,7 @@ import io.wax911.support.core.view.model.NetworkState
 
 interface ISupportViewModel<M> {
 
-    val repository : SupportRepository<M, *>
+    val repository : SupportRepository<M>
 
     val model: LiveData<M?>
 

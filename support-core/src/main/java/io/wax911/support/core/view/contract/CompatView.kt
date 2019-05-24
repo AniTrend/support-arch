@@ -33,7 +33,7 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>,
      *
      * @return view model of the given type
      */
-    val supportViewModel: SupportViewModel<VM?>?
+    val supportViewModel: SupportViewModel<VM>?
         get() = null
 
     /**

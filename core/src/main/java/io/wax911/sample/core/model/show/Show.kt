@@ -8,15 +8,14 @@ import io.wax911.sample.core.model.show.contract.ShowIds
 import io.wax911.sample.core.model.show.meta.Airs
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
-import java.time.OffsetDateTime
 
 @Entity
 @Parcelize
 data class Show(
-    @PrimaryKey
-    var id: Long,
+    @PrimaryKey(autoGenerate = true)
+    override var id: Int,
     val ids: @RawValue ShowIds,
-    val first_aired: OffsetDateTime?,
+    val first_aired: String?,
     val airs: Airs?,
     val network: String?,
     val status: String,
@@ -30,7 +29,7 @@ data class Show(
     override val homepage: String?,
     override val rating: Double?,
     override val votes: Int?,
-    override val updated_at: OffsetDateTime?,
+    override val updated_at: String?,
     override val language: String?,
     override val genres: List<String>?,
     override val certification: String?

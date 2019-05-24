@@ -2,9 +2,9 @@ package io.wax911.sample.core.auth.contract
 
 import android.net.Uri
 import io.wax911.sample.core.auth.model.JsonWebToken
-import io.wax911.support.core.util.SupportCoroutineUtil
+import io.wax911.support.core.util.SupportCoroutineHelper
 
-interface IAuthenticationHelper: SupportCoroutineUtil {
+interface IAuthenticationHelper: SupportCoroutineHelper {
 
     val jsonWebToken: JsonWebToken?
 

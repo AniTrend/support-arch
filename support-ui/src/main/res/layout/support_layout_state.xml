@@ -17,6 +17,7 @@
             android:id="@+id/stateImage"
             android:layout_width="@dimen/avatar_size_xl"
             android:layout_height="@dimen/avatar_size_xl"
+            android:layout_gravity="center"
             tools:src="@drawable/ic_support_empty_state" />
 
         <Space
@@ -32,13 +33,14 @@
                 android:id="@+id/stateProgress"
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/lg_margin" />
+                android:layout_height="match_parent" />
 
             <io.wax911.support.ui.view.text.SingleLineTextView
                 android:id="@+id/stateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/lg_margin"
+                android:layout_marginEnd="@dimen/lg_margin"
                 tools:text="Loading" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

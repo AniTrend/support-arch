@@ -14,9 +14,13 @@ interface ISupportFragmentList<M> {
         @StringRes
         get
 
+    val loadingMessage: Int
+        @StringRes
+        get() = R.string.supportTextLoading
+
     val columnSize: Int
         @IntegerRes
-        get
+        get() = R.integer.grid_list_x3
 
     val inflateLayout: Int
         @LayoutRes
@@ -33,7 +37,7 @@ interface ISupportFragmentList<M> {
     /**
      * Handles post view model result after extraction or processing
      *
-     * @param uiModel ui model wrapper
+     * @param pagedList paged list holding data
      */
-    fun onPostModelChange(uiModel: UiModel<PagedList<M>>)
+    fun onPostModelChange(pagedList: PagedList<M>?)
 }

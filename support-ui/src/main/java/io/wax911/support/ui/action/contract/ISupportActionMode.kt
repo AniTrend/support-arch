@@ -29,7 +29,7 @@ interface ISupportActionMode<T> {
      *
      *  @see [SupportViewHolder.isClickable]
      */
-    fun isSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T): Boolean
+    fun isSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T?): Boolean
 
     /**
      * Defines whether or not this current object can be consumed as a primary long click,
@@ -43,7 +43,7 @@ interface ISupportActionMode<T> {
      *
      * @see [SupportViewHolder.isLongClickable]
      */
-    fun isLongSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T): Boolean
+    fun isLongSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T?): Boolean
 
     /**
      * All selected items or an empty list if there are none. This list only holds data

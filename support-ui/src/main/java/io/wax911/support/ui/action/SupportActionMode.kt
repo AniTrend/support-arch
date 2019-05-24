@@ -34,19 +34,23 @@ class SupportActionMode<T>(
             actionMode = viewHolder.itemView.startActionMode(actionModeListener)
     }
 
-    private fun selectItem(viewHolder: SupportViewHolder<T>, objectItem: T) {
-        startActionMode(viewHolder)
-        selectedItems.add(objectItem)
-        selectionDecorator.setBackgroundColor(viewHolder, true)
-        actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
+    private fun selectItem(viewHolder: SupportViewHolder<T>, objectItem: T?) {
+        if (objectItem != null) {
+            startActionMode(viewHolder)
+            selectedItems.add(objectItem)
+            selectionDecorator.setBackgroundColor(viewHolder, true)
+            actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
+        }
     }
 
-    private fun deselectItem(viewHolder: SupportViewHolder<T>, objectItem: T) {
-        selectedItems.remove(objectItem)
-        selectionDecorator.setBackgroundColor(viewHolder, false)
-        when (selectedItems.isEmpty()) {
-            true -> actionMode?.finish()
-            false -> actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
+    private fun deselectItem(viewHolder: SupportViewHolder<T>, objectItem: T?) {
+        if (objectItem != null) {
+            selectedItems.remove(objectItem)
+            selectionDecorator.setBackgroundColor(viewHolder, false)
+            when (selectedItems.isEmpty()) {
+                true -> actionMode?.finish()
+                false -> actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
+            }
         }
     }
 
@@ -82,7 +86,7 @@ class SupportActionMode<T>(
      *
      *  @see SupportViewHolder.isClickable
      */
-    override fun isSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T) = when {
+    override fun isSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T?) = when {
         presenter?.isActionModeEnabled != true || selectedItems.isEmpty() -> true
         else -> when (selectedItems.contains(objectItem)) {
             true -> { deselectItem(viewHolder, objectItem); false }
@@ -102,7 +106,7 @@ class SupportActionMode<T>(
      *
      * @see SupportViewHolder.isLongClickable
      */
-    override fun isLongSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T) = when {
+    override fun isLongSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T?) = when {
         presenter?.isActionModeEnabled != true -> false
         else ->  when (selectedItems.contains(objectItem)) {
             true -> { deselectItem(viewHolder, objectItem); true }

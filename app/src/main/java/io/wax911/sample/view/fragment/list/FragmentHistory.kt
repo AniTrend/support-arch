@@ -8,14 +8,11 @@ import io.wax911.sample.R
 import io.wax911.sample.core.model.show.Show
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.repository.show.ShowRequestType
-import io.wax911.sample.core.util.StateUtil
 import io.wax911.support.core.factory.InstanceCreator
-import io.wax911.support.core.util.SupportStateKeyStore
-import io.wax911.support.core.viewmodel.SupportViewModel
+import io.wax911.support.core.util.SupportKeyStore
 import io.wax911.support.ui.fragment.SupportFragment
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FragmentHistory: SupportFragment<Nothing, CorePresenter, List<Show>>() {
 
@@ -25,8 +22,6 @@ class FragmentHistory: SupportFragment<Nothing, CorePresenter, List<Show>>() {
      * @return supportPresenter of the generic type specified
      */
     override val supportPresenter: CorePresenter by inject()
-
-    override val supportViewModel: SupportViewModel<List<Show>?>? by viewModel()
 
     /**
      * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
@@ -97,7 +92,7 @@ class FragmentHistory: SupportFragment<Nothing, CorePresenter, List<Show>>() {
 
     override fun makeRequest() {
         supportViewModel?.queryFor(Bundle().apply {
-            StateUtil.arg_request_type to ShowRequestType.SHOW_TYPE_POPULAR
+            SupportKeyStore.arg_request_type to ShowRequestType.SHOW_TYPE_POPULAR
         })
     }
 

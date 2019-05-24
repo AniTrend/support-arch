@@ -5,34 +5,26 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import io.wax911.support.core.preference.SupportPreference
 import io.wax911.support.core.preference.event.OnSharedPreferencesLifecycleBind
-import io.wax911.support.core.util.SupportCoroutineUtil
+import io.wax911.support.core.util.SupportCoroutineHelper
+import io.wax911.support.core.util.SupportKeyStore
+import io.wax911.support.core.util.pagination.SupportPagingHelper
 
 abstract class SupportPresenter<S : SupportPreference>(
     protected val context: Context?,
     val supportPreference: S?
-): OnSharedPreferencesLifecycleBind, SupportCoroutineUtil {
+): OnSharedPreferencesLifecycleBind, SupportCoroutineHelper {
 
-    var currentPage = 1
-        set(value) {
-            field = value
-            currentOffset = field * paginationSize()
-        }
-    var currentOffset = 0
-        private set
+    val pagingHelper
+        get() = SupportPagingHelper(
+            pageSize = paginationSize(),
+            isPagingLimit = false
+        )
 
-    var isPagingLimit = false
-    var isPager = true
-
-    val bundle by lazy { Bundle() }
-
-    abstract fun paginationSize(): Int
+    protected open fun paginationSize(): Int = SupportKeyStore.pagingLimit
 
     /**
-     * Enables or disables action mode, behaviour should be implemented in your adapter, in
-     * the [io.wax911.support.core.recycler.holder.event.ItemClickListener].
+     * Enables or disables action mode, behaviour should be implemented in your adapter, in ItemClickLister.
      * Default value for this property is false
-     *
-     * @see io.wax911.support.core.recycler.holder.SupportViewHolder
      */
     var isActionModeEnabled: Boolean = false
 
@@ -44,14 +36,6 @@ abstract class SupportPresenter<S : SupportPreference>(
      * @see [androidx.viewpager.widget.ViewPager.setOffscreenPageLimit]
      */
     var offScreenPagerLimit: Int = 3
-
-    fun onRefreshPage() {
-        currentPage = 1
-        currentOffset = 0
-        isPagingLimit = false
-    }
-
-    fun isFirstPage() = currentPage == 1
 
     /**
      * Unregister any listeners from fragments or activities

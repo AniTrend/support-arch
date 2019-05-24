@@ -6,8 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
-import androidx.paging.PagedList
-import io.wax911.support.core.util.SupportStateKeyStore
 import io.wax911.support.core.view.model.NetworkState
 import io.wax911.support.core.view.model.UiModel
 import io.wax911.support.core.viewmodel.contract.ISupportViewModel

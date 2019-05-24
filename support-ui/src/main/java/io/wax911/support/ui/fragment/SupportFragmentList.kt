@@ -14,7 +14,8 @@ import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener
-import io.wax911.support.core.util.SupportStateKeyStore
+import io.wax911.support.core.util.SupportKeyStore
+import io.wax911.support.core.util.pagination.SupportPagingHelper
 import io.wax911.support.core.view.model.NetworkState
 import io.wax911.support.extension.isStateAtLeast
 import io.wax911.support.extension.snackBar
@@ -22,7 +23,6 @@ import io.wax911.support.ui.R
 import io.wax911.support.ui.extension.configureWidgetBehaviorWith
 import io.wax911.support.ui.extension.onResponseResetStates
 import io.wax911.support.ui.fragment.contract.ISupportFragmentList
-import io.wax911.support.core.view.model.UiModel
 import io.wax911.support.core.view.model.contract.IUiModel
 import io.wax911.support.core.view.model.contract.SupportStateType
 import io.wax911.support.ui.recycler.SupportRecyclerView
@@ -34,12 +34,12 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
 
     protected abstract val supportViewAdapter: SupportViewAdapter<M>
 
-    protected abstract var supportStateLayout: SupportStateLayout?
-    protected abstract var supportRefreshLayout: SwipeRefreshLayout?
-    protected abstract var supportRecyclerView: SupportRecyclerView?
+    protected var supportStateLayout: SupportStateLayout? = null
+    protected var supportRefreshLayout: SwipeRefreshLayout? = null
+    protected var supportRecyclerView: SupportRecyclerView? = null
 
     private val stateLayoutOnClick = View.OnClickListener {
-        supportStateLayout?.isLoading = true
+        supportStateLayout?.showLoading(loadingMessage = loadingMessage)
         onRefresh()
         resetWidgetStates()
     }
@@ -111,7 +111,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
             inflater.inflate(inflateLayout, container, false)?.apply {
                 supportStateLayout = findViewById(R.id.progressLayout)
                 supportRefreshLayout = findViewById(R.id.supportRefreshLayout)
-                supportRecyclerView = findViewById(R.id.supportRefreshLayout)
+                supportRecyclerView = findViewById(R.id.supportRecyclerView)
             }
 
     /**
@@ -132,12 +132,32 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                 resources.getInteger(columnSize),
                 StaggeredGridLayoutManager.VERTICAL
             )
+            adapter = supportViewAdapter.also {
+                it.supportAction = supportAction
+            }
         }
 
         setUpViewModelObserver()
 
         supportViewModel?.networkState?.observe(this, Observer {
-            supportViewAdapter.networkState = it
+            when (!supportViewAdapter.isEmpty()) {
+                true -> supportViewAdapter.networkState = it
+                false -> when (it.status) {
+                    SupportStateType.ERROR ->
+                        supportStateLayout?.showError(
+                            errorMessage = it.message,
+                            onClickListener = stateLayoutOnClick
+                        )
+                    SupportStateType.CONTENT -> {
+                        supportStateLayout?.showContent()
+                        supportPresenter.pagingHelper.onPageNext()
+                    }
+                    SupportStateType.LOADING ->
+                        supportStateLayout?.showLoading(
+                            loadingMessage = loadingMessage
+                        )
+                }
+            }
         })
 
         supportViewModel?.refreshState?.observe(this, Observer { networkState ->
@@ -157,9 +177,9 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     override fun onStart() {
         super.onStart()
-        supportStateLayout?.isLoading = true
-        when (supportViewAdapter.itemCount > 0) {
-            true -> onRefresh()
+        supportStateLayout?.showLoading(loadingMessage = loadingMessage)
+        when (supportViewAdapter.isEmpty()) {
+            true -> makeRequest()
             else -> updateUI()
         }
     }
@@ -185,11 +205,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putBoolean(SupportStateKeyStore.key_pagination, supportPresenter.isPager)
-        outState.putBoolean(SupportStateKeyStore.key_pagination_limit, supportPresenter.isPagingLimit)
-
-        outState.putInt(SupportStateKeyStore.arg_page, supportPresenter.currentPage)
-        outState.putInt(SupportStateKeyStore.arg_page_offset, supportPresenter.currentOffset)
+        outState.putParcelable(SupportKeyStore.key_pagination, supportPresenter.pagingHelper)
     }
 
     /**
@@ -205,19 +221,16 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        savedInstanceState?.also {
-            supportPresenter.isPager = it.getBoolean(SupportStateKeyStore.key_pagination)
-            supportPresenter.isPagingLimit = it.getBoolean(SupportStateKeyStore.key_pagination_limit)
-
-            supportPresenter.currentPage = it.getInt(SupportStateKeyStore.arg_page)
+        savedInstanceState?.apply {
+            supportPresenter.pagingHelper.fromBundle(getParcelable(SupportKeyStore.key_pagination))
         }
     }
 
-    protected fun changeLayoutState(message: String?) {
+    private fun changeLayoutState(message: String?) {
         if (isStateAtLeast(Lifecycle.State.RESUMED)) {
             supportRefreshLayout?.onResponseResetStates()
-            if (supportPresenter.isFirstPage()) {
-                supportStateLayout?.showLoading()
+            if (supportPresenter.pagingHelper.isFirstPage()) {
+                supportStateLayout?.showLoading(loadingMessage = loadingMessage)
                 snackBar = supportStateLayout?.snackBar(message!!, Snackbar.LENGTH_INDEFINITE)
                         ?.setAction(retryButtonText, snackBarOnClickListener)
                 snackBar?.show()
@@ -240,8 +253,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                     supportRefreshLayout?.isRefreshing = true
             }
         }
-        supportPresenter.isPagingLimit = false
-        supportPresenter.onRefreshPage()
+        supportPresenter.pagingHelper.onPageRefresh()
         supportViewModel?.refresh()
     }
 
@@ -249,9 +261,9 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * Disables pagination if we're not on the first page & the last
      * network/cache request was not successful
      */
-    protected fun setPaginationLimitReached() {
-        if (supportPresenter.currentPage != 0) {
-            supportPresenter.isPagingLimit = true
+    private fun setPaginationLimitReached() {
+        if (!supportPresenter.pagingHelper.isFirstPage()) {
+            supportPresenter.pagingHelper.isPagingLimit = true
             supportViewAdapter.networkState = NetworkState(
                 status = SupportStateType.CONTENT
             )
@@ -264,6 +276,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      *
      * @param uiModel exposed user interface method
      */
+    @Deprecated("Will be removed in the next version")
     override fun injectAdapter(uiModel: IUiModel) {
         supportViewAdapter.also {
             if (it.itemCount > 0) {
@@ -277,7 +290,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                         it.applyFilterIfRequired()
                     }
                 }
-                supportStateLayout?.isLoading = false
+                supportStateLayout?.showContent()
             }
             else
                 changeLayoutState(uiModel.networkState.value?.message)
@@ -287,21 +300,22 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     /**
      * Handles post view model result after extraction or processing
      *
-     * @param uiModel ui model wrapper
+     * @param pagedList paged list holding data
      */
-    override fun onPostModelChange(uiModel: UiModel<PagedList<M>>) {
-        when (uiModel.model.value?.isEmpty() != false) {
-            true -> {
-                supportViewAdapter.submitList(uiModel.model.value)
+    override fun onPostModelChange(pagedList: PagedList<M>?) {
+        when (pagedList?.isEmpty()) {
+            false -> {
+                supportViewAdapter.submitList(pagedList)
                 supportRefreshLayout?.onResponseResetStates()
+                supportStateLayout?.showContent()
                 updateUI()
             }
-            else -> {
-                if (supportPresenter.isPager)
+            true -> {
+                if (!supportPresenter.pagingHelper.isFirstPage())
                     setPaginationLimitReached()
-                if (supportViewAdapter.itemCount > 0)
+                if (!supportViewAdapter.isEmpty())
                     supportStateLayout?.showError(
-                        errorMessage =  uiModel.networkState.value?.message,
+                        errorMessage =  supportViewModel?.networkState?.value?.message,
                         onClickListener = stateLayoutOnClick
                     )
                 supportRefreshLayout?.onResponseResetStates()

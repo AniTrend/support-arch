@@ -46,6 +46,9 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
 
+    /** Glide Libraries */
+    implementation "com.github.bumptech.glide:glide:$glide"
+
     /** Timber */
     implementation "com.jakewharton.timber:timber:$timber"
 

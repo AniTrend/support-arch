@@ -5,7 +5,7 @@ import io.wax911.sample.core.koin.*
 import io.wax911.sample.koin.appModules
 import io.wax911.sample.util.AnalyticsUtil
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
-import io.wax911.support.core.util.SupportCoroutineUtil
+import io.wax911.support.core.util.SupportCoroutineHelper
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -13,7 +13,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
-class App : Application(), SupportCoroutineUtil {
+class App : Application(), SupportCoroutineHelper {
 
     val analyticsUtil: ISupportAnalytics by inject()
 

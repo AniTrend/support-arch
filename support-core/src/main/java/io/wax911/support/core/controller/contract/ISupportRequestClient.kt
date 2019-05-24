@@ -1,12 +1,12 @@
 package io.wax911.support.core.controller.contract
 
-import io.wax911.support.core.util.SupportCoroutineUtil
+import io.wax911.support.core.util.SupportCoroutineHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Call
 
-interface ISupportRequestClient : SupportCoroutineUtil {
+interface ISupportRequestClient : SupportCoroutineHelper {
 
     /**
      * Executes the given retrofit call and returns a deferred result. This function call

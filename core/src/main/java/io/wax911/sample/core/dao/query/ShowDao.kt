@@ -20,4 +20,7 @@ interface ShowDao: ISupportQuery<Show> {
 
     @Query("select * from Show")
     fun getAnticipatedItems(): DataSource.Factory<Int, Show>
+
+    @Query("delete from Show")
+    suspend fun deleteAll()
 }
