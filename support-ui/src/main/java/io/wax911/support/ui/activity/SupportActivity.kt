@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.util.SupportCoroutineHelper
 import io.wax911.support.core.view.contract.CompatView
+import io.wax911.support.extension.getCompatColor
 import io.wax911.support.ui.fragment.SupportFragment
 import timber.log.Timber
 
@@ -48,13 +49,13 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     protected fun setTransparentStatusBar() {
         if (Build.VERSION.SDK_INT >= 21) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
+            window.statusBarColor = getCompatColor(android.R.color.transparent)
         }
     }
 
     protected fun setTransparentStatusBarWithColor(@ColorRes color: Int) {
         if (Build.VERSION.SDK_INT >= 21) {
-            val colorInt = ContextCompat.getColor(this, color)
+            val colorInt = getCompatColor(color)
             window.statusBarColor = colorInt
             window.navigationBarColor = colorInt
         }
