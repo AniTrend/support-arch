@@ -12,8 +12,8 @@ abstract class TraktTrendActivity<M, P : SupportPresenter<*>> : SupportActivity<
     /**
      * Can be used to configure custom theme styling as desired
      */
-    /*override fun configureActivity() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    override fun configureActivity() {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val systemUiOptions = window.decorView.systemUiVisibility
             when (@AppCompatDelegate.NightMode val nightMode = AppCompatDelegate.getDefaultNightMode()) {
                 AppCompatDelegate.MODE_NIGHT_NO -> {
@@ -29,6 +29,6 @@ abstract class TraktTrendActivity<M, P : SupportPresenter<*>> : SupportActivity<
                     // According to Google/IO other ui options like auto and follow system might be deprecated
                 }
             }
-        }
-    }*/
+        }*/
+    }
 }

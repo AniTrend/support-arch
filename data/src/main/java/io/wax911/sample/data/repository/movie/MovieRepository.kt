@@ -1,6 +1,5 @@
 package io.wax911.sample.data.repository.movie
 
-import android.content.Context
 import android.os.Bundle
 import androidx.paging.PagedList
 import io.wax911.sample.data.model.movie.Movie
@@ -9,7 +8,7 @@ import io.wax911.support.core.repository.SupportRepository
 import io.wax911.support.core.view.model.UiModel
 import org.koin.core.inject
 
-class MovieRepository(context: Context) : SupportRepository<PagedList<Movie>>(context) {
+class MovieRepository : SupportRepository<PagedList<Movie>>() {
 
     override val retroFactory: IRetrofitFactory by inject()
 

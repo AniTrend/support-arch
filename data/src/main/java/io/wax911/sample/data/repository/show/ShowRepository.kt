@@ -1,20 +1,19 @@
 package io.wax911.sample.data.repository.show
 
-import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
 import io.wax911.sample.data.api.endpoint.ShowEndpoint
-import io.wax911.sample.data.source.ShowDataSource
 import io.wax911.sample.data.model.show.Show
+import io.wax911.sample.data.source.ShowDataSource
 import io.wax911.support.core.factory.contract.IRetrofitFactory
 import io.wax911.support.core.repository.SupportRepository
 import io.wax911.support.core.view.model.NetworkState
 import io.wax911.support.core.view.model.UiModel
 import org.koin.core.inject
 
-class ShowRepository(context: Context) : SupportRepository<PagedList<Show>>(context) {
+class ShowRepository : SupportRepository<PagedList<Show>>() {
 
     override val retroFactory: IRetrofitFactory by inject()
 

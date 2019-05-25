@@ -1,7 +1,7 @@
 package io.wax911.support.core.repository.contract
 
-import android.net.ConnectivityManager
 import android.os.Bundle
+import io.wax911.support.core.util.SupportConnectivityHelper
 import io.wax911.support.core.util.SupportCoroutineHelper
 import io.wax911.support.core.view.model.UiModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -13,7 +13,7 @@ import org.koin.core.KoinComponent
  */
 interface ISupportRepository<V> : SupportCoroutineHelper, KoinComponent {
 
-    val connectivityManager: ConnectivityManager?
+    val supportConnectivityHelper: SupportConnectivityHelper
 
     /**
      * Handles dispatching of network requests to a background thread

@@ -26,9 +26,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     /**
      * Can be used to configure custom theme styling as desired
      */
-    protected open fun configureActivity() {
-
-    }
+    protected abstract fun configureActivity()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         configureActivity()

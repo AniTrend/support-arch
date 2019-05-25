@@ -1,22 +1,20 @@
 package io.wax911.support.core.repository
 
-import android.content.Context
-import android.net.ConnectivityManager
 import io.wax911.support.core.factory.contract.IRetrofitFactory
 import io.wax911.support.core.repository.contract.ISupportRepository
+import io.wax911.support.core.util.SupportConnectivityHelper
+import org.koin.core.inject
 import timber.log.Timber
 
-abstract class SupportRepository<V>(context: Context): ISupportRepository<V> {
+abstract class SupportRepository<V>: ISupportRepository<V> {
 
     protected abstract val retroFactory: IRetrofitFactory
 
-    override val connectivityManager: ConnectivityManager? = context.getSystemService(
-        Context.CONNECTIVITY_SERVICE
-    ) as ConnectivityManager?
+    override val supportConnectivityHelper: SupportConnectivityHelper by inject()
 
     private fun isConnectedToActiveNetwork(): Boolean {
         return try {
-            val connected = connectivityManager?.activeNetworkInfo?.isConnected
+            val connected = supportConnectivityHelper.connectedStatus.value
             connected ?: false
         } catch (e: Exception) {
             Timber.e(e, "Failed to check internet connectivity")
