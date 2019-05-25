@@ -18,7 +18,7 @@ abstract class SupportDataSource<T>(
 
     protected abstract val databaseHelper: RoomDatabase
 
-    val pagingRequestHelper = PagingRequestHelper(Executors.newSingleThreadExecutor())
+    val pagingRequestHelper = PagingRequestHelper(IO_EXECUTOR)
 
     val networkState = pagingRequestHelper.createStatusLiveData()
 
@@ -35,5 +35,9 @@ abstract class SupportDataSource<T>(
          * @param bundle request params, implementation is up to the developer
          */
         fun observerOnLiveDataWith(bundle: Bundle): LiveData<O>
+    }
+
+    companion object {
+        val IO_EXECUTOR: ExecutorService = Executors.newSingleThreadExecutor()
     }
 }
