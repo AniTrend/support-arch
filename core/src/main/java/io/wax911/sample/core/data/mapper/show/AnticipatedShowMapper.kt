@@ -7,6 +7,7 @@ import io.wax911.sample.core.model.show.Show
 import io.wax911.support.core.data.mapper.SupportDataMapper
 import org.koin.core.inject
 import retrofit2.Response
+import timber.log.Timber
 
 class AnticipatedShowMapper(
     pagingRequestHelper: PagingRequestHelper.Request.Callback
@@ -34,6 +35,9 @@ class AnticipatedShowMapper(
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
     override suspend fun onResponseDatabaseInsert(mappedData: List<Show>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (mappedData.isNotEmpty())
+            database.showDao().insert(*mappedData.toTypedArray())
+        else
+            Timber.tag(TAG).i("onResponseDatabaseInsert(mappedData: List<Show>) -> mappedData is empty")
     }
 }

@@ -15,6 +15,8 @@ abstract class SupportPageAdapter(
     protected val context: FragmentActivity
 ): FragmentStatePagerAdapter(context.supportFragmentManager) {
 
+    val TAG = javaClass.simpleName
+
     val titles = ArrayList<String>()
 
     val bundle = Bundle()
@@ -54,7 +56,7 @@ abstract class SupportPageAdapter(
     override fun getPageTitle(position: Int): CharSequence {
         if (position <= titles.size)
             return titles[position].toUpperCase(Locale.getDefault())
-        Timber.tag(toString()).w("Page title at position: $position doesn't have a corresponding title, returning empty string")
+        Timber.tag(TAG).w("Page title at position: $position doesn't have a corresponding title, returning empty string")
         return String.empty()
     }
 }

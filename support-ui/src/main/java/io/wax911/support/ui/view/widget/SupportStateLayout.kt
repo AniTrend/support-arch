@@ -63,7 +63,7 @@ class SupportStateLayout : ViewFlipper, CustomView {
     }
 
     private fun onStateChanged(@SupportStateType state : Int) {
-        Timber.tag(toString()).i("onStateChanged(@SupportStateType state : Int) -> Current displayed child $displayedChild")
+        Timber.tag(TAG).i("onStateChanged(@SupportStateType state : Int) -> Current displayed child $displayedChild")
         when (state) {
             SupportStateType.CONTENT -> {
                 isLoading = false

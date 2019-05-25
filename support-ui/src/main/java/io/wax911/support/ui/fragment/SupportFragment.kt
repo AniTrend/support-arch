@@ -180,7 +180,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        Timber.tag(getViewName()).d("onSharedPreferenceChanged -> $key | Changed value")
+        Timber.tag(TAG).d("onSharedPreferenceChanged -> $key | Changed value")
     }
 
     /**

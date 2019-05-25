@@ -11,6 +11,9 @@ import io.wax911.support.core.viewmodel.SupportViewModel
 interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>,
     SharedPreferences.OnSharedPreferenceChangeListener {
 
+    val TAG
+        get() = javaClass.simpleName
+
     /**
      * A simple value that can be used when making permission requests,
      * the value can be overridden in the implementing class
@@ -71,13 +74,6 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>,
      * @see [SupportRepository.publishResult]
      */
     fun makeRequest()
-
-    /**
-     * Returns the [toString] of the current implementing class
-     *
-     * @return [String] name of class
-     */
-    fun getViewName(): String = toString()
 
     /**
      * Check if the current fragment activity has a permission granted to it.

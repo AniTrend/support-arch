@@ -6,6 +6,7 @@ import io.wax911.sample.core.model.show.Show
 import io.wax911.support.core.data.mapper.SupportDataMapper
 import org.koin.core.inject
 import retrofit2.Response
+import timber.log.Timber
 
 class PopularShowMapper(
     pagingRequestHelper: PagingRequestHelper.Request.Callback
@@ -37,6 +38,9 @@ class PopularShowMapper(
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */
     override suspend fun onResponseDatabaseInsert(mappedData: List<Show>) {
-        database.showDao().insert(*mappedData.toTypedArray())
+        if (mappedData.isNotEmpty())
+            database.showDao().insert(*mappedData.toTypedArray())
+        else
+            Timber.tag(TAG).i("onResponseDatabaseInsert(mappedData: List<Show>) -> mappedData is empty")
     }
 }

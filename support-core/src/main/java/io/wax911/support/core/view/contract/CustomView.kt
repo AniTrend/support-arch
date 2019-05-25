@@ -8,6 +8,9 @@ import io.wax911.support.core.util.SupportCoroutineHelper
  */
 interface CustomView: SupportCoroutineHelper {
 
+    val TAG
+        get() = javaClass.simpleName
+
     /**
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization

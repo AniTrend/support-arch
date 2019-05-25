@@ -103,11 +103,11 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * @param data The new data
      */
     override fun onChanged(data: M?) {
-        Timber.tag(getViewName()).i("onChanged() from view liveData has received data")
+        Timber.tag(TAG).i("onChanged() from view liveData has received data")
     }
 
     override fun onSharedPreferenceChanged(preference: SharedPreferences?, key: String?) {
         if (!key.isNullOrEmpty())
-            Timber.tag(getViewName()).d("onSharedPreferenceChanged -> $key | Changed value")
+            Timber.tag(TAG).d("onSharedPreferenceChanged -> $key | Changed value")
     }
 }

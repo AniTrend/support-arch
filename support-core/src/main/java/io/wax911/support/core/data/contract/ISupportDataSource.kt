@@ -7,6 +7,9 @@ import org.koin.core.KoinComponent
 
 interface ISupportDataSource : KoinComponent, SupportCoroutineHelper {
 
+    val TAG
+        get() = javaClass.simpleName
+
     /**
      * Should clear all the data in a database table which will assure that
      * [androidx.paging.PagingRequestHelper.RequestType.INITIAL] gets triggered

@@ -46,7 +46,7 @@ class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
                 limit = supportPagingHelper?.pageSize
             ).enqueue(AnticipatedShowMapper(callback).responseCallback)
         }
-        else -> Timber.tag(toString()).e("Unregistered or unknown requestType -> $requestType")
+        else -> Timber.tag(TAG).e("Unregistered or unknown requestType -> $requestType")
     }
 
     /**
@@ -93,7 +93,7 @@ class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
         }
 
         if (dataSourceFactory == null)
-            Timber.tag(toString()).e("Unregistered or unknown requestType -> $requestType")
+            Timber.tag(TAG).e("Unregistered or unknown requestType -> $requestType")
 
         return dataSourceFactory?.toLiveData(
             config = SupportKeyStore.PAGING_CONFIGURATION,

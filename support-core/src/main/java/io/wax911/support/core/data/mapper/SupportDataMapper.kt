@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import timber.log.Timber
 
 abstract class SupportDataMapper<S, D>(
     private val pagingRequestHelper: PagingRequestHelper.Request.Callback
@@ -41,6 +42,7 @@ abstract class SupportDataMapper<S, D>(
                 false -> {
                     val message = response.message()
                     val throwable = Throwable(message)
+                    Timber.tag(TAG).e(throwable)
                     pagingRequestHelper.recordFailure(throwable)
                 }
             }
