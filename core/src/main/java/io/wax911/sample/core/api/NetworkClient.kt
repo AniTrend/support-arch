@@ -2,13 +2,13 @@ package io.wax911.sample.core.api
 
 import io.wax911.sample.core.extension.logError
 import io.wax911.support.core.controller.SupportRequestClient
-import io.wax911.support.core.view.model.UiModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import retrofit2.Call
 
 @Deprecated("Use data source for handling responses and error validation")
 class NetworkClient : SupportRequestClient() {
+
     /**
      * Executes the given retrofit call and returns a result. This function call
      * will require that you execute it in a async context to avoid exceptions
@@ -23,8 +23,7 @@ class NetworkClient : SupportRequestClient() {
 
             if (!response.isSuccessful)
                 response.errorBody().logError()
-
-            null
+            return response.body()
         } catch (e: Exception) {
             e.printStackTrace()
             null

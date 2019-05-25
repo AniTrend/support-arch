@@ -12,7 +12,7 @@ interface ShowDao: ISupportQuery<Show> {
     @Query("select count(id) from Show")
     suspend fun count(): Int
 
-    @Query("select * from Show")
+    @Query("select * from Show order by votes desc")
     fun getPopularItems(): DataSource.Factory<Int, Show>
 
     @Query("select * from Show")

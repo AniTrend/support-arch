@@ -4,7 +4,6 @@ import androidx.annotation.IntegerRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.paging.PagedList
-import io.wax911.support.core.view.model.UiModel
 import io.wax911.support.core.view.model.contract.IUiModel
 import io.wax911.support.ui.R
 

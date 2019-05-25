@@ -1,7 +1,5 @@
 package io.wax911.sample.core.view
 
-import android.os.Build
-import androidx.appcompat.app.AppCompatDelegate
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.ui.activity.SupportActivity
 

@@ -2,8 +2,6 @@ package io.wax911.support.core.repository
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.os.Bundle
-import io.wax911.support.core.data.SupportDataSource
 import io.wax911.support.core.factory.contract.IRetrofitFactory
 import io.wax911.support.core.repository.contract.ISupportRepository
 import timber.log.Timber

@@ -1,8 +1,8 @@
 package io.wax911.sample.core.util
 
 import android.content.Context
-import io.wax911.support.core.preference.SupportPreference
 import io.wax911.support.core.factory.InstanceCreator
+import io.wax911.support.core.preference.SupportPreference
 
 class Settings private constructor(context: Context) : SupportPreference(context) {
 

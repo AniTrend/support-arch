@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 

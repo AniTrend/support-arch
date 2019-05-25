@@ -12,20 +12,19 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
-import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import io.wax911.support.core.util.SupportKeyStore
-import io.wax911.support.core.util.pagination.SupportPagingHelper
 import io.wax911.support.core.view.model.NetworkState
+import io.wax911.support.core.view.model.contract.IUiModel
+import io.wax911.support.core.view.model.contract.SupportStateType
 import io.wax911.support.extension.isStateAtLeast
 import io.wax911.support.extension.snackBar
 import io.wax911.support.ui.R
 import io.wax911.support.ui.extension.configureWidgetBehaviorWith
 import io.wax911.support.ui.extension.onResponseResetStates
 import io.wax911.support.ui.fragment.contract.ISupportFragmentList
-import io.wax911.support.core.view.model.contract.IUiModel
-import io.wax911.support.core.view.model.contract.SupportStateType
 import io.wax911.support.ui.recycler.SupportRecyclerView
+import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
+import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import io.wax911.support.ui.view.widget.SupportStateLayout
 import kotlinx.android.synthetic.main.support_list.*
 

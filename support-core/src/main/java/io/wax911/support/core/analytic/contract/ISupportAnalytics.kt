@@ -3,7 +3,6 @@ package io.wax911.support.core.analytic.contract
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.FragmentActivity
-import io.wax911.support.extension.empty
 
 interface ISupportAnalytics {
 

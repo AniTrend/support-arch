@@ -12,7 +12,7 @@ interface ISupportDataMapper<S, D> : KoinComponent, SupportCoroutineHelper {
 
     val database: RoomDatabase
 
-    val responseCallback: Callback<S?>
+    val responseCallback: Callback<S>
 
     val TAG
         get() = javaClass.simpleName

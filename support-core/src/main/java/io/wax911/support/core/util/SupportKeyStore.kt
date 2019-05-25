@@ -21,7 +21,8 @@ object SupportKeyStore {
     const val glideTimeOut = 10000
 
     val PAGING_CONFIGURATION = PagedList.Config.Builder()
-        .setPageSize(pagingLimit)
         .setEnablePlaceholders(false)
+        .setPageSize(pagingLimit)
+        .setPrefetchDistance(3)
         .build()
 }

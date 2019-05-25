@@ -1,8 +1,8 @@
 package io.wax911.sample.core.data.entitiy.trending
 
 import androidx.room.*
-import io.wax911.sample.core.data.entitiy.trending.contract.TraktWatcher
 import io.wax911.sample.core.data.entitiy.contract.IEntryRelation
+import io.wax911.sample.core.data.entitiy.trending.contract.TraktWatcher
 import io.wax911.sample.core.model.movie.Movie
 
 @Entity(

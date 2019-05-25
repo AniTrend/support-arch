@@ -2,7 +2,6 @@ package io.wax911.support.core.presenter
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Bundle
 import io.wax911.support.core.preference.SupportPreference
 import io.wax911.support.core.preference.event.OnSharedPreferencesLifecycleBind
 import io.wax911.support.core.util.SupportCoroutineHelper

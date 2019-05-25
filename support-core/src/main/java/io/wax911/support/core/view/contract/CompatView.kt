@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.repository.SupportRepository
-import io.wax911.support.core.view.model.UiModel
 import io.wax911.support.core.viewmodel.SupportViewModel
 
 interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>,

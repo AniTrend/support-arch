@@ -1,7 +1,6 @@
 package io.wax911.support.extension.util
 
 import androidx.annotation.IntDef
-import io.wax911.support.extension.LAZY_MODE_UNSAFE
 import io.wax911.support.extension.util.attribute.SeasonType
 import java.text.SimpleDateFormat
 import java.util.*

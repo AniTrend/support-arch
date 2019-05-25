@@ -25,28 +25,34 @@ class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
 
     override val databaseHelper: DatabaseHelper by inject()
 
-    private fun startRequestForType(
-        callback: PagingRequestHelper.Request.Callback
-    ): Unit = when (@ShowRequestType val requestType = bundle.getString(SupportKeyStore.arg_request_type)) {
-        ShowRequestType.SHOW_TYPE_POPULAR -> {
-            showEndpoint.getPopularShows(
-                page = supportPagingHelper?.page,
-                limit = supportPagingHelper?.pageSize
-            ).enqueue(PopularShowMapper(callback).responseCallback)
+    private fun startRequestForType(callback: PagingRequestHelper.Request.Callback) {
+        when (@ShowRequestType val requestType = bundle.getString(SupportKeyStore.arg_request_type)) {
+            ShowRequestType.SHOW_TYPE_POPULAR -> {
+                showEndpoint.getPopularShows(
+                    page = supportPagingHelper?.page,
+                    limit = supportPagingHelper?.pageSize
+                ).enqueue(
+                    PopularShowMapper(callback).responseCallback
+                )
+            }
+            ShowRequestType.SHOW_TYPE_TRENDING -> {
+                showEndpoint.getTrendingShows(
+                    page = supportPagingHelper?.page,
+                    limit = supportPagingHelper?.pageSize
+                ).enqueue(
+                    TrendingShowMapper(callback).responseCallback
+                )
+            }
+            ShowRequestType.SHOW_TYPE_ANTICIPATED -> {
+                showEndpoint.getAniticipatedShows(
+                    page = supportPagingHelper?.page,
+                    limit = supportPagingHelper?.pageSize
+                ).enqueue(
+                    AnticipatedShowMapper(callback).responseCallback
+                )
+            }
+            else -> Timber.tag(TAG).e("Unregistered or unknown requestType -> $requestType")
         }
-        ShowRequestType.SHOW_TYPE_TRENDING -> {
-            showEndpoint.getTrendingShows(
-                page = supportPagingHelper?.page,
-                limit = supportPagingHelper?.pageSize
-            ).enqueue(TrendingShowMapper(callback).responseCallback)
-        }
-        ShowRequestType.SHOW_TYPE_ANTICIPATED -> {
-            showEndpoint.getAniticipatedShows(
-                page = supportPagingHelper?.page,
-                limit = supportPagingHelper?.pageSize
-            ).enqueue(AnticipatedShowMapper(callback).responseCallback)
-        }
-        else -> Timber.tag(TAG).e("Unregistered or unknown requestType -> $requestType")
     }
 
     /**
@@ -97,8 +103,7 @@ class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
 
         return dataSourceFactory?.toLiveData(
             config = SupportKeyStore.PAGING_CONFIGURATION,
-            boundaryCallback = this,
-            initialLoadKey = 1
+            boundaryCallback = this
         ) ?: MutableLiveData()
     }
 

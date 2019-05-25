@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "089c037f34f42c1ed54c1493551fe42f",
+    "identityHash": "1dbb0d062c2e7e9ca48199105506e4e6",
     "entities": [
       {
         "tableName": "JsonWebToken",
@@ -158,7 +158,7 @@
       },
       {
         "tableName": "Show",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `ids` TEXT NOT NULL, `first_aired` TEXT, `airs` TEXT, `network` TEXT, `status` TEXT NOT NULL, `aired_episodes` INTEGER, `title` TEXT NOT NULL, `year` INTEGER NOT NULL, `overview` TEXT, `runtime` INTEGER, `country` TEXT, `trailer` TEXT, `homepage` TEXT, `rating` REAL, `votes` INTEGER, `updated_at` TEXT, `language` TEXT, `genres` TEXT, `certification` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ids` TEXT NOT NULL, `first_aired` TEXT, `airs` TEXT, `network` TEXT, `status` TEXT NOT NULL, `aired_episodes` INTEGER, `title` TEXT NOT NULL, `year` INTEGER NOT NULL, `overview` TEXT, `runtime` INTEGER, `country` TEXT, `trailer` TEXT, `homepage` TEXT, `rating` REAL, `votes` INTEGER, `updated_at` TEXT, `language` TEXT, `genres` TEXT, `certification` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -285,14 +285,14 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "Movie",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `ids` TEXT NOT NULL, `tagline` TEXT NOT NULL, `released` TEXT, `title` TEXT NOT NULL, `year` INTEGER NOT NULL, `overview` TEXT, `runtime` INTEGER, `country` TEXT, `trailer` TEXT, `homepage` TEXT, `rating` REAL, `votes` INTEGER, `updated_at` TEXT, `language` TEXT, `genres` TEXT, `certification` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ids` TEXT NOT NULL, `tagline` TEXT NOT NULL, `released` TEXT, `title` TEXT NOT NULL, `year` INTEGER NOT NULL, `overview` TEXT, `runtime` INTEGER, `country` TEXT, `trailer` TEXT, `homepage` TEXT, `rating` REAL, `votes` INTEGER, `updated_at` TEXT, `language` TEXT, `genres` TEXT, `certification` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -401,7 +401,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -646,7 +646,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"089c037f34f42c1ed54c1493551fe42f\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1dbb0d062c2e7e9ca48199105506e4e6\")"
     ]
   }
 }

@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import io.wax911.support.ui.action.contract.ISupportActionMode
 import io.wax911.support.core.animator.ScaleAnimator
 import io.wax911.support.core.animator.contract.SupportAnimator
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.ui.R
 import io.wax911.support.core.view.model.NetworkState
 import io.wax911.support.core.view.model.contract.SupportStateType
 import io.wax911.support.extension.getLayoutInflater
+import io.wax911.support.ui.R
+import io.wax911.support.ui.action.contract.ISupportActionMode
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import java.util.*

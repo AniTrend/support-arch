@@ -1,10 +1,10 @@
 package io.wax911.support.ui.action
 
 import android.view.ActionMode
-import io.wax911.support.ui.action.event.ActionModeListener
+import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.ui.action.contract.ISupportActionMode
 import io.wax911.support.ui.action.decorator.SelectionDecorator
-import io.wax911.support.core.presenter.SupportPresenter
+import io.wax911.support.ui.action.event.ActionModeListener
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
 import java.util.*
