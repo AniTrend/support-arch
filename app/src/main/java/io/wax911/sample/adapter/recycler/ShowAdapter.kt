@@ -3,10 +3,9 @@ package io.wax911.sample.adapter.recycler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.wax911.sample.core.model.show.Show
+import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.databinding.AdapterMediaItemBinding
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.extension.getLayoutInflater
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener

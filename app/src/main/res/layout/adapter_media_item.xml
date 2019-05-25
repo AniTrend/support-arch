@@ -5,7 +5,7 @@
     <data>
         <variable
             name="entity"
-            type="io.wax911.sample.core.model.show.Show" />
+            type="io.wax911.sample.data.model.show.Show" />
     </data>
 
     <FrameLayout
@@ -17,7 +17,7 @@
             android:id="@+id/showTrailer"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
-            app:imageUrl="@{entity.getBanner()}"
+            app:youtubeTrailer="@{entity}"
             tools:scaleType="centerCrop"/>
 
         <io.wax911.support.ui.view.text.SingleLineTextView

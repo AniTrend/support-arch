@@ -33,7 +33,7 @@
         </activity>
 
         <activity android:name=".view.activity.index.MainActivity"
-            android:launchMode="singleTop" android:label="@string/module_name"/>
+            android:launchMode="singleTop"/>
 
         <provider
                 android:authorities="${applicationId}.provider"

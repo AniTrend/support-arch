@@ -2,6 +2,9 @@ package io.wax911.sample
 
 import android.app.Application
 import io.wax911.sample.core.koin.*
+import io.wax911.sample.data.koin.dataModules
+import io.wax911.sample.data.koin.dataNetworkModules
+import io.wax911.sample.data.koin.dataRepositoryModules
 import io.wax911.sample.koin.appModules
 import io.wax911.sample.util.AnalyticsUtil
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
@@ -48,11 +51,14 @@ class App : Application(), SupportCoroutineHelper {
             )
             modules(
                 appModules,
+
                 coreModules,
-                coreNetworkModules,
                 coreViewModelModules,
                 corePresenterModules,
-                coreRepositoryModules
+
+                dataModules,
+                dataNetworkModules,
+                dataRepositoryModules
             )
         }
         launch {

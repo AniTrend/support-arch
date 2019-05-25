@@ -5,9 +5,9 @@ import android.view.View
 import androidx.paging.PagedList
 import io.wax911.sample.R
 import io.wax911.sample.adapter.recycler.ShowAdapter
-import io.wax911.sample.core.model.show.Show
+import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.core.repository.show.ShowRequestType
+import io.wax911.sample.data.repository.show.ShowRequestType
 import io.wax911.sample.core.viewmodel.show.ShowViewModel
 import io.wax911.support.core.factory.InstanceCreator
 import io.wax911.support.core.util.SupportKeyStore
