@@ -1,0 +1,652 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "1dbb0d062c2e7e9ca48199105506e4e6",
+    "entities": [
+      {
+        "tableName": "JsonWebToken",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `access_token` TEXT NOT NULL, `expires_in` INTEGER NOT NULL, `expiry_time` INTEGER NOT NULL, `token_type` TEXT NOT NULL, `scope` TEXT NOT NULL, `refresh_token` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "access_token",
+            "columnName": "access_token",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expires_in",
+            "columnName": "expires_in",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "expiry_time",
+            "columnName": "expiry_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "token_type",
+            "columnName": "token_type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scope",
+            "columnName": "scope",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "refresh_token",
+            "columnName": "refresh_token",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Language",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `code` TEXT NOT NULL, PRIMARY KEY(`name`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Language_code",
+            "unique": true,
+            "columnNames": [
+              "code"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_Language_code` ON `${TABLE_NAME}` (`code`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Genre",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `slug` TEXT NOT NULL, PRIMARY KEY(`name`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "slug",
+            "columnName": "slug",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Country",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `code` TEXT NOT NULL, PRIMARY KEY(`name`))",
+        "fields": [
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "name"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Country_code",
+            "unique": true,
+            "columnNames": [
+              "code"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_Country_code` ON `${TABLE_NAME}` (`code`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Show",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ids` TEXT NOT NULL, `first_aired` TEXT, `airs` TEXT, `network` TEXT, `status` TEXT NOT NULL, `aired_episodes` INTEGER, `title` TEXT NOT NULL, `year` INTEGER NOT NULL, `overview` TEXT, `runtime` INTEGER, `country` TEXT, `trailer` TEXT, `homepage` TEXT, `rating` REAL, `votes` INTEGER, `updated_at` TEXT, `language` TEXT, `genres` TEXT, `certification` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ids",
+            "columnName": "ids",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "first_aired",
+            "columnName": "first_aired",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "airs",
+            "columnName": "airs",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "network",
+            "columnName": "network",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "aired_episodes",
+            "columnName": "aired_episodes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "year",
+            "columnName": "year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "overview",
+            "columnName": "overview",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "runtime",
+            "columnName": "runtime",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "country",
+            "columnName": "country",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "trailer",
+            "columnName": "trailer",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "homepage",
+            "columnName": "homepage",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rating",
+            "columnName": "rating",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "votes",
+            "columnName": "votes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "genres",
+            "columnName": "genres",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "certification",
+            "columnName": "certification",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Movie",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `ids` TEXT NOT NULL, `tagline` TEXT NOT NULL, `released` TEXT, `title` TEXT NOT NULL, `year` INTEGER NOT NULL, `overview` TEXT, `runtime` INTEGER, `country` TEXT, `trailer` TEXT, `homepage` TEXT, `rating` REAL, `votes` INTEGER, `updated_at` TEXT, `language` TEXT, `genres` TEXT, `certification` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ids",
+            "columnName": "ids",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tagline",
+            "columnName": "tagline",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "released",
+            "columnName": "released",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "year",
+            "columnName": "year",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "overview",
+            "columnName": "overview",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "runtime",
+            "columnName": "runtime",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "country",
+            "columnName": "country",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "trailer",
+            "columnName": "trailer",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "homepage",
+            "columnName": "homepage",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rating",
+            "columnName": "rating",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "votes",
+            "columnName": "votes",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updated_at",
+            "columnName": "updated_at",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "language",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "genres",
+            "columnName": "genres",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "certification",
+            "columnName": "certification",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "ShowIds",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tvdb` INTEGER NOT NULL, `tvrage` INTEGER NOT NULL, `trakt` INTEGER NOT NULL, `slug` TEXT NOT NULL, `imdb` TEXT NOT NULL, `tmdb` INTEGER NOT NULL, PRIMARY KEY(`trakt`))",
+        "fields": [
+          {
+            "fieldPath": "tvdb",
+            "columnName": "tvdb",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tvrage",
+            "columnName": "tvrage",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trakt",
+            "columnName": "trakt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "slug",
+            "columnName": "slug",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imdb",
+            "columnName": "imdb",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tmdb",
+            "columnName": "tmdb",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "trakt"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_ShowIds_tvdb",
+            "unique": true,
+            "columnNames": [
+              "tvdb"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_ShowIds_tvdb` ON `${TABLE_NAME}` (`tvdb`)"
+          },
+          {
+            "name": "index_ShowIds_slug",
+            "unique": true,
+            "columnNames": [
+              "slug"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_ShowIds_slug` ON `${TABLE_NAME}` (`slug`)"
+          },
+          {
+            "name": "index_ShowIds_imdb",
+            "unique": true,
+            "columnNames": [
+              "imdb"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_ShowIds_imdb` ON `${TABLE_NAME}` (`imdb`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "MovieIds",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`trakt` INTEGER NOT NULL, `slug` TEXT NOT NULL, `imdb` TEXT NOT NULL, `tmdb` INTEGER NOT NULL, PRIMARY KEY(`trakt`))",
+        "fields": [
+          {
+            "fieldPath": "trakt",
+            "columnName": "trakt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "slug",
+            "columnName": "slug",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imdb",
+            "columnName": "imdb",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tmdb",
+            "columnName": "tmdb",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "trakt"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_MovieIds_slug",
+            "unique": true,
+            "columnNames": [
+              "slug"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_MovieIds_slug` ON `${TABLE_NAME}` (`slug`)"
+          },
+          {
+            "name": "index_MovieIds_imdb",
+            "unique": true,
+            "columnNames": [
+              "imdb"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_MovieIds_imdb` ON `${TABLE_NAME}` (`imdb`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "TrendingShow",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`showId` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `watchers` INTEGER NOT NULL, FOREIGN KEY(`showId`) REFERENCES `Show`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "showId",
+            "columnName": "showId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "watchers",
+            "columnName": "watchers",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_TrendingShow_showId",
+            "unique": true,
+            "columnNames": [
+              "showId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_TrendingShow_showId` ON `${TABLE_NAME}` (`showId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Show",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "showId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "TrendingMovie",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`movieId` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `watchers` INTEGER NOT NULL, FOREIGN KEY(`movieId`) REFERENCES `Movie`(`id`) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)",
+        "fields": [
+          {
+            "fieldPath": "movieId",
+            "columnName": "movieId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "watchers",
+            "columnName": "watchers",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_TrendingMovie_movieId",
+            "unique": true,
+            "columnNames": [
+              "movieId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_TrendingMovie_movieId` ON `${TABLE_NAME}` (`movieId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Movie",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "movieId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1dbb0d062c2e7e9ca48199105506e4e6\")"
+    ]
+  }
+}
