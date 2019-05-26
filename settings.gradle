@@ -1,4 +1,4 @@
 include ':support-core', ':support-ext', ':support-ui'
 
-if (!System.env.JITPACK || !System.env.CI)
+if (System.getenv("JITPACK")?.isEmpty() || System.getenv("CI")?.isEmpty())
     include ':app', ':core', ':data'
