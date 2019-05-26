@@ -6,7 +6,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import io.wax911.sample.data.entitiy.trending.TrendingShow
-import io.wax911.support.core.dao.ISupportQuery
+import io.wax911.support.data.dao.ISupportQuery
 
 @Dao
 interface TrendingShowDao: ISupportQuery<TrendingShow> {

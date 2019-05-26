@@ -4,7 +4,7 @@ import androidx.paging.PagingRequestHelper
 import io.wax911.sample.data.dao.DatabaseHelper
 import io.wax911.sample.data.model.container.Aniticipated
 import io.wax911.sample.data.model.show.Show
-import io.wax911.support.core.data.mapper.SupportDataMapper
+import io.wax911.support.data.source.mapper.SupportDataMapper
 import org.koin.core.inject
 import retrofit2.Response
 import timber.log.Timber
@@ -13,7 +13,7 @@ class AnticipatedShowMapper(
     pagingRequestHelper: PagingRequestHelper.Request.Callback
 ) : SupportDataMapper<List<Aniticipated<Show>>, List<Show>>(pagingRequestHelper) {
 
-    override val database: DatabaseHelper by inject()
+    override val database by inject<DatabaseHelper>()
 
     /**
      * Created mapped objects and handles the database operations which may be required to map various objects,

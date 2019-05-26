@@ -3,7 +3,7 @@ package io.wax911.sample.core.worker
 import android.content.Context
 import androidx.work.WorkerParameters
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.support.core.controller.SupportRequestClient
+import io.wax911.sample.data.source.ShowDataSource
 import io.wax911.support.core.worker.SupportWorker
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -13,7 +13,7 @@ class GenreFetchWorker(
     workerParameters: WorkerParameters
 ): SupportWorker<CorePresenter>(context, workerParameters), KoinComponent {
 
-    private val supportRequestClient by inject<SupportRequestClient>()
+    private val showDataSource: ShowDataSource? = null
 
     override val presenter by inject<CorePresenter>()
 

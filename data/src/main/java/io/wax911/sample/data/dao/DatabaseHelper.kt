@@ -20,7 +20,6 @@ import io.wax911.sample.data.model.movie.Movie
 import io.wax911.sample.data.model.movie.contract.MovieIds
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.model.show.contract.ShowIds
-import io.wax911.support.core.factory.InstanceCreator
 
 @Database(
     entities = [
@@ -51,13 +50,16 @@ abstract class DatabaseHelper : RoomDatabase() {
     abstract fun trendingShowDao(): TrendingShowDao
     abstract fun trendingMovieDao(): TrendingMovieDao
 
-    companion object : InstanceCreator<DatabaseHelper, Context>({ context ->
-        Room.databaseBuilder(
-            context,
-            DatabaseHelper::class.java,
-            "trakt-trend"
-        ).fallbackToDestructiveMigration()
-            .addMigrations(MIGRATION_1_2)
-            .build()
-    })
+    companion object {
+
+        fun newInstance(context: Context): DatabaseHelper {
+            return Room.databaseBuilder(
+                context,
+                DatabaseHelper::class.java,
+                "trakt-trend"
+            ).fallbackToDestructiveMigration()
+                .addMigrations(MIGRATION_1_2)
+                .build()
+        }
+    }
 }

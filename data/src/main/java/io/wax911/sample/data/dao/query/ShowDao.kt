@@ -4,7 +4,7 @@ import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
 import io.wax911.sample.data.model.show.Show
-import io.wax911.support.core.dao.ISupportQuery
+import io.wax911.support.data.dao.ISupportQuery
 
 @Dao
 interface ShowDao: ISupportQuery<Show> {

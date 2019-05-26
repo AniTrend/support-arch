@@ -9,5 +9,5 @@ import org.koin.core.inject
 
 class MovieViewModel : SupportViewModel<PagedList<Movie>>(), KoinComponent {
 
-    override val repository: MovieRepository by inject()
+    override val repository by inject<MovieRepository>()
 }

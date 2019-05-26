@@ -2,7 +2,7 @@ package io.wax911.sample.data.auth.contract
 
 import android.net.Uri
 import io.wax911.sample.data.auth.model.JsonWebToken
-import io.wax911.support.core.util.SupportCoroutineHelper
+import io.wax911.support.extension.util.SupportCoroutineHelper
 
 interface IAuthenticationHelper: SupportCoroutineHelper {
 

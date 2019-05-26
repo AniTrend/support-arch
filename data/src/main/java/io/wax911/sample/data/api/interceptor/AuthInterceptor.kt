@@ -1,11 +1,10 @@
 package io.wax911.sample.data.api.interceptor
 
-import android.content.Context
 import io.wax911.sample.data.auth.AuthenticationHelper
 import io.wax911.sample.data.auth.contract.IAuthenticationHelper
 import io.wax911.sample.data.dao.DatabaseHelper
 import io.wax911.sample.data.util.Settings
-import io.wax911.support.extension.isConnectedToNetwork
+import io.wax911.support.extension.util.SupportConnectivityHelper
 import okhttp3.Interceptor
 import okhttp3.Response
 import org.koin.core.KoinComponent
@@ -17,8 +16,9 @@ import timber.log.Timber
  * The context in which an [Interceptor] may be  parallel or asynchronous depending
  * on the dispatching caller, as such take care to assure thread safety
  */
-class AuthInterceptor(private val context: Context?) : Interceptor, KoinComponent {
+class AuthInterceptor : Interceptor, KoinComponent {
 
+    private val supportConnectivityHelper by inject<SupportConnectivityHelper>()
     private val authenticationHelper  by inject<IAuthenticationHelper>()
     private val databaseHelper by inject<DatabaseHelper>()
     private val settings by inject<Settings>()
@@ -34,7 +34,7 @@ class AuthInterceptor(private val context: Context?) : Interceptor, KoinComponen
                     AuthenticationHelper.AUTHORIZATION,
                     jsonWebToken.getTokenKey()
                 )
-                context.isConnectedToNetwork() -> {
+                supportConnectivityHelper.isConnected -> {
                     settings.authenticatedUserId = Settings.INVALID_USER_ID
                     settings.isAuthenticated = false
                     databaseHelper.clearAllTables()

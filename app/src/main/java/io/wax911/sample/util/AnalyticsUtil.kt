@@ -12,7 +12,16 @@ import io.wax911.support.extension.empty
 import io.wax911.support.core.factory.InstanceCreator
 import timber.log.Timber
 
-class AnalyticsUtil private constructor(): Timber.Tree(), ISupportAnalytics {
+class AnalyticsUtil(context: Context): Timber.Tree(), ISupportAnalytics {
+
+    init {
+        try {
+            configureCrashAnalytics(context)
+            configureAnalytics(context)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     private var analytics: FirebaseAnalytics? = null
     private var fabric: Fabric? = null
@@ -84,16 +93,7 @@ class AnalyticsUtil private constructor(): Timber.Tree(), ISupportAnalytics {
         analytics?.resetAnalyticsData()
     }
 
-    companion object : InstanceCreator<AnalyticsUtil, Context?> ({
-        AnalyticsUtil().apply {
-            try {
-                configureCrashAnalytics(it)
-                configureAnalytics(it)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }) {
+    companion object {
         private const val PRIORITY = "priority"
         private const val TAG = "tag"
         private const val MESSAGE = "message"
