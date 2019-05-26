@@ -1,11 +1,11 @@
-package io.wax911.support.core.util
+package io.wax911.support.extension.util
 
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 interface SupportCoroutineHelper : CoroutineScope {
 
-    private val job: Job
+    private val supervisorJob: Job
         get() = SupervisorJob()
 
     /**
@@ -13,7 +13,7 @@ interface SupportCoroutineHelper : CoroutineScope {
      * @return [kotlin.coroutines.CoroutineContext]
      */
     override val coroutineContext: CoroutineContext
-        get() = job + coroutineDispatcher
+        get() = supervisorJob + coroutineDispatcher
 
     /**
      * A failure or cancellation of a child does not cause the supervisor job

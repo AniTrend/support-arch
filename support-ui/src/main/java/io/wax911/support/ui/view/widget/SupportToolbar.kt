@@ -3,7 +3,7 @@ package io.wax911.support.ui.view.widget
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.Toolbar
-import io.wax911.support.core.view.contract.CustomView
+import io.wax911.support.ui.view.contract.CustomView
 
 class SupportToolbar : Toolbar, CustomView {
 

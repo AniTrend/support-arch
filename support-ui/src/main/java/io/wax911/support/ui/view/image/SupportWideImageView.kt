@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import com.bumptech.glide.Glide
-import io.wax911.support.core.view.contract.CustomView
+import io.wax911.support.ui.view.contract.CustomView
 
 /**
  * Wide image view with a 16:9 aspect ratio

@@ -1,4 +1,4 @@
-package io.wax911.support.core.util
+package io.wax911.support.extension.util
 
 import android.net.*
 import androidx.lifecycle.*
@@ -19,6 +19,17 @@ import androidx.lifecycle.*
 class SupportConnectivityHelper(
     private val connectivityManager: ConnectivityManager?
 ): LifecycleObserver {
+
+    /**
+     * Check if the device has any active network connections like WiFi or Network data,
+     * preferably use broadcast receivers if you want to do live updates of the internet connectivity status
+     *
+     * @return true if network connectivity exists, false otherwise.
+     */
+    val isConnected
+        get() = connectivityManager?.
+            activeNetworkInfo?.
+            isConnected ?: false
 
     private var monitoringConnectivity = false
 

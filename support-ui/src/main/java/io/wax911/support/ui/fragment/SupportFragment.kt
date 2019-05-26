@@ -8,16 +8,16 @@ import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.util.SupportCoroutineHelper
-import io.wax911.support.core.view.contract.CompatView
+import io.wax911.support.ui.view.contract.CompatView
 import io.wax911.support.extension.LAZY_MODE_UNSAFE
 import io.wax911.support.ui.action.SupportActionMode
+import io.wax911.support.extension.util.SupportCoroutineHelper
 import io.wax911.support.ui.action.contract.ISupportActionMode
 import io.wax911.support.ui.action.event.ActionModeListener
 import timber.log.Timber
 
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener,
-        CompatView<VM, P>, SupportCoroutineHelper {
+    CompatView<VM, P>, SupportCoroutineHelper {
 
     @MenuRes
     protected var inflateMenu: Int = CompatView.NO_MENU_ITEM

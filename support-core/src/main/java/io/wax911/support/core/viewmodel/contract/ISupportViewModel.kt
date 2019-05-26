@@ -2,8 +2,8 @@ package io.wax911.support.core.viewmodel.contract
 
 import android.os.Bundle
 import androidx.lifecycle.LiveData
-import io.wax911.support.core.repository.SupportRepository
-import io.wax911.support.core.view.model.NetworkState
+import io.wax911.support.data.model.NetworkState
+import io.wax911.support.data.repository.SupportRepository
 
 interface ISupportViewModel<M> {
 
@@ -18,7 +18,7 @@ interface ISupportViewModel<M> {
     /**
      * Forwards queries for the repository to handle
      *
-     * @see [io.wax911.support.core.repository.SupportRepository.invokeRequest]
+     * @see [io.wax911.support.data.repository.SupportRepository.invokeRequest]
      * @param bundle request data to be used by the repository
      */
     fun queryFor(bundle: Bundle)

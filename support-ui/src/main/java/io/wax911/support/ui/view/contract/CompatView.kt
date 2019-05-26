@@ -1,14 +1,13 @@
-package io.wax911.support.core.view.contract
+package io.wax911.support.ui.view.contract
 
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.repository.SupportRepository
+import io.wax911.support.data.repository.SupportRepository
 import io.wax911.support.core.viewmodel.SupportViewModel
 
-interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>,
-    SharedPreferences.OnSharedPreferenceChangeListener {
+interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPreferences.OnSharedPreferenceChangeListener {
 
     val TAG
         get() = javaClass.simpleName
@@ -45,12 +44,12 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>,
         get() = true
 
     /**
-     * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
-     * then this method will be called in [SupportFragment.onCreate]. Otherwise [SupportActivity.onPostCreate]
-     * invokes this function
+     * Additional initialization to be done in this method, if the overriding class is type of
+     * [androidx.fragment.app.Fragment] then this method will be called in
+     * [androidx.fragment.app.FragmentActivity.onCreate]. Otherwise
+     * [androidx.fragment.app.FragmentActivity.onPostCreate] invokes this function
      *
-     * @see [SupportActivity.onPostCreate] and [SupportFragment.onCreate]
-     * @param
+     * @param savedInstanceState
      */
     fun initializeComponents(savedInstanceState: Bundle?)
 
@@ -68,9 +67,9 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>,
      * which uses [SupportRepository] to either request from the network or database cache.
      *
      * The results of the dispatched network or cache call will be published by the
-     * [androidx.lifecycle.LiveData] inside of your [SupportRepository]
+     * [androidx.lifecycle.LiveData] specifically [SupportViewModel.model]
      *
-     * @see [SupportRepository.publishResult]
+     * @see [SupportViewModel.queryFor]
      */
     fun makeRequest()
 
@@ -78,15 +77,13 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>,
      * Check if the current fragment activity has a permission granted to it.
      * If no permission is granted then this method will request a permission for you
      *
-     * @see [SupportActivity.requestPermissions]
+     * @see [androidx.fragment.app.FragmentActivity.requestPermissions]
      */
-    fun requestPermissionIfMissing(manifestPermission: String): Boolean {
-        return false
-    }
+    fun requestPermissionIfMissing(manifestPermission: String): Boolean = false
 
     /**
-     * Returns a boolean that can be used to block/unblock [SupportActivity.onBackPressed] from
-     * calling it's super method to finish an activity.
+     * Returns a boolean that can be used to block/unblock [androidx.fragment.app.FragmentActivity.onBackPressed]
+     * from calling it's super method to finish an activity.
      *
      * @return [Boolean] true or false depending on the override implementation
      */
@@ -103,7 +100,7 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>,
     companion object {
 
         /**
-         * Constant value that indicates that no dynamic menu will be inflated for a [SupportFragment]
+         * Constant value that indicates that no dynamic menu will be inflated for a [CustomView]
          *
          * [NO_MENU_ITEM] has the default value of 0
          */

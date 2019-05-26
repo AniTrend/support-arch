@@ -1,13 +1,11 @@
-package io.wax911.support.core.preference.event
+package io.wax911.support.extension.preference.event
 
 import android.content.SharedPreferences
 
 /**
  * Created by max on 2017/06/14.
- * Implemented by [io.wax911.support.core.presenter.SupportPresenter]
  */
-
-interface OnSharedPreferencesLifecycleBind {
+interface OnSharedPreferenceBinder {
 
     /**
      * Unregister any listeners from fragments or activities

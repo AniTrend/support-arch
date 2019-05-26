@@ -2,16 +2,17 @@ package io.wax911.support.core.presenter
 
 import android.content.Context
 import android.content.SharedPreferences
-import io.wax911.support.core.preference.SupportPreference
-import io.wax911.support.core.preference.event.OnSharedPreferencesLifecycleBind
-import io.wax911.support.core.util.SupportCoroutineHelper
-import io.wax911.support.core.util.SupportKeyStore
-import io.wax911.support.core.util.pagination.SupportPagingHelper
+import io.wax911.support.extension.preference.SupportPreference
+import io.wax911.support.extension.preference.event.OnSharedPreferenceBinder
+import io.wax911.support.extension.util.SupportCoroutineHelper
+import io.wax911.support.data.util.SupportDataKeyStore
+import io.wax911.support.data.util.pagination.SupportPagingHelper
+import io.wax911.support.extension.util.SupportExtKeyStore
 
 abstract class SupportPresenter<S : SupportPreference>(
     protected val context: Context?,
-    val supportPreference: S?
-): OnSharedPreferencesLifecycleBind, SupportCoroutineHelper {
+    val supportPreference: S
+): OnSharedPreferenceBinder, SupportCoroutineHelper {
 
     val pagingHelper
         get() = SupportPagingHelper(
@@ -19,7 +20,7 @@ abstract class SupportPresenter<S : SupportPreference>(
             isPagingLimit = false
         )
 
-    protected open fun paginationSize(): Int = SupportKeyStore.pagingLimit
+    protected open fun paginationSize(): Int = SupportExtKeyStore.pagingLimit
 
     /**
      * Enables or disables action mode, behaviour should be implemented in your adapter, in ItemClickLister.
@@ -40,15 +41,15 @@ abstract class SupportPresenter<S : SupportPreference>(
      * Unregister any listeners from fragments or activities
      */
     override fun onPause(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        supportPreference?.sharedPreferences
-                ?.unregisterOnSharedPreferenceChangeListener(changeListener)
+        supportPreference.sharedPreferences
+                .unregisterOnSharedPreferenceChangeListener(changeListener)
     }
 
     /**
      * Register any listeners from fragments or activities
      */
     override fun onResume(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        supportPreference?.sharedPreferences
-                ?.registerOnSharedPreferenceChangeListener(changeListener)
+        supportPreference.sharedPreferences
+                .registerOnSharedPreferenceChangeListener(changeListener)
     }
 }

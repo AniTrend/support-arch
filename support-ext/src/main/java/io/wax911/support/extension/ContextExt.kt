@@ -14,6 +14,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import timber.log.Timber
 
 /**
  * Exactly whether a device is low-RAM is ultimately up to the device configuration, but currently
@@ -29,29 +30,16 @@ fun Context?.isLowRamDevice() : Boolean = this?.let {
 } ?: false
 
 /**
- * Check if the device has any active network connections like WiFi or Network data,
- * preferably use broadcast receivers if you want to do live updates of the internet connectivity status
- *
- * @return true if network connectivity exists, false otherwise.
- */
-@Deprecated("Will be deprecated in Android Q")
-fun Context?.isConnectedToNetwork() : Boolean = this?.let {
-    val connectivityManager = it
-        .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-    return connectivityManager?.activeNetworkInfo?.isConnected ?: false
-} ?: false
-
-/**
  * Start a new activity from context and avoid potential crashes from early API levels
  */
-inline fun <reified T> Context?.startNewActivity(params: Bundle?) {
+inline fun <reified T> Context?.startNewActivity(params: Bundle? = null) {
     try {
         val intent = Intent(this, T::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         params?.also { intent.putExtras(it) }
         this?.startActivity(intent)
     } catch (e: Exception) {
-        e.printStackTrace()
+        Timber.e(e)
     }
 }
 

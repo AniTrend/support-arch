@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 
 import androidx.recyclerview.widget.RecyclerView
-import io.wax911.support.core.view.contract.CustomView
+import io.wax911.support.ui.view.contract.CustomView
 
 /**
  * Class [SupportRecyclerView] extends [RecyclerView] and adds position management on configuration changes.
@@ -18,17 +18,12 @@ class SupportRecyclerView : RecyclerView, CustomView {
 
     private var isListenerPresent: Boolean = false
 
-    constructor(context: Context) : super(context) {
-        onInit()
-    }
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        onInit()
-    }
-
-    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
-        onInit()
-    }
+    constructor(context: Context) :
+            super(context) { onInit() }
+    constructor(context: Context, attrs: AttributeSet?) :
+            super(context, attrs) { onInit() }
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) :
+            super(context, attrs, defStyle) { onInit() }
 
     /**
      * Add a listener that will be notified of any changes in scroll state or position.

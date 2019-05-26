@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.View.MeasureSpec.*
 import androidx.appcompat.widget.AppCompatImageView
 import com.bumptech.glide.Glide
-import io.wax911.support.core.view.contract.CustomView
+import io.wax911.support.ui.view.contract.CustomView
 import io.wax911.support.extension.getScreenDimens
 import io.wax911.support.ui.R
 

@@ -32,6 +32,7 @@ dependencies {
 
     implementation project(':support-ext')
     implementation project(':support-core')
+    implementation project(':support-data')
 
     /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"

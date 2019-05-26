@@ -1,12 +1,10 @@
-package io.wax911.support.core.view.contract
-
-import io.wax911.support.core.util.SupportCoroutineHelper
+package io.wax911.support.ui.view.contract
 
 /**
  * Created by max on 2017/06/24.
  * Designed to init constructors for custom views and provide coroutine contexts
  */
-interface CustomView: SupportCoroutineHelper {
+interface CustomView {
 
     val TAG
         get() = javaClass.simpleName
@@ -20,11 +18,12 @@ interface CustomView: SupportCoroutineHelper {
     /**
      * Should be called on a view's detach from window to unbind or
      * release object references, by default this method will
-     * cancel all running coroutine jobs
+     * cancel all running coroutine jobs if the current view
+     * implements SupportCoroutineHelper
      *
-     * @see [io.wax911.support.core.util.SupportCoroutineHelper.cancelAllChildren]
+     * @see [io.wax911.support.extension.util.SupportCoroutineHelper.cancelAllChildren]
      */
     fun onViewRecycled() {
-        cancelAllChildren()
+
     }
 }
