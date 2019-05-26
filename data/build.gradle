@@ -59,7 +59,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Platform Dependencies */
-    implementation project(":support-core")
+    implementation project(":support-data")
     implementation project(":support-ext")
 
     /** Koin AndroidX Dependency Injection */

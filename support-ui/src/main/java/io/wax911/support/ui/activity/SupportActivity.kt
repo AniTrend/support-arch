@@ -12,13 +12,14 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.util.SupportCoroutineHelper
-import io.wax911.support.core.view.contract.CompatView
+import io.wax911.support.ui.view.contract.CompatView
 import io.wax911.support.extension.getCompatColor
+import io.wax911.support.extension.util.SupportCoroutineHelper
 import io.wax911.support.ui.fragment.SupportFragment
 import timber.log.Timber
 
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P>, SupportCoroutineHelper {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
+    CompatView<M, P>, SupportCoroutineHelper {
 
     private var isClosing: Boolean = false
 

@@ -10,11 +10,12 @@ import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.data.repository.show.ShowRequestType
 import io.wax911.sample.core.viewmodel.show.ShowViewModel
 import io.wax911.support.core.factory.InstanceCreator
-import io.wax911.support.core.util.SupportKeyStore
 import io.wax911.support.core.viewmodel.SupportViewModel
 import io.wax911.support.extension.LAZY_MODE_UNSAFE
+import io.wax911.support.extension.util.SupportExtKeyStore
 import io.wax911.support.ui.fragment.SupportFragmentList
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
+import io.wax911.support.ui.util.SupportUiKeyStore
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -70,8 +71,8 @@ class FragmentPopularShows : SupportFragmentList<Show, CorePresenter, PagedList<
      */
     override fun makeRequest() {
         supportViewModel?.queryFor(Bundle().apply {
-            putParcelable(SupportKeyStore.key_pagination, supportPresenter.pagingHelper)
-            putString(SupportKeyStore.arg_request_type, ShowRequestType.SHOW_TYPE_POPULAR)
+            putParcelable(SupportExtKeyStore.key_pagination, supportPresenter.pagingHelper)
+            putString(SupportExtKeyStore.arg_request_type, ShowRequestType.SHOW_TYPE_POPULAR)
         })
     }
 

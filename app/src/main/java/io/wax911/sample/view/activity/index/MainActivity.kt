@@ -16,8 +16,9 @@ import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.view.TraktTrendActivity
 import io.wax911.sample.view.fragment.list.FragmentHistory
 import io.wax911.sample.view.fragment.list.FragmentPopularShows
+import io.wax911.support.extension.util.SupportExtKeyStore
 import io.wax911.support.ui.activity.SupportActivity
-import io.wax911.support.core.util.SupportKeyStore
+import io.wax911.support.ui.util.SupportUiKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
@@ -44,8 +45,8 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
         setContentView(R.layout.activity_main)
         setSupportActionBar(bottomAppBar)
         bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
-        if (intent.hasExtra(SupportKeyStore.arg_redirect))
-            selectedItem = intent.getIntExtra(SupportKeyStore.arg_redirect, R.id.nav_popular_series)
+        if (intent.hasExtra(SupportUiKeyStore.arg_redirect))
+            selectedItem = intent.getIntExtra(SupportUiKeyStore.arg_redirect, R.id.nav_popular_series)
     }
 
     /**
@@ -73,16 +74,16 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(SupportKeyStore.key_navigation_selected, selectedItem)
-        outState.putInt(SupportKeyStore.key_navigation_title, selectedTitle)
+        outState.putInt(SupportUiKeyStore.key_navigation_selected, selectedItem)
+        outState.putInt(SupportUiKeyStore.key_navigation_title, selectedTitle)
         super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SupportKeyStore.key_navigation_selected)
-            selectedTitle = savedInstanceState.getInt(SupportKeyStore.key_navigation_title)
+            selectedItem = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_selected)
+            selectedTitle = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_title)
         }
     }
 

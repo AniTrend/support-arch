@@ -8,7 +8,7 @@ import io.wax911.sample.data.koin.dataRepositoryModules
 import io.wax911.sample.koin.appModules
 import io.wax911.sample.util.AnalyticsUtil
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
-import io.wax911.support.core.util.SupportCoroutineHelper
+import io.wax911.support.extension.util.SupportCoroutineHelper
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext

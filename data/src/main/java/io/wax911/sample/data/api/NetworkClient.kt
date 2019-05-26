@@ -1,7 +1,7 @@
 package io.wax911.sample.data.api
 
 import io.wax911.sample.data.extension.logError
-import io.wax911.support.core.controller.SupportRequestClient
+import io.wax911.support.data.controller.SupportRequestClient
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import retrofit2.Call

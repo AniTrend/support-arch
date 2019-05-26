@@ -7,15 +7,15 @@ import androidx.paging.PagedList
 import io.wax911.sample.data.api.endpoint.ShowEndpoint
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.source.ShowDataSource
-import io.wax911.support.core.factory.contract.IRetrofitFactory
-import io.wax911.support.core.repository.SupportRepository
-import io.wax911.support.core.view.model.NetworkState
-import io.wax911.support.core.view.model.UiModel
+import io.wax911.support.data.factory.contract.IRetrofitFactory
+import io.wax911.support.data.repository.SupportRepository
+import io.wax911.support.data.model.NetworkState
+import io.wax911.support.data.model.UiModel
 import org.koin.core.inject
 
 class ShowRepository : SupportRepository<PagedList<Show>>() {
 
-    override val retroFactory: IRetrofitFactory by inject()
+    override val retroFactory by inject<IRetrofitFactory>()
 
     /**
      * Handles dispatching of network requests to a background thread

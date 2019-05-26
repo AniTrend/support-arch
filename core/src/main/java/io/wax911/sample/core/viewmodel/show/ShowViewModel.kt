@@ -9,5 +9,5 @@ import org.koin.core.inject
 
 class ShowViewModel : SupportViewModel<PagedList<Show>>(), KoinComponent {
 
-    override val repository: ShowRepository by inject()
+    override val repository by inject<ShowRepository>()
 }

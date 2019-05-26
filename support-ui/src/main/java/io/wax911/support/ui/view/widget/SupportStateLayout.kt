@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import android.widget.ViewFlipper
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import io.wax911.support.core.view.contract.CustomView
-import io.wax911.support.core.view.model.contract.SupportStateType
+import io.wax911.support.ui.view.contract.CustomView
+import io.wax911.support.data.model.contract.SupportStateType
 import io.wax911.support.extension.getCompatDrawable
 import io.wax911.support.extension.getLayoutInflater
 import io.wax911.support.extension.gone

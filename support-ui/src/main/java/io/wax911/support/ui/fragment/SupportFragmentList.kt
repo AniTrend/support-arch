@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.util.SupportKeyStore
-import io.wax911.support.core.view.model.NetworkState
-import io.wax911.support.core.view.model.contract.IUiModel
-import io.wax911.support.core.view.model.contract.SupportStateType
+import io.wax911.support.data.model.NetworkState
+import io.wax911.support.data.model.contract.IUiModel
+import io.wax911.support.data.model.contract.SupportStateType
+import io.wax911.support.data.util.SupportDataKeyStore
 import io.wax911.support.extension.isStateAtLeast
 import io.wax911.support.extension.snackBar
+import io.wax911.support.extension.util.SupportExtKeyStore
 import io.wax911.support.ui.R
 import io.wax911.support.ui.extension.configureWidgetBehaviorWith
 import io.wax911.support.ui.extension.onResponseResetStates
@@ -204,7 +205,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      */
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(SupportKeyStore.key_pagination, supportPresenter.pagingHelper)
+        outState.putParcelable(SupportExtKeyStore.key_pagination, supportPresenter.pagingHelper)
     }
 
     /**
@@ -221,7 +222,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.apply {
-            supportPresenter.pagingHelper.fromBundle(getParcelable(SupportKeyStore.key_pagination))
+            supportPresenter.pagingHelper.fromBundle(getParcelable(SupportExtKeyStore.key_pagination))
         }
     }
 

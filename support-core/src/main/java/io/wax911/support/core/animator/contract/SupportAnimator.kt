@@ -6,9 +6,9 @@ import android.view.animation.Interpolator
 
 interface SupportAnimator {
 
-    fun getAnimators(view: View): Array<Animator>
+    val interpolator : Interpolator
 
-    fun getInterpolator(): Interpolator
+    fun getAnimators(view: View): Array<Animator>
 
     @AnimatorDuration
     fun getAnimationDuration(): Int = AnimatorDuration.SHORT

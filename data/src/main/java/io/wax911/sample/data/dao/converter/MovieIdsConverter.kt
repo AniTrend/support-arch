@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import io.wax911.sample.data.api.RetroFactory
 import io.wax911.sample.data.extension.getTypeToken
 import io.wax911.sample.data.model.movie.contract.MovieIds
-import io.wax911.support.core.dao.RoomConverter
+import io.wax911.support.data.dao.RoomConverter
 
 class MovieIdsConverter: RoomConverter<MovieIds> {
 

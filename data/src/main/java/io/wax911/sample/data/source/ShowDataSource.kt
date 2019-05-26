@@ -14,8 +14,9 @@ import io.wax911.sample.data.mapper.show.PopularShowMapper
 import io.wax911.sample.data.mapper.show.TrendingShowMapper
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.repository.show.ShowRequestType
-import io.wax911.support.core.data.SupportDataSource
-import io.wax911.support.core.util.SupportKeyStore
+import io.wax911.support.data.source.SupportDataSource
+import io.wax911.support.data.util.SupportDataKeyStore
+import io.wax911.support.extension.util.SupportExtKeyStore
 import kotlinx.coroutines.launch
 import org.koin.core.inject
 import timber.log.Timber
@@ -23,10 +24,10 @@ import timber.log.Timber
 class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
     SupportDataSource<Show>(bundle), SupportDataSource.IDataObservable<PagedList<Show>> {
 
-    override val databaseHelper: DatabaseHelper by inject()
+    override val databaseHelper by inject<DatabaseHelper>()
 
     private fun startRequestForType(callback: PagingRequestHelper.Request.Callback) {
-        when (@ShowRequestType val requestType = bundle.getString(SupportKeyStore.arg_request_type)) {
+        when (@ShowRequestType val requestType = bundle.getString(SupportExtKeyStore.arg_request_type)) {
             ShowRequestType.SHOW_TYPE_POPULAR -> {
                 showEndpoint.getPopularShows(
                     page = supportPagingHelper?.page,
@@ -89,7 +90,7 @@ class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
      */
     override fun observerOnLiveDataWith(bundle: Bundle): LiveData<PagedList<Show>> {
         val showDao = databaseHelper.showDao()
-        val requestType = bundle.getString(SupportKeyStore.arg_request_type)
+        val requestType = bundle.getString(SupportExtKeyStore.arg_request_type)
 
         val dataSourceFactory = when (requestType) {
             ShowRequestType.SHOW_TYPE_POPULAR -> showDao.getPopularItems()
@@ -102,7 +103,7 @@ class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
             Timber.tag(TAG).e("Unregistered or unknown requestType -> $requestType")
 
         return dataSourceFactory?.toLiveData(
-            config = SupportKeyStore.PAGING_CONFIGURATION,
+            config = SupportDataKeyStore.PAGING_CONFIGURATION,
             boundaryCallback = this
         ) ?: MutableLiveData()
     }

@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import io.wax911.support.core.animator.ScaleAnimator
 import io.wax911.support.core.animator.contract.SupportAnimator
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.view.model.NetworkState
-import io.wax911.support.core.view.model.contract.SupportStateType
+import io.wax911.support.data.model.NetworkState
+import io.wax911.support.data.model.contract.SupportStateType
 import io.wax911.support.extension.getLayoutInflater
 import io.wax911.support.ui.R
 import io.wax911.support.ui.action.contract.ISupportActionMode
@@ -331,11 +331,13 @@ abstract class SupportViewAdapter<T>(
     private fun animateViewHolder(holder: SupportViewHolder<T>?, position: Int) {
         holder?.apply {
             when (position > lastPosition) {
-                true -> customSupportAnimator?.apply {
-                    getAnimators(itemView).forEach { animator ->
-                        animator.duration = getAnimationDuration().toLong()
-                        animator.interpolator = getInterpolator()
-                        animator.start()
+                true -> customSupportAnimator?.also { supportAnimator ->
+                    supportAnimator.getAnimators(itemView).forEach { animator ->
+                        with(animator) {
+                            duration = supportAnimator.getAnimationDuration().toLong()
+                            interpolator = supportAnimator.interpolator
+                            start()
+                        }
                     }
                 }
             }

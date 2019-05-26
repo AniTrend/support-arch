@@ -10,16 +10,16 @@ import io.wax911.support.core.animator.contract.SupportAnimator
  * Created by max on 2018/02/24.
  */
 
-class ScaleAnimator(private val from: Float = .85f,
-                    private val to: Float = 1f) : SupportAnimator {
+class ScaleAnimator(
+    private val from: Float = .85f,
+    private val to: Float = 1f
+) : SupportAnimator {
 
-    private val linearInterpolator by lazy { LinearInterpolator() }
+    override val interpolator = LinearInterpolator()
 
     override fun getAnimators(view: View): Array<Animator> {
         val scaleX = ObjectAnimator.ofFloat(view, "scaleX", from, to)
         val scaleY = ObjectAnimator.ofFloat(view, "scaleY", from, to)
         return arrayOf(scaleX, scaleY)
     }
-
-    override fun getInterpolator() = linearInterpolator
 }

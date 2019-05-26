@@ -1,13 +1,11 @@
 package io.wax911.sample.data.api
 
-import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.wax911.sample.data.BuildConfig
 import io.wax911.sample.data.api.interceptor.AuthInterceptor
 import io.wax911.sample.data.api.interceptor.ClientInterceptor
-import io.wax911.support.core.factory.InstanceCreator
-import io.wax911.support.core.factory.contract.IRetrofitFactory
+import io.wax911.support.data.factory.contract.IRetrofitFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -17,12 +15,12 @@ import java.util.concurrent.TimeUnit
 /**
  * Retrofit factory provides a Gson instance and creates endpoint services
  */
-class RetroFactory private constructor(context: Context, baseUrl: String = BuildConfig.apiUrl) : IRetrofitFactory {
+class RetroFactory(baseUrl: String = BuildConfig.apiUrl) : IRetrofitFactory {
 
     private val retrofit: Retrofit by lazy {
         val httpClient = createHttpClient(
             HttpLoggingInterceptor.Level.BODY,
-            AuthInterceptor(context)
+            AuthInterceptor()
         )
 
         Retrofit.Builder().client(httpClient.build())
@@ -62,7 +60,7 @@ class RetroFactory private constructor(context: Context, baseUrl: String = Build
      */
     override fun <S> createService(serviceClass: Class<S>): S = retrofit.create(serviceClass)
 
-    companion object : InstanceCreator<IRetrofitFactory, Context>({ RetroFactory(it) }) {
+    companion object {
         val gson: Gson by lazy {
             GsonBuilder()
                 .enableComplexMapKeySerialization()

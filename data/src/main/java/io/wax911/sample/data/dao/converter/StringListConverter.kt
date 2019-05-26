@@ -3,7 +3,7 @@ package io.wax911.sample.data.dao.converter
 import androidx.room.TypeConverter
 import io.wax911.sample.data.api.RetroFactory
 import io.wax911.sample.data.extension.getTypeToken
-import io.wax911.support.core.dao.RoomConverter
+import io.wax911.support.data.dao.RoomConverter
 
 class StringListConverter: RoomConverter<List<String>> {
 
