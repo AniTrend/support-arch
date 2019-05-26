@@ -1,1 +1,4 @@
-include ':app', ':support-core', ':support-ui', ':support-ext', ':core', ':data'
+include ':support-core', ':support-ext', ':support-ui'
+
+if (!System.env.JITPACK || !System.env.CI)
+    include ':app', ':core', ':data'
