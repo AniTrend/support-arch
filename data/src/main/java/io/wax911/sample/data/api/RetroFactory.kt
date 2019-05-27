@@ -15,13 +15,15 @@ import java.util.concurrent.TimeUnit
 /**
  * Retrofit factory provides a Gson instance and creates endpoint services
  */
-class RetroFactory(baseUrl: String = BuildConfig.apiUrl) : IRetrofitFactory {
+class RetroFactory(baseUrl: String = BuildConfig.apiUrl, authInterceptor: AuthInterceptor?) : IRetrofitFactory {
 
     private val retrofit: Retrofit by lazy {
         val httpClient = createHttpClient(
-            HttpLoggingInterceptor.Level.BODY,
-            AuthInterceptor()
+            HttpLoggingInterceptor.Level.BODY
         )
+
+        if (authInterceptor != null)
+            httpClient.authenticator(authInterceptor)
 
         Retrofit.Builder().client(httpClient.build())
             .addConverterFactory(
@@ -36,13 +38,12 @@ class RetroFactory(baseUrl: String = BuildConfig.apiUrl) : IRetrofitFactory {
      *
      * @param logLevel Mandatory log level that the logging http interceptor should use
      */
-    private fun createHttpClient(logLevel: HttpLoggingInterceptor.Level, authInterceptor: AuthInterceptor): OkHttpClient.Builder {
+    private fun createHttpClient(logLevel: HttpLoggingInterceptor.Level): OkHttpClient.Builder {
         val okHttpClientBuilder = OkHttpClient.Builder()
             .readTimeout(35, TimeUnit.SECONDS)
             .connectTimeout(35, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
             .addInterceptor(ClientInterceptor())
-            .addInterceptor(authInterceptor)
         when {
             BuildConfig.DEBUG -> {
                 val httpLoggingInterceptor = HttpLoggingInterceptor()
