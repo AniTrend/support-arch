@@ -35,6 +35,17 @@ abstract class SupportDataSource(
     protected abstract val databaseHelper: RoomDatabase
 
     /**
+     * Function reference for the retry event
+     */
+    protected var retry: (() -> Any)? = null
+
+    private fun retryRequestForType() {
+        val prevRetry = retry
+        retry = null
+        prevRetry?.invoke()
+    }
+
+    /**
      * Handles the requesting data from a the network source and informs the
      * network state that it is in the loading state
      *
@@ -42,5 +53,23 @@ abstract class SupportDataSource(
      */
     open fun startRequestForType(bundle: Bundle) {
         networkState.postValue(NetworkState.LOADING)
+        retry = {
+            startRequestForType(bundle)
+        }
+    }
+
+    /**
+     * Performs the necessary operation to invoke a network retry request
+     */
+    override fun retryFailedRequest() {
+        retryRequestForType()
+    }
+
+    /**
+     * Clears all the data in a database table which will assure that
+     * and refresh the backing storage medium with new network data
+     */
+    override fun refreshOrInvalidate() {
+        retryRequestForType()
     }
 }
