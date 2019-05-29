@@ -124,17 +124,14 @@ class ShowPagingDataSource(
         ) ?: MutableLiveData()
     }
 
+    /**
+     * Clears all the data in a database table which will assure that
+     * and refresh the backing storage medium with new network data
+     */
     override fun refreshOrInvalidate() {
-        supportPagingHelper?.onPageRefresh()
+        super.refreshOrInvalidate()
         launch {
             databaseHelper.showDao().deleteAll()
         }
-    }
-
-    /**
-     * Performs the necessary operation to invoke a network retry request
-     */
-    override fun retryFailedRequest() {
-        pagingRequestHelper.retryAllFailed()
     }
 }

@@ -51,6 +51,21 @@ abstract class SupportPagingDataSource<T>(
      */
     protected abstract fun startRequestForType(callback: PagingRequestHelper.Request.Callback)
 
+    /**
+     * Clears all the data in a database table which will assure that
+     * and refresh the backing storage medium with new network data
+     */
+    override fun refreshOrInvalidate() {
+        supportPagingHelper?.onPageRefresh()
+    }
+
+    /**
+     * Performs the necessary operation to invoke a network retry request
+     */
+    override fun retryFailedRequest() {
+        pagingRequestHelper.retryAllFailed()
+    }
+
     companion object {
         val IO_EXECUTOR: ExecutorService = Executors.newSingleThreadExecutor()
     }
