@@ -2,17 +2,15 @@ package io.wax911.support.core.presenter
 
 import android.content.Context
 import android.content.SharedPreferences
+import io.wax911.support.data.util.pagination.SupportPagingHelper
 import io.wax911.support.extension.preference.SupportPreference
 import io.wax911.support.extension.preference.event.OnSharedPreferenceBinder
-import io.wax911.support.extension.util.SupportCoroutineHelper
-import io.wax911.support.data.util.SupportDataKeyStore
-import io.wax911.support.data.util.pagination.SupportPagingHelper
 import io.wax911.support.extension.util.SupportExtKeyStore
 
 abstract class SupportPresenter<S : SupportPreference>(
     protected val context: Context?,
     val supportPreference: S
-): OnSharedPreferenceBinder, SupportCoroutineHelper {
+): OnSharedPreferenceBinder {
 
     val pagingHelper
         get() = SupportPagingHelper(

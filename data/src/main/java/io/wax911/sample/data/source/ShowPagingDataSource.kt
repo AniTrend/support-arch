@@ -14,26 +14,36 @@ import io.wax911.sample.data.mapper.show.PopularShowMapper
 import io.wax911.sample.data.mapper.show.TrendingShowMapper
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.repository.show.ShowRequestType
-import io.wax911.support.data.source.SupportDataSource
+import io.wax911.support.data.source.SupportPagingDataSource
+import io.wax911.support.data.source.contract.ISupportDataSource
 import io.wax911.support.data.util.SupportDataKeyStore
 import io.wax911.support.extension.util.SupportExtKeyStore
 import kotlinx.coroutines.launch
 import org.koin.core.inject
 import timber.log.Timber
 
-class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
-    SupportDataSource<Show>(bundle), SupportDataSource.IDataObservable<PagedList<Show>> {
+class ShowPagingDataSource(
+    private val showEndpoint: ShowEndpoint,
+    bundle: Bundle
+) : SupportPagingDataSource<Show>(bundle), ISupportDataSource.IDataSourceObservable<PagedList<Show>> {
 
     override val databaseHelper by inject<DatabaseHelper>()
 
-    private fun startRequestForType(callback: PagingRequestHelper.Request.Callback) {
+    /**
+     * Invokes dynamic requests which can be consumed which can be mapped
+     * to a destination source on success
+     */
+    override fun startRequestForType(callback: PagingRequestHelper.Request.Callback) {
         when (@ShowRequestType val requestType = bundle.getString(SupportExtKeyStore.arg_request_type)) {
             ShowRequestType.SHOW_TYPE_POPULAR -> {
                 showEndpoint.getPopularShows(
                     page = supportPagingHelper?.page,
                     limit = supportPagingHelper?.pageSize
                 ).enqueue(
-                    PopularShowMapper(callback).responseCallback
+                    PopularShowMapper(
+                        showDao = databaseHelper.showDao(),
+                        pagingRequestHelper = callback
+                    ).responseCallback
                 )
             }
             ShowRequestType.SHOW_TYPE_TRENDING -> {
@@ -41,7 +51,10 @@ class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
                     page = supportPagingHelper?.page,
                     limit = supportPagingHelper?.pageSize
                 ).enqueue(
-                    TrendingShowMapper(callback).responseCallback
+                    TrendingShowMapper(
+                        showDao = databaseHelper.showDao(),
+                        pagingRequestHelper = callback
+                    ).responseCallback
                 )
             }
             ShowRequestType.SHOW_TYPE_ANTICIPATED -> {
@@ -49,7 +62,10 @@ class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
                     page = supportPagingHelper?.page,
                     limit = supportPagingHelper?.pageSize
                 ).enqueue(
-                    AnticipatedShowMapper(callback).responseCallback
+                    AnticipatedShowMapper(
+                        showDao = databaseHelper.showDao(),
+                        pagingRequestHelper = callback
+                    ).responseCallback
                 )
             }
             else -> Timber.tag(TAG).e("Unregistered or unknown requestType -> $requestType")
@@ -113,5 +129,12 @@ class ShowDataSource(private val showEndpoint: ShowEndpoint, bundle: Bundle) :
         launch {
             databaseHelper.showDao().deleteAll()
         }
+    }
+
+    /**
+     * Performs the necessary operation to invoke a network retry request
+     */
+    override fun retryFailedRequest() {
+        pagingRequestHelper.retryAllFailed()
     }
 }

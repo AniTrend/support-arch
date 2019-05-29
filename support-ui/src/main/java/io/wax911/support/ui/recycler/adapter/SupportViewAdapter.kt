@@ -243,8 +243,11 @@ abstract class SupportViewAdapter<T>(
         return super.getItemCount() + if (hasExtraRow()) 1 else 0
     }
 
-    fun isEmpty(): Boolean = super.getItemCount() < 1
-
+    fun isEmpty(): Boolean {
+        if (hasExtraRow())
+            return itemCount < 2
+        return itemCount < 1
+    }
     /**
      * Returns a filter that can be used to constrain data with a filtering
      * pattern.

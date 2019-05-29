@@ -5,28 +5,26 @@ import android.view.View
 import androidx.paging.PagedList
 import io.wax911.sample.R
 import io.wax911.sample.adapter.recycler.ShowAdapter
-import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.data.repository.show.ShowRequestType
 import io.wax911.sample.core.viewmodel.show.ShowViewModel
+import io.wax911.sample.data.model.show.Show
+import io.wax911.sample.data.repository.show.ShowRequestType
 import io.wax911.support.core.factory.InstanceCreator
 import io.wax911.support.core.viewmodel.SupportViewModel
 import io.wax911.support.extension.LAZY_MODE_UNSAFE
 import io.wax911.support.extension.util.SupportExtKeyStore
 import io.wax911.support.ui.fragment.SupportFragmentList
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
-import io.wax911.support.ui.util.SupportUiKeyStore
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FragmentPopularShows : SupportFragmentList<Show, CorePresenter, PagedList<Show>>() {
 
-    override val supportViewAdapter: SupportViewAdapter<Show> by lazy(LAZY_MODE_UNSAFE) {
-        ShowAdapter(supportPresenter, this@FragmentPopularShows)
-    }
-
     override val supportViewModel: ShowViewModel? by viewModel()
     override val supportPresenter: CorePresenter by inject()
+
+    override val supportViewAdapter =
+        ShowAdapter(supportPresenter, this)
 
     override val retryButtonText: Int = R.string.action_retry
     override val columnSize: Int = R.integer.single_list_size

@@ -1,24 +1,24 @@
 package io.wax911.sample
 
 import android.app.Application
-import io.wax911.sample.core.koin.*
+import io.wax911.sample.core.koin.coreModules
+import io.wax911.sample.core.koin.corePresenterModules
+import io.wax911.sample.core.koin.coreViewModelModules
 import io.wax911.sample.data.koin.dataModules
 import io.wax911.sample.data.koin.dataNetworkModules
 import io.wax911.sample.data.koin.dataRepositoryModules
 import io.wax911.sample.koin.appModules
 import io.wax911.sample.util.AnalyticsUtil
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
-import io.wax911.support.extension.util.SupportCoroutineHelper
-import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
-class App : Application(), SupportCoroutineHelper {
+class App : Application() {
 
-    val analyticsUtil: ISupportAnalytics by inject()
+    val analyticsUtil by inject<ISupportAnalytics>()
 
     /**
      * Called when the application is starting, before any activity, service,
@@ -61,11 +61,10 @@ class App : Application(), SupportCoroutineHelper {
                 dataRepositoryModules
             )
         }
-        launch {
-            when (BuildConfig.DEBUG) {
-                true -> Timber.plant(Timber.DebugTree())
-                else -> Timber.plant(analyticsUtil as AnalyticsUtil)
-            }
+
+        when (BuildConfig.DEBUG) {
+            true -> Timber.plant(Timber.DebugTree())
+            else -> Timber.plant(analyticsUtil as AnalyticsUtil)
         }
     }
 }

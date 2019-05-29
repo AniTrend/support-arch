@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.R
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.support.ui.fragment.SupportFragment
 import io.wax911.support.core.factory.InstanceCreator
+import io.wax911.support.ui.fragment.SupportFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
 

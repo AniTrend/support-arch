@@ -12,10 +12,11 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.ui.view.contract.CompatView
 import io.wax911.support.extension.getCompatColor
 import io.wax911.support.extension.util.SupportCoroutineHelper
 import io.wax911.support.ui.fragment.SupportFragment
+import io.wax911.support.ui.view.contract.CompatView
+import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
 abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
@@ -24,6 +25,11 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     private var isClosing: Boolean = false
 
     protected var supportFragment : SupportFragment<*, *, *>? = null
+
+    /**
+     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
+     */
+    override val supervisorJob = SupervisorJob()
 
     /**
      * Can be used to configure custom theme styling as desired

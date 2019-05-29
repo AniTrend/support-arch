@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import android.graphics.drawable.Drawable
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
@@ -53,6 +53,9 @@ fun Context.getStringList(@ArrayRes arrayRes : Int) : List<String> {
     val array = resources.getStringArray(arrayRes)
     return array.toList()
 }
+
+fun View.getLayoutInflater() : LayoutInflater =
+    context.getLayoutInflater()
 
 fun Context.getLayoutInflater() : LayoutInflater =
     getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
