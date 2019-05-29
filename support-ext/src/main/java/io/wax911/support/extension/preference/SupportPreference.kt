@@ -11,6 +11,7 @@ abstract class SupportPreference(context: Context) {
         PreferenceManager.getDefaultSharedPreferences(context)
     }
 
+    @Volatile
     var isAuthenticated = false
         get() = sharedPreferences.getBoolean(IS_AUTHENTICATED, false)
         set(value) {
