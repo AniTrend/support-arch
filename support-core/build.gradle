@@ -41,6 +41,9 @@ dependencies {
     implementation "org.koin:koin-core:$koin"
     implementation "org.koin:koin-core-ext:$koin"
 
+    /** Material Design */
+    implementation "com.google.android.material:material:$material"
+
     /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
