@@ -1,10 +1,10 @@
 package io.wax911.support.data.source.mapper
 
-import androidx.lifecycle.MutableLiveData
-import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.SupportStateType
+import androidx.paging.PagingRequestHelper
 import io.wax911.support.data.source.mapper.contract.ISupportDataMapper
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,9 +16,9 @@ import timber.log.Timber
  * @param parentCoroutineJob parent coroutine from something that is lifecycle aware,
  * this enables us to cancels jobs automatically when the parent is also canceled
  */
-abstract class SupportDataMapper<S, D>(
-    parentCoroutineJob: Job? = null,
-    private val networkState: MutableLiveData<NetworkState>
+abstract class SupportPagingDataMapper<S, D>(
+    private val pagingRequestCallback: PagingRequestHelper.Request.Callback,
+    parentCoroutineJob: Job? = null
 ) : ISupportDataMapper<S, D> {
 
     /**
@@ -33,12 +33,7 @@ abstract class SupportDataMapper<S, D>(
          * exception occurred creating the request or processing the response.
          */
         override fun onFailure(call: Call<S>, throwable: Throwable) {
-            networkState.postValue(
-                NetworkState.error(
-                    msg = throwable.localizedMessage
-                )
-            )
-            Timber.tag(TAG).e(throwable)
+            pagingRequestCallback.recordFailure(throwable)
         }
 
         /**
@@ -53,23 +48,14 @@ abstract class SupportDataMapper<S, D>(
                     launch {
                         val mapped = onResponseMapFrom(response)
                         onResponseDatabaseInsert(mapped)
-                        withContext(Dispatchers.Main) {
-                            networkState.postValue(
-                                NetworkState.LOADED
-                            )
-                        }
+                        pagingRequestCallback.recordSuccess()
                     }
                 }
                 false -> {
                     val message = response.message()
-                    Timber.tag(TAG).e(message)
-                    networkState.postValue(
-                        NetworkState(
-                            status = SupportStateType.ERROR,
-                            message = message,
-                            code = response.code()
-                        )
-                    )
+                    val throwable = Throwable(message)
+                    Timber.tag(TAG).e(throwable)
+                    pagingRequestCallback.recordFailure(throwable)
                 }
             }
         }

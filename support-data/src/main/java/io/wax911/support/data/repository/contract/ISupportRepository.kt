@@ -2,18 +2,13 @@ package io.wax911.support.data.repository.contract
 
 import android.os.Bundle
 import io.wax911.support.data.model.UiModel
-import io.wax911.support.extension.util.SupportConnectivityHelper
 import io.wax911.support.extension.util.SupportCoroutineHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.core.KoinComponent
 
-/**
- * Repository contract
- */
-interface ISupportRepository<V> : SupportCoroutineHelper, KoinComponent {
 
-    val supportConnectivityHelper: SupportConnectivityHelper
+interface ISupportRepository<V> : SupportCoroutineHelper, KoinComponent {
 
     /**
      * Handles dispatching of network requests to a background thread

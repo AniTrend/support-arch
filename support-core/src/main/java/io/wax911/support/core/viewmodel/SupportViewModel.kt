@@ -6,10 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
+import io.wax911.support.core.viewmodel.contract.ISupportViewModel
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.model.UiModel
-import io.wax911.support.core.viewmodel.contract.ISupportViewModel
-import org.koin.core.KoinComponent
 
 abstract class SupportViewModel<M> : ViewModel(), ISupportViewModel<M> {
 

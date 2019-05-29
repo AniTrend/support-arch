@@ -4,10 +4,11 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.data.repository.SupportRepository
 import io.wax911.support.core.viewmodel.SupportViewModel
+import io.wax911.support.data.repository.SupportRepository
+import io.wax911.support.extension.util.SupportCoroutineHelper
 
-interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SharedPreferences.OnSharedPreferenceChangeListener {
+interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SupportCoroutineHelper, SharedPreferences.OnSharedPreferenceChangeListener {
 
     val TAG
         get() = javaClass.simpleName

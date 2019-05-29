@@ -8,16 +8,18 @@
             type="io.wax911.sample.data.model.show.Show" />
     </data>
 
-    <FrameLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_margin="@dimen/lg_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/lg_margin">
 
-        <io.wax911.support.ui.view.image.SupportWideImageView
+        <io.wax911.support.ui.view.image.SupportImageView
             android:id="@+id/showTrailer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
+            android:layout_height="0dp"
             app:youtubeTrailer="@{entity}"
+            app:aspectRatio=".55"
             tools:scaleType="centerCrop"/>
 
         <io.wax911.support.ui.view.text.SingleLineTextView
@@ -27,12 +29,12 @@
             android:ellipsize="end"
             android:layout_gravity="bottom"
             android:text="@{entity.title}"
-            android:textStyle="bold"
             android:padding="@dimen/spacing_xs"
-            android:background="?android:colorBackground"
+            android:background="@color/colorScrim"
+            android:textColor="@android:color/white"
             android:textAppearance="?attr/textAppearanceBody2"
-            tools:text="@tools:sample/lorem" />
+            tools:text="@tools:sample/lorem/random" />
 
-    </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

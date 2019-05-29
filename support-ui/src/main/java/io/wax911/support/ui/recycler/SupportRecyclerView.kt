@@ -16,19 +16,21 @@ import io.wax911.support.ui.view.contract.CustomView
 
 class SupportRecyclerView : RecyclerView, CustomView {
 
-    private var isListenerPresent: Boolean = false
+    /**
+     * Helps avoid multiple instances of scroll listener from being added
+     */
+    var isScrollListenerSet: Boolean = false
+        private set
 
     constructor(context: Context) :
-            super(context) { onInit() }
+            super(context) { onInit(context) }
     constructor(context: Context, attrs: AttributeSet?) :
-            super(context, attrs) { onInit() }
+            super(context, attrs) { onInit(context, attrs) }
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) :
-            super(context, attrs, defStyle) { onInit() }
+            super(context, attrs, defStyle) { onInit(context, attrs) }
 
     /**
      * Add a listener that will be notified of any changes in scroll state or position.
-     *
-     *
      *
      * Components that add a listener should take care to remove it when finished.
      * Other components that take ownership of a view may call [.clearOnScrollListeners]
@@ -37,8 +39,10 @@ class SupportRecyclerView : RecyclerView, CustomView {
      * @param listener listener to set or null to clear
      */
     override fun addOnScrollListener(listener: OnScrollListener) {
-        super.addOnScrollListener(listener)
-        isListenerPresent = true
+        if (!isScrollListenerSet) {
+            super.addOnScrollListener(listener)
+            isScrollListenerSet = true
+        }
     }
 
     /**
@@ -46,19 +50,22 @@ class SupportRecyclerView : RecyclerView, CustomView {
      */
     override fun clearOnScrollListeners() {
         super.clearOnScrollListeners()
-        isListenerPresent = false
+        isScrollListenerSet = false
     }
-
-    /**
-     * To avoid multiple instances of scroll listener from being added
-     */
-    fun hasOnScrollListener() = isListenerPresent
-
 
     /**
      * Optionally included when constructing custom views
      */
-    override fun onInit() {
+    override fun onInit(context: Context, attrs: AttributeSet?) {
+
+    }
+
+    /**
+     * Should be called on a view's detach from window to unbind or
+     * release object references and cancel all running coroutine jobs if the current view
+     * implements [io.wax911.support.extension.util.SupportCoroutineHelper]
+     */
+    override fun onViewRecycled() {
 
     }
 

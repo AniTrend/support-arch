@@ -8,20 +8,25 @@ import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.ui.view.contract.CompatView
 import io.wax911.support.extension.LAZY_MODE_UNSAFE
 import io.wax911.support.ui.action.SupportActionMode
-import io.wax911.support.extension.util.SupportCoroutineHelper
 import io.wax911.support.ui.action.contract.ISupportActionMode
 import io.wax911.support.ui.action.event.ActionModeListener
+import io.wax911.support.ui.view.contract.CompatView
+import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener,
-    CompatView<VM, P>, SupportCoroutineHelper {
+    CompatView<VM, P> {
 
     @MenuRes
     protected var inflateMenu: Int = CompatView.NO_MENU_ITEM
     protected var snackBar: Snackbar? = null
+
+    /**
+     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
+     */
+    override val supervisorJob = SupervisorJob()
 
     protected val supportAction: ISupportActionMode<M> by lazy(LAZY_MODE_UNSAFE) {
         SupportActionMode<M>(

@@ -2,13 +2,13 @@ package io.wax911.sample.view.activity.base
 
 import android.os.Bundle
 import io.wax911.sample.R
-import io.wax911.sample.databinding.ActivitySplashBinding
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.view.TraktTrendActivity
+import io.wax911.sample.databinding.ActivitySplashBinding
 import io.wax911.sample.view.activity.index.MainActivity
-import io.wax911.support.ui.activity.SupportActivity
 import io.wax911.support.extension.startNewActivity
 import io.wax911.support.extension.util.SupportDateUtil
+import io.wax911.support.ui.activity.SupportActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import io.wax911.sample.data.BuildConfig
-import io.wax911.sample.data.R
 import io.wax911.sample.data.auth.model.JsonWebToken
 import io.wax911.sample.data.dao.converter.*
 import io.wax911.sample.data.dao.migration.MIGRATION_1_2

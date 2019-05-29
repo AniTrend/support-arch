@@ -9,7 +9,6 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import io.fabric.sdk.android.Fabric
 import io.wax911.support.core.analytic.contract.ISupportAnalytics
 import io.wax911.support.extension.empty
-import io.wax911.support.core.factory.InstanceCreator
 import timber.log.Timber
 
 class AnalyticsUtil(context: Context): Timber.Tree(), ISupportAnalytics {

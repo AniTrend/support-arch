@@ -15,7 +15,6 @@ import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.model.contract.IUiModel
 import io.wax911.support.data.model.contract.SupportStateType
-import io.wax911.support.data.util.SupportDataKeyStore
 import io.wax911.support.extension.isStateAtLeast
 import io.wax911.support.extension.snackBar
 import io.wax911.support.extension.util.SupportExtKeyStore
@@ -28,6 +27,7 @@ import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import io.wax911.support.ui.view.widget.SupportStateLayout
 import kotlinx.android.synthetic.main.support_list.*
+import timber.log.Timber
 
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFragment<M, P, VM>(),
     ISupportFragmentList<M>, SwipeRefreshLayout.OnRefreshListener, ItemClickListener<M> {
@@ -39,27 +39,46 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     protected var supportRecyclerView: SupportRecyclerView? = null
 
     private val stateLayoutOnClick = View.OnClickListener {
-        supportStateLayout?.showLoading(loadingMessage = loadingMessage)
-        onRefresh()
-        resetWidgetStates()
+        if (supportStateLayout?.isLoading != true) {
+            supportStateLayout?.showLoading(loadingMessage = loadingMessage)
+            onRefresh()
+            resetWidgetStates()
+        } else
+            Timber.tag(TAG).w("stateLayoutOnClick -> supportStateLayout is currently loading")
     }
 
 
     private val snackBarOnClickListener = View.OnClickListener {
-        supportViewAdapter.networkState = NetworkState.LOADING
-        makeRequest()
-        resetWidgetStates()
+        if (supportStateLayout?.isLoading != true) {
+            supportViewAdapter.networkState = NetworkState.LOADING
+            makeRequest()
+            resetWidgetStates()
+        } else
+            Timber.tag(TAG).w("snackBarOnClickListener -> supportStateLayout is currently loading")
     }
 
+
+    private val onRefreshObserver = Observer<NetworkState> { networkState ->
+        supportRefreshLayout?.isRefreshing = networkState.status == SupportStateType.LOADING
+        if (networkState.status != SupportStateType.LOADING)
+            changeLayoutState(networkState)
+    }
+
+    private val onNetworkObserver = Observer<NetworkState> {
+        when (!supportViewAdapter.isEmpty()) {
+            true -> supportViewAdapter.networkState = it
+            false -> changeLayoutState(it)
+        }
+    }
 
     /**
      * Checks and resets swipe refresh layout and snack bar states
      */
     private fun resetWidgetStates() {
         supportRefreshLayout?.onResponseResetStates()
-        snackBar?.also {
-            if (it.isShown)
-                it.dismiss()
+        snackBar?.apply {
+            if (isShown)
+                dismiss()
         }
     }
 
@@ -107,24 +126,18 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      *
      * @return Return the View for the fragment's UI, or null.
      */
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(inflateLayout, container, false)?.apply {
-                supportStateLayout = findViewById(R.id.progressLayout)
-                supportRefreshLayout = findViewById(R.id.supportRefreshLayout)
-                supportRecyclerView = findViewById(R.id.supportRecyclerView)
-            }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(inflateLayout, container, false)?.apply {
+            supportStateLayout = findViewById(R.id.progressLayout)
+            supportRefreshLayout = findViewById(R.id.supportRefreshLayout)
+            supportRecyclerView = findViewById(R.id.supportRecyclerView)
+        }
 
-    /**
-     * Called immediately after [.onCreateView]
-     * has returned, but before any saved state has been restored in to the view.
-     * This gives subclasses a chance to initialize themselves once
-     * they know their view hierarchy has been completely created.  The fragment's
-     * view hierarchy is not however attached to its parent at this point.
-     * @param view The View returned by [.onCreateView].
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        supportRefreshLayout?.apply {
+            configureWidgetBehaviorWith(activity)
+            setOnRefreshListener(this@SupportFragmentList)
+        }
+
         supportRecyclerView?.apply {
             setHasFixedSize(true)
             isNestedScrollingEnabled = true
@@ -132,56 +145,38 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                 resources.getInteger(columnSize),
                 StaggeredGridLayoutManager.VERTICAL
             )
-            adapter = supportViewAdapter.also {
-                it.supportAction = supportAction
-            }
         }
+
+        supportStateLayout?.showLoading(loadingMessage = loadingMessage)
 
         setUpViewModelObserver()
+        supportViewModel?.networkState?.observe(this, onNetworkObserver)
+        supportViewModel?.refreshState?.observe(this, onRefreshObserver)
 
-        supportViewModel?.networkState?.observe(this, Observer {
-            when (!supportViewAdapter.isEmpty()) {
-                true -> supportViewAdapter.networkState = it
-                false -> when (it.status) {
-                    SupportStateType.ERROR ->
-                        supportStateLayout?.showError(
-                            errorMessage = it.message,
-                            onClickListener = stateLayoutOnClick
-                        )
-                    SupportStateType.CONTENT -> {
-                        supportStateLayout?.showContent()
-                        supportPresenter.pagingHelper.onPageNext()
-                    }
-                    SupportStateType.LOADING ->
-                        supportStateLayout?.showLoading(
-                            loadingMessage = loadingMessage
-                        )
-                }
-            }
-        })
-
-        supportViewModel?.refreshState?.observe(this, Observer { networkState ->
-            supportRefreshLayout?.isRefreshing = networkState.status == SupportStateType.LOADING
-        })
-
-        supportRefreshLayout?.apply {
-            configureWidgetBehaviorWith(activity)
-            setOnRefreshListener(this@SupportFragmentList)
-        }
+        return view
     }
 
     /**
      * Called when the Fragment is visible to the user.  This is generally
-     * tied to [SupportFragment.onStart] of the containing
+     * tied to [Activity.onStart] of the containing
      * Activity's lifecycle.
      */
     override fun onStart() {
         super.onStart()
-        supportStateLayout?.showLoading(loadingMessage = loadingMessage)
         when (supportViewAdapter.isEmpty()) {
             true -> makeRequest()
             else -> updateUI()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        supportStateLayout?.onWidgetInteraction = stateLayoutOnClick
+    }
+
+    override fun onPause() {
+        supportStateLayout?.onViewRecycled()
+        super.onPause()
     }
 
     /**
@@ -226,18 +221,36 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         }
     }
 
-    private fun changeLayoutState(message: String?) {
+    private fun changeLayoutState(networkState: NetworkState?) {
         if (isStateAtLeast(Lifecycle.State.RESUMED)) {
             supportRefreshLayout?.onResponseResetStates()
             if (supportPresenter.pagingHelper.isFirstPage()) {
                 supportStateLayout?.showLoading(loadingMessage = loadingMessage)
-                snackBar = supportStateLayout?.snackBar(message!!, Snackbar.LENGTH_INDEFINITE)
-                        ?.setAction(retryButtonText, snackBarOnClickListener)
-                snackBar?.show()
+                networkState?.apply {
+                    if (message.isNullOrEmpty()) {
+                        when (networkState.status) {
+                            SupportStateType.ERROR ->
+                                supportStateLayout?.showError(
+                                    errorMessage = message
+                                )
+                            SupportStateType.CONTENT -> {
+                                supportStateLayout?.showContent()
+                                supportPresenter.pagingHelper.onPageNext()
+                            }
+                            SupportStateType.LOADING ->
+                                supportStateLayout?.showLoading(
+                                    loadingMessage = loadingMessage
+                                )
+                        }
+                    } else {
+                        snackBar = supportStateLayout?.snackBar(message!!, Snackbar.LENGTH_INDEFINITE)
+                            ?.setAction(retryButtonText, snackBarOnClickListener)
+                        snackBar?.show()
+                    }
+                }
             } else {
                 supportStateLayout?.showError(
-                    errorMessage = message,
-                    onClickListener = stateLayoutOnClick
+                    errorMessage = networkState?.message
                 )
             }
         }
@@ -247,53 +260,24 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * Called when a swipe gesture triggers a refresh.
      */
     override fun onRefresh() {
-        when (supportRefreshLayout?.isRefreshing) {
-            false -> {
-                if (supportStateLayout?.isLoading != true)
-                    supportRefreshLayout?.isRefreshing = true
-            }
-        }
         supportPresenter.pagingHelper.onPageRefresh()
         supportViewModel?.refresh()
     }
 
     /**
-     * Disables pagination if we're not on the first page & the last
-     * network/cache request was not successful
+     * Sets up the [io.wax911.support.ui.recycler.SupportRecyclerView] with
+     * [io.wax911.support.ui.recycler.adapter.SupportViewAdapter]
+     * and additional properties if needed, after it will change the state layout to empty or content.
      */
-    private fun setPaginationLimitReached() {
-        if (!supportPresenter.pagingHelper.isFirstPage()) {
-            supportPresenter.pagingHelper.isPagingLimit = true
-            supportViewAdapter.networkState = NetworkState(
-                status = SupportStateType.CONTENT
-            )
-        }
-    }
-
-    /**
-     * Sets up the [supportRecyclerView] with [SupportViewAdapter] and additional properties if needed,
-     * after it will change the state layout to empty or content.
-     *
-     * @param uiModel exposed user interface method
-     */
-    @Deprecated("Will be removed in the next version")
-    override fun injectAdapter(uiModel: IUiModel) {
+    override fun injectAdapter() {
         supportViewAdapter.also {
-            if (it.itemCount > 0) {
-                when {
-                    supportRecyclerView?.adapter == null -> {
-                        it.supportAction = supportAction
-                        supportRecyclerView?.adapter = it
-                    }
-                    else -> {
-                        supportRefreshLayout?.onResponseResetStates()
-                        it.applyFilterIfRequired()
-                    }
+            when {
+                supportRecyclerView?.adapter == null -> {
+                    it.supportAction = supportAction
+                    supportRecyclerView?.adapter = it
                 }
-                supportStateLayout?.showContent()
+                else -> it.applyFilterIfRequired()
             }
-            else
-                changeLayoutState(uiModel.networkState.value?.message)
         }
     }
 
@@ -303,31 +287,16 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * @param pagedList paged list holding data
      */
     override fun onPostModelChange(pagedList: PagedList<M>?) {
-        when (pagedList?.isEmpty()) {
-            false -> {
-                supportViewAdapter.submitList(pagedList)
-                supportRefreshLayout?.onResponseResetStates()
-                supportStateLayout?.showContent()
-                updateUI()
-            }
-            true -> {
-                if (!supportPresenter.pagingHelper.isFirstPage())
-                    setPaginationLimitReached()
-                if (!supportViewAdapter.isEmpty())
-                    supportStateLayout?.showError(
-                        errorMessage =  supportViewModel?.networkState?.value?.message,
-                        onClickListener = stateLayoutOnClick
-                    )
-                supportRefreshLayout?.onResponseResetStates()
-            }
-        }
+        supportViewAdapter.submitList(pagedList)
+        supportRefreshLayout?.onResponseResetStates()
+        supportStateLayout?.showContent()
+        injectAdapter()
+        updateUI()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         super.onSharedPreferenceChanged(sharedPreferences, key)
-        if (isPreferenceKeyValid(key)) {
-            supportRefreshLayout?.isRefreshing = true
+        if (isPreferenceKeyValid(key))
             onRefresh()
-        }
     }
 }

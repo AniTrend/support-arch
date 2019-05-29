@@ -6,11 +6,11 @@ import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
 import io.wax911.sample.data.api.endpoint.ShowEndpoint
 import io.wax911.sample.data.model.show.Show
-import io.wax911.sample.data.source.ShowDataSource
+import io.wax911.sample.data.source.ShowPagingDataSource
 import io.wax911.support.data.factory.contract.IRetrofitFactory
-import io.wax911.support.data.repository.SupportRepository
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.model.UiModel
+import io.wax911.support.data.repository.SupportRepository
 import org.koin.core.inject
 
 class ShowRepository : SupportRepository<PagedList<Show>>() {
@@ -25,7 +25,7 @@ class ShowRepository : SupportRepository<PagedList<Show>>() {
     override fun invokeRequest(bundle: Bundle): UiModel<PagedList<Show>> {
         // create a boundary callback which will observe when the user reaches to the edges of
         // the list and update the database with extra data.
-        val boundaryCallback = ShowDataSource(
+        val dataSource = ShowPagingDataSource(
             bundle = bundle,
             showEndpoint = retroFactory.createService(
                 ShowEndpoint::class.java
@@ -40,15 +40,15 @@ class ShowRepository : SupportRepository<PagedList<Show>>() {
         }
 
         return UiModel(
-            model = boundaryCallback.observerOnLiveDataWith(bundle),
-            networkState = boundaryCallback.networkState,
+            model = dataSource.observerOnLiveDataWith(bundle),
+            networkState = dataSource.networkState,
             refresh = {
-                boundaryCallback.refreshOrInvalidate()
+                dataSource.refreshOrInvalidate()
                 refreshTrigger.value = null
             },
             refreshState = refreshState,
             retry = {
-                boundaryCallback.pagingRequestHelper.retryAllFailed()
+                dataSource.retryFailedRequest()
             }
         )
     }

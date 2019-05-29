@@ -26,12 +26,11 @@ interface ISupportFragmentList<M> {
         get() =  R.layout.support_list
 
     /**
-     * Sets up the [supportRecyclerView] with [SupportViewAdapter] and additional properties if needed,
-     * after it will change the state layout to empty or content.
-     *
-     * @param uiModel exposed user interface method
+     * Sets up the [io.wax911.support.ui.recycler.SupportRecyclerView] with
+     * [io.wax911.support.ui.recycler.adapter.SupportViewAdapter]
+     * and additional properties if needed, after it will change the state layout to empty or content.
      */
-    fun injectAdapter(uiModel: IUiModel)
+    fun injectAdapter()
 
     /**
      * Handles post view model result after extraction or processing

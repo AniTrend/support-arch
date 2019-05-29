@@ -16,7 +16,6 @@ import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.view.TraktTrendActivity
 import io.wax911.sample.view.fragment.list.FragmentHistory
 import io.wax911.sample.view.fragment.list.FragmentPopularShows
-import io.wax911.support.extension.util.SupportExtKeyStore
 import io.wax911.support.ui.activity.SupportActivity
 import io.wax911.support.ui.util.SupportUiKeyStore
 import kotlinx.android.synthetic.main.activity_main.*

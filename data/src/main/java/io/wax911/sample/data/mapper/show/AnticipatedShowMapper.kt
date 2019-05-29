@@ -1,19 +1,17 @@
 package io.wax911.sample.data.mapper.show
 
 import androidx.paging.PagingRequestHelper
-import io.wax911.sample.data.dao.DatabaseHelper
+import io.wax911.sample.data.dao.query.ShowDao
 import io.wax911.sample.data.model.container.Aniticipated
 import io.wax911.sample.data.model.show.Show
-import io.wax911.support.data.source.mapper.SupportDataMapper
-import org.koin.core.inject
+import io.wax911.support.data.source.mapper.SupportPagingDataMapper
 import retrofit2.Response
 import timber.log.Timber
 
 class AnticipatedShowMapper(
+    private val showDao: ShowDao,
     pagingRequestHelper: PagingRequestHelper.Request.Callback
-) : SupportDataMapper<List<Aniticipated<Show>>, List<Show>>(pagingRequestHelper) {
-
-    override val database by inject<DatabaseHelper>()
+) : SupportPagingDataMapper<List<Aniticipated<Show>>, List<Show>>(pagingRequestHelper) {
 
     /**
      * Created mapped objects and handles the database operations which may be required to map various objects,
@@ -36,7 +34,7 @@ class AnticipatedShowMapper(
      */
     override suspend fun onResponseDatabaseInsert(mappedData: List<Show>) {
         if (mappedData.isNotEmpty())
-            database.showDao().insert(*mappedData.toTypedArray())
+            showDao.insert(*mappedData.toTypedArray())
         else
             Timber.tag(TAG).i("onResponseDatabaseInsert(mappedData: List<Show>) -> mappedData is empty")
     }

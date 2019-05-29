@@ -3,7 +3,6 @@ package io.wax911.sample.core.koin
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.viewmodel.movie.MovieViewModel
 import io.wax911.sample.core.viewmodel.show.ShowViewModel
-import io.wax911.support.extension.preference.SupportPreference
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

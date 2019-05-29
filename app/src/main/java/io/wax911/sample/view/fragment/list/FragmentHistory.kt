@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.R
-import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.core.presenter.CorePresenter
+import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.repository.show.ShowRequestType
 import io.wax911.support.core.factory.InstanceCreator
 import io.wax911.support.extension.util.SupportExtKeyStore
 import io.wax911.support.ui.fragment.SupportFragment
-import io.wax911.support.ui.util.SupportUiKeyStore
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.android.ext.android.inject
 

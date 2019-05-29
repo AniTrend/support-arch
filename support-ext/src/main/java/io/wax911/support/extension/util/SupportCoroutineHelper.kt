@@ -5,10 +5,13 @@ import kotlin.coroutines.CoroutineContext
 
 interface SupportCoroutineHelper : CoroutineScope {
 
-    private val supervisorJob: Job
-        get() = SupervisorJob()
+    /**
+     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
+     */
+    val supervisorJob: Job
 
     /**
+     * Persistent context for the coroutine
      *
      * @return [kotlin.coroutines.CoroutineContext]
      */

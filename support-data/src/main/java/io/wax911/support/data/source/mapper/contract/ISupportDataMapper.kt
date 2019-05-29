@@ -1,16 +1,12 @@
 package io.wax911.support.data.source.mapper.contract
 
-import androidx.room.RoomDatabase
 import io.wax911.support.extension.util.SupportCoroutineHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import org.koin.core.KoinComponent
 import retrofit2.Callback
 import retrofit2.Response
 
-interface ISupportDataMapper<S, D> : KoinComponent, SupportCoroutineHelper {
-
-    val database: RoomDatabase
+interface ISupportDataMapper<S, D> : SupportCoroutineHelper {
 
     val responseCallback: Callback<S>
 
@@ -18,7 +14,7 @@ interface ISupportDataMapper<S, D> : KoinComponent, SupportCoroutineHelper {
         get() = javaClass.simpleName
 
     /**
-     * Created mapped objects and handles the database operations which may be required to map various objects,
+     * Creates mapped objects and handles the database operations which may be required to map various objects,
      * called in [retrofit2.Callback.onResponse] after assuring that the response was a success
      * @see [responseCallback]
      *
