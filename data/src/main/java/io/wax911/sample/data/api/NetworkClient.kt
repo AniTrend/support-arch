@@ -3,11 +3,20 @@ package io.wax911.sample.data.api
 import io.wax911.sample.data.extension.logError
 import io.wax911.support.data.controller.SupportRequestClient
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import retrofit2.Call
 
 @Deprecated("Use data source for handling responses and error validation")
-class NetworkClient : SupportRequestClient() {
+class NetworkClient(
+    parentJob: Job? = null
+) : SupportRequestClient() {
+
+    /**
+     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
+     */
+    override val supervisorJob = SupervisorJob(parentJob)
 
     /**
      * Executes the given retrofit call and returns a result. This function call
