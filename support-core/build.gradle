@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
+    id 'org.jetbrains.dokka' version '0.9.18'
 }
 
 android {
@@ -63,6 +64,18 @@ dependencies {
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test:runner:$runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+}
+
+dokka {
+    moduleName = 'core'
+    outputFormat = 'kotlin-website'
+    outputDirectory = "$buildDir/javadoc"
+
+    linkMapping {
+        dir = "src/main/java"
+        url = "https://github.com/AniTrend/support-app/tree/experimental/paging/support-core/src/main/java"
+        suffix = "#L"
+    }
 }
 
 task sourcesJar(type: Jar) {
