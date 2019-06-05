@@ -40,9 +40,11 @@ dependencies {
 
     /** Platform Dependencies */
     implementation project(":support-core")
+    implementation project(":support-data")
     implementation project(":support-ext")
     implementation project(":support-ui")
     implementation project(":core")
+    implementation project(":data")
 
     /** Koin AndroidX Dependency Injection */
     implementation "org.koin:koin-core:$koin"
@@ -62,6 +64,8 @@ dependencies {
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.paging:paging-runtime:$paging"
+    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx"

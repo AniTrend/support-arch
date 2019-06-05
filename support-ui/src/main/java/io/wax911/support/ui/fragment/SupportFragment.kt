@@ -1,39 +1,47 @@
 package io.wax911.support.ui.fragment
 
-import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.*
+import android.view.ActionMode
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import io.wax911.support.core.action.contract.ISupportActionMode
-import io.wax911.support.core.action.event.ActionModeListener
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.util.SupportCoroutineUtil
-import io.wax911.support.core.view.contract.CompatView
+import io.wax911.support.extension.LAZY_MODE_UNSAFE
 import io.wax911.support.ui.action.SupportActionMode
+import io.wax911.support.ui.action.contract.ISupportActionMode
+import io.wax911.support.ui.action.event.ActionModeListener
+import io.wax911.support.ui.view.contract.CompatView
+import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
-abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener,
-        CompatView<VM, P>, SupportCoroutineUtil {
+abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, CompatView<VM, P> {
+
+    protected val moduleTag: String = javaClass.simpleName
 
     @MenuRes
     protected var inflateMenu: Int = CompatView.NO_MENU_ITEM
     protected var snackBar: Snackbar? = null
 
-    protected val supportAction: ISupportActionMode<M> by lazy {
+    /**
+     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob],
+     * preferably use [SupervisorJob](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-supervisor-job.html)
+     */
+    override val supervisorJob = SupervisorJob()
+
+    protected val supportAction: ISupportActionMode<M> by lazy(LAZY_MODE_UNSAFE) {
         SupportActionMode<M>(
             actionModeListener = this,
-            presenter = presenter
+            presenter = supportPresenter
         )
     }
 
     /**
-     * Called to do initial creation of a fragment.  This is called after
-     * [.onAttach] and before
-     * [.onCreateView].
-     *
+     * Called to do initial creation of a fragment. This is called after
+     * [SupportFragment.onAttach] and before [SupportFragment.onCreateView].
      *
      * Note that this can be called while the fragment's activity is
      * still in the process of being created.  As such, you can not rely
@@ -42,8 +50,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * created, see [.onActivityCreated].
      *
      *
-     * Any restored child fragments will be created before the base
-     * `Fragment.onCreate` method returns.
+     * Any restored child fragments will be created before the base [SupportFragment.onCreate] method returns.
      *
      * @param savedInstanceState If the fragment is being re-created from
      * a previous saved state, this is the state.
@@ -54,22 +61,8 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     /**
-     * Called immediately after [.onCreateView]
-     * has returned, but before any saved state has been restored in to the view.
-     * This gives subclasses a chance to initialize themselves once
-     * they know their view hierarchy has been completely created.  The fragment's
-     * view hierarchy is not however attached to its parent at this point.
-     * @param view The View returned by [.onCreateView].
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-    }
-
-    /**
      * Called when the Fragment is visible to the user.  This is generally
-     * tied to [Activity.onStart] of the containing
+     * tied to [SupportFragment.onStart] of the containing
      * Activity's lifecycle.
      */
     override fun onStart() {
@@ -78,18 +71,18 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     override fun onPause() {
-        presenter.onPause(this)
+        supportPresenter.onPause(this)
         super.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.onResume(this)
+        supportPresenter.onResume(this)
     }
 
     /**
      * Called when the fragment is no longer in use.  This is called
-     * after [.onStop] and before [.onDetach].
+     * after [SupportFragment.onStop] and before [SupportFragment.onDetach].
      */
     override fun onDestroy() {
         cancelAllChildren()
@@ -100,16 +93,15 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * Initialize the contents of the Fragment host's standard options menu.  You
      * should place your menu items in to <var>menu</var>.  For this method
      * to be called, you must have first called [.setHasOptionsMenu].  See
-     * [Activity.onCreateOptionsMenu]
+     * [SupportFragment.onCreateOptionsMenu]
      * for more information.
      *
      * @param menu The options menu in which you place your items.
      * @param inflater menu inflater
-     * @see .setHasOptionsMenu
      *
-     * @see .onPrepareOptionsMenu
-     *
-     * @see .onOptionsItemSelected
+     * @see SupportFragment.setHasOptionsMenu
+     * @see SupportFragment.onPrepareOptionsMenu
+     * @see SupportFragment.onOptionsItemSelected
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         if (inflateMenu != CompatView.NO_MENU_ITEM)
@@ -130,7 +122,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * @param mode The current ActionMode being used
      */
     override fun onSelectionChanged(mode: ActionMode?, count: Int) {
-
+        Timber.tag(moduleTag).d("onSelectionChanged(mode: ActionMode?, count: Int) -> count = $count")
     }
 
     /**
@@ -179,12 +171,11 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        Timber.tag(getViewName()).d("onSharedPreferenceChanged -> $key | Changed value")
+        Timber.tag(moduleTag).d("onSharedPreferenceChanged -> $key | Changed value")
     }
 
     /**
-     * Called when the data is changed.
-     * @param model The new data
+     * Invoke view model observer to watch for changes
      */
-    abstract override fun onChanged(model: VM?)
+    protected abstract fun setUpViewModelObserver()
 }

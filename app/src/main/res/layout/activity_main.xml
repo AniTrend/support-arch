@@ -16,7 +16,7 @@
         android:layout_gravity="bottom"
         android:elevation="@dimen/xl_margin"
         android:hapticFeedbackEnabled="true"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/primaryColor"
         app:hideOnScroll="true"
         app:navigationIcon="@drawable/ic_menu_adaptable_24dp" />
 
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         app:layout_anchor="@id/bottomAppBar"
         app:backgroundTint="@color/colorAccent"
-        app:srcCompat="@drawable/ic_code_white_24dp"/>
+        app:srcCompat="@drawable/ic_code_24dp"/>
 
     <FrameLayout
         android:id="@+id/bottomNavigationDrawer"
@@ -42,7 +42,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/background_bottom_sheet"
+            app:itemTextAppearance="@style/SupportTheme.FontFamily"
+            app:itemBackground="@drawable/nav_item_background"
             app:headerLayout="@layout/nav_header_main"
+            app:itemTextColor="?contentColor"
+            app:insetForeground="@android:color/transparent"
             app:menu="@menu/main_drawer"/>
 
     </FrameLayout>

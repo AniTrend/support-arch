@@ -2,98 +2,105 @@ package io.wax911.support.ui.view.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
+import android.widget.ViewFlipper
 import androidx.annotation.DrawableRes
-import androidx.annotation.IntDef
 import androidx.annotation.StringRes
+import io.wax911.support.data.model.NetworkState
+import io.wax911.support.data.model.contract.SupportStateType
 import io.wax911.support.extension.getCompatDrawable
 import io.wax911.support.extension.getLayoutInflater
 import io.wax911.support.extension.gone
 import io.wax911.support.extension.visible
-import io.wax911.support.core.view.contract.CustomView
 import io.wax911.support.ui.R
+import io.wax911.support.ui.view.contract.CustomView
 import kotlinx.android.synthetic.main.support_layout_state.view.*
+import timber.log.Timber
 
 /**
  * A state layout that supports nesting of children using a frame layout
- *
- * TODO: Implement view flipper as the base parent
  */
-class SupportStateLayout : FrameLayout, CustomView {
+class SupportStateLayout : ViewFlipper, CustomView {
 
     constructor(context: Context) :
-            super(context) { onInit() }
+            super(context) { onInit(context) }
     constructor(context: Context, attrs: AttributeSet?) :
-            super(context, attrs) { onInit() }
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) { onInit() }
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) :
-            super(context, attrs, defStyleAttr, defStyleRes) { onInit() }
+            super(context, attrs) { onInit(context, attrs) }
 
     var isLoading = false
+        private set(value) {
+            field = value
+            if (value)
+                stateProgress.visible()
+            else
+                stateProgress.gone()
+            requestLayout()
+        }
+
+    var onWidgetInteraction: OnClickListener? = null
         set(value) {
             field = value
-            // Does some interesting things
-            if (value) showLoading()
-            else showContent()
+            stateLinearContent.setOnClickListener(field)
         }
 
     /**
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization
      */
-    override fun onInit() {
-        context.getLayoutInflater().inflate(R.layout.support_layout_state, this, true)
+    override fun onInit(context: Context, attrs: AttributeSet?) {
+        setInAnimation(context, android.R.anim.fade_in)
+        setOutAnimation(context, android.R.anim.fade_out)
+        getLayoutInflater().inflate(R.layout.support_layout_state, this, true)
     }
 
-    fun showLoading(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, @StringRes loadingMessage: Int = 0) {
+    /**
+     * Should be called on a view's detach from window to unbind or
+     * release object references and cancel all running coroutine jobs if the current view
+     */
+    override fun onViewRecycled() {
+        onWidgetInteraction = null
+    }
+
+    fun showLoading(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, @StringRes loadingMessage: Int) {
         stateImage.setImageDrawable(context.getCompatDrawable(drawableRes))
         stateText.text = context.getString(loadingMessage)
-        onStateChanged(SupportStateType.LOADING)
+        onStateChanged(NetworkState.LOADING)
     }
 
-    fun showContent() = onStateChanged(SupportStateType.CONTENT)
+    fun showContent() = onStateChanged(NetworkState.LOADED)
 
-    fun showError(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, @StringRes errorMessage: Int, onClickListener: OnClickListener) {
+    fun showError(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, @StringRes errorMessage: Int) {
         stateImage.setImageDrawable(context.getCompatDrawable(drawableRes))
-        stateLinearContent.setOnClickListener(onClickListener)
         stateText.text = context.getString(errorMessage)
-        onStateChanged(SupportStateType.ERROR)
+        onStateChanged(NetworkState.error(context.getString(errorMessage)))
     }
 
-    fun showError(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, errorMessage: String?, onClickListener: OnClickListener) {
+    fun showError(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, errorMessage: String?) {
         stateImage.setImageDrawable(context.getCompatDrawable(drawableRes))
-        stateLinearContent.setOnClickListener(onClickListener)
         stateText.text = errorMessage
-        onStateChanged(SupportStateType.ERROR)
+        onStateChanged(NetworkState.error(errorMessage))
     }
 
-    private fun onStateChanged(@SupportStateType state : Int) = when (state) {
-        SupportStateType.CONTENT -> {
-            stateLinearContent.gone()
-        }
-        SupportStateType.LOADING -> {
-            stateLinearContent.visible()
-            stateProgress.visible()
-        }
-        else -> {
-            stateLinearContent.visible()
-            stateProgress.gone()
+    private fun onStateChanged(networkState: NetworkState) {
+        when (networkState.status) {
+            SupportStateType.CONTENT -> {
+                isLoading = false
+                if (displayedChild != DEFAULT_VIEW)
+                    showNext()
+            }
+            SupportStateType.LOADING -> {
+                isLoading = true
+                if (displayedChild != DEFAULT_VIEW)
+                    showPrevious()
+            }
+            else -> {
+                isLoading = false
+                if (displayedChild == DEFAULT_VIEW)
+                    showPrevious()
+            }
         }
     }
 
-    @IntDef(
-        SupportStateType.LOADING,
-        SupportStateType.CONTENT,
-        SupportStateType.ERROR
-    )
-    @Retention(AnnotationRetention.SOURCE)
-    internal annotation class SupportStateType {
-        companion object {
-            const val LOADING = 0
-            const val CONTENT = 1
-            const val ERROR = 2
-        }
+    companion object {
+        const val DEFAULT_VIEW = 1
     }
 }

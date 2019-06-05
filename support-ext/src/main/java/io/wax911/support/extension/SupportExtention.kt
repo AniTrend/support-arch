@@ -1,6 +1,9 @@
 package io.wax911.support.extension
 
 
+
+val LAZY_MODE_UNSAFE = LazyThreadSafetyMode.NONE
+
 /**
  * Potentially useless but returns an empty string, the signature may change in future
  *

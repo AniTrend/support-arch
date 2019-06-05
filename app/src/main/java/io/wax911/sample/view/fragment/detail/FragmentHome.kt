@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.R
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.support.ui.fragment.SupportFragment
 import io.wax911.support.core.factory.InstanceCreator
+import io.wax911.support.ui.fragment.SupportFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.inject
 
@@ -16,9 +16,9 @@ class FragmentHome: SupportFragment<Nothing, CorePresenter, Nothing>()  {
     /**
      * Should be created lazily through injection or lazy delegate
      *
-     * @return presenter of the generic type specified
+     * @return supportPresenter of the generic type specified
      */
-    override val presenter: CorePresenter by inject()
+    override val supportPresenter: CorePresenter by inject()
 
     /**
      * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
@@ -68,6 +68,13 @@ class FragmentHome: SupportFragment<Nothing, CorePresenter, Nothing>()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         helloButton.setOnClickListener {  }
+    }
+
+    /**
+     * Invoke view model observer to watch for changes
+     */
+    override fun setUpViewModelObserver() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     /**

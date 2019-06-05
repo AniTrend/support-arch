@@ -1,48 +1,41 @@
 package io.wax911.support.core.viewmodel
 
-import android.content.Context
 import android.os.Bundle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.Transformations.map
 import androidx.lifecycle.ViewModel
-import io.wax911.support.core.repository.SupportRepository
 import io.wax911.support.core.viewmodel.contract.ISupportViewModel
+import io.wax911.support.data.model.NetworkState
+import io.wax911.support.data.model.UiModel
 
-abstract class SupportViewModel<M, K> : ViewModel(), ISupportViewModel<M> {
+abstract class SupportViewModel<M> : ViewModel(), ISupportViewModel<M> {
 
-    val bundle by lazy { Bundle() }
+    private val requestBundleLiveData = MutableLiveData<Bundle>()
 
-    protected lateinit var repository : SupportRepository<K, M>
+    private val repositoryResult: LiveData<UiModel<M>> =
+        map(requestBundleLiveData) { repository.invokeRequest(it) }
+
+    override val model: LiveData<M?> =
+        Transformations.switchMap(repositoryResult) { it.model }
+
+
+    override val networkState: LiveData<NetworkState>? =
+        Transformations.switchMap(repositoryResult) { it.networkState }
+
+
+    override val refreshState: LiveData<NetworkState>? =
+        Transformations.switchMap(repositoryResult) { it.refreshState }
 
     /**
      * Forwards queries for the repository to handle
      *
-     * @see [io.wax911.support.core.repository.SupportRepository.requestFromNetwork]
-     * @param context any valid application context
+     * @see [io.wax911.support.core.repository.SupportRepository.invokeRequest]
+     * @param bundle request data to be used by the repository
      */
-    override fun queryFor(context: Context?) = repository.requestFromNetwork(bundle, context)
-
-    /**
-     * Checks if the live data stored in the repository has is not null
-     *
-     * @return [Boolean] true or false
-     */
-    override fun hasModelData(): Boolean = repository.liveData.value != null
-
-    /**
-     * Gets the current repository live data value
-     *
-     * @see [io.wax911.support.core.repository.SupportRepository.liveData]
-     * @return [M] or null
-     */
-    override fun getModelData() : M? = repository.liveData.value
-
-    /**
-     * Sets the live data value, which will call [androidx.lifecycle.Observer.onChanged]
-     *
-     * @see [io.wax911.support.core.repository.SupportRepository.liveData]
-     * @param data the variable to set to the repository live data
-     */
-    override fun setModelData(data: M) {
-        repository.liveData.value = data
+    override fun queryFor(bundle: Bundle) {
+        requestBundleLiveData.value = bundle
     }
 
     /**
@@ -54,5 +47,26 @@ abstract class SupportViewModel<M, K> : ViewModel(), ISupportViewModel<M> {
     override fun onCleared() {
         repository.onCleared()
         super.onCleared()
+    }
+
+    /**
+     * Returns the current request bundle, this is nullable
+     */
+    override fun currentRequestBundle(): Bundle? = requestBundleLiveData.value
+
+    /**
+     * Requests the repository to perform a retry operation
+     */
+    override fun retry() {
+        val uiModel = repositoryResult.value
+        uiModel?.retry?.invoke()
+    }
+
+    /**
+     * Requests the repository to perform a refresh operation on the underlying database
+     */
+    override fun refresh() {
+        val uiModel = repositoryResult.value
+        uiModel?.refresh?.invoke()
     }
 }

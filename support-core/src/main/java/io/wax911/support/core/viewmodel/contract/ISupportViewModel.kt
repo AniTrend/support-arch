@@ -1,38 +1,47 @@
 package io.wax911.support.core.viewmodel.contract
 
-import android.content.Context
+import android.os.Bundle
+import androidx.lifecycle.LiveData
+import io.wax911.support.data.model.NetworkState
+import io.wax911.support.data.repository.SupportRepository
 
 interface ISupportViewModel<M> {
+
+    val repository : SupportRepository<M>
+
+    val model: LiveData<M?>
+
+    val networkState: LiveData<NetworkState>?
+
+    val refreshState: LiveData<NetworkState>?
 
     /**
      * Forwards queries for the repository to handle
      *
-     * @see [io.wax911.support.core.repository.SupportRepository.requestFromNetwork]
-     * @param context any valid application context
+     * @see [io.wax911.support.data.repository.SupportRepository.invokeRequest]
+     * @param bundle request data to be used by the repository
      */
-    fun queryFor(context: Context?)
+    fun queryFor(bundle: Bundle)
 
     /**
      * Checks if the live data stored in the repository has is not null
      *
-     * @see [io.wax911.support.core.repository.SupportRepository.liveData]
      * @return [Boolean] true or false
      */
-    fun hasModelData(): Boolean
+    fun hasModelData(): Boolean = model.value != null
 
     /**
-     * Gets the current repository live data value
-     *
-     * @see [io.wax911.support.core.repository.SupportRepository.liveData]
-     * @return [M] or null
+     * Returns the current request bundle, this is nullable
      */
-    fun getModelData(): M?
+    fun currentRequestBundle(): Bundle?
 
     /**
-     * Sets the live data value, which will call [androidx.lifecycle.Observer.onChanged]
-     *
-     * @see [io.wax911.support.core.repository.SupportRepository.liveData]
-     * @param data the variable to set to the repository live data
+     * Requests the repository to perform a retry operation
      */
-    fun setModelData(data: M)
+    fun retry()
+
+    /**
+     * Requests the repository to perform a refresh operation on the underlying database
+     */
+    fun refresh()
 }
