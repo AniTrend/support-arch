@@ -28,7 +28,7 @@ interface ISupportRequestClient : SupportCoroutineHelper {
     /**
      * Cancels all the call requests that were used in the executeUsing function
      *
-     * @see [io.wax911.support.core.controller.SupportRequestClient.executeUsingAsync]
+     * @see [io.wax911.support.data.controller.SupportRequestClient.executeUsingAsync]
      */
     fun cancel()
 

@@ -21,6 +21,8 @@ abstract class SupportPagingDataMapper<S, D>(
     parentCoroutineJob: Job? = null
 ) : ISupportDataMapper<S, D> {
 
+    protected val moduleTag: String = javaClass.simpleName
+
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */
@@ -54,7 +56,7 @@ abstract class SupportPagingDataMapper<S, D>(
                 false -> {
                     val message = response.message()
                     val throwable = Throwable(message)
-                    Timber.tag(TAG).e(throwable)
+                    Timber.tag(moduleTag).e(throwable)
                     pagingRequestCallback.recordFailure(throwable)
                 }
             }

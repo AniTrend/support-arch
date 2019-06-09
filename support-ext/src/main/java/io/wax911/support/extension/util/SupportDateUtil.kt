@@ -58,7 +58,7 @@ object SupportDateUtil {
      *
      * @return A time format of dd MMM yyyy
      */
-    fun convertDate(unixTimeStamp: Long): String? {
+    fun convertUnixTimeToShortDate(unixTimeStamp: Long): String? {
         if (unixTimeStamp != 0L) {
             val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
             return dateFormat.format(Date(unixTimeStamp * 1000L))
@@ -72,40 +72,47 @@ object SupportDateUtil {
      * @param start Starting year
      * @param endDelta End difference plus or minus the current year
      */
-    fun getYearRanges(start: Int, endDelta: Int): List<Int> =
-        IntRange(
-            start = start,
-            endInclusive = getCurrentYear(endDelta)
-        ).map { value -> value }
+    fun generateYearRanges(start: Int, endDelta: Int) = IntRange(
+        start = start,
+        endInclusive = getCurrentYear(endDelta)
+    ).map { value -> value }
 
 
     /**
      * Checks if the time given has a difference greater than or equal to the target time
      *
-     * @param conversionType type of comparison between the epoch time and target
+     * @param supportTimeType type of comparison between the epoch time and target
      * @param epochTime time to compare against the current system clock
      * @param target unit to compare against
      */
-    fun timeDifferenceSatisfied(@SupportDateUtilTimeType conversionType: Int, epochTime: Long, target: Int): Boolean {
+    fun timeStampHasElapsed(supportTimeType: SupportTimeUnit, epochTime: Long, target: Int): Boolean {
         val currentTime = System.currentTimeMillis()
         val defaultSystemUnit = TimeUnit.MILLISECONDS
-        return when (conversionType) {
-            SupportDateUtilTimeType.TIME_UNIT_DAYS ->
+        return when (supportTimeType) {
+            SupportDateTimeUnit.TIME_UNIT_DAYS ->
                 defaultSystemUnit.toDays(currentTime - epochTime) >= target
-            SupportDateUtilTimeType.TIME_UNIT_HOURS ->
+            SupportDateTimeUnit.TIME_UNIT_HOURS ->
                 defaultSystemUnit.toHours(currentTime - epochTime) >= target
-            SupportDateUtilTimeType.TIME_UNIT_MINUTES ->
+            SupportDateTimeUnit.TIME_UNIT_MINUTES ->
                 defaultSystemUnit.toMinutes(currentTime - epochTime) >= target
-            SupportDateUtilTimeType.TIME_UNITS_SECONDS ->
+            SupportDateTimeUnit.TIME_UNITS_SECONDS ->
                 defaultSystemUnit.toSeconds(currentTime - epochTime) >= target
             else -> false
         }
     }
 
     @Retention(AnnotationRetention.SOURCE)
-    @IntDef(SupportDateUtilTimeType.TIME_UNIT_DAYS, SupportDateUtilTimeType.TIME_UNIT_HOURS,
-            SupportDateUtilTimeType.TIME_UNIT_MINUTES, SupportDateUtilTimeType.TIME_UNITS_SECONDS)
-    annotation class SupportDateUtilTimeType {
+    @Target(
+        AnnotationTarget.TYPEALIAS,
+        AnnotationTarget.VALUE_PARAMETER
+    )
+    @IntDef(
+        SupportDateTimeUnit.TIME_UNIT_DAYS,
+        SupportDateTimeUnit.TIME_UNIT_HOURS,
+        SupportDateTimeUnit.TIME_UNIT_MINUTES,
+        SupportDateTimeUnit.TIME_UNITS_SECONDS
+    )
+    annotation class SupportDateTimeUnit {
         companion object {
 
             const val TIME_UNIT_DAYS = 0
@@ -115,3 +122,6 @@ object SupportDateUtil {
         }
     }
 }
+
+@SupportDateUtil.SupportDateTimeUnit
+typealias SupportTimeUnit = Int

@@ -4,6 +4,9 @@ import android.os.Parcelable
 import io.wax911.support.data.util.pagination.contract.ISupportPagingHelper
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * Paging helper, makes the manipulating of paging related variables easier
+ */
 @Parcelize
 data class SupportPagingHelper(
     var page: Int = 1,

@@ -10,9 +10,6 @@ import io.wax911.support.extension.util.SupportCoroutineHelper
 
 interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SupportCoroutineHelper, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    val TAG
-        get() = javaClass.simpleName
-
     /**
      * A simple value that can be used when making permission requests,
      * the value can be overridden in the implementing class

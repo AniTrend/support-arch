@@ -10,9 +10,6 @@ interface ISupportDataMapper<S, D> : SupportCoroutineHelper {
 
     val responseCallback: Callback<S>
 
-    val TAG
-        get() = javaClass.simpleName
-
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
      * called in [retrofit2.Callback.onResponse] after assuring that the response was a success

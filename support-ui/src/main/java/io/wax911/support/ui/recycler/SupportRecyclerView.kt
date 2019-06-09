@@ -63,7 +63,6 @@ class SupportRecyclerView : RecyclerView, CustomView {
     /**
      * Should be called on a view's detach from window to unbind or
      * release object references and cancel all running coroutine jobs if the current view
-     * implements [io.wax911.support.extension.util.SupportCoroutineHelper]
      */
     override fun onViewRecycled() {
 

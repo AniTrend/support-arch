@@ -21,6 +21,8 @@ abstract class SupportDataMapper<S, D>(
     private val networkState: MutableLiveData<NetworkState>
 ) : ISupportDataMapper<S, D> {
 
+    protected val moduleTag: String = javaClass.simpleName
+
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */
@@ -38,7 +40,7 @@ abstract class SupportDataMapper<S, D>(
                     msg = throwable.localizedMessage
                 )
             )
-            Timber.tag(TAG).e(throwable)
+            Timber.tag(moduleTag).e(throwable)
         }
 
         /**
@@ -62,7 +64,7 @@ abstract class SupportDataMapper<S, D>(
                 }
                 false -> {
                     val message = response.message()
-                    Timber.tag(TAG).e(message)
+                    Timber.tag(moduleTag).e(message)
                     networkState.postValue(
                         NetworkState(
                             status = SupportStateType.ERROR,

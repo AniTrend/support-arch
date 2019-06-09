@@ -20,6 +20,8 @@ abstract class SupportDataSource(
     parentCoroutineJob: Job? = null
 ) : ISupportDataSource {
 
+    protected val moduleTag: String = javaClass.simpleName
+
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */

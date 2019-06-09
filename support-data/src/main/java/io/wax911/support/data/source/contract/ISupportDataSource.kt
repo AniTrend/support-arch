@@ -11,9 +11,6 @@ import org.koin.core.KoinComponent
 
 interface ISupportDataSource : KoinComponent, SupportCoroutineHelper {
 
-    val TAG
-        get() = javaClass.simpleName
-
     /**
      * Connectivity helper utility with live data observable capabilities
      */

@@ -68,7 +68,7 @@ class ShowPagingDataSource(
                     ).responseCallback
                 )
             }
-            else -> Timber.tag(TAG).e("Unregistered or unknown requestType -> $requestType")
+            else -> Timber.tag(moduleTag).e("Unregistered or unknown requestType -> $requestType")
         }
     }
 
@@ -116,7 +116,7 @@ class ShowPagingDataSource(
         }
 
         if (dataSourceFactory == null)
-            Timber.tag(TAG).e("Unregistered or unknown requestType -> $requestType")
+            Timber.tag(moduleTag).e("Unregistered or unknown requestType -> $requestType")
 
         return dataSourceFactory?.toLiveData(
             config = SupportDataKeyStore.PAGING_CONFIGURATION,

@@ -4,7 +4,7 @@
 
 This project is an attempt to create a reusable application architecture that follows some of the aspects of [Guide to App Architecture](https://developer.android.com/jetpack/docs/guide) and is mostly written in Kotlin and makes use of [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) bundled with a couple of libraries which will be stated in the documentation.
 
-__No pull requests requests will be accepted until v1.0 is released__
+__No external pull requests requests will be accepted until v1.0.0 is released__
 
 ## Documentation
 

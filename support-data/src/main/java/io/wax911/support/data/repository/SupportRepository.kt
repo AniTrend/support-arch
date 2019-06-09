@@ -6,6 +6,8 @@ import kotlinx.coroutines.SupervisorJob
 
 abstract class SupportRepository<V>: ISupportRepository<V> {
 
+    protected val moduleTag: String = javaClass.simpleName
+
     protected abstract val retroFactory: IRetrofitFactory
 
     /**

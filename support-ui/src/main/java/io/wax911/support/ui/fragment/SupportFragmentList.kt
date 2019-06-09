@@ -44,7 +44,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
             onRefresh()
             resetWidgetStates()
         } else
-            Timber.tag(TAG).w("stateLayoutOnClick -> supportStateLayout is currently loading")
+            Timber.tag(moduleTag).w("stateLayoutOnClick -> supportStateLayout is currently loading")
     }
 
 
@@ -54,7 +54,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
             makeRequest()
             resetWidgetStates()
         } else
-            Timber.tag(TAG).w("snackBarOnClickListener -> supportStateLayout is currently loading")
+            Timber.tag(moduleTag).w("snackBarOnClickListener -> supportStateLayout is currently loading")
     }
 
 

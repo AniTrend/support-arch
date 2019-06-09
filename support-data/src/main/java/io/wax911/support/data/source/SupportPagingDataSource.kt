@@ -26,6 +26,8 @@ abstract class SupportPagingDataSource<T>(
     parentCoroutineJob: Job? = null
 ) : PagedList.BoundaryCallback<T>(), ISupportDataSource {
 
+    protected val moduleTag: String = javaClass.simpleName
+
     protected abstract val databaseHelper: RoomDatabase
 
     /**

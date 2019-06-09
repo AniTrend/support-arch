@@ -4,6 +4,8 @@ import io.wax911.support.data.auth.contract.ISupportAuthentication
 
 abstract class SupportAuthentication<T> : ISupportAuthentication {
 
+    protected val moduleTag: String = javaClass.simpleName
+
     /**
      * Checks if the data source that contains the token is valid,
      * how to determine the validity of an existing token differs
