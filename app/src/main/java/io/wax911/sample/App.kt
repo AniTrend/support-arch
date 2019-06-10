@@ -1,6 +1,7 @@
 package io.wax911.sample
 
 import android.app.Application
+import androidx.work.Configuration
 import io.wax911.sample.core.koin.coreModules
 import io.wax911.sample.core.koin.corePresenterModules
 import io.wax911.sample.core.koin.coreViewModelModules
@@ -16,9 +17,44 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
-class App : Application() {
+class App : Application(), Configuration.Provider {
 
     val analyticsUtil by inject<ISupportAnalytics>()
+
+    /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
+     * Initializes Koin dependency injection
+     */
+    private fun initializeDependencyInjection() {
+        startKoin {
+            androidLogger()
+            androidContext(
+                applicationContext
+            )
+            modules(
+                listOf(
+                    appModules,
+
+                    coreModules,
+                    coreViewModelModules,
+                    corePresenterModules,
+
+                    dataModules,
+                    dataNetworkModules,
+                    dataRepositoryModules
+                )
+            )
+        }
+    }
+
+    /**
+     * Timber logging tree depending on the build type we plant the appropriate tree
+     */
+    private fun plantLoggingTree() {
+        when (BuildConfig.DEBUG) {
+            true -> Timber.plant(Timber.DebugTree())
+            else -> Timber.plant(analyticsUtil as AnalyticsUtil)
+        }
+    }
 
     /**
      * Called when the application is starting, before any activity, service,
@@ -44,29 +80,15 @@ class App : Application() {
      */
     override fun onCreate() {
         super.onCreate()
-        startKoin {
-            androidLogger()
-            androidContext(
-                applicationContext
-            )
-            modules(
-                listOf(
-                    appModules,
+        initializeDependencyInjection()
+        plantLoggingTree()
+    }
 
-                    coreModules,
-                    coreViewModelModules,
-                    corePresenterModules,
-
-                    dataModules,
-                    dataNetworkModules,
-                    dataRepositoryModules
-                )
-            )
-        }
-
-        when (BuildConfig.DEBUG) {
-            true -> Timber.plant(Timber.DebugTree())
-            else -> Timber.plant(analyticsUtil as AnalyticsUtil)
-        }
+    /**
+     * @return The [Configuration] used to initialize WorkManager
+     */
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .build()
     }
 }

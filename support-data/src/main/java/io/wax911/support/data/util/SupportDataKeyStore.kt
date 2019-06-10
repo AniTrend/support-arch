@@ -8,6 +8,7 @@ object SupportDataKeyStore {
     val PAGING_CONFIGURATION = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
         .setPageSize(pagingLimit)
-        .setPrefetchDistance(3)
+        .setPrefetchDistance(15)
+        .setMaxSize(75)
         .build()
 }

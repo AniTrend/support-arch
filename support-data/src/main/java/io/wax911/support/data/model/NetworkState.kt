@@ -1,6 +1,7 @@
 package io.wax911.support.data.model
 
-import io.wax911.support.data.model.contract.SupportStateType
+import io.wax911.support.data.model.contract.SupportState
+import io.wax911.support.data.model.contract.SupportStateContract
 
 /**
  * UI informing state representing ongoing, completed or failed requests
@@ -9,26 +10,29 @@ import io.wax911.support.data.model.contract.SupportStateType
  * @param status The UI state that one or more components should show
  * @param message Message to display if any are available
  *
- * @see [SupportStateType] for a list of possible UI states
+ * @see [SupportStateContract] for a list of possible UI states
  */
 data class NetworkState(
     val code: Int? = null,
-    @SupportStateType
-    val status: Int,
+    @SupportStateContract
+    val status: SupportState,
     val message: String? = null
 ) {
+
+    fun isLoaded() = status == SupportStateContract.CONTENT
+
     companion object {
 
         val LOADED = NetworkState(
-            status = SupportStateType.CONTENT
+            status = SupportStateContract.CONTENT
         )
 
         val LOADING = NetworkState(
-            status = SupportStateType.LOADING
+            status = SupportStateContract.LOADING
         )
 
         fun error(msg: String?) = NetworkState(
-            status = SupportStateType.ERROR,
+            status = SupportStateContract.ERROR,
             message = msg
         )
     }

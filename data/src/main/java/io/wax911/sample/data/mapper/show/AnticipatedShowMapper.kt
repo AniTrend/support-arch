@@ -1,28 +1,35 @@
 package io.wax911.sample.data.mapper.show
 
 import androidx.paging.PagingRequestHelper
+import io.wax911.sample.data.arch.mapper.TraktTrendMapper
 import io.wax911.sample.data.dao.query.ShowDao
 import io.wax911.sample.data.model.container.Aniticipated
 import io.wax911.sample.data.model.show.Show
-import io.wax911.support.data.source.mapper.SupportPagingDataMapper
-import retrofit2.Response
 import timber.log.Timber
 
 class AnticipatedShowMapper(
     private val showDao: ShowDao,
     pagingRequestHelper: PagingRequestHelper.Request.Callback
-) : SupportPagingDataMapper<List<Aniticipated<Show>>, List<Show>>(pagingRequestHelper) {
+) : TraktTrendMapper<List<Aniticipated<Show>>, List<Show>>(
+    pagingRequestHelper = pagingRequestHelper
+) {
 
     /**
-     * Created mapped objects and handles the database operations which may be required to map various objects,
+     * Creates mapped objects and handles the database operations which may be required to map various objects,
      * called in [retrofit2.Callback.onResponse] after assuring that the response was a success
-     * @see [responseCallback]
+     * @see [handleResponse]
      *
-     * @param response retrofit response containing data
+     * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(response: Response<List<Aniticipated<Show>>?>): List<Show> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun onResponseMapFrom(source: List<Aniticipated<Show>>): List<Show> {
+        return source.map {
+            it.result
+        }.apply {
+            forEach {
+                it.id = it.ids.trakt
+            }
+        }
     }
 
     /**
@@ -34,7 +41,7 @@ class AnticipatedShowMapper(
      */
     override suspend fun onResponseDatabaseInsert(mappedData: List<Show>) {
         if (mappedData.isNotEmpty())
-            showDao.insert(mappedData)
+            showDao.upsert(mappedData)
         else
             Timber.tag(moduleTag).i("onResponseDatabaseInsert(mappedData: List<Show>) -> mappedData is empty")
     }

@@ -6,7 +6,7 @@ import android.widget.ViewFlipper
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.SupportStateType
+import io.wax911.support.data.model.contract.SupportStateContract
 import io.wax911.support.extension.getCompatDrawable
 import io.wax911.support.extension.getLayoutInflater
 import io.wax911.support.extension.gone
@@ -14,7 +14,6 @@ import io.wax911.support.extension.visible
 import io.wax911.support.ui.R
 import io.wax911.support.ui.view.contract.CustomView
 import kotlinx.android.synthetic.main.support_layout_state.view.*
-import timber.log.Timber
 
 /**
  * A state layout that supports nesting of children using a frame layout
@@ -82,12 +81,12 @@ class SupportStateLayout : ViewFlipper, CustomView {
 
     private fun onStateChanged(networkState: NetworkState) {
         when (networkState.status) {
-            SupportStateType.CONTENT -> {
+            SupportStateContract.CONTENT -> {
                 isLoading = false
                 if (displayedChild != DEFAULT_VIEW)
                     showNext()
             }
-            SupportStateType.LOADING -> {
+            SupportStateContract.LOADING -> {
                 isLoading = true
                 if (displayedChild != DEFAULT_VIEW)
                     showPrevious()

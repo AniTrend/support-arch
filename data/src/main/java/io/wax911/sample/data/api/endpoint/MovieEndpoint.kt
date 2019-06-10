@@ -5,32 +5,33 @@ import io.wax911.sample.data.model.container.Trending
 import io.wax911.sample.data.model.meta.ResourceType
 import io.wax911.sample.data.model.movie.Movie
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface MovieEndpoint {
 
     @GET("/movies/trending")
-    fun getTrendingMovies(
+    suspend fun getTrendingMovies(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("extended")
         @ResourceType resourceType: String = ResourceType.FULL
-    ): Call<List<Trending<Movie>>>
+    ): Response<List<Trending<Movie>>>
 
     @GET("/movies/popular")
-    fun getPopularMovies(
+    suspend fun getPopularMovies(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("extended")
         @ResourceType resourceType: String = ResourceType.FULL
-    ): Call<List<Movie>>
+    ): Response<List<Movie>>
 
     @GET("/movies/anticipated")
-    fun getAniticipatedMovies(
+    suspend fun getAniticipatedMovies(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("extended")
         @ResourceType resourceType: String = ResourceType.FULL
-    ): Call<List<Aniticipated<Movie>>>
+    ): Response<List<Aniticipated<Movie>>>
 }

@@ -61,6 +61,7 @@ class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
     }
 
     override fun makeRequest() {
+        supportPresenter.syncMetaData()
         updateUI()
     }
 }

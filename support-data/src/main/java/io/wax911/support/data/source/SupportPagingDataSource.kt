@@ -1,6 +1,5 @@
 package io.wax911.support.data.source
 
-import android.os.Bundle
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import androidx.paging.extension.createStatusLiveData
@@ -22,7 +21,6 @@ import java.util.concurrent.Executors
  * this enables us to cancels jobs automatically when the parent is also canceled
  */
 abstract class SupportPagingDataSource<T>(
-    protected val bundle: Bundle,
     parentCoroutineJob: Job? = null
 ) : PagedList.BoundaryCallback<T>(), ISupportDataSource {
 
@@ -44,8 +42,12 @@ abstract class SupportPagingDataSource<T>(
 
     override val networkState = pagingRequestHelper.createStatusLiveData()
 
-    protected val supportPagingHelper: SupportPagingHelper?
-        get() = bundle.getParcelable(SupportExtKeyStore.key_pagination)
+    protected val supportPagingHelper: SupportPagingHelper? by lazy {
+        SupportPagingHelper(
+            isPagingLimit = false,
+            pageSize = SupportExtKeyStore.pagingLimit
+        )
+    }
 
     /**
      * Invokes dynamic requests which can be consumed which can be mapped

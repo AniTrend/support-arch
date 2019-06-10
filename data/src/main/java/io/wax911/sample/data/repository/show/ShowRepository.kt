@@ -40,7 +40,7 @@ class ShowRepository : SupportRepository<PagedList<Show>>() {
         }
 
         return UiModel(
-            model = dataSource.observerOnLiveDataWith(bundle),
+            model = dataSource.seriesLiveDataObservable.observerOnLiveDataWith(bundle),
             networkState = dataSource.networkState,
             refresh = {
                 dataSource.refreshOrInvalidate()
