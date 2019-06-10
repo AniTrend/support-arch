@@ -8,11 +8,20 @@ import androidx.room.Update
 interface ISupportQuery<T> {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(vararg attribute: T)
+    suspend fun insert(attribute: T)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(vararg attribute: T)
+    suspend fun update(attribute: T)
 
     @Delete
-    suspend fun delete(vararg attribute: T)
+    suspend fun delete(attribute: T)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(attribute: List<T>)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun update(attribute: List<T>)
+
+    @Delete
+    suspend fun delete(attribute: List<T>)
 }
