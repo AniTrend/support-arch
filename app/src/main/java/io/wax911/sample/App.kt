@@ -50,15 +50,17 @@ class App : Application() {
                 applicationContext
             )
             modules(
-                appModules,
+                listOf(
+                    appModules,
 
-                coreModules,
-                coreViewModelModules,
-                corePresenterModules,
+                    coreModules,
+                    coreViewModelModules,
+                    corePresenterModules,
 
-                dataModules,
-                dataNetworkModules,
-                dataRepositoryModules
+                    dataModules,
+                    dataNetworkModules,
+                    dataRepositoryModules
+                )
             )
         }
 
