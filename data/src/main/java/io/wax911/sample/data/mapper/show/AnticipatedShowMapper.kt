@@ -34,7 +34,7 @@ class AnticipatedShowMapper(
      */
     override suspend fun onResponseDatabaseInsert(mappedData: List<Show>) {
         if (mappedData.isNotEmpty())
-            showDao.insert(*mappedData.toTypedArray())
+            showDao.insert(mappedData)
         else
             Timber.tag(moduleTag).i("onResponseDatabaseInsert(mappedData: List<Show>) -> mappedData is empty")
     }
