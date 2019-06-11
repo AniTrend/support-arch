@@ -11,6 +11,7 @@ import io.wax911.sample.data.repository.show.ShowRepository
 import io.wax911.sample.data.util.Settings
 import io.wax911.support.data.auth.contract.ISupportAuthentication
 import io.wax911.support.data.factory.contract.IRetrofitFactory
+import io.wax911.support.data.factory.contract.getEndPointOf
 import io.wax911.support.extension.util.SupportConnectivityHelper
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -62,10 +63,14 @@ val dataNetworkModules = module {
 
 val dataRepositoryModules = module {
     factory {
-        ShowRepository()
+        ShowRepository(
+            showEndpoint = get<IRetrofitFactory>().getEndPointOf()
+        )
     }
 
     factory {
-        MovieRepository()
+        MovieRepository(
+            movieEndpoint = get<IRetrofitFactory>().getEndPointOf()
+        )
     }
 }

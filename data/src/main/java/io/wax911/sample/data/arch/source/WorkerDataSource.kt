@@ -3,11 +3,14 @@ package io.wax911.sample.data.arch.source
 import android.os.Bundle
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.source.SupportDataSource
+import kotlinx.coroutines.Job
 
 /**
  * A type of data source that should be be used by coroutine workers/objects
  */
-abstract class WorkerDataSource : SupportDataSource() {
+abstract class WorkerDataSource(
+    job: Job? = null
+) : SupportDataSource(job) {
 
     /**
      * Handles the requesting data from a the network source and informs the

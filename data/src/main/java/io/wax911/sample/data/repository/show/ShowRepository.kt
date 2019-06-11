@@ -13,9 +13,9 @@ import io.wax911.support.data.model.UiModel
 import io.wax911.support.data.repository.SupportRepository
 import org.koin.core.inject
 
-class ShowRepository : SupportRepository<PagedList<Show>>() {
-
-    override val retroFactory by inject<IRetrofitFactory>()
+class ShowRepository(
+    val showEndpoint: ShowEndpoint
+) : SupportRepository<PagedList<Show>>() {
 
     /**
      * Handles dispatching of network requests to a background thread
@@ -27,10 +27,9 @@ class ShowRepository : SupportRepository<PagedList<Show>>() {
         // the list and update the database with extra data.
         val dataSource = ShowPagingDataSource(
             bundle = bundle,
-            showEndpoint = retroFactory.createService(
-                ShowEndpoint::class.java
-            )
+            showEndpoint = showEndpoint
         )
+
         // we are using a mutable live data to trigger refresh requests which eventually calls
         // refresh method and gets a new live data. Each refresh request by the user becomes a newly
         // dispatched data in refreshTrigger
