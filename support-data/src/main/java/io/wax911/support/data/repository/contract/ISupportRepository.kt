@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.core.KoinComponent
 
 
-interface ISupportRepository<V> : SupportCoroutineHelper, KoinComponent {
+interface ISupportRepository<V> : SupportCoroutineHelper {
 
     /**
      * Handles dispatching of network requests to a background thread

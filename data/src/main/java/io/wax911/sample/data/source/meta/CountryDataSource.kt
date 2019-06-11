@@ -8,12 +8,14 @@ import io.wax911.sample.data.mapper.meta.CountryMapper
 import io.wax911.sample.data.model.meta.MediaCategory
 import io.wax911.sample.data.model.meta.MediaCategoryContract
 import io.wax911.support.data.model.NetworkState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import org.koin.core.inject
 
 class CountryDataSource(
-    private val metaEndpoints: MetaEndpoints
-) : WorkerDataSource() {
+    private val metaEndpoints: MetaEndpoints,
+    job: Job? = null
+) : WorkerDataSource(job) {
 
     override val databaseHelper by inject<DatabaseHelper>()
 

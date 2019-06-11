@@ -4,11 +4,10 @@ import android.content.Context
 import androidx.work.WorkerParameters
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.data.api.endpoint.MetaEndpoints
-import io.wax911.sample.data.extension.getEndPointOf
 import io.wax911.sample.data.source.meta.CountryDataSource
 import io.wax911.support.core.worker.SupportCoroutineWorker
 import io.wax911.support.data.factory.contract.IRetrofitFactory
-import io.wax911.support.data.model.contract.SupportStateContract
+import io.wax911.support.data.factory.contract.getEndPointOf
 import io.wax911.support.extension.util.SupportConnectivityHelper
 import org.koin.core.KoinComponent
 import org.koin.core.inject
