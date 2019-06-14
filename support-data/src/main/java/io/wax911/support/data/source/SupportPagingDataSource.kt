@@ -26,8 +26,6 @@ abstract class SupportPagingDataSource<T>(
 
     protected val moduleTag: String = javaClass.simpleName
 
-    protected abstract val databaseHelper: RoomDatabase
-
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */
