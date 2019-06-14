@@ -14,7 +14,6 @@ import io.wax911.support.data.model.contract.SupportStateContract
  */
 data class NetworkState(
     val code: Int? = null,
-    @SupportStateContract
     val status: SupportState,
     val message: String? = null
 ) {
