@@ -28,7 +28,7 @@ class ShowPagingDataSource(
     private val bundle: Bundle
 ) : SupportPagingDataSource<Show>() {
 
-    override val databaseHelper by inject<DatabaseHelper>()
+    private val databaseHelper by inject<DatabaseHelper>()
 
     /**
      * Invokes dynamic requests which can be consumed which can be mapped
@@ -39,8 +39,8 @@ class ShowPagingDataSource(
             ShowRequestType.SHOW_TYPE_POPULAR -> {
                 val result = async {
                     showEndpoint.getPopularShows(
-                        page = supportPagingHelper?.page,
-                        limit = supportPagingHelper?.pageSize
+                        page = supportPagingHelper.page,
+                        limit = supportPagingHelper.pageSize
                     )
                 }
 
@@ -56,8 +56,8 @@ class ShowPagingDataSource(
             ShowRequestType.SHOW_TYPE_TRENDING -> {
                 val result = async {
                     showEndpoint.getTrendingShows(
-                        page = supportPagingHelper?.page,
-                        limit = supportPagingHelper?.pageSize
+                        page = supportPagingHelper.page,
+                        limit = supportPagingHelper.pageSize
                     )
                 }
 
@@ -73,8 +73,8 @@ class ShowPagingDataSource(
             ShowRequestType.SHOW_TYPE_ANTICIPATED -> {
                 val result = async {
                     showEndpoint.getAnticipatedShows(
-                        page = supportPagingHelper?.page,
-                        limit = supportPagingHelper?.pageSize
+                        page = supportPagingHelper.page,
+                        limit = supportPagingHelper.pageSize
                     )
                 }
 
@@ -111,7 +111,7 @@ class ShowPagingDataSource(
      */
     override fun onItemAtEndLoaded(itemAtEnd: Show) {
         pagingRequestHelper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-            supportPagingHelper?.onPageNext()
+            supportPagingHelper.onPageNext()
             startRequestForType(it)
         }
     }
