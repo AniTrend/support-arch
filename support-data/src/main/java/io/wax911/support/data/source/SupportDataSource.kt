@@ -34,8 +34,6 @@ abstract class SupportDataSource(
 
     override val networkState = MutableLiveData<NetworkState>()
 
-    protected abstract val databaseHelper: RoomDatabase
-
     /**
      * Function reference for the retry event
      */
