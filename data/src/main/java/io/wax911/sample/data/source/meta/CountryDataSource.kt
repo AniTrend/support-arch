@@ -4,6 +4,7 @@ import android.os.Bundle
 import io.wax911.sample.data.api.endpoint.MetaEndpoints
 import io.wax911.sample.data.arch.source.WorkerDataSource
 import io.wax911.sample.data.dao.DatabaseHelper
+import io.wax911.sample.data.dao.query.CountryDao
 import io.wax911.sample.data.mapper.meta.CountryMapper
 import io.wax911.sample.data.model.meta.MediaCategory
 import io.wax911.sample.data.model.meta.MediaCategoryContract
@@ -14,10 +15,9 @@ import org.koin.core.inject
 
 class CountryDataSource(
     private val metaEndpoints: MetaEndpoints,
+    private val countryDao: CountryDao,
     job: Job? = null
 ) : WorkerDataSource(job) {
-
-    override val databaseHelper by inject<DatabaseHelper>()
 
     /**
      * Handles the requesting data from a the network source and informs the
@@ -35,7 +35,7 @@ class CountryDataSource(
         }
 
         val mapper = CountryMapper(
-            databaseHelper.countryDao(),
+            countryDao,
             mediaCategory
         )
 
@@ -49,7 +49,7 @@ class CountryDataSource(
      * @param bundle the request request parameters to use
      */
     override suspend fun refreshOrInvalidate(bundle: Bundle?): NetworkState {
-        databaseHelper.countryDao().deleteAll()
+        countryDao.deleteAll()
         return startRequestForType(bundle)
     }
 }

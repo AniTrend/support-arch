@@ -4,6 +4,7 @@ import android.os.Bundle
 import io.wax911.sample.data.api.endpoint.MetaEndpoints
 import io.wax911.sample.data.arch.source.WorkerDataSource
 import io.wax911.sample.data.dao.DatabaseHelper
+import io.wax911.sample.data.dao.query.LanguageDao
 import io.wax911.sample.data.mapper.meta.LanguageMapper
 import io.wax911.sample.data.model.meta.MediaCategory
 import io.wax911.sample.data.model.meta.MediaCategoryContract
@@ -14,10 +15,9 @@ import org.koin.core.inject
 
 class LanguageDataSource(
     private val metaEndpoints: MetaEndpoints,
+    private val languageDao: LanguageDao,
     job: Job? = null
 ) : WorkerDataSource(job) {
-
-    override val databaseHelper by inject<DatabaseHelper>()
 
     /**
      * Handles the requesting data from a the network source and informs the
@@ -35,7 +35,7 @@ class LanguageDataSource(
         }
 
         val mapper = LanguageMapper(
-            databaseHelper.languageDao(),
+            languageDao,
             mediaCategory
         )
 
@@ -49,7 +49,7 @@ class LanguageDataSource(
      * @param bundle the request request parameters to use
      */
     override suspend fun refreshOrInvalidate(bundle: Bundle?): NetworkState {
-        databaseHelper.languageDao().deleteAll()
+        languageDao.deleteAll()
         return startRequestForType(bundle)
     }
 }
