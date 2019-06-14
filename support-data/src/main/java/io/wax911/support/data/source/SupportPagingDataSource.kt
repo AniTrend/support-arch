@@ -40,7 +40,7 @@ abstract class SupportPagingDataSource<T>(
 
     override val networkState = pagingRequestHelper.createStatusLiveData()
 
-    protected val supportPagingHelper: SupportPagingHelper? by lazy {
+    protected val supportPagingHelper by lazy {
         SupportPagingHelper(
             isPagingLimit = false,
             pageSize = SupportExtKeyStore.pagingLimit
@@ -58,7 +58,7 @@ abstract class SupportPagingDataSource<T>(
      * and refresh the backing storage medium with new network data
      */
     override fun refreshOrInvalidate() {
-        supportPagingHelper?.onPageRefresh()
+        supportPagingHelper.onPageRefresh()
     }
 
     /**
