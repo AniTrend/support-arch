@@ -27,14 +27,20 @@ data class TrendingShow(
     override val watchers: Int
 ): TraktWatcher {
 
-    class ShowRelation: IEntryRelation<TrendingShow, Show> {
+    @DatabaseView("""
+        select ts.*, m.id
+        from TrendingShow ts
+        inner join Show m on (ts.showId = m.id)
+        order by ts.watchers desc
+    """)
+    data class ShowRelation(
+        val id: Int,
         @Embedded
-        override var entry: TrendingShow? = null
-
+        override val entry: TrendingShow?,
         @Relation(
             parentColumn = "showId",
             entityColumn = "id"
         )
-        override var reference: List<Show> = emptyList()
-    }
+        override val reference: List<Show>
+    ): IEntryRelation<TrendingShow, Show>
 }

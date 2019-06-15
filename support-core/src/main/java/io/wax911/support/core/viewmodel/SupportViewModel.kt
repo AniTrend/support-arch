@@ -9,9 +9,10 @@ import io.wax911.support.core.viewmodel.contract.ISupportViewModel
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.model.UiModel
 import io.wax911.support.data.repository.SupportRepository
+import io.wax911.support.data.repository.contract.ISupportRepository
 
 abstract class SupportViewModel<M, P>(
-    private val repository : SupportRepository<M, P>
+    private val repository : ISupportRepository<M, P>
 ) : ViewModel(), ISupportViewModel<M, P> {
 
     private val requestBundleLiveData = MutableLiveData<P>()

@@ -8,6 +8,8 @@ import io.wax911.sample.data.auth.AuthenticationHelper
 import io.wax911.sample.data.dao.TraktTrendDatabase
 import io.wax911.sample.data.repository.movie.MovieRepository
 import io.wax911.sample.data.repository.show.ShowRepository
+import io.wax911.sample.data.usecase.media.movie.MoviePagedListUseCase
+import io.wax911.sample.data.usecase.media.show.ShowPagedListUseCase
 import io.wax911.sample.data.util.Settings
 import io.wax911.support.data.auth.contract.ISupportAuthentication
 import io.wax911.support.data.factory.contract.IRetrofitFactory
@@ -61,18 +63,31 @@ val dataNetworkModules = module {
     }
 }
 
+val dataUseCaseModules = module {
+    factory {
+        ShowPagedListUseCase(
+            showEndpoint = get<IRetrofitFactory>().getEndPointOf(),
+            showDao = get<TraktTrendDatabase>().showDao()
+        )
+    }
+    factory {
+        MoviePagedListUseCase(
+            movieEndpoint = get<IRetrofitFactory>().getEndPointOf(),
+            movieDao = get<TraktTrendDatabase>().movieDao()
+        )
+    }
+}
+
 val dataRepositoryModules = module {
     factory {
         ShowRepository(
-            showEndpoint = get<IRetrofitFactory>().getEndPointOf(),
-            showDao = get<TraktTrendDatabase>().showDao()
+            showPagedListUseCase = get<ShowPagedListUseCase>()
         )
     }
 
     factory {
         MovieRepository(
-            movieEndpoint = get<IRetrofitFactory>().getEndPointOf(),
-            movieDao = get<TraktTrendDatabase>().movieDao()
+            moviePagedListUseCase = get<MoviePagedListUseCase>()
         )
     }
 }

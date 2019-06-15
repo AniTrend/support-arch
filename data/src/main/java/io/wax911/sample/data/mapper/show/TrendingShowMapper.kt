@@ -26,11 +26,12 @@ class TrendingShowMapper(
      */
     override suspend fun onResponseMapFrom(source: List<Trending<Show>>): List<Show> {
         return source.map {
-            it.result
-        }.apply {
-            forEach {
-                it.id = it.ids.trakt
-            }
+            val trendRank = it.watchers
+            val traktId = it.result.ids.trakt
+            it.result.copy(
+                id = traktId,
+                trendingRank = trendRank
+            )
         }
     }
 

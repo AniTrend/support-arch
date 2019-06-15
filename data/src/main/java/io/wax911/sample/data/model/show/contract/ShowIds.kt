@@ -21,6 +21,6 @@ data class ShowIds(
     @PrimaryKey
     override val trakt: Int,
     override val slug: String,
-    override val imdb: String,
-    override val tmdb: Int
+    override val imdb: String?,
+    override val tmdb: Int?
 ): TraktIds, Parcelable

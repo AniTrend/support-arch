@@ -9,6 +9,7 @@ import io.wax911.sample.data.BuildConfig
 import io.wax911.sample.data.auth.model.JsonWebToken
 import io.wax911.sample.data.dao.converter.*
 import io.wax911.sample.data.dao.migration.MIGRATION_1_2
+import io.wax911.sample.data.dao.migration.MIGRATION_2_3
 import io.wax911.sample.data.dao.query.*
 import io.wax911.sample.data.entitiy.trending.TrendingMovie
 import io.wax911.sample.data.entitiy.trending.TrendingShow
@@ -23,8 +24,7 @@ import io.wax911.sample.data.model.show.contract.ShowIds
 @Database(
     entities = [
         JsonWebToken::class, Language::class, Genre::class, Country::class,
-        Show::class, Movie::class, ShowIds::class, MovieIds::class,
-        TrendingShow::class, TrendingMovie::class
+        Show::class, Movie::class
     ],
     version = BuildConfig.DATABASE_SCHEMA_VERSION
 )
@@ -43,12 +43,6 @@ abstract class TraktTrendDatabase : RoomDatabase() {
     abstract fun showDao(): ShowDao
     abstract fun movieDao(): MovieDao
 
-    abstract fun showIdsDao(): ShowIdsDao
-    abstract fun movieIdsDao(): MovieIdsDao
-
-    abstract fun trendingShowDao(): TrendingShowDao
-    abstract fun trendingMovieDao(): TrendingMovieDao
-
     companion object {
 
         fun newInstance(context: Context): TraktTrendDatabase {
@@ -58,6 +52,7 @@ abstract class TraktTrendDatabase : RoomDatabase() {
                 "trakt-trend"
             ).fallbackToDestructiveMigration()
                 .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_2_3)
                 .build()
         }
     }

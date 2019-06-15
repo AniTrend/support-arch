@@ -15,10 +15,10 @@ interface ShowDao: ISupportQuery<Show> {
     @Query("select * from Show order by votes desc")
     fun getPopularItems(): DataSource.Factory<Int, Show>
 
-    @Query("select * from Show")
+    @Query("select * from Show order by trendingRank")
     fun getTrendingItems(): DataSource.Factory<Int, Show>
 
-    @Query("select * from Show")
+    @Query("select * from Show order by anticipationRank")
     fun getAnticipatedItems(): DataSource.Factory<Int, Show>
 
     @Query("delete from Show")

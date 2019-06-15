@@ -3,7 +3,7 @@ package io.wax911.support.data.repository
 import io.wax911.support.data.repository.contract.ISupportRepository
 import kotlinx.coroutines.SupervisorJob
 
-abstract class SupportRepository<V, P>: ISupportRepository<V, P> {
+abstract class SupportRepository<V, S>: ISupportRepository<V, S> {
 
     protected val moduleTag: String = javaClass.simpleName
 
