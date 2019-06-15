@@ -1,6 +1,5 @@
 package io.wax911.support.data.source
 
-import android.os.Bundle
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import androidx.paging.extension.createStatusLiveData
@@ -22,11 +21,10 @@ import java.util.concurrent.Executors
  * this enables us to cancels jobs automatically when the parent is also canceled
  */
 abstract class SupportPagingDataSource<T>(
-    protected val bundle: Bundle,
     parentCoroutineJob: Job? = null
 ) : PagedList.BoundaryCallback<T>(), ISupportDataSource {
 
-    protected abstract val databaseHelper: RoomDatabase
+    protected val moduleTag: String = javaClass.simpleName
 
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
@@ -42,14 +40,33 @@ abstract class SupportPagingDataSource<T>(
 
     override val networkState = pagingRequestHelper.createStatusLiveData()
 
-    protected val supportPagingHelper: SupportPagingHelper?
-        get() = bundle.getParcelable(SupportExtKeyStore.key_pagination)
+    protected val supportPagingHelper by lazy {
+        SupportPagingHelper(
+            isPagingLimit = false,
+            pageSize = SupportExtKeyStore.pagingLimit
+        )
+    }
 
     /**
      * Invokes dynamic requests which can be consumed which can be mapped
      * to a destination source on success
      */
     protected abstract fun startRequestForType(callback: PagingRequestHelper.Request.Callback)
+
+    /**
+     * Clears all the data in a database table which will assure that
+     * and refresh the backing storage medium with new network data
+     */
+    override fun refreshOrInvalidate() {
+        supportPagingHelper.onPageRefresh()
+    }
+
+    /**
+     * Performs the necessary operation to invoke a network retry request
+     */
+    override fun retryFailedRequest() {
+        pagingRequestHelper.retryAllFailed()
+    }
 
     companion object {
         val IO_EXECUTOR: ExecutorService = Executors.newSingleThreadExecutor()

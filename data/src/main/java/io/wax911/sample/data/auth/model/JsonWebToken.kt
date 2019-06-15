@@ -12,7 +12,7 @@ data class JsonWebToken(
     var expiry_time: Long = 0,
     val token_type: String,
     val scope: String,
-    val refresh_token: String) {
-
+    val refresh_token: String
+) {
     fun getTokenKey() = "Bearer $access_token"
 }

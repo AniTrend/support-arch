@@ -14,7 +14,7 @@ import io.wax911.support.core.animator.ScaleAnimator
 import io.wax911.support.core.animator.contract.SupportAnimator
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.SupportStateType
+import io.wax911.support.data.model.contract.SupportStateContract
 import io.wax911.support.extension.getLayoutInflater
 import io.wax911.support.ui.R
 import io.wax911.support.ui.action.contract.ISupportActionMode
@@ -300,7 +300,7 @@ abstract class SupportViewAdapter<T>(
         }
     }
 
-    private fun hasExtraRow() = networkState?.status != SupportStateType.CONTENT
+    private fun hasExtraRow() = networkState?.status != SupportStateContract.CONTENT
 
     protected fun isFullSpanItem(position: Int): Boolean =
         getItemViewType(position) == R.layout.support_layout_state_footer

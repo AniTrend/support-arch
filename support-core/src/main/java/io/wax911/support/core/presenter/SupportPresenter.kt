@@ -8,7 +8,7 @@ import io.wax911.support.extension.preference.event.OnSharedPreferenceBinder
 import io.wax911.support.extension.util.SupportExtKeyStore
 
 abstract class SupportPresenter<S : SupportPreference>(
-    protected val context: Context?,
+    protected val context: Context,
     val supportPreference: S
 ): OnSharedPreferenceBinder {
 

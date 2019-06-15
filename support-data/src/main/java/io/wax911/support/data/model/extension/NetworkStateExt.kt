@@ -14,4 +14,4 @@ fun NetworkState.isNotFound() = code == 404
 fun NetworkState.isRateLimitReached() = code == 429
 
 fun NetworkState.isServerError() = code in 500..599
-fun NetworkState.isRequestFailure() = code == null
+fun NetworkState.isWTF() = code == null

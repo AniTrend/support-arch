@@ -14,17 +14,17 @@ import androidx.core.content.ContextCompat
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.extension.getCompatColor
 import io.wax911.support.extension.util.SupportCoroutineHelper
-import io.wax911.support.ui.fragment.SupportFragment
 import io.wax911.support.ui.view.contract.CompatView
 import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
-    CompatView<M, P>, SupportCoroutineHelper {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P>, SupportCoroutineHelper {
+
+    protected val moduleTag: String = javaClass.simpleName
 
     private var isClosing: Boolean = false
 
-    protected var supportFragment : SupportFragment<*, *, *>? = null
+    protected var compatView : CompatView<*, *>? = null
 
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
@@ -77,7 +77,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
     /**
      * Check if the current fragment activity has a permission granted to it.
      * If no permission is granted then this method will request a permission for you
-     * @see ActivityCompat#requestPermissions
+     * @see ActivityCompat.requestPermissions
      */
     override fun requestPermissionIfMissing(manifestPermission: String): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
@@ -99,7 +99,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * as appropriate.
      */
     override fun onBackPressed() {
-        if (supportFragment?.hasBackPressableAction() == true)
+        if (compatView?.hasBackPressableAction() == true)
             return
         return super.onBackPressed()
     }
@@ -109,11 +109,11 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * @param data The new data
      */
     override fun onChanged(data: M?) {
-        Timber.tag(TAG).i("onChanged() from view liveData has received data")
+        Timber.tag(moduleTag).i("onChanged() from view liveData has received data")
     }
 
     override fun onSharedPreferenceChanged(preference: SharedPreferences?, key: String?) {
         if (!key.isNullOrEmpty())
-            Timber.tag(TAG).d("onSharedPreferenceChanged -> $key | Changed value")
+            Timber.tag(moduleTag).d("onSharedPreferenceChanged -> $key | Changed value")
     }
 }

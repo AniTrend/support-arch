@@ -6,7 +6,8 @@ import kotlin.coroutines.CoroutineContext
 interface SupportCoroutineHelper : CoroutineScope {
 
     /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
+     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob],
+     * preferably use [SupervisorJob](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-supervisor-job.html)
      */
     val supervisorJob: Job
 

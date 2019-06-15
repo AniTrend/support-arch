@@ -13,8 +13,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.IUiModel
-import io.wax911.support.data.model.contract.SupportStateType
+import io.wax911.support.data.model.contract.SupportStateContract
 import io.wax911.support.extension.isStateAtLeast
 import io.wax911.support.extension.snackBar
 import io.wax911.support.extension.util.SupportExtKeyStore
@@ -26,7 +25,6 @@ import io.wax911.support.ui.recycler.SupportRecyclerView
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import io.wax911.support.ui.view.widget.SupportStateLayout
-import kotlinx.android.synthetic.main.support_list.*
 import timber.log.Timber
 
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFragment<M, P, VM>(),
@@ -44,7 +42,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
             onRefresh()
             resetWidgetStates()
         } else
-            Timber.tag(TAG).w("stateLayoutOnClick -> supportStateLayout is currently loading")
+            Timber.tag(moduleTag).w("stateLayoutOnClick -> supportStateLayout is currently loading")
     }
 
 
@@ -54,13 +52,13 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
             makeRequest()
             resetWidgetStates()
         } else
-            Timber.tag(TAG).w("snackBarOnClickListener -> supportStateLayout is currently loading")
+            Timber.tag(moduleTag).w("snackBarOnClickListener -> supportStateLayout is currently loading")
     }
 
 
     private val onRefreshObserver = Observer<NetworkState> { networkState ->
-        supportRefreshLayout?.isRefreshing = networkState.status == SupportStateType.LOADING
-        if (networkState.status != SupportStateType.LOADING)
+        supportRefreshLayout?.isRefreshing = networkState.status == SupportStateContract.LOADING
+        if (networkState.status != SupportStateContract.LOADING)
             changeLayoutState(networkState)
     }
 
@@ -229,15 +227,15 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                 networkState?.apply {
                     if (message.isNullOrEmpty()) {
                         when (networkState.status) {
-                            SupportStateType.ERROR ->
+                            SupportStateContract.ERROR ->
                                 supportStateLayout?.showError(
                                     errorMessage = message
                                 )
-                            SupportStateType.CONTENT -> {
+                            SupportStateContract.CONTENT -> {
                                 supportStateLayout?.showContent()
                                 supportPresenter.pagingHelper.onPageNext()
                             }
-                            SupportStateType.LOADING ->
+                            SupportStateContract.LOADING ->
                                 supportStateLayout?.showLoading(
                                     loadingMessage = loadingMessage
                                 )

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
@@ -17,6 +18,7 @@ import io.wax911.sample.core.view.TraktTrendActivity
 import io.wax911.sample.view.fragment.list.FragmentHistory
 import io.wax911.sample.view.fragment.list.FragmentPopularShows
 import io.wax911.support.ui.activity.SupportActivity
+import io.wax911.support.ui.fragment.SupportFragment
 import io.wax911.support.ui.util.SupportUiKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
@@ -124,6 +126,7 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
     }
 
     private fun onNavigate(@IdRes menu: Int) {
+        var supportFragment: SupportFragment<*, *, *>? = null
         when (menu) {
             R.id.nav_theme -> {
                 when (AppCompatDelegate.getDefaultNightMode()) {
@@ -150,6 +153,7 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
         bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
 
         supportFragment?.apply {
+            compatView = this@apply
             supportFragmentManager.commit {
                 replace(R.id.contentFrame, this@apply, tag)
             }

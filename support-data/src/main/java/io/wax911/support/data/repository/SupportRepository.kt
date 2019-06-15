@@ -1,12 +1,11 @@
 package io.wax911.support.data.repository
 
-import io.wax911.support.data.factory.contract.IRetrofitFactory
 import io.wax911.support.data.repository.contract.ISupportRepository
 import kotlinx.coroutines.SupervisorJob
 
 abstract class SupportRepository<V>: ISupportRepository<V> {
 
-    protected abstract val retroFactory: IRetrofitFactory
+    protected val moduleTag: String = javaClass.simpleName
 
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]

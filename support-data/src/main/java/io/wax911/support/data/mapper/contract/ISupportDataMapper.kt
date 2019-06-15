@@ -1,32 +1,25 @@
-package io.wax911.support.data.source.mapper.contract
+package io.wax911.support.data.mapper.contract
 
 import io.wax911.support.extension.util.SupportCoroutineHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import retrofit2.Callback
-import retrofit2.Response
 
 interface ISupportDataMapper<S, D> : SupportCoroutineHelper {
-
-    val responseCallback: Callback<S>
-
-    val TAG
-        get() = javaClass.simpleName
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
      * called in [retrofit2.Callback.onResponse] after assuring that the response was a success
-     * @see [responseCallback]
+     * @see [handleResponse]
      *
-     * @param response retrofit response containing data
+     * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    suspend fun onResponseMapFrom(response: Response<S?>): D
+    suspend fun onResponseMapFrom(source: S): D
 
     /**
      * Inserts the given object into the implemented room database,
      * called in [retrofit2.Callback.onResponse]
-     * @see [responseCallback]
+     * @see [handleResponse]
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */

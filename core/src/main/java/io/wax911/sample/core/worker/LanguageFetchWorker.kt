@@ -3,40 +3,52 @@ package io.wax911.sample.core.worker
 import android.content.Context
 import androidx.work.WorkerParameters
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.data.source.ShowPagingDataSource
-import io.wax911.support.core.worker.SupportWorker
+import io.wax911.sample.data.api.endpoint.MetaEndpoints
+import io.wax911.sample.data.source.meta.LanguageDataSource
+import io.wax911.support.core.worker.SupportCoroutineWorker
+import io.wax911.support.data.factory.contract.IRetrofitFactory
+import io.wax911.support.data.factory.contract.getEndPointOf
+import io.wax911.support.extension.util.SupportConnectivityHelper
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class LanguageFetchWorker(
     context: Context,
     workerParameters: WorkerParameters
-): SupportWorker<CorePresenter>(context, workerParameters), KoinComponent {
+) : SupportCoroutineWorker<CorePresenter>(
+    context,
+    workerParameters
+), KoinComponent {
 
-    private val showDataSource: ShowPagingDataSource? = null
-
-    override val presenter by inject<CorePresenter>()
+    private val connectivityHelper by inject<SupportConnectivityHelper>()
+    private val retroFactory by inject<IRetrofitFactory>()
 
     /**
-     * Override this method to do your actual background processing.  This method is called on a
-     * background thread - you are required to **synchronously** do your work and return the
-     * [androidx.work.ListenableWorker.Result] from this method.  Once you return from this
-     * method, the Worker is considered to have finished what its doing and will be destroyed.  If
-     * you need to do your work asynchronously on a thread of your own choice, see
-     * [androidx.work.ListenableWorker].
+     * A suspending method to do your work.  This function runs on the coroutine context specified
+     * by [coroutineContext].
      *
+     * A CoroutineWorker is given a maximum of ten minutes to finish its execution and return a
+     * [androidx.work.ListenableWorker.Result].  After this time has expired, the worker will be signalled to
+     * stop.
      *
-     * A Worker is given a maximum of ten minutes to finish its execution and return a
-     * [androidx.work.ListenableWorker.Result].  After this time has expired, the Worker will
-     * be signalled to stop.
-     *
-     * @return The [androidx.work.ListenableWorker.Result] of the computation; note that
-     * dependent work will not execute if you use
-     * [androidx.work.ListenableWorker.Result.failure] or
-     * [androidx.work.ListenableWorker.Result.failure]
+     * @return The [androidx.work.ListenableWorker.Result] of the result of the background work; note that
+     * dependent work will not execute if you return [androidx.work.ListenableWorker.Result.failure]
      */
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
+        if (connectivityHelper.isConnected) {
+            val endpoint = retroFactory.getEndPointOf<MetaEndpoints>()
+            val mediaTagDataSource = LanguageDataSource(endpoint)
+
+            val networkResult = mediaTagDataSource.startRequestForType()
+
+            if (networkResult.isLoaded())
+                return Result.success()
+            return Result.failure()
+        }
         return Result.retry()
     }
 
+    companion object {
+        const val TAG = "LanguageFetchWorker"
+    }
 }

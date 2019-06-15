@@ -15,19 +15,20 @@ import io.wax911.sample.data.mapper.show.TrendingShowMapper
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.repository.show.ShowRequestType
 import io.wax911.support.data.source.SupportPagingDataSource
-import io.wax911.support.data.source.contract.ISupportDataSource
+import io.wax911.support.data.source.contract.ISourceObservable
 import io.wax911.support.data.util.SupportDataKeyStore
 import io.wax911.support.extension.util.SupportExtKeyStore
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.koin.core.inject
 import timber.log.Timber
 
 class ShowPagingDataSource(
     private val showEndpoint: ShowEndpoint,
-    bundle: Bundle
-) : SupportPagingDataSource<Show>(bundle), ISupportDataSource.IDataSourceObservable<PagedList<Show>> {
+    private val bundle: Bundle
+) : SupportPagingDataSource<Show>() {
 
-    override val databaseHelper by inject<DatabaseHelper>()
+    private val databaseHelper by inject<DatabaseHelper>()
 
     /**
      * Invokes dynamic requests which can be consumed which can be mapped
@@ -36,39 +37,57 @@ class ShowPagingDataSource(
     override fun startRequestForType(callback: PagingRequestHelper.Request.Callback) {
         when (@ShowRequestType val requestType = bundle.getString(SupportExtKeyStore.arg_request_type)) {
             ShowRequestType.SHOW_TYPE_POPULAR -> {
-                showEndpoint.getPopularShows(
-                    page = supportPagingHelper?.page,
-                    limit = supportPagingHelper?.pageSize
-                ).enqueue(
-                    PopularShowMapper(
-                        showDao = databaseHelper.showDao(),
-                        pagingRequestHelper = callback
-                    ).responseCallback
+                val result = async {
+                    showEndpoint.getPopularShows(
+                        page = supportPagingHelper.page,
+                        limit = supportPagingHelper.pageSize
+                    )
+                }
+
+                val mapper = PopularShowMapper(
+                    showDao = databaseHelper.showDao(),
+                    pagingRequestHelper = callback
                 )
+
+                launch {
+                    mapper.handleResponse(result)
+                }
             }
             ShowRequestType.SHOW_TYPE_TRENDING -> {
-                showEndpoint.getTrendingShows(
-                    page = supportPagingHelper?.page,
-                    limit = supportPagingHelper?.pageSize
-                ).enqueue(
-                    TrendingShowMapper(
-                        showDao = databaseHelper.showDao(),
-                        pagingRequestHelper = callback
-                    ).responseCallback
+                val result = async {
+                    showEndpoint.getTrendingShows(
+                        page = supportPagingHelper.page,
+                        limit = supportPagingHelper.pageSize
+                    )
+                }
+
+                val mapper = TrendingShowMapper(
+                    showDao = databaseHelper.showDao(),
+                    pagingRequestHelper = callback
                 )
+
+                launch {
+                    mapper.handleResponse(result)
+                }
             }
             ShowRequestType.SHOW_TYPE_ANTICIPATED -> {
-                showEndpoint.getAniticipatedShows(
-                    page = supportPagingHelper?.page,
-                    limit = supportPagingHelper?.pageSize
-                ).enqueue(
-                    AnticipatedShowMapper(
-                        showDao = databaseHelper.showDao(),
-                        pagingRequestHelper = callback
-                    ).responseCallback
+                val result = async {
+                    showEndpoint.getAnticipatedShows(
+                        page = supportPagingHelper.page,
+                        limit = supportPagingHelper.pageSize
+                    )
+                }
+
+                val mapper = AnticipatedShowMapper(
+                    showDao = databaseHelper.showDao(),
+                    pagingRequestHelper = callback
                 )
+
+                launch {
+                    mapper.handleResponse(result)
+                }
             }
-            else -> Timber.tag(TAG).e("Unregistered or unknown requestType -> $requestType")
+            else -> Timber.tag(moduleTag).e("Unregistered or unknown requestType -> $requestType")
         }
     }
 
@@ -92,49 +111,49 @@ class ShowPagingDataSource(
      */
     override fun onItemAtEndLoaded(itemAtEnd: Show) {
         pagingRequestHelper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-            supportPagingHelper?.onPageNext()
+            supportPagingHelper.onPageNext()
             startRequestForType(it)
         }
     }
 
-    /**
-     * Returns the appropriate observable which we will monitor for updates,
-     * common implementation may include but not limited to returning
-     * data source live data for a database
-     *
-     * @param bundle request params, implementation is up to the developer
-     */
-    override fun observerOnLiveDataWith(bundle: Bundle): LiveData<PagedList<Show>> {
-        val showDao = databaseHelper.showDao()
-        val requestType = bundle.getString(SupportExtKeyStore.arg_request_type)
+    val seriesLiveDataObservable = object : ISourceObservable<PagedList<Show>> {
 
-        val dataSourceFactory = when (requestType) {
-            ShowRequestType.SHOW_TYPE_POPULAR -> showDao.getPopularItems()
-            ShowRequestType.SHOW_TYPE_TRENDING -> showDao.getTrendingItems()
-            ShowRequestType.SHOW_TYPE_ANTICIPATED -> showDao.getAnticipatedItems()
-            else -> null
+        /**
+         * Returns the appropriate observable which we will monitor for updates,
+         * common implementation may include but not limited to returning
+         * data source live data for a database
+         *
+         * @param bundle request params, implementation is up to the developer
+         */
+        override fun observerOnLiveDataWith(bundle: Bundle): LiveData<PagedList<Show>> {
+            val showDao = databaseHelper.showDao()
+            val requestType = bundle.getString(SupportExtKeyStore.arg_request_type)
+
+            val dataSourceFactory = when (requestType) {
+                ShowRequestType.SHOW_TYPE_POPULAR -> showDao.getPopularItems()
+                ShowRequestType.SHOW_TYPE_TRENDING -> showDao.getTrendingItems()
+                ShowRequestType.SHOW_TYPE_ANTICIPATED -> showDao.getAnticipatedItems()
+                else -> null
+            }
+
+            if (dataSourceFactory == null)
+                Timber.tag(moduleTag).e("Unregistered or unknown requestType -> $requestType")
+
+            return dataSourceFactory?.toLiveData(
+                config = SupportDataKeyStore.PAGING_CONFIGURATION,
+                boundaryCallback = this@ShowPagingDataSource
+            ) ?: MutableLiveData()
         }
-
-        if (dataSourceFactory == null)
-            Timber.tag(TAG).e("Unregistered or unknown requestType -> $requestType")
-
-        return dataSourceFactory?.toLiveData(
-            config = SupportDataKeyStore.PAGING_CONFIGURATION,
-            boundaryCallback = this
-        ) ?: MutableLiveData()
     }
 
+    /**
+     * Clears all the data in a database table which will assure that
+     * and refresh the backing storage medium with new network data
+     */
     override fun refreshOrInvalidate() {
-        supportPagingHelper?.onPageRefresh()
+        super.refreshOrInvalidate()
         launch {
             databaseHelper.showDao().deleteAll()
         }
-    }
-
-    /**
-     * Performs the necessary operation to invoke a network retry request
-     */
-    override fun retryFailedRequest() {
-        pagingRequestHelper.retryAllFailed()
     }
 }

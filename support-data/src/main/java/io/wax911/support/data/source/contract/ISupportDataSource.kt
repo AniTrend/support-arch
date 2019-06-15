@@ -1,6 +1,5 @@
 package io.wax911.support.data.source.contract
 
-import android.os.Bundle
 import androidx.lifecycle.LiveData
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.extension.util.SupportConnectivityHelper
@@ -10,9 +9,6 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.core.KoinComponent
 
 interface ISupportDataSource : KoinComponent, SupportCoroutineHelper {
-
-    val TAG
-        get() = javaClass.simpleName
 
     /**
      * Connectivity helper utility with live data observable capabilities
@@ -43,16 +39,4 @@ interface ISupportDataSource : KoinComponent, SupportCoroutineHelper {
      */
     override val coroutineDispatcher: CoroutineDispatcher
         get() =  Dispatchers.IO
-
-    interface IDataSourceObservable<O> {
-
-        /**
-         * Returns the appropriate observable which we will monitor for updates,
-         * common implementation may include but not limited to returning
-         * data source live data for a database
-         *
-         * @param bundle request params, implementation is up to the developer
-         */
-        fun observerOnLiveDataWith(bundle: Bundle): LiveData<O>
-    }
 }

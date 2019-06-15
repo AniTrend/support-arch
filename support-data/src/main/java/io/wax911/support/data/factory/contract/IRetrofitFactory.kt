@@ -9,3 +9,9 @@ interface IRetrofitFactory {
      */
     fun <S> createService(serviceClass: Class<S>): S
 }
+
+/**
+ * Creates a retrofit endpoint of the given class of type <T>
+ */
+inline fun <reified T> IRetrofitFactory.getEndPointOf() : T =
+    createService(T::class.java)
