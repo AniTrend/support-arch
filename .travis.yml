@@ -4,6 +4,7 @@ jdk: oraclejdk8
 env:
   global:
     - ANDROID_API_LEVEL=28
+    - ANDROID_MIN_API_LEVEL=21
     - ANDROID_BUILD_TOOLS_VERSION=28.0.3
     - TRAVIS_SECURE_ENV_VARS=true
 
@@ -16,7 +17,7 @@ android:
     # system images
     - sys-img-armeabi-v7a-android-$ANDROID_API_LEVEL
     - sys-img-x86-android-$ANDROID_API_LEVEL
-    - sys-img-armeabi-v7a-android-17
+    - sys-img-armeabi-v7a-android-$ANDROID_MIN_API_LEVEL
 
     # extras
     - extra-google-google_play_services
