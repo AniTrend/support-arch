@@ -10,7 +10,8 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 /**
- * A non paging dependant data source for single resource requests
+ * A coroutine that returns [io.wax911.support.data.model.NetworkState] to inform the caller about it's progress.
+ * This data source is targeted for non-UI components
  *
  * @param parentCoroutineJob parent coroutine from something that is lifecycle aware,
  * this enables us to cancels jobs automatically when the parent is also canceled
