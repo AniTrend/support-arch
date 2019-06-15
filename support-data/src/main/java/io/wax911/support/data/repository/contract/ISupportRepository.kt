@@ -6,14 +6,14 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 
-interface ISupportRepository<V, P> : SupportCoroutineHelper {
+interface ISupportRepository<V, S> : SupportCoroutineHelper {
 
     /**
      * Handles dispatching of network requests to a background thread
      *
-     * @param parameter parameter/s for the request
+     * @param subject subject to apply business rules
      */
-    operator fun invoke(parameter: P): UiModel<V>
+    operator fun invoke(subject: S): UiModel<V>
 
     /**
      * Deals with cancellation of any pending or on going operations that the repository is busy with

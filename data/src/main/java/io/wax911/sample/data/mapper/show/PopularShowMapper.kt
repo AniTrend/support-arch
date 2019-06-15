@@ -25,10 +25,11 @@ class PopularShowMapper(
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     override suspend fun onResponseMapFrom(source: List<Show>): List<Show> {
-        return source.apply {
-            forEach {
-                it.id = it.ids.trakt
-            }
+        return source.map {
+            val traktId = it.ids.trakt
+            it.copy(
+                id = traktId
+            )
         }
     }
 

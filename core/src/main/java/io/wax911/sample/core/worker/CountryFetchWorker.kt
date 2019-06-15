@@ -1,11 +1,11 @@
 package io.wax911.sample.core.worker
 
 import android.content.Context
-import android.os.Bundle
 import androidx.work.WorkerParameters
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.core.usecase.meta.CountryWorkerUseCase
+import io.wax911.sample.data.usecase.meta.CountryFetchUseCase
 import io.wax911.sample.data.model.meta.MediaCategoryContract
+import io.wax911.sample.data.usecase.meta.contract.IMetaUseCase
 import io.wax911.support.core.worker.SupportCoroutineWorker
 import io.wax911.support.extension.util.SupportConnectivityHelper
 import org.koin.core.KoinComponent
@@ -18,7 +18,7 @@ class CountryFetchWorker(
 ), KoinComponent {
 
     private val connectivityHelper by inject<SupportConnectivityHelper>()
-    private val useCase by inject<CountryWorkerUseCase>()
+    private val useCase: IMetaUseCase by inject<CountryFetchUseCase>()
 
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
@@ -33,8 +33,16 @@ class CountryFetchWorker(
      */
     override suspend fun doWork(): Result {
         if (connectivityHelper.isConnected) {
-            val showResult = useCase(MediaCategoryContract.SHOWS)
-            val movieResult = useCase(MediaCategoryContract.MOVIES)
+            val showResult = useCase(
+                IMetaUseCase.Payload(
+                    MediaCategoryContract.SHOWS
+                )
+            )
+            val movieResult = useCase(
+                IMetaUseCase.Payload(
+                    MediaCategoryContract.SHOWS
+                )
+            )
 
             if (showResult.isLoaded() && movieResult.isLoaded())
                 return Result.success()

@@ -1,12 +1,13 @@
 package io.wax911.sample.core.koin
 
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.core.usecase.meta.CountryWorkerUseCase
-import io.wax911.sample.core.usecase.meta.GenreWorkerUseCase
-import io.wax911.sample.core.usecase.meta.LanguageWorkerUseCase
+import io.wax911.sample.data.usecase.meta.CountryFetchUseCase
+import io.wax911.sample.data.usecase.meta.GenreFetchUseCase
+import io.wax911.sample.data.usecase.meta.LanguageFetchUseCase
 import io.wax911.sample.core.viewmodel.movie.MovieViewModel
 import io.wax911.sample.core.viewmodel.show.ShowViewModel
 import io.wax911.sample.data.dao.TraktTrendDatabase
+import io.wax911.sample.data.repository.movie.MovieRepository
 import io.wax911.sample.data.repository.show.ShowRepository
 import io.wax911.support.data.factory.contract.IRetrofitFactory
 import io.wax911.support.data.factory.contract.getEndPointOf
@@ -16,19 +17,19 @@ import org.koin.dsl.module
 
 val coreModules = module {
     factory {
-        CountryWorkerUseCase(
+        CountryFetchUseCase(
             metaEndpoints = get<IRetrofitFactory>().getEndPointOf(),
             countryDao = get<TraktTrendDatabase>().countryDao()
         )
     }
     factory {
-        GenreWorkerUseCase(
+        GenreFetchUseCase(
             metaEndpoints = get<IRetrofitFactory>().getEndPointOf(),
             genreDao = get<TraktTrendDatabase>().genreDao()
         )
     }
     factory {
-        LanguageWorkerUseCase(
+        LanguageFetchUseCase(
             metaEndpoints = get<IRetrofitFactory>().getEndPointOf(),
             languageDao = get<TraktTrendDatabase>().languageDao()
         )
@@ -48,12 +49,12 @@ val corePresenterModules = module {
 val coreViewModelModules = module {
     viewModel {
         ShowViewModel(
-            showRepository = get()
+            showRepository = get<ShowRepository>()
         )
     }
     viewModel {
         MovieViewModel(
-            movieRepository = get()
+            movieRepository = get<MovieRepository>()
         )
     }
 }

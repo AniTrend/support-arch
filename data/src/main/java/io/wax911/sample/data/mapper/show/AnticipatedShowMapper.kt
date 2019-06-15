@@ -3,14 +3,14 @@ package io.wax911.sample.data.mapper.show
 import androidx.paging.PagingRequestHelper
 import io.wax911.sample.data.arch.mapper.TraktTrendMapper
 import io.wax911.sample.data.dao.query.ShowDao
-import io.wax911.sample.data.model.container.Aniticipated
+import io.wax911.sample.data.model.container.Anticipated
 import io.wax911.sample.data.model.show.Show
 import timber.log.Timber
 
 class AnticipatedShowMapper(
     private val showDao: ShowDao,
     pagingRequestHelper: PagingRequestHelper.Request.Callback
-) : TraktTrendMapper<List<Aniticipated<Show>>, List<Show>>(
+) : TraktTrendMapper<List<Anticipated<Show>>, List<Show>>(
     pagingRequestHelper = pagingRequestHelper
 ) {
 
@@ -22,20 +22,21 @@ class AnticipatedShowMapper(
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: List<Aniticipated<Show>>): List<Show> {
+    override suspend fun onResponseMapFrom(source: List<Anticipated<Show>>): List<Show> {
         return source.map {
-            it.result
-        }.apply {
-            forEach {
-                it.id = it.ids.trakt
-            }
+            val anticipationRank = it.list_count
+            val traktId = it.result.ids.trakt
+            it.result.copy(
+                id = traktId,
+                anticipationRank = anticipationRank
+            )
         }
     }
 
     /**
      * Inserts the given object into the implemented room database,
      * called in [retrofit2.Callback.onResponse]
-     * @see [responseCallback]
+     * @see [handleResponse]
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
      */

@@ -1,20 +1,19 @@
 package io.wax911.sample.data.model.show
 
-import android.os.Parcelable
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import io.wax911.sample.data.model.contract.TraktEntity
+import io.wax911.sample.data.model.contract.TraktRankEntity
 import io.wax911.sample.data.model.show.contract.ShowIds
 import io.wax911.sample.data.model.show.meta.Airs
-import kotlinx.android.parcel.Parcelize
-import kotlinx.android.parcel.RawValue
 
 @Entity
-@Parcelize
 data class Show(
-    @PrimaryKey(autoGenerate = true)
-    override var id: Int,
-    val ids: @RawValue ShowIds,
+    @PrimaryKey
+    override val id: Int,
+    @Embedded
+    val ids: ShowIds,
     val first_aired: String?,
     val airs: Airs?,
     val network: String?,
@@ -32,8 +31,10 @@ data class Show(
     override val updated_at: String?,
     override val language: String?,
     override val genres: List<String>?,
-    override val certification: String?
-): TraktEntity, Parcelable {
+    override val certification: String?,
+    override val anticipationRank: Int,
+    override val trendingRank: Int
+): TraktEntity, TraktRankEntity {
 
     override fun equals(other: Any?): Boolean {
         return when (other) {
@@ -63,6 +64,8 @@ data class Show(
         result = 31 * result + (language?.hashCode() ?: 0)
         result = 31 * result + (genres?.hashCode() ?: 0)
         result = 31 * result + (certification?.hashCode() ?: 0)
+        result = 31 * result + (trendingRank.hashCode())
+        result = 31 * result + (trendingRank.hashCode())
         return result
     }
 }

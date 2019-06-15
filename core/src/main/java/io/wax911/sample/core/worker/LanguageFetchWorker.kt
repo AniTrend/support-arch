@@ -1,16 +1,12 @@
 package io.wax911.sample.core.worker
 
 import android.content.Context
-import android.os.Bundle
 import androidx.work.WorkerParameters
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.core.usecase.meta.LanguageWorkerUseCase
-import io.wax911.sample.data.api.endpoint.MetaEndpoints
+import io.wax911.sample.data.usecase.meta.LanguageFetchUseCase
 import io.wax911.sample.data.model.meta.MediaCategoryContract
-import io.wax911.sample.data.source.meta.LanguageCoroutineDataSource
+import io.wax911.sample.data.usecase.meta.contract.IMetaUseCase
 import io.wax911.support.core.worker.SupportCoroutineWorker
-import io.wax911.support.data.factory.contract.IRetrofitFactory
-import io.wax911.support.data.factory.contract.getEndPointOf
 import io.wax911.support.extension.util.SupportConnectivityHelper
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -24,7 +20,7 @@ class LanguageFetchWorker(
 ), KoinComponent {
 
     private val connectivityHelper by inject<SupportConnectivityHelper>()
-    private val useCase by inject<LanguageWorkerUseCase>()
+    private val useCase: IMetaUseCase by inject<LanguageFetchUseCase>()
 
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
@@ -39,8 +35,16 @@ class LanguageFetchWorker(
      */
     override suspend fun doWork(): Result {
         if (connectivityHelper.isConnected) {
-            val showResult = useCase(MediaCategoryContract.SHOWS)
-            val movieResult = useCase(MediaCategoryContract.MOVIES)
+            val showResult = useCase(
+                IMetaUseCase.Payload(
+                    MediaCategoryContract.SHOWS
+                )
+            )
+            val movieResult = useCase(
+                IMetaUseCase.Payload(
+                    MediaCategoryContract.SHOWS
+                )
+            )
 
             if (showResult.isLoaded() && movieResult.isLoaded())
                 return Result.success()

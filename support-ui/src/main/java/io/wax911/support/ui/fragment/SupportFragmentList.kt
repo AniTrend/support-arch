@@ -219,7 +219,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         }
     }
 
-    private fun changeLayoutState(networkState: NetworkState?) {
+    protected fun changeLayoutState(networkState: NetworkState?) {
         if (isStateAtLeast(Lifecycle.State.RESUMED)) {
             supportRefreshLayout?.onResponseResetStates()
             if (supportPresenter.pagingHelper.isFirstPage()) {

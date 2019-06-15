@@ -14,8 +14,10 @@ import com.google.android.material.navigation.NavigationView
 import io.wax911.sample.R
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.view.TraktTrendActivity
-import io.wax911.sample.view.fragment.list.FragmentPopularMovies
-import io.wax911.sample.view.fragment.list.FragmentPopularShows
+import io.wax911.sample.data.usecase.media.MediaRequestType
+import io.wax911.sample.data.usecase.media.contract.IPagedMediaUseCase
+import io.wax911.sample.view.fragment.list.FragmentMovieList
+import io.wax911.sample.view.fragment.list.FragmentShowList
 import io.wax911.support.ui.activity.SupportActivity
 import io.wax911.support.ui.fragment.SupportFragment
 import io.wax911.support.ui.util.SupportUiKeyStore
@@ -140,11 +142,19 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
             R.id.nav_contact -> Toast.makeText(this@MainActivity, "Contact", Toast.LENGTH_SHORT).show()
             R.id.nav_popular_series -> {
                 selectedTitle = R.string.nav_popular_series
-                supportFragment = FragmentPopularShows.newInstance(intent.extras)
+                supportFragment = FragmentShowList.newInstance(
+                    IPagedMediaUseCase.Payload(
+                        MediaRequestType.MEDIA_TYPE_POPULAR
+                    )
+                )
             }
             R.id.nav_popular_movies -> {
                 selectedTitle = R.string.nav_popular_movies
-                supportFragment = FragmentPopularMovies.newInstance(intent.extras)
+                supportFragment = FragmentMovieList.newInstance(
+                    IPagedMediaUseCase.Payload(
+                        MediaRequestType.MEDIA_TYPE_POPULAR
+                    )
+                )
             }
         }
 
