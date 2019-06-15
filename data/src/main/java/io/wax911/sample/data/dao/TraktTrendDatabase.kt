@@ -32,7 +32,7 @@ import io.wax911.sample.data.model.show.contract.ShowIds
     MovieIdsConverter::class, OffsetDateTimeConverter::class, ShowIdsConverter::class,
     AirsConverter::class, StringListConverter::class
 )
-abstract class DatabaseHelper : RoomDatabase() {
+abstract class TraktTrendDatabase : RoomDatabase() {
 
     abstract fun jsonTokenDao(): JsonWebTokenDao
 
@@ -51,10 +51,10 @@ abstract class DatabaseHelper : RoomDatabase() {
 
     companion object {
 
-        fun newInstance(context: Context): DatabaseHelper {
+        fun newInstance(context: Context): TraktTrendDatabase {
             return Room.databaseBuilder(
                 context,
-                DatabaseHelper::class.java,
+                TraktTrendDatabase::class.java,
                 "trakt-trend"
             ).fallbackToDestructiveMigration()
                 .addMigrations(MIGRATION_1_2)

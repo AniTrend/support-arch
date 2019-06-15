@@ -1,13 +1,10 @@
 package io.wax911.support.core.viewmodel.contract
 
-import android.os.Bundle
 import androidx.lifecycle.LiveData
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.repository.SupportRepository
 
-interface ISupportViewModel<M> {
-
-    val repository : SupportRepository<M>
+interface ISupportViewModel<M, P> {
 
     val model: LiveData<M?>
 
@@ -18,10 +15,10 @@ interface ISupportViewModel<M> {
     /**
      * Forwards queries for the repository to handle
      *
-     * @see [io.wax911.support.data.repository.SupportRepository.invokeRequest]
-     * @param bundle request data to be used by the repository
+     * @see [io.wax911.support.data.repository.SupportRepository.invoke]
+     * @param parameter request data to be used by the repository
      */
-    fun queryFor(bundle: Bundle)
+    operator fun invoke(parameter: P)
 
     /**
      * Checks if the live data stored in the repository has is not null
@@ -33,7 +30,7 @@ interface ISupportViewModel<M> {
     /**
      * Returns the current request bundle, this is nullable
      */
-    fun currentRequestBundle(): Bundle?
+    fun currentRequestParameter(): P?
 
     /**
      * Requests the repository to perform a retry operation

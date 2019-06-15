@@ -1,10 +1,13 @@
 package io.wax911.sample.core.worker
 
 import android.content.Context
+import android.os.Bundle
 import androidx.work.WorkerParameters
 import io.wax911.sample.core.presenter.CorePresenter
+import io.wax911.sample.core.usecase.meta.GenreWorkerUseCase
 import io.wax911.sample.data.api.endpoint.MetaEndpoints
-import io.wax911.sample.data.source.meta.GenreDataSource
+import io.wax911.sample.data.model.meta.MediaCategoryContract
+import io.wax911.sample.data.source.meta.GenreCoroutineDataSource
 import io.wax911.support.core.worker.SupportCoroutineWorker
 import io.wax911.support.data.factory.contract.IRetrofitFactory
 import io.wax911.support.data.factory.contract.getEndPointOf
@@ -21,7 +24,7 @@ class GenreFetchWorker(
 ), KoinComponent {
 
     private val connectivityHelper by inject<SupportConnectivityHelper>()
-    private val retroFactory by inject<IRetrofitFactory>()
+    private val useCase by inject<GenreWorkerUseCase>()
 
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
@@ -36,12 +39,10 @@ class GenreFetchWorker(
      */
     override suspend fun doWork(): Result {
         if (connectivityHelper.isConnected) {
-            val endpoint = retroFactory.getEndPointOf<MetaEndpoints>()
-            val mediaTagDataSource = GenreDataSource(endpoint)
+            val showResult = useCase(MediaCategoryContract.SHOWS)
+            val movieResult = useCase(MediaCategoryContract.MOVIES)
 
-            val networkResult = mediaTagDataSource.startRequestForType()
-
-            if (networkResult.isLoaded())
+            if (showResult.isLoaded() && movieResult.isLoaded())
                 return Result.success()
             return Result.failure()
         }
@@ -49,6 +50,6 @@ class GenreFetchWorker(
     }
 
     companion object {
-        const val TAG = "GenreFetchWorker"
+        const val TAG = "io.wax911.sample:GenreFetchWorker"
     }
 }

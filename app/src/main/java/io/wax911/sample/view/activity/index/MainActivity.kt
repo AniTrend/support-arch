@@ -8,14 +8,13 @@ import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import io.wax911.sample.R
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.view.TraktTrendActivity
-import io.wax911.sample.view.fragment.list.FragmentHistory
+import io.wax911.sample.view.fragment.list.FragmentPopularMovies
 import io.wax911.sample.view.fragment.list.FragmentPopularShows
 import io.wax911.support.ui.activity.SupportActivity
 import io.wax911.support.ui.fragment.SupportFragment
@@ -145,7 +144,7 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
             }
             R.id.nav_popular_movies -> {
                 selectedTitle = R.string.nav_popular_movies
-                supportFragment = FragmentHistory.newInstance(intent.extras)
+                supportFragment = FragmentPopularMovies.newInstance(intent.extras)
             }
         }
 

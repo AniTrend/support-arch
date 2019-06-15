@@ -5,29 +5,31 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
 import io.wax911.sample.data.api.endpoint.ShowEndpoint
+import io.wax911.sample.data.dao.query.ShowDao
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.source.ShowPagingDataSource
-import io.wax911.support.data.factory.contract.IRetrofitFactory
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.model.UiModel
 import io.wax911.support.data.repository.SupportRepository
-import org.koin.core.inject
 
 class ShowRepository(
-    val showEndpoint: ShowEndpoint
-) : SupportRepository<PagedList<Show>>() {
+    private val showEndpoint: ShowEndpoint,
+    private val showDao: ShowDao
+) : SupportRepository<PagedList<Show>, Bundle>() {
 
     /**
      * Handles dispatching of network requests to a background thread
      *
-     * @param bundle bundle of parameters for the request
+     * @param parameter parameter/s for the request
      */
-    override fun invokeRequest(bundle: Bundle): UiModel<PagedList<Show>> {
+    override fun invoke(parameter: Bundle): UiModel<PagedList<Show>> {
+
         // create a boundary callback which will observe when the user reaches to the edges of
         // the list and update the database with extra data.
         val dataSource = ShowPagingDataSource(
-            bundle = bundle,
-            showEndpoint = showEndpoint
+            bundle = parameter,
+            showEndpoint = showEndpoint,
+            showDao = showDao
         )
 
         // we are using a mutable live data to trigger refresh requests which eventually calls
@@ -39,15 +41,15 @@ class ShowRepository(
         }
 
         return UiModel(
-            model = dataSource.seriesLiveDataObservable.observerOnLiveDataWith(bundle),
+            model = dataSource.shows.invoke(parameter),
             networkState = dataSource.networkState,
             refresh = {
-                dataSource.refreshOrInvalidate()
+                dataSource.invalidateAndRefresh()
                 refreshTrigger.value = null
             },
             refreshState = refreshState,
             retry = {
-                dataSource.retryFailedRequest()
+                dataSource.retryRequest()
             }
         )
     }

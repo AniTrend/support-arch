@@ -7,6 +7,7 @@ import io.wax911.sample.R
 import io.wax911.sample.adapter.recycler.ShowAdapter
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.viewmodel.show.ShowViewModel
+import io.wax911.sample.data.model.contract.TraktEntity
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.repository.show.ShowRequestType
 import io.wax911.support.core.factory.InstanceCreator
@@ -15,16 +16,39 @@ import io.wax911.support.extension.LAZY_MODE_UNSAFE
 import io.wax911.support.extension.util.SupportExtKeyStore
 import io.wax911.support.ui.fragment.SupportFragmentList
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
+import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FragmentPopularShows : SupportFragmentList<Show, CorePresenter, PagedList<Show>>() {
 
-    override val supportViewModel: ShowViewModel? by viewModel()
-    override val supportPresenter: CorePresenter by inject()
+    override val supportPresenter by inject<CorePresenter>()
+    override val supportViewModel by viewModel<ShowViewModel>()
 
     override val supportViewAdapter =
-        ShowAdapter(supportPresenter, this)
+        ShowAdapter(supportPresenter, object : ItemClickListener<Show> {
+            /**
+             * When the target view from [View.OnClickListener]
+             * is clicked from a view holder this method will be called
+             *
+             * @param target view that has been clicked
+             * @param data the liveData that at the click index
+             */
+            override fun onItemClick(target: View, data: Pair<Int, Show?>) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            /**
+             * When the target view from [View.OnLongClickListener]
+             * is clicked from a view holder this method will be called
+             *
+             * @param target view that has been long clicked
+             * @param data the liveData that at the long click index
+             */
+            override fun onItemLongClick(target: View, data: Pair<Int, Show?>) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
 
     override val retryButtonText: Int = R.string.action_retry
     override val columnSize: Int = R.integer.single_list_size
@@ -33,7 +57,7 @@ class FragmentPopularShows : SupportFragmentList<Show, CorePresenter, PagedList<
      * Invoke view model observer to watch for changes
      */
     override fun setUpViewModelObserver() {
-        supportViewModel?.model?.observe(this, this)
+        supportViewModel.model.observe(this, this)
     }
 
     /**
@@ -68,7 +92,7 @@ class FragmentPopularShows : SupportFragmentList<Show, CorePresenter, PagedList<
      * @see [SupportRepository.publishResult]
      */
     override fun makeRequest() {
-        supportViewModel?.queryFor(Bundle().apply {
+        supportViewModel(Bundle().apply {
             putParcelable(SupportExtKeyStore.key_pagination, supportPresenter.pagingHelper)
             putString(SupportExtKeyStore.arg_request_type, ShowRequestType.SHOW_TYPE_POPULAR)
         })
@@ -80,28 +104,6 @@ class FragmentPopularShows : SupportFragmentList<Show, CorePresenter, PagedList<
      */
     override fun onChanged(t: PagedList<Show>?) {
         onPostModelChange(t)
-    }
-
-    /**
-     * When the target view from [View.OnClickListener]
-     * is clicked from a view holder this method will be called
-     *
-     * @param target view that has been clicked
-     * @param data the liveData that at the click index
-     */
-    override fun onItemClick(target: View, data: Pair<Int, Show?>) {
-
-    }
-
-    /**
-     * When the target view from [View.OnLongClickListener]
-     * is clicked from a view holder this method will be called
-     *
-     * @param target view that has been long clicked
-     * @param data the liveData that at the long click index
-     */
-    override fun onItemLongClick(target: View, data: Pair<Int, Show?>) {
-
     }
 
     companion object : InstanceCreator<FragmentPopularShows, Bundle?>({

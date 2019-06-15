@@ -1,6 +1,5 @@
 package io.wax911.support.core.viewmodel
 
-import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -9,13 +8,16 @@ import androidx.lifecycle.ViewModel
 import io.wax911.support.core.viewmodel.contract.ISupportViewModel
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.model.UiModel
+import io.wax911.support.data.repository.SupportRepository
 
-abstract class SupportViewModel<M> : ViewModel(), ISupportViewModel<M> {
+abstract class SupportViewModel<M, P>(
+    private val repository : SupportRepository<M, P>
+) : ViewModel(), ISupportViewModel<M, P> {
 
-    private val requestBundleLiveData = MutableLiveData<Bundle>()
+    private val requestBundleLiveData = MutableLiveData<P>()
 
     private val repositoryResult: LiveData<UiModel<M>> =
-        map(requestBundleLiveData) { repository.invokeRequest(it) }
+        map(requestBundleLiveData) { repository(it) }
 
     override val model: LiveData<M?> =
         Transformations.switchMap(repositoryResult) { it.model }
@@ -31,11 +33,11 @@ abstract class SupportViewModel<M> : ViewModel(), ISupportViewModel<M> {
     /**
      * Forwards queries for the repository to handle
      *
-     * @see [io.wax911.support.core.repository.SupportRepository.invokeRequest]
-     * @param bundle request data to be used by the repository
+     * @see [io.wax911.support.data.repository.SupportRepository.invoke]
+     * @param parameter request data to be used by the repository
      */
-    override fun queryFor(bundle: Bundle) {
-        requestBundleLiveData.value = bundle
+    override fun invoke(parameter: P) {
+        requestBundleLiveData.value = parameter
     }
 
     /**
@@ -50,17 +52,17 @@ abstract class SupportViewModel<M> : ViewModel(), ISupportViewModel<M> {
     }
 
     /**
-     * Returns the current request bundle, this is nullable
-     */
-    override fun currentRequestBundle(): Bundle? = requestBundleLiveData.value
-
-    /**
      * Requests the repository to perform a retry operation
      */
     override fun retry() {
         val uiModel = repositoryResult.value
         uiModel?.retry?.invoke()
     }
+
+    /**
+     * Returns the current request bundle, this is nullable
+     */
+    override fun currentRequestParameter(): P? = requestBundleLiveData.value
 
     /**
      * Requests the repository to perform a refresh operation on the underlying database

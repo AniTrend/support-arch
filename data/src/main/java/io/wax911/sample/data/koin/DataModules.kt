@@ -5,7 +5,7 @@ import android.net.ConnectivityManager
 import io.wax911.sample.data.api.RetroFactory
 import io.wax911.sample.data.api.interceptor.AuthInterceptor
 import io.wax911.sample.data.auth.AuthenticationHelper
-import io.wax911.sample.data.dao.DatabaseHelper
+import io.wax911.sample.data.dao.TraktTrendDatabase
 import io.wax911.sample.data.repository.movie.MovieRepository
 import io.wax911.sample.data.repository.show.ShowRepository
 import io.wax911.sample.data.util.Settings
@@ -24,7 +24,7 @@ val dataModules = module {
     }
 
     single {
-        DatabaseHelper.newInstance(
+        TraktTrendDatabase.newInstance(
             context = androidContext()
         )
     }
@@ -32,7 +32,7 @@ val dataModules = module {
     factory<ISupportAuthentication> {
         AuthenticationHelper(
             connectivityHelper = get(),
-            jsonWebTokenDao = get<DatabaseHelper>().jsonTokenDao(),
+            jsonWebTokenDao = get<TraktTrendDatabase>().jsonTokenDao(),
             settings = get()
         )
     }
@@ -64,13 +64,15 @@ val dataNetworkModules = module {
 val dataRepositoryModules = module {
     factory {
         ShowRepository(
-            showEndpoint = get<IRetrofitFactory>().getEndPointOf()
+            showEndpoint = get<IRetrofitFactory>().getEndPointOf(),
+            showDao = get<TraktTrendDatabase>().showDao()
         )
     }
 
     factory {
         MovieRepository(
-            movieEndpoint = get<IRetrofitFactory>().getEndPointOf()
+            movieEndpoint = get<IRetrofitFactory>().getEndPointOf(),
+            movieDao = get<TraktTrendDatabase>().movieDao()
         )
     }
 }

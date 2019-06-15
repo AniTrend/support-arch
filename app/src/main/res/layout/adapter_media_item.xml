@@ -5,7 +5,7 @@
     <data>
         <variable
             name="entity"
-            type="io.wax911.sample.data.model.show.Show" />
+            type="io.wax911.sample.data.model.contract.TraktEntity" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -33,7 +33,7 @@
             android:background="@color/colorScrim"
             android:textColor="@android:color/white"
             android:textAppearance="?attr/textAppearanceBody2"
-            tools:text="@tools:sample/lorem/random" />
+            tools:text="@tools:sample/lorem" />
 
     </com.google.android.material.card.MaterialCardView>
 

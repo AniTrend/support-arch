@@ -31,7 +31,6 @@ import kotlin.reflect.KProperty
 
 abstract class SupportViewAdapter<T>(
     protected val presenter: SupportPresenter<*>,
-    private val  itemClickListener: ItemClickListener<T>,
     itemCallback: DiffUtil.ItemCallback<T> = getDefaultDiffItemCallback()
 ) : PagedListAdapter<T, SupportViewHolder<T>>(itemCallback), Filterable {
 
@@ -179,9 +178,9 @@ abstract class SupportViewAdapter<T>(
     override fun onBindViewHolder(holder: SupportViewHolder<T>, position: Int) {
         when (getItemViewType(position)) {
             R.layout.support_layout_state_footer ->
-                holder.onBindViewHolder(null)
+                holder(null)
             else ->
-                holder.onBindViewHolder(getItem(position))
+                holder(getItem(position))
         }
     }
 
@@ -196,10 +195,9 @@ abstract class SupportViewAdapter<T>(
             payloads.isNotEmpty() -> {
                 animateViewHolder(holder, position)
                 val model = getItem(position)
-                holder.apply {
-                    clickListener = itemClickListener
+                with (holder) {
                     supportActionMode = supportAction
-                    onBindViewHolder(model)
+                    invoke(model)
                     onBindSelectionState(model)
                 }
             }
@@ -213,8 +211,8 @@ abstract class SupportViewAdapter<T>(
      * @see [SupportViewHolder.onViewRecycled]
      */
     override fun onViewRecycled(holder: SupportViewHolder<T>) {
-        holder.apply {
-            clickListener = null
+        with (holder) {
+            supportActionMode = null
             onViewRecycled()
         }
     }

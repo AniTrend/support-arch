@@ -4,24 +4,61 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedList
 import io.wax911.sample.R
+import io.wax911.sample.adapter.recycler.MovieAdapter
+import io.wax911.sample.adapter.recycler.ShowAdapter
 import io.wax911.sample.core.presenter.CorePresenter
+import io.wax911.sample.core.viewmodel.movie.MovieViewModel
+import io.wax911.sample.core.viewmodel.show.ShowViewModel
+import io.wax911.sample.data.model.contract.TraktEntity
+import io.wax911.sample.data.model.movie.Movie
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.repository.show.ShowRequestType
 import io.wax911.support.core.factory.InstanceCreator
 import io.wax911.support.extension.util.SupportExtKeyStore
 import io.wax911.support.ui.fragment.SupportFragment
+import io.wax911.support.ui.fragment.SupportFragmentList
+import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
+import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import kotlinx.android.synthetic.main.fragment_history.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FragmentHistory: SupportFragment<Nothing, CorePresenter, List<Show>>() {
+class FragmentPopularMovies: SupportFragmentList<Movie, CorePresenter, PagedList<Movie>>() {
 
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return supportPresenter of the generic type specified
-     */
-    override val supportPresenter: CorePresenter by inject()
+    override val supportPresenter by inject<CorePresenter>()
+    override val supportViewModel by viewModel<MovieViewModel>()
+
+
+    override val supportViewAdapter: SupportViewAdapter<Movie> =
+        MovieAdapter(supportPresenter, object : ItemClickListener<Movie> {
+            /**
+             * When the target view from [View.OnClickListener]
+             * is clicked from a view holder this method will be called
+             *
+             * @param target view that has been clicked
+             * @param data the liveData that at the click index
+             */
+            override fun onItemClick(target: View, data: Pair<Int, Movie?>) {
+
+            }
+
+            /**
+             * When the target view from [View.OnLongClickListener]
+             * is clicked from a view holder this method will be called
+             *
+             * @param target view that has been long clicked
+             * @param data the liveData that at the long click index
+             */
+            override fun onItemLongClick(target: View, data: Pair<Int, Movie?>) {
+
+            }
+        })
+
+    override val retryButtonText: Int = R.string.action_retry
+    override val columnSize: Int = R.integer.single_list_size
+
 
     /**
      * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
@@ -80,7 +117,7 @@ class FragmentHistory: SupportFragment<Nothing, CorePresenter, List<Show>>() {
      * Invoke view model observer to watch for changes
      */
     override fun setUpViewModelObserver() {
-        supportViewModel?.model?.observe(this, this)
+        supportViewModel.model.observe(this, this)
     }
 
     /**
@@ -91,21 +128,22 @@ class FragmentHistory: SupportFragment<Nothing, CorePresenter, List<Show>>() {
     }
 
     override fun makeRequest() {
-        supportViewModel?.queryFor(Bundle().apply {
-            SupportExtKeyStore.arg_request_type to ShowRequestType.SHOW_TYPE_POPULAR
-        })
+        /*supportViewModel(Bundle().apply {
+            putParcelable(SupportExtKeyStore.key_pagination, supportPresenter.pagingHelper)
+            putString(SupportExtKeyStore.arg_request_type, MovieRequestType.SHOW_TYPE_POPULAR)
+        })*/
     }
 
     /**
      * Called when the data is changed.
-     * @param model The new data
+     * @param t  The new data
      */
-    override fun onChanged(model: List<Show>?) {
-
+    override fun onChanged(t: PagedList<Movie>?) {
+        onPostModelChange(t)
     }
 
-    companion object : InstanceCreator<FragmentHistory, Bundle?>({
-        val fragment = FragmentHistory()
+    companion object : InstanceCreator<FragmentPopularMovies, Bundle?>({
+        val fragment = FragmentPopularMovies()
         fragment.arguments = it
         fragment
     })
