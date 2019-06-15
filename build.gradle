@@ -6,8 +6,8 @@ buildscript {
         targetSdk = 28
         minSdk = 21
 
-        versionCode = 80
-        versionName = '1.1.2-beta01'
+        versionCode = 81
+        versionName = '1.1.2-beta02'
 
         constraint = '1.1.3'
 

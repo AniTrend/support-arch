@@ -15,7 +15,8 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 /**
- * A paging dependant data source for list resource requests
+ * A non-coroutine that depends on [androidx.lifecycle.LiveData] to publish results.
+ * This data source is targeted for UI components that depend on [androidx.paging.PagedList]
  *
  * @param parentCoroutineJob parent coroutine from something that is lifecycle aware,
  * this enables us to cancels jobs automatically when the parent is also canceled
