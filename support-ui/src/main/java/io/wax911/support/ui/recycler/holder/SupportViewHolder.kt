@@ -10,9 +10,10 @@ import io.wax911.support.ui.recycler.holder.event.ItemClickListener
  * Recycler view holder implementation
  */
 
-abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
+abstract class SupportViewHolder<T>(
+    view: View
+) : RecyclerView.ViewHolder(view) {
 
-    var clickListener: ItemClickListener<T>? = null
     var supportActionMode: ISupportActionMode<T>? = null
 
     /**
@@ -23,34 +24,38 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
             Pair(adapterPosition, adapterPosition != RecyclerView.NO_POSITION)
 
     /**
-     * Load image, text, buttons, etc. in this method from the given parameter
+     * Load images, text, buttons, etc. in this method from the given parameter
      *
      * @param model Is the liveData at the current adapter position
      */
-    abstract fun onBindViewHolder(model: T?)
+    abstract operator fun invoke(model: T?)
 
     /**
-     * If any image views are used within the view holder, clear any pending async img requests
-     * by using Glide.clear(ImageView) or Glide.with(context).clear(view) if using Glide v4.0
+     * If any image views are used within the view holder, clear any pending async requests
+     * by using [com.bumptech.glide.RequestManager.clear]
+     *
+     * @see com.bumptech.glide.Glide
      */
     abstract fun onViewRecycled()
 
     /**
-     * Handle any onclick events from our views
+     * Handle any onclick events from our views, optionally you can call
+     * [performClick] to dispatch [Pair]<[Int], T> on the [ItemClickListener]
      *
-     * @param v the view that has been clicked
-     * @see View.OnClickListener
+     * @param view the view that has been clicked
      */
-    abstract override fun onClick(v: View)
+    abstract fun onItemClick(view: View)
 
     /**
-     * Called when a view has been clicked and held.
+     * Called when a view has been clicked and held. Optionally you can call
+     * [performLongClick] to dispatch [Pair]<[Int], T> on the [ItemClickListener].
      *
-     * @param v The view that was clicked and held.
+     * If [ISupportActionMode] is then long clicking an items will start the section action mode
      *
-     * @return true if the callback consumed the long click, false otherwise.
+     * @param view The view that was clicked and held.
+     * @return [Boolean] true if the callback consumed the long click, false otherwise.
      */
-    override fun onLongClick(v: View?): Boolean = false
+    open fun onLongItemClick(view: View): Boolean = false
 
     /**
      * Applying selection styling on the desired item
@@ -64,25 +69,32 @@ abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view),
     /**
      * Handle any onclick events from our views
      *
-     * @param v the view that has been clicked
+     * @param view the view that has been clicked
      * @see View.OnClickListener
      */
-    protected fun performClick(data: T?, v: View) {
+    protected fun performClick(entity: T?, view: View, clickListener: ItemClickListener<T>) {
         val pair = isValidIndexPair()
-        if (pair.second && isClickable(data))
-            clickListener?.onItemClick(v, Pair(pair.first, data))
+        if (pair.second && isClickable(entity))
+            clickListener.onItemClick(
+                view, Pair(pair.first, entity)
+            )
     }
 
     /**
      * Called when a view has been clicked and held.
      *
-     * @param v The view that was clicked and held.
+     * @param view The view that was clicked and held.
      * @return true if the supportActionMode consumed the long click, false otherwise.
      */
-    protected fun performLongClick(data: T?, v: View): Boolean {
+    protected fun performLongClick(entity: T?, view: View, clickListener: ItemClickListener<T>): Boolean {
         val pair = isValidIndexPair()
-        return when (pair.second && isLongClickable(data)) {
-            true -> { clickListener?.onItemLongClick(v, Pair(pair.first, data)); true }
+        return when (pair.second && isLongClickable(entity)) {
+            true -> {
+                clickListener.onItemLongClick(
+                    view, Pair(pair.first, entity)
+                )
+                true
+            }
             else -> false
         }
     }

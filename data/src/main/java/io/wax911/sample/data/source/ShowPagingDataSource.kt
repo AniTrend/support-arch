@@ -8,33 +8,33 @@ import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import androidx.paging.toLiveData
 import io.wax911.sample.data.api.endpoint.ShowEndpoint
-import io.wax911.sample.data.dao.DatabaseHelper
+import io.wax911.sample.data.dao.query.ShowDao
 import io.wax911.sample.data.mapper.show.AnticipatedShowMapper
 import io.wax911.sample.data.mapper.show.PopularShowMapper
 import io.wax911.sample.data.mapper.show.TrendingShowMapper
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.repository.show.ShowRequestType
-import io.wax911.support.data.source.SupportPagingDataSource
+import io.wax911.support.data.source.paging.SupportPagingDataSource
 import io.wax911.support.data.source.contract.ISourceObservable
 import io.wax911.support.data.util.SupportDataKeyStore
 import io.wax911.support.extension.util.SupportExtKeyStore
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import org.koin.core.inject
 import timber.log.Timber
 
 class ShowPagingDataSource(
+    private val showDao: ShowDao,
     private val showEndpoint: ShowEndpoint,
     private val bundle: Bundle
 ) : SupportPagingDataSource<Show>() {
 
-    private val databaseHelper by inject<DatabaseHelper>()
-
     /**
-     * Invokes dynamic requests which can be consumed which can be mapped
-     * to a destination source on success
+     * Dispatches work for the paging data source to respective workers or mappers
+     * that publish the result to any [androidx.lifecycle.LiveData] observers
+     *
+     * @see networkState
      */
-    override fun startRequestForType(callback: PagingRequestHelper.Request.Callback) {
+    override fun invoke(callback: PagingRequestHelper.Request.Callback) {
         when (@ShowRequestType val requestType = bundle.getString(SupportExtKeyStore.arg_request_type)) {
             ShowRequestType.SHOW_TYPE_POPULAR -> {
                 val result = async {
@@ -45,7 +45,7 @@ class ShowPagingDataSource(
                 }
 
                 val mapper = PopularShowMapper(
-                    showDao = databaseHelper.showDao(),
+                    showDao = showDao,
                     pagingRequestHelper = callback
                 )
 
@@ -62,7 +62,7 @@ class ShowPagingDataSource(
                 }
 
                 val mapper = TrendingShowMapper(
-                    showDao = databaseHelper.showDao(),
+                    showDao = showDao,
                     pagingRequestHelper = callback
                 )
 
@@ -79,7 +79,7 @@ class ShowPagingDataSource(
                 }
 
                 val mapper = AnticipatedShowMapper(
-                    showDao = databaseHelper.showDao(),
+                    showDao = showDao,
                     pagingRequestHelper = callback
                 )
 
@@ -96,7 +96,7 @@ class ShowPagingDataSource(
      */
     override fun onZeroItemsLoaded() {
         pagingRequestHelper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            startRequestForType(it)
+            invoke(it)
         }
     }
 
@@ -112,21 +112,20 @@ class ShowPagingDataSource(
     override fun onItemAtEndLoaded(itemAtEnd: Show) {
         pagingRequestHelper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
             supportPagingHelper.onPageNext()
-            startRequestForType(it)
+            invoke(it)
         }
     }
 
-    val seriesLiveDataObservable = object : ISourceObservable<PagedList<Show>> {
+    val shows = object : ISourceObservable<PagedList<Show>, Bundle> {
 
         /**
          * Returns the appropriate observable which we will monitor for updates,
          * common implementation may include but not limited to returning
          * data source live data for a database
          *
-         * @param bundle request params, implementation is up to the developer
+         * @param parameter parameters, implementation is up to the developer
          */
-        override fun observerOnLiveDataWith(bundle: Bundle): LiveData<PagedList<Show>> {
-            val showDao = databaseHelper.showDao()
+        override operator fun invoke(parameter: Bundle): LiveData<PagedList<Show>> {
             val requestType = bundle.getString(SupportExtKeyStore.arg_request_type)
 
             val dataSourceFactory = when (requestType) {
@@ -147,13 +146,11 @@ class ShowPagingDataSource(
     }
 
     /**
-     * Clears all the data in a database table which will assure that
-     * and refresh the backing storage medium with new network data
+     * Clears data sources (databases, preferences, e.t.c)
      */
-    override fun refreshOrInvalidate() {
-        super.refreshOrInvalidate()
+    override fun clearDataSource() {
         launch {
-            databaseHelper.showDao().deleteAll()
+            showDao.deleteAll()
         }
     }
 }

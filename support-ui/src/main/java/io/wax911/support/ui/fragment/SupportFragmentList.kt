@@ -28,7 +28,7 @@ import io.wax911.support.ui.view.widget.SupportStateLayout
 import timber.log.Timber
 
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFragment<M, P, VM>(),
-    ISupportFragmentList<M>, SwipeRefreshLayout.OnRefreshListener, ItemClickListener<M> {
+    ISupportFragmentList<M>, SwipeRefreshLayout.OnRefreshListener {
 
     protected abstract val supportViewAdapter: SupportViewAdapter<M>
 

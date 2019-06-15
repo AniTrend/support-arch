@@ -1,27 +1,24 @@
 package io.wax911.sample.core.worker
 
 import android.content.Context
+import android.os.Bundle
 import androidx.work.WorkerParameters
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.data.api.endpoint.MetaEndpoints
-import io.wax911.sample.data.source.meta.CountryDataSource
+import io.wax911.sample.core.usecase.meta.CountryWorkerUseCase
+import io.wax911.sample.data.model.meta.MediaCategoryContract
 import io.wax911.support.core.worker.SupportCoroutineWorker
-import io.wax911.support.data.factory.contract.IRetrofitFactory
-import io.wax911.support.data.factory.contract.getEndPointOf
 import io.wax911.support.extension.util.SupportConnectivityHelper
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class CountryFetchWorker(
-    context: Context,
-    workerParameters: WorkerParameters
+    context: Context, workerParameters: WorkerParameters
 ) : SupportCoroutineWorker<CorePresenter>(
-    context,
-    workerParameters
+    context, workerParameters
 ), KoinComponent {
 
     private val connectivityHelper by inject<SupportConnectivityHelper>()
-    private val retroFactory by inject<IRetrofitFactory>()
+    private val useCase by inject<CountryWorkerUseCase>()
 
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
@@ -36,12 +33,10 @@ class CountryFetchWorker(
      */
     override suspend fun doWork(): Result {
         if (connectivityHelper.isConnected) {
-            val endpoint = retroFactory.getEndPointOf<MetaEndpoints>()
-            val mediaTagDataSource = CountryDataSource(endpoint)
+            val showResult = useCase(MediaCategoryContract.SHOWS)
+            val movieResult = useCase(MediaCategoryContract.MOVIES)
 
-            val networkResult = mediaTagDataSource.startRequestForType()
-
-            if (networkResult.isLoaded())
+            if (showResult.isLoaded() && movieResult.isLoaded())
                 return Result.success()
             return Result.failure()
         }
@@ -49,6 +44,6 @@ class CountryFetchWorker(
     }
 
     companion object {
-        const val TAG = "CountryFetchWorker"
+        const val TAG = "io.wax911.sample:CountryFetchWorker"
     }
 }

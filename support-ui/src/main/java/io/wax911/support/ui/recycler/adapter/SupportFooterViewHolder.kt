@@ -12,29 +12,31 @@ class SupportFooterViewHolder<T>(view: View) : SupportViewHolder<T>(view.rootVie
     private val stateProgress : ProgressBar? = view.findViewById(R.id.stateProgress)
 
     /**
-     * Load image, text, buttons, etc. in this method from the given parameter
+     * Load images, text, buttons, etc. in this method from the given parameter
      *
      * @param model Is the liveData at the current adapter position
      */
-    override fun onBindViewHolder(model: T?) {
+    override fun invoke(model: T?) {
         stateText?.setText(R.string.supportTextLoading)
     }
 
     /**
-     * If any image views are used within the view holder, clear any pending async img requests
-     * by using Glide.clear(ImageView) or Glide.with(context).clear(view) if using Glide v4.0
+     * If any image views are used within the view holder, clear any pending async requests
+     * by using [com.bumptech.glide.RequestManager.clear]
+     *
+     * @see com.bumptech.glide.Glide
      */
     override fun onViewRecycled() {
 
     }
 
     /**
-     * Handle any onclick events from our views
+     * Handle any onclick events from our views, optionally you can call
+     * [performClick] to dispatch [Pair]<[Int], T> on the [ItemClickListener]
      *
-     * @param v the view that has been clicked
-     * @see View.OnClickListener
+     * @param view the view that has been clicked
      */
-    override fun onClick(v: View) {
+    override fun onItemClick(view: View) {
 
     }
 }

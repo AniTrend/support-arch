@@ -4,17 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.data.model.contract.TraktEntity
-import io.wax911.sample.data.model.show.Show
+import io.wax911.sample.data.model.movie.Movie
 import io.wax911.sample.databinding.AdapterMediaItemBinding
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 
-class ShowAdapter(
+class MovieAdapter(
     presenter: SupportPresenter<*>,
-    private val clickListener: ItemClickListener<Show>
-) : SupportViewAdapter<Show>(presenter) {
+    private val clickListener: ItemClickListener<Movie>
+) : SupportViewAdapter<Movie>(presenter) {
 
     /**
      * Should provide the required view holder, this function is a substitute for [onCreateViewHolder] which now
@@ -24,21 +24,20 @@ class ShowAdapter(
         parent: ViewGroup,
         viewType: Int,
         layoutInflater: LayoutInflater
-    ): SupportViewHolder<Show> {
-        return ShowViewHolder(AdapterMediaItemBinding.inflate(layoutInflater, parent, false))
+    ): SupportViewHolder<Movie> {
+        return MovieViewHolder(AdapterMediaItemBinding.inflate(layoutInflater, parent, false))
     }
 
-
-    inner class ShowViewHolder(
+    inner class MovieViewHolder(
         private val binding: AdapterMediaItemBinding
-    ): SupportViewHolder<Show>(binding.root) {
+    ) : SupportViewHolder<Movie>(binding.root) {
 
         /**
          * Load images, text, buttons, etc. in this method from the given parameter
          *
          * @param model Is the liveData at the current adapter position
          */
-        override fun invoke(model: Show?) {
+        override fun invoke(model: Movie?) {
             with (binding) {
                 entity = model
                 executePendingBindings()
@@ -67,9 +66,10 @@ class ShowAdapter(
         override fun onItemClick(view: View) {
             performClick(
                 clickListener = clickListener,
-                entity = binding.entity as Show?,
+                entity = binding.entity as Movie?,
                 view = view
             )
         }
     }
+
 }

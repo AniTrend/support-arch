@@ -1,15 +1,15 @@
-package io.wax911.support.data.source
+package io.wax911.support.data.source.paging
 
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import androidx.paging.extension.createStatusLiveData
-import androidx.room.RoomDatabase
-import io.wax911.support.data.source.contract.ISupportDataSource
+import io.wax911.support.data.source.paging.contract.IPagingDataSource
 import io.wax911.support.data.util.pagination.SupportPagingHelper
 import io.wax911.support.extension.util.SupportConnectivityHelper
 import io.wax911.support.extension.util.SupportExtKeyStore
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -22,19 +22,19 @@ import java.util.concurrent.Executors
  */
 abstract class SupportPagingDataSource<T>(
     parentCoroutineJob: Job? = null
-) : PagedList.BoundaryCallback<T>(), ISupportDataSource {
+) : PagedList.BoundaryCallback<T>(), IPagingDataSource, KoinComponent {
 
     protected val moduleTag: String = javaClass.simpleName
+
+    /**
+     * Connectivity helper utility with live data observable capabilities
+     */
+    protected val connectivityHelper by inject<SupportConnectivityHelper>()
 
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */
     override val supervisorJob = SupervisorJob(parentCoroutineJob)
-
-    /**
-     * Connectivity helper utility with live data observable capabilities
-     */
-    override val supportConnectivityHelper by inject<SupportConnectivityHelper>()
 
     protected val pagingRequestHelper = PagingRequestHelper(IO_EXECUTOR)
 
@@ -48,23 +48,17 @@ abstract class SupportPagingDataSource<T>(
     }
 
     /**
-     * Invokes dynamic requests which can be consumed which can be mapped
-     * to a destination source on success
+     * Invokes [clearDataSource] and should invoke network refresh or reload
      */
-    protected abstract fun startRequestForType(callback: PagingRequestHelper.Request.Callback)
-
-    /**
-     * Clears all the data in a database table which will assure that
-     * and refresh the backing storage medium with new network data
-     */
-    override fun refreshOrInvalidate() {
+    override fun invalidateAndRefresh() {
+        super.invalidateAndRefresh()
         supportPagingHelper.onPageRefresh()
     }
 
     /**
      * Performs the necessary operation to invoke a network retry request
      */
-    override fun retryFailedRequest() {
+    override fun retryRequest() {
         pagingRequestHelper.retryAllFailed()
     }
 
