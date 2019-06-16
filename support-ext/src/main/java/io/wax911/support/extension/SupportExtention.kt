@@ -1,7 +1,6 @@
 package io.wax911.support.extension
 
 
-
 val LAZY_MODE_UNSAFE = LazyThreadSafetyMode.NONE
 
 /**
@@ -18,10 +17,10 @@ fun String.Companion.empty() = ""
  *
  * @param exceptions words or characters to exclude during capitalization
  */
-fun String?.capitalizeWords(exceptions: List<String>? = null) : String = when {
+fun String?.capitalizeWords(exceptions: List<String>? = null): String = when {
     !this.isNullOrEmpty() -> {
         val result = StringBuilder(length)
-        val words = split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val words = split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }
         for ((index, word) in words.withIndex()) {
             when (word.isNotEmpty()) {
                 true -> {

@@ -7,7 +7,7 @@ package io.wax911.support.extension
  * @param exceptions words or characters to exclude during capitalization
  * @return list of capitalized strings
  */
-fun  Array<String>.capitalizeWords(exceptions: List<String>? = null) =
+fun  Collection<String>.capitalizeWords(exceptions: List<String>? = null) =
     map { it.capitalizeWords(exceptions) }
 
 
@@ -16,7 +16,7 @@ fun  Array<String>.capitalizeWords(exceptions: List<String>? = null) =
  *
  * @return 0 if the collection is null or empty otherwise the size of the collection
  */
-fun Collection<*>?.sizeOf() : Int = when {
+fun Collection<*>?.sizeOf() = when {
     this.isNullOrEmpty() -> 0
     else -> size
 }

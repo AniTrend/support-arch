@@ -46,7 +46,3 @@ fun FragmentActivity.startSharedTransitionActivity(target : View, data : Intent)
  */
 fun LifecycleOwner.isStateAtLeast(state: Lifecycle.State) =
     lifecycle.currentState.isAtLeast(state)
-
-
-inline fun <reified T : ViewModel> FragmentActivity.getViewModelOf() =
-    ViewModelProviders.of(this).get(T::class.java)
