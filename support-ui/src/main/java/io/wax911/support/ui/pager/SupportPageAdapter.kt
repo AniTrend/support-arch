@@ -9,13 +9,25 @@ import io.wax911.support.extension.empty
 import io.wax911.support.extension.getStringList
 import timber.log.Timber
 import java.util.*
-import kotlin.collections.ArrayList
 
+/**
+ * Constructor for {@link FragmentStatePagerAdapter}.
+ *
+ * If [FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT] is passed in, then only the current
+ * Fragment is in the [androidx.lifecycle.Lifecycle.State.RESUMED] state, while all other fragments are
+ * capped at [androidx.lifecycle.Lifecycle.State.STARTED].
+ *
+ * If [FragmentStatePagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT] is used, then all fragments are in the
+ * [androidx.lifecycle.Lifecycle.State.RESUMED] state and there will be callbacks to
+ * [androidx.fragment.app.Fragment.setUserVisibleHint].
+ *
+ * @param context fragment activity used to create fragment manager that will interact with this adapter
+ * @param defaultBehavior defaulted to [FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT]
+ */
 abstract class SupportPageAdapter(
-    protected val context: FragmentActivity
-): FragmentStatePagerAdapter(context.supportFragmentManager) {
-
-    val TAG = javaClass.simpleName
+    protected val context: FragmentActivity,
+    defaultBehavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+): FragmentStatePagerAdapter(context.supportFragmentManager, defaultBehavior) {
 
     val titles = ArrayList<String>()
 
@@ -58,5 +70,9 @@ abstract class SupportPageAdapter(
             return titles[position].toUpperCase(Locale.getDefault())
         Timber.tag(TAG).w("Page title at position: $position doesn't have a corresponding title, returning empty string")
         return String.empty()
+    }
+
+    companion object {
+        protected val TAG = SupportPageAdapter::class.java.simpleName
     }
 }
