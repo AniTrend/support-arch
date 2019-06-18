@@ -63,7 +63,7 @@ interface ISupportDateHelper {
         originDate: String,
         inputPattern: String = defaultInputDatePattern,
         targetTimeZone: TimeZone = TimeZone.getDefault()
-    ): Long {
+    ): Long? {
         val dateFormatter = SimpleDateFormat(
             inputPattern,
             Locale.getDefault()
@@ -75,7 +75,7 @@ interface ISupportDateHelper {
 
         val convertedDate = dateFormatter.parse(originDate)
 
-        return convertedDate.time
+        return convertedDate?.time
     }
 
     /**
@@ -97,7 +97,7 @@ interface ISupportDateHelper {
         inputPattern: String = defaultInputDatePattern,
         outputDatePattern: String = defaultOutputDatePattern,
         targetTimeZone: TimeZone = TimeZone.getDefault()
-    ): String {
+    ): String? {
         val dateFormatter = SimpleDateFormat(
             inputPattern,
             Locale.getDefault()
@@ -109,6 +109,9 @@ interface ISupportDateHelper {
 
         val convertedDate = dateFormatter.parse(originDate)
 
-        return SimpleDateFormat(outputDatePattern, Locale.getDefault()).format(convertedDate)
+        return convertedDate?.let {
+            val outputSampleDateFormat = SimpleDateFormat(outputDatePattern, Locale.getDefault())
+            outputSampleDateFormat.format(it)
+        }
     }
 }

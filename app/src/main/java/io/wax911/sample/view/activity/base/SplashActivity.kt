@@ -7,6 +7,7 @@ import io.wax911.sample.core.view.TraktTrendActivity
 import io.wax911.sample.databinding.ActivitySplashBinding
 import io.wax911.sample.view.activity.index.MainActivity
 import io.wax911.support.extension.startNewActivity
+import io.wax911.support.extension.util.SupportDateHelper
 import io.wax911.support.extension.util.contract.ISupportDateHelper
 import io.wax911.support.ui.activity.SupportActivity
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +39,7 @@ class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
     override fun initializeComponents(savedInstanceState: Bundle?) {
         val description = getString(
             R.string.app_splash_description,
-            ISupportDateHelper.getCurrentYear(0)
+            SupportDateHelper().getCurrentYear(0)
         )
         binding?.splashDescription?.text = description
         makeRequest()

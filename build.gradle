@@ -2,26 +2,26 @@
 
 buildscript {
     ext {
-        compileSdk = 28
-        targetSdk = 28
+        compileSdk = 29
+        targetSdk = 29
         minSdk = 21
 
-        versionCode = 83
-        versionName = '1.1.2-beta05'
+        versionCode = 85
+        versionName = '1.2.0-alpha01'
 
         constraint = '1.1.3'
 
         glide = '4.9.0'
         retrofit = '2.6.0'
 
-        material = '1.0.0'
+        material = '1.1.0-alpha07'
         androidx = '2.0.0'
         room = '2.1.0-rc01'
         paging = '2.1.0'
         pagingKtx = '2.1.0'
-        ktx = '1.2.0-alpha01'
+        ktx = '1.2.0-alpha02'
         fragmentKtx = '1.1.0-beta01'
-        workerKtx = '2.1.0-alpha03'
+        workerKtx = '2.1.0-beta01'
         navigation = '2.1.0-alpha05'
         firebase = '16.0.9'
 
@@ -37,7 +37,7 @@ buildscript {
         crashlytics = '2.6.8@aar'
         coroutinesCore = '1.2.1'
         coroutinesAndroid = '1.2.1'
-        materialDialogs = '3.0.0-rc3'
+        materialDialogs = '3.0.0-rc4'
 
         gson = '2.8.5'
         timber = '4.7.1'
