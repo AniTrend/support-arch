@@ -87,9 +87,6 @@ dependencies {
     implementation "androidx.room:room-ktx:$room"
     kapt "androidx.room:room-compiler:$room"
 
-    /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:$retrofit"
-
     /** Timber */
     implementation "com.jakewharton.timber:timber:$timber"
 
@@ -103,4 +100,5 @@ dependencies {
     testImplementation "io.mockk:mockk:$mockk"
     androidTestImplementation "androidx.test:runner:$runner"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 }
