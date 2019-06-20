@@ -21,15 +21,17 @@ class SupportConnectivityHelper(
 ): LifecycleObserver {
 
     /**
-     * Check if the device has any active network connections like WiFi or Network data,
-     * preferably use broadcast receivers if you want to do live updates of the internet connectivity status
+     * Check if the device is connected to any network with internet capabilities
      *
-     * @return true if network connectivity exists, false otherwise.
+     * @return true if a internet activity is present otherwise false
      */
     val isConnected
-        get() = connectivityManager?.
-            activeNetworkInfo?.
-            isConnected ?: false
+        get() = (connectivityManager?.allNetworks?.filter {
+            val network = connectivityManager.getNetworkCapabilities(it)
+            network?.hasCapability(
+                NetworkCapabilities.NET_CAPABILITY_INTERNET
+            ) ?: false
+        }?.size ?: 0) > 0
 
     private var monitoringConnectivity = false
 
@@ -60,19 +62,13 @@ class SupportConnectivityHelper(
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun startMonitoringConnectivity() {
-        val activeNetworkInfo: NetworkInfo? = connectivityManager?.activeNetworkInfo
-        val connected = activeNetworkInfo != null && activeNetworkInfo.isConnected
-        _connectedStatus.postValue(connected)
-        if (!connected) {
-            // we don't have internet connection, so we listen to notifications in connection status
-            connectivityManager?.registerNetworkCallback(
-                NetworkRequest.Builder()
-                    .addCapability(
-                        NetworkCapabilities.NET_CAPABILITY_INTERNET
-                    ).build(),
-                connectivityCallback
-            )
-            monitoringConnectivity = true
-        }
+        connectivityManager?.registerNetworkCallback(
+            NetworkRequest.Builder()
+                .addCapability(
+                    NetworkCapabilities.NET_CAPABILITY_INTERNET
+                ).build(),
+            connectivityCallback
+        )
+        monitoringConnectivity = true
     }
 }

@@ -2,8 +2,10 @@ package io.wax911.support.extension
 
 import android.app.Activity
 import android.content.Intent
+import android.view.Menu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.MenuRes
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
@@ -37,6 +39,7 @@ fun FragmentActivity.startSharedTransitionActivity(target : View, data : Intent)
         .makeSceneTransitionAnimation(this, participants)
     ActivityCompat.startActivity(this, data, transitionActivityOptions.toBundle())
 }
+
 
 /**
  * Compares if this State is greater or equal to the given [Lifecycle.State].

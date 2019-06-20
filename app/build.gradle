@@ -14,7 +14,6 @@ android {
         versionCode versionCode
         versionName versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -28,6 +27,9 @@ android {
     }
     dataBinding {
         enabled = true
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
 }
 

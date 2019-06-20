@@ -162,7 +162,7 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
         bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
 
         supportFragment?.apply {
-            compatView = this@apply
+            ISupportFragmentActivity = this@apply
             supportFragmentManager.commit {
                 replace(R.id.contentFrame, this@apply, tag)
             }
