@@ -14,17 +14,17 @@ import androidx.core.content.ContextCompat
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.extension.getCompatColor
 import io.wax911.support.extension.util.SupportCoroutineHelper
-import io.wax911.support.ui.view.contract.CompatView
+import io.wax911.support.ui.view.contract.ISupportFragmentActivity
 import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), CompatView<M, P>, SupportCoroutineHelper {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), ISupportFragmentActivity<M, P>, SupportCoroutineHelper {
 
     protected val moduleTag: String = javaClass.simpleName
 
     private var isClosing: Boolean = false
 
-    protected var compatView : CompatView<*, *>? = null
+    protected var ISupportFragmentActivity : ISupportFragmentActivity<*, *>? = null
 
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
@@ -99,7 +99,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * as appropriate.
      */
     override fun onBackPressed() {
-        if (compatView?.hasBackPressableAction() == true)
+        if (ISupportFragmentActivity?.hasBackPressableAction() == true)
             return
         return super.onBackPressed()
     }

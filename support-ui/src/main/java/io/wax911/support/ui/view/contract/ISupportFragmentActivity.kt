@@ -8,7 +8,7 @@ import io.wax911.support.core.viewmodel.SupportViewModel
 import io.wax911.support.data.repository.SupportRepository
 import io.wax911.support.extension.util.SupportCoroutineHelper
 
-interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SupportCoroutineHelper, SharedPreferences.OnSharedPreferenceChangeListener {
+interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : Observer<VM?>, SupportCoroutineHelper, SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
      * A simple value that can be used when making permission requests,
@@ -54,7 +54,7 @@ interface CompatView<VM, P : SupportPresenter<*>> : Observer<VM?>, SupportCorout
 
     /**
      * Handles the updating of views, binding, creation or state change, depending on the context
-     * [androidx.lifecycle.LiveData] for a given [CompatView] will be available by this point.
+     * [androidx.lifecycle.LiveData] for a given [ISupportFragmentActivity] will be available by this point.
      *
      * Check implementation for more details
      */

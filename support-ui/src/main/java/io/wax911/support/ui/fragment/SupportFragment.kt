@@ -14,16 +14,16 @@ import io.wax911.support.extension.LAZY_MODE_UNSAFE
 import io.wax911.support.ui.action.SupportActionMode
 import io.wax911.support.ui.action.contract.ISupportActionMode
 import io.wax911.support.ui.action.event.ActionModeListener
-import io.wax911.support.ui.view.contract.CompatView
+import io.wax911.support.ui.view.contract.ISupportFragmentActivity
 import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
-abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, CompatView<VM, P> {
+abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, ISupportFragmentActivity<VM, P> {
 
     protected val moduleTag: String = javaClass.simpleName
 
     @MenuRes
-    protected var inflateMenu: Int = CompatView.NO_MENU_ITEM
+    protected var inflateMenu: Int = ISupportFragmentActivity.NO_MENU_ITEM
     protected var snackBar: Snackbar? = null
 
     /**
@@ -104,7 +104,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * @see SupportFragment.onOptionsItemSelected
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (inflateMenu != CompatView.NO_MENU_ITEM)
+        if (inflateMenu != ISupportFragmentActivity.NO_MENU_ITEM)
             inflater.inflate(inflateMenu, menu)
     }
 
