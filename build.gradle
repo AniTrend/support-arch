@@ -43,7 +43,7 @@ buildscript {
         timber = '4.7.1'
 
         smartTab = '2.0.0'
-        tapTarget = '2.14.0'
+        tapTarget = '2.15.0'
         okHttpLogger = '3.14.2'
     }
     repositories {
