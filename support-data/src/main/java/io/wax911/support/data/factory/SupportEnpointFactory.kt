@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
  * @param url The url to use when create a service endpoint
  * @param endpoint The interface class method representing your request to use
  */
-abstract class EndpointFactory<S: Any>(
+abstract class SupportEndpointFactory<S: Any>(
     private val url: String,
     private val endpoint: KClass<S>
 ) : ISupportEndpointFactory<S>, KoinComponent {
