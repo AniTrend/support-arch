@@ -1,7 +1,7 @@
 package io.wax911.sample.data.dao.converter
 
 import androidx.room.TypeConverter
-import io.wax911.sample.data.api.RetroFactory
+import io.wax911.sample.data.api.endpoint.contract.TraktEndpointFactory
 import io.wax911.sample.data.extension.getTypeToken
 import io.wax911.sample.data.model.show.contract.ShowIds
 import io.wax911.support.data.dao.RoomConverter
@@ -16,7 +16,7 @@ class ShowIdsConverter: RoomConverter<ShowIds> {
      */
     @TypeConverter
     override fun fromDatabaseValue(dbValue: String): ShowIds? {
-        return RetroFactory.gson.fromJson(dbValue, getTypeToken<ShowIds>())
+        return TraktEndpointFactory.GSON.fromJson(dbValue, getTypeToken<ShowIds>())
     }
 
     /**
@@ -28,6 +28,6 @@ class ShowIdsConverter: RoomConverter<ShowIds> {
      */
     @TypeConverter
     override fun toDatabaseValue(entity: ShowIds?): String {
-        return RetroFactory.gson.toJson(entity)
+        return TraktEndpointFactory.GSON.toJson(entity)
     }
 }

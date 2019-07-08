@@ -1,8 +1,6 @@
 package io.wax911.support.data.factory
 
 import io.wax911.support.data.factory.contract.ISupportEndpointFactory
-import okhttp3.Interceptor
-import org.koin.core.KoinComponent
 import retrofit2.Retrofit
 import kotlin.reflect.KClass
 
@@ -13,13 +11,14 @@ import kotlin.reflect.KClass
  * @param endpoint The interface class method representing your request to use
  */
 abstract class SupportEndpointFactory<S: Any>(
-    private val url: String,
-    private val endpoint: KClass<S>
-) : ISupportEndpointFactory<S>, KoinComponent {
-
-    protected abstract val clientInterceptor: Interceptor
+    protected val url: String,
+    protected val endpoint: KClass<S>
+) : ISupportEndpointFactory<S> {
 
     protected abstract val retrofit: Retrofit
 
+    /**
+     * Creates a retrofit service interface using the retrofit instance
+     */
     override fun create(): S = retrofit.create(endpoint.java)
 }

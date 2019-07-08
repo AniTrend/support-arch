@@ -1,5 +1,6 @@
 package io.wax911.sample.data.api.endpoint
 
+import io.wax911.sample.data.api.endpoint.contract.TraktEndpointFactory
 import io.wax911.sample.data.model.container.Anticipated
 import io.wax911.sample.data.model.container.Trending
 import io.wax911.sample.data.model.meta.ResourceType
@@ -33,4 +34,9 @@ interface MovieEndpoint {
         @Query("extended")
         @ResourceType resourceType: String = ResourceType.FULL
     ): Response<List<Anticipated<Movie>>>
+
+
+    companion object : TraktEndpointFactory<MovieEndpoint>(
+        endpoint = MovieEndpoint::class
+    )
 }

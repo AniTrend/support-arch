@@ -1,6 +1,6 @@
 package io.wax911.sample.data.source.meta
 
-import io.wax911.sample.data.api.endpoint.MetaEndpoints
+import io.wax911.sample.data.api.endpoint.MetaEndpoint
 import io.wax911.sample.data.dao.query.GenreDao
 import io.wax911.sample.data.mapper.meta.GenreMapper
 import io.wax911.sample.data.model.meta.MediaCategory
@@ -10,7 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 
 class GenreCoroutineDataSource(
-    private val metaEndpoints: MetaEndpoints,
+    private val metaEndpoint: MetaEndpoint,
     private val genreDao: GenreDao,
     private val mediaCategory: MediaCategory,
     job: Job? = null
@@ -25,7 +25,7 @@ class GenreCoroutineDataSource(
     override suspend fun invoke(): NetworkState {
         super.invoke()
         val result = async {
-            metaEndpoints.getGenres(mediaCategory)
+            metaEndpoint.getGenres(mediaCategory)
         }
 
         val mapper = GenreMapper(

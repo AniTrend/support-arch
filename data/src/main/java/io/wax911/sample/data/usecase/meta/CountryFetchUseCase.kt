@@ -1,14 +1,13 @@
 package io.wax911.sample.data.usecase.meta
 
-import io.wax911.sample.data.api.endpoint.MetaEndpoints
+import io.wax911.sample.data.api.endpoint.MetaEndpoint
 import io.wax911.sample.data.dao.query.CountryDao
-import io.wax911.sample.data.model.meta.MediaCategory
 import io.wax911.sample.data.source.meta.CountryCoroutineDataSource
 import io.wax911.sample.data.usecase.meta.contract.IMetaUseCase
 import io.wax911.support.data.model.NetworkState
 
 class CountryFetchUseCase(
-    private val metaEndpoints: MetaEndpoints,
+    private val metaEndpoint: MetaEndpoint,
     private val countryDao: CountryDao
 ) : IMetaUseCase {
 
@@ -19,7 +18,7 @@ class CountryFetchUseCase(
      */
     override suspend fun invoke(param: IMetaUseCase.Payload): NetworkState {
         val dataSource = CountryCoroutineDataSource(
-            metaEndpoints = metaEndpoints,
+            metaEndpoint = metaEndpoint,
             countryDao = countryDao,
             mediaCategory = param.mediaCategory
         )
