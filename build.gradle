@@ -44,7 +44,7 @@ buildscript {
 
         smartTab = '2.0.0'
         tapTarget = '2.15.0'
-        okHttpLogger = '4.0.0'
+        okHttpLogger = '4.0.1'
     }
     repositories {
         google()
