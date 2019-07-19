@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import io.wax911.sample.R
 import io.wax911.sample.adapter.recycler.MovieAdapter
@@ -62,7 +63,9 @@ class FragmentMovieList: SupportFragmentList<Movie, CorePresenter, PagedList<Mov
      * Invoke view model observer to watch for changes
      */
     override fun setUpViewModelObserver() {
-        supportViewModel.model.observe(this, this)
+        supportViewModel.model.observe(this, Observer {
+            onPostModelChange(it)
+        })
     }
 
     /**
@@ -82,11 +85,11 @@ class FragmentMovieList: SupportFragmentList<Movie, CorePresenter, PagedList<Mov
     /**
      * Update views or bind a liveData to them
      */
-    override fun updateUI() {
+    override fun onUpdateUserInterface() {
 
     }
 
-    override fun makeRequest() {
+    override fun onFetchDataInitialize() {
         val isNull = pagingMediaPayload?.also {
             supportViewModel(
                 parameter = it
@@ -98,14 +101,6 @@ class FragmentMovieList: SupportFragmentList<Movie, CorePresenter, PagedList<Mov
                     msg = "Media category not selected"
                 )
             )
-    }
-
-    /**
-     * Called when the data is changed.
-     * @param t  The new data
-     */
-    override fun onChanged(t: PagedList<Movie>?) {
-        onPostModelChange(t)
     }
 
     companion object : InstanceCreator<FragmentMovieList, IPagedMediaUseCase.Payload>({

@@ -8,7 +8,8 @@ import io.wax911.support.core.viewmodel.SupportViewModel
 import io.wax911.support.data.repository.SupportRepository
 import io.wax911.support.extension.util.SupportCoroutineHelper
 
-interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : Observer<VM?>, SupportCoroutineHelper, SharedPreferences.OnSharedPreferenceChangeListener {
+interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCoroutineHelper,
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
      * A simple value that can be used when making permission requests,
@@ -58,7 +59,7 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : Observer<VM?>,
      *
      * Check implementation for more details
      */
-    fun updateUI()
+    fun onUpdateUserInterface()
 
     /**
      * Handles the complex logic required to dispatch network request to [SupportViewModel]
@@ -67,9 +68,9 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : Observer<VM?>,
      * The results of the dispatched network or cache call will be published by the
      * [androidx.lifecycle.LiveData] specifically [SupportViewModel.model]
      *
-     * @see [SupportViewModel.queryFor]
+     * @see [SupportViewModel.requestBundleLiveData]
      */
-    fun makeRequest()
+    fun onFetchDataInitialize()
 
     /**
      * Check if the current fragment activity has a permission granted to it.

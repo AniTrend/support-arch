@@ -23,9 +23,9 @@ class AuthInterceptor(private val authenticationHelper: ISupportAuthentication) 
      * application interceptor, such as when implementing client-specific retries.
      */
     override fun authenticate(route: Route?, response: Response): Request? {
-        val networkState = NetworkState(code = response.code(), status = SupportStateContract.LOADING)
+        val networkState = NetworkState(code = response.code, status = SupportStateContract.LOADING)
         if (networkState.isUnauthorized()) {
-            val requestBuilder = response.request().newBuilder()
+            val requestBuilder = response.request.newBuilder()
             if (authenticationHelper.isAuthenticated) {
                 authenticationHelper.injectHeaders(requestBuilder)
                 return requestBuilder.build()

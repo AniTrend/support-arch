@@ -23,7 +23,6 @@ import io.wax911.support.ui.extension.onResponseResetStates
 import io.wax911.support.ui.fragment.contract.ISupportFragmentList
 import io.wax911.support.ui.recycler.SupportRecyclerView
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
-import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import io.wax911.support.ui.view.widget.SupportStateLayout
 import timber.log.Timber
 
@@ -49,7 +48,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     private val snackBarOnClickListener = View.OnClickListener {
         if (supportStateLayout?.isLoading != true) {
             supportViewAdapter.networkState = NetworkState.LOADING
-            makeRequest()
+            onFetchDataInitialize()
             resetWidgetStates()
         } else
             Timber.tag(moduleTag).w("snackBarOnClickListener -> supportStateLayout is currently loading")
@@ -162,8 +161,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     override fun onStart() {
         super.onStart()
         when (supportViewAdapter.isEmpty()) {
-            true -> makeRequest()
-            else -> updateUI()
+            true -> onFetchDataInitialize()
+            else -> onUpdateUserInterface()
         }
     }
 
@@ -289,7 +288,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         supportRefreshLayout?.onResponseResetStates()
         supportStateLayout?.showContent()
         injectAdapter()
-        updateUI()
+        onUpdateUserInterface()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
