@@ -13,7 +13,7 @@ class SupportTimeHelperTest {
     @Test
     fun `has time period in seconds elapsed`() {
         // given a certain time
-        val inputTime: SupportTime = 1560501325000
+        val inputTime: SupportTimeInstance = 1560501325000
 
         // with an elapsed period of 50 seconds
         val targetUnit = 50
@@ -34,7 +34,7 @@ class SupportTimeHelperTest {
     @Test
     fun `has time period in seconds not elapsed`() {
         // given a certain time
-        val inputTime: SupportTime = 1560501325000
+        val inputTime: SupportTimeInstance = 1560501325000
 
         // with an elapsed period of 50 seconds
         val targetUnit = 50
@@ -55,7 +55,7 @@ class SupportTimeHelperTest {
     @Test
     fun `has time period in minutes elapsed`() {
         // given a certain time
-        val inputTime: SupportTime = 1560501325000
+        val inputTime: SupportTimeInstance = 1560501325000
 
         // with an elapsed period of 30 minutes
         val targetUnit = 30
@@ -76,7 +76,7 @@ class SupportTimeHelperTest {
     @Test
     fun `has time period in minutes not elapsed`() {
         // given a certain time
-        val inputTime: SupportTime = 1560501325000
+        val inputTime: SupportTimeInstance = 1560501325000
 
         // with an elapsed period of 30 minutes
         val targetUnit = 30
@@ -97,7 +97,7 @@ class SupportTimeHelperTest {
     @Test
     fun `has time period in hours elapsed`() {
         // given a certain time
-        val inputTime: SupportTime = 1560501325000
+        val inputTime: SupportTimeInstance = 1560501325000
 
         // with an elapsed period of 8 hours
         val targetUnit = 8
@@ -118,7 +118,7 @@ class SupportTimeHelperTest {
     @Test
     fun `has time period in hours not elapsed`() {
         // given a certain time
-        val inputTime: SupportTime = 1560501325000
+        val inputTime: SupportTimeInstance = 1560501325000
 
         // with an elapsed period of 8 hours
         val targetUnit = 8
@@ -139,7 +139,7 @@ class SupportTimeHelperTest {
     @Test
     fun `has time period in days elapsed`() {
         // given a certain time
-        val inputTime: SupportTime = 1560501325000
+        val inputTime: SupportTimeInstance = 1560501325000
 
         // with an elapsed period of 3 days
         val targetUnit = 3
@@ -160,7 +160,7 @@ class SupportTimeHelperTest {
     @Test
     fun `has time period in days not elapsed`() {
         // given a certain time
-        val inputTime: SupportTime = 1560501325000
+        val inputTime: SupportTimeInstance = 1560501325000
 
         // with an elapsed period of 3 days
         val targetUnit = 3
