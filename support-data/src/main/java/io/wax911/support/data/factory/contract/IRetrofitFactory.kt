@@ -1,11 +1,17 @@
 package io.wax911.support.data.factory.contract
 
 @Deprecated(
-    message = "Will be deprecated in v1.2 see [io.wax911.support.data.factory.SupportEndpointFactory]",
+    message = "Will be removed in release v1.2.X",
     replaceWith = ReplaceWith(
         expression = "[io.wax911.support.data.factory.SupportEndpointFactory]"
     ),
-    level = DeprecationLevel.WARNING)
+    level = DeprecationLevel.WARNING
+)
+/**
+ * Retrofit service locator contract
+ *
+ * @since v1.0.X
+ */
 interface IRetrofitFactory {
 
     /**
