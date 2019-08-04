@@ -69,8 +69,9 @@ val dataNetworkModules = module {
             .authenticator(get<AuthInterceptor>())
         when {
             BuildConfig.DEBUG -> {
-                val httpLoggingInterceptor = HttpLoggingInterceptor()
-                    .setLevel(HttpLoggingInterceptor.Level.BODY)
+                val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
                 okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
             }
         }
