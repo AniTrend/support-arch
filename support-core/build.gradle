@@ -78,7 +78,7 @@ dokka {
 
     linkMapping {
         dir = "src/main/java"
-        url = "https://github.com/AniTrend/support-app/tree/experimental/paging/support-core/src/main/java"
+        url = "https://github.com/anitrend/support-arch/tree/experimental/paging/support-core/src/main/java"
         suffix = "#L"
     }
 }
