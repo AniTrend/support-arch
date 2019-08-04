@@ -70,6 +70,7 @@ dependencies {
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
     implementation "androidx.paging:paging-runtime:$paging"
+    implementation "androidx.preference:preference:$supportX"
     implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
