@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.repository.SupportRepository
 
+/**
+ * Contract for view models that aids relaying commands to an underlying repository
+ */
 interface ISupportViewModel<M, P> {
 
     val model: LiveData<M?>

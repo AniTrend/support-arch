@@ -70,13 +70,15 @@ dependencies {
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
     implementation "androidx.paging:paging-runtime:$paging"
-    implementation "androidx.preference:preference:$supportX"
+    implementation "androidx.preference:preference:$preferenceX"
     implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshX"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycleX"
 
     /** Fire-base Libraries */
     implementation "com.google.firebase:firebase-core:$firebase"

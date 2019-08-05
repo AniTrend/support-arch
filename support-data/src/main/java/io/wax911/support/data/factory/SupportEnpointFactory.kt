@@ -5,10 +5,12 @@ import retrofit2.Retrofit
 import kotlin.reflect.KClass
 
 /**
- * Generates retrofit service classes
+ * An abstract helper to generate retrofit service classes through companion objects
  *
  * @param url The url to use when create a service endpoint
  * @param endpoint The interface class method representing your request to use
+ *
+ * @since v1.1.0
  */
 abstract class SupportEndpointFactory<S: Any>(
     protected val url: String,

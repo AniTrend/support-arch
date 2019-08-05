@@ -81,12 +81,10 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
         super.onSaveInstanceState(outState)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_selected)
-            selectedTitle = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_title)
-        }
+        selectedItem = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_selected)
+        selectedTitle = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_title)
     }
 
     override fun onBackPressed() {

@@ -5,11 +5,12 @@ import androidx.recyclerview.widget.RecyclerView
 import io.wax911.support.ui.action.contract.ISupportActionMode
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 
-/**
- * Created by max on 2017/06/09.
- * Recycler view holder implementation
- */
 
+/**
+ * Recycler view holder implementation
+ *
+ * @since v1.1.0
+ */
 abstract class SupportViewHolder<T>(
     view: View
 ) : RecyclerView.ViewHolder(view) {

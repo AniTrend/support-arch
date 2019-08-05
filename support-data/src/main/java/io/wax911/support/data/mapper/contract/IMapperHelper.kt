@@ -3,6 +3,10 @@ package io.wax911.support.data.mapper.contract
 import io.wax911.support.data.model.NetworkState
 import kotlinx.coroutines.Deferred
 
+/**
+ *
+ * @since v1.1.0
+ */
 interface IMapperHelper<S> {
 
     /**

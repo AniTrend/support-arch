@@ -1,5 +1,10 @@
 package io.wax911.support.extension.util
 
+/**
+ *
+ *
+ * @since v1.1.0
+ */
 object SupportExtKeyStore {
 
     const val key_pagination = "key_pagination"

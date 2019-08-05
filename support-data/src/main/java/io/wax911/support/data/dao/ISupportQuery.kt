@@ -5,6 +5,12 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Update
 
+/**
+ * A generalized building block for [androidx.room.Dao] that provides basic
+ * read, write and update functionality
+ *
+ * @since v0.9.X
+ */
 interface ISupportQuery<T> {
 
     /**

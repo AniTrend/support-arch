@@ -18,6 +18,10 @@ import io.wax911.support.ui.view.contract.ISupportFragmentActivity
 import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
+/**
+ *
+ * @since 0.9.X
+ */
 abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), ISupportFragmentActivity<M, P>, SupportCoroutineHelper {
 
     protected val moduleTag: String = javaClass.simpleName

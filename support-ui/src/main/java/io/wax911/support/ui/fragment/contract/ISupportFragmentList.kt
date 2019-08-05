@@ -7,30 +7,28 @@ import androidx.paging.PagedList
 import io.wax911.support.data.model.contract.IUiModel
 import io.wax911.support.ui.R
 
+/**
+ *
+ * @since 0.9.X
+ */
 interface ISupportFragmentList<M> {
 
+    @get:StringRes
     val retryButtonText: Int
-        @StringRes
-        get
 
+    @get:StringRes
     val loadingMessage: Int
-        @StringRes
         get() = R.string.supportTextLoading
 
+    @get:IntegerRes
     val columnSize: Int
-        @IntegerRes
         get() = R.integer.grid_list_x3
 
+
+    @get:LayoutRes
     val inflateLayout: Int
-        @LayoutRes
         get() =  R.layout.support_list
 
-    /**
-     * Sets up the [io.wax911.support.ui.recycler.SupportRecyclerView] with
-     * [io.wax911.support.ui.recycler.adapter.SupportViewAdapter]
-     * and additional properties if needed, after it will change the state layout to empty or content.
-     */
-    fun injectAdapter()
 
     /**
      * Handles post view model result after extraction or processing

@@ -1,5 +1,10 @@
 package io.wax911.support.ui.util
 
+/**
+ *
+ *
+ * @since v1.1.0
+ */
 object SupportUiKeyStore {
 
     const val key_navigation_selected = "key_navigation_selected"

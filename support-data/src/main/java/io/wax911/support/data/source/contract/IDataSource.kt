@@ -6,6 +6,11 @@ import io.wax911.support.extension.util.SupportCoroutineHelper
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
+/**
+ *
+ *
+ * @since v1.1.0
+ */
 interface IDataSource : SupportCoroutineHelper {
 
     /**

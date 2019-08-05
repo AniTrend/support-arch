@@ -7,6 +7,14 @@ import io.wax911.support.extension.preference.SupportPreference
 import io.wax911.support.extension.preference.event.OnSharedPreferenceBinder
 import io.wax911.support.extension.util.SupportExtKeyStore
 
+/**
+ * An abstract declaration of what responsibilities a presenter should undertake
+ *
+ * @param context application based context
+ * @param supportPreference implementation of application preferences
+ *
+ * @see SupportPreference
+ */
 abstract class SupportPresenter<S : SupportPreference>(
     protected val context: Context,
     val supportPreference: S

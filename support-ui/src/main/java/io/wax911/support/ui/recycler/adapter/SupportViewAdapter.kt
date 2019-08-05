@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import io.wax911.support.core.animator.ScaleAnimator
-import io.wax911.support.core.animator.contract.SupportAnimator
+import io.wax911.support.core.animator.contract.ISupportAnimator
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.model.contract.SupportStateContract
@@ -19,16 +19,14 @@ import io.wax911.support.extension.getLayoutInflater
 import io.wax911.support.ui.R
 import io.wax911.support.ui.action.contract.ISupportActionMode
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
-import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import java.util.*
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
 /**
- * Created by max on 2017/06/09.
- * Recycler view adapter implementation
+ *
+ * @since 0.9.X
  */
-
 abstract class SupportViewAdapter<T>(
     protected val presenter: SupportPresenter<*>,
     itemCallback: DiffUtil.ItemCallback<T> = getDefaultDiffItemCallback()
@@ -73,9 +71,9 @@ abstract class SupportViewAdapter<T>(
      * if no custom animation is set @[ScaleAnimator]
      * will be assigned in [onAttachedToRecyclerView]
      *
-     * @see [SupportAnimator]
+     * @see [ISupportAnimator]
      */
-    private var customSupportAnimator: SupportAnimator? = null
+    private var customSupportAnimator: ISupportAnimator? = null
         get() {
             if (field == null)
                 field = ScaleAnimator()

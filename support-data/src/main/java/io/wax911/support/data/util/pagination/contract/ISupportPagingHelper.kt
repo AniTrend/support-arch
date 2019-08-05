@@ -1,5 +1,10 @@
 package io.wax911.support.data.util.pagination.contract
 
+/**
+ *
+ *
+ * @since v1.1.0
+ */
 interface ISupportPagingHelper {
 
     /**

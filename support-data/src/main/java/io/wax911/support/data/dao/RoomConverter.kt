@@ -1,5 +1,10 @@
 package io.wax911.support.data.dao
 
+/**
+ * A helper contract for [androidx.room.TypeConverter]
+ *
+ * @since v0.9.X
+ */
 interface RoomConverter<T> {
 
     /**

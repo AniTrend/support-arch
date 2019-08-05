@@ -16,6 +16,8 @@ import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
  * @param supportAdapter recycler view adapter which will be used
  * @param vertical if the layout adapter should be vertical or horizontal
  * @param recyclerLayoutManager optional layout manager if you do not wish to use the default
+ *
+ * @since 0.9.X
  */
 fun SupportRecyclerView.setUpWith(supportAdapter: SupportViewAdapter<*>, vertical: Boolean = true,
                                   recyclerLayoutManager: RecyclerView.LayoutManager? = null) {

@@ -23,6 +23,8 @@ import java.util.*
  *
  * @param context fragment activity used to create fragment manager that will interact with this adapter
  * @param defaultBehavior defaulted to [FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT]
+ *
+ * @since 0.9.X
  */
 abstract class SupportPageAdapter(
     protected val context: FragmentActivity,

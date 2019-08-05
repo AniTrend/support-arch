@@ -6,6 +6,8 @@ import kotlinx.android.parcel.Parcelize
 
 /**
  * Paging helper, makes the manipulating of paging related variables easier
+ *
+ * @since v1.1.0
  */
 @Parcelize
 data class SupportPagingHelper(

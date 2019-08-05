@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import io.wax911.sample.data.BuildConfig
 import io.wax911.sample.data.api.endpoint.MovieEndpoint
 import io.wax911.sample.data.api.endpoint.ShowEndpoint
+import io.wax911.sample.data.api.endpoint.contract.TraktEndpointFactory.Companion.GSON
 import io.wax911.sample.data.api.interceptor.AuthInterceptor
 import io.wax911.sample.data.api.interceptor.ClientInterceptor
 import io.wax911.sample.data.auth.AuthenticationHelper
@@ -21,6 +22,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 val dataModules = module {
@@ -78,6 +80,10 @@ val dataNetworkModules = module {
 
         Retrofit.Builder().client(
             okHttpClientBuilder.build()
+        ).addConverterFactory(
+            GsonConverterFactory.create(
+                GSON
+            )
         ).baseUrl(
             BuildConfig.apiUrl
         ).build()
