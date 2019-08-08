@@ -14,7 +14,7 @@ class AuthenticationHelper(
     private val connectivityHelper: SupportConnectivityHelper,
     private val jsonWebTokenDao: JsonWebTokenDao,
     private val settings: Settings
-): SupportAuthentication<Uri>() {
+): SupportAuthentication<Uri, Request.Builder>() {
 
     /**
      * Facade to provide information on authentication status of the application,
@@ -43,25 +43,24 @@ class AuthenticationHelper(
     }
 
     /**
-     * Injects authentication headers if the application was authenticated,
-     * otherwise non
+     * Performs core operation of applying authentication credentials
+     * at runtime
      *
-     * @param requestBuilder
+     * @param resource object that need to be manipulated
      */
-    override fun injectHeaders(requestBuilder: Request.Builder) {
+    override fun invoke(resource: Request.Builder) {
         assert(isAuthenticated)
         when (refreshToken()) {
             true -> {
                 val latestToken = jsonWebTokenDao.findLatest()
                 val tokenHeader = latestToken?.getTokenKey() ?: String.empty()
-                requestBuilder.addHeader(
+                resource.addHeader(
                     AUTHORIZATION,
                     tokenHeader
                 )
             }
             false -> onInvalidToken()
         }
-
     }
 
     /**
