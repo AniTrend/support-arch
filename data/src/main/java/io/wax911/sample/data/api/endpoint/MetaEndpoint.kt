@@ -1,5 +1,6 @@
 package io.wax911.sample.data.api.endpoint
 
+import io.wax911.sample.data.api.endpoint.contract.TraktEndpointFactory
 import io.wax911.sample.data.model.attribute.Country
 import io.wax911.sample.data.model.attribute.Genre
 import io.wax911.sample.data.model.attribute.Language
@@ -8,7 +9,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface MetaEndpoints {
+interface MetaEndpoint {
 
     @GET("/genres/{categoryType}")
     suspend fun getGenres(
@@ -24,4 +25,9 @@ interface MetaEndpoints {
     suspend fun getCountries(
         @Path("categoryType") mediaCategory: MediaCategory
     ): Response<List<Country>>
+
+
+    companion object : TraktEndpointFactory<MetaEndpoint>(
+        endpoint = MetaEndpoint::class
+    )
 }

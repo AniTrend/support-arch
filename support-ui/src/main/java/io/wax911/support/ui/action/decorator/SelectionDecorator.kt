@@ -9,7 +9,9 @@ import io.wax911.support.extension.getCompatColor
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
 
 /**
- * Action mode selection item decorator class
+ * A helper interface for applying decorations on sections for [io.wax911.support.ui.action.SupportActionMode]
+ *
+ * @since 0.9.X
  */
 interface SelectionDecorator<T> {
 

@@ -1,16 +1,33 @@
 package io.wax911.support.extension.util.contract
 
+import android.annotation.TargetApi
+import android.os.Build
+import io.wax911.support.extension.BuildConfig
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ *
+ *
+ * @since v1.1.0
+ */
 interface ISupportDateHelper {
 
     /**
-     * [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) date format pattern
+     * [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) date format pattern, this default pattern
+     * targets API level 24+
+     *
+     * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
+     * @since 1.2.0
      */
     val defaultInputDatePattern
-        get() =  "yyyy-MM-dd'T'HH:mm:ssXXX"
+        @TargetApi(Build.VERSION_CODES.N)
+        get() = "yyyy-MM-dd'T'HH:mm:ssXXX"
 
+    /**
+     * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
+     * @since 1.2.0
+     */
     val defaultOutputDatePattern
         get() =  "yyyy-MM-dd HH:mm:ss"
 
@@ -25,7 +42,9 @@ interface ISupportDateHelper {
      * by default the timezone is set to whatever the current device is set to
      *
      * @return date string following the output pattern of [outputDatePattern]
-     * @see [SimpleDateFormat](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html)
+     *
+     * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
+     * @since 1.2.0
      */
     fun convertFromUnixTimeStamp(
         unixTimeStamp: Long,
@@ -57,7 +76,9 @@ interface ISupportDateHelper {
      * by default the timezone is set to whatever the current device is set to
      *
      * @return Unix based time stamp of type [Long] measured in milliseconds
-     * @see [SimpleDateFormat](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html)
+     *
+     * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
+     * @since 1.2.0
      */
     fun convertToUnixTimeStamp(
         originDate: String,
@@ -90,7 +111,9 @@ interface ISupportDateHelper {
      * by default the timezone is set to whatever the current device is set to
      *
      * @return date string following the output pattern of [outputDatePattern]
-     * @see [SimpleDateFormat](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html)
+     *
+     * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
+     * @since 1.2.0
      */
     fun convertToTimeStamp(
         originDate: String,

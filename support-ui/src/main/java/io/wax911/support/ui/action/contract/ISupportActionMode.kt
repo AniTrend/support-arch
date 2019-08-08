@@ -4,6 +4,11 @@ import io.wax911.support.ui.action.decorator.SelectionDecorator
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
 
+/**
+ * Contract for action model
+ *
+ * @since 0.9.X
+ */
 interface ISupportActionMode<T> {
 
     /**

@@ -5,6 +5,6 @@ import android.os.Bundle
 /**
  * Observer publisher holder emitting events
  */
-class SupportObserver {
-    val bundle = Bundle()
-}
+data class SupportObserver(
+    val bundle: Bundle = Bundle()
+)

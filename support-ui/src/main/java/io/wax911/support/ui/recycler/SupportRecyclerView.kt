@@ -10,10 +10,9 @@ import io.wax911.support.ui.view.contract.CustomView
  * Class [SupportRecyclerView] extends [RecyclerView] and adds position management on configuration changes.
  *
  * @author FrantisekGazo
- * @version 2016-03-15
- * Modified by max
+ * @author wax911
+ * @since 0.9.X
  */
-
 class SupportRecyclerView : RecyclerView, CustomView {
 
     /**

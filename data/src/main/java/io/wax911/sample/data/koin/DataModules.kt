@@ -2,8 +2,12 @@ package io.wax911.sample.data.koin
 
 import android.content.Context
 import android.net.ConnectivityManager
-import io.wax911.sample.data.api.RetroFactory
+import io.wax911.sample.data.BuildConfig
+import io.wax911.sample.data.api.endpoint.MovieEndpoint
+import io.wax911.sample.data.api.endpoint.ShowEndpoint
+import io.wax911.sample.data.api.endpoint.contract.TraktEndpointFactory.Companion.GSON
 import io.wax911.sample.data.api.interceptor.AuthInterceptor
+import io.wax911.sample.data.api.interceptor.ClientInterceptor
 import io.wax911.sample.data.auth.AuthenticationHelper
 import io.wax911.sample.data.dao.TraktTrendDatabase
 import io.wax911.sample.data.repository.movie.MovieRepository
@@ -12,11 +16,14 @@ import io.wax911.sample.data.usecase.media.movie.MoviePagedListUseCase
 import io.wax911.sample.data.usecase.media.show.ShowPagedListUseCase
 import io.wax911.sample.data.util.Settings
 import io.wax911.support.data.auth.contract.ISupportAuthentication
-import io.wax911.support.data.factory.contract.IRetrofitFactory
-import io.wax911.support.data.factory.contract.getEndPointOf
 import io.wax911.support.extension.util.SupportConnectivityHelper
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 val dataModules = module {
     factory {
@@ -41,7 +48,6 @@ val dataModules = module {
 }
 
 val dataNetworkModules = module {
-
     factory {
         AuthInterceptor(
             authenticationHelper = get()
@@ -56,23 +62,44 @@ val dataNetworkModules = module {
         )
     }
 
-    single<IRetrofitFactory> {
-        RetroFactory(
-            authInterceptor = get<AuthInterceptor>()
-        )
+    single {
+        val okHttpClientBuilder = OkHttpClient.Builder()
+            .readTimeout(35, TimeUnit.SECONDS)
+            .connectTimeout(35, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
+            .addInterceptor(ClientInterceptor())
+            .authenticator(get<AuthInterceptor>())
+        when {
+            BuildConfig.DEBUG -> {
+                val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                }
+                okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
+            }
+        }
+
+        Retrofit.Builder().client(
+            okHttpClientBuilder.build()
+        ).addConverterFactory(
+            GsonConverterFactory.create(
+                GSON
+            )
+        ).baseUrl(
+            BuildConfig.apiUrl
+        ).build()
     }
 }
 
 val dataUseCaseModules = module {
     factory {
         ShowPagedListUseCase(
-            showEndpoint = get<IRetrofitFactory>().getEndPointOf(),
+            showEndpoint = ShowEndpoint.create(),
             showDao = get<TraktTrendDatabase>().showDao()
         )
     }
     factory {
         MoviePagedListUseCase(
-            movieEndpoint = get<IRetrofitFactory>().getEndPointOf(),
+            movieEndpoint = MovieEndpoint.create(),
             movieDao = get<TraktTrendDatabase>().movieDao()
         )
     }

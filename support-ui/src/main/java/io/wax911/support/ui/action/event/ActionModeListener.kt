@@ -7,6 +7,11 @@ import android.view.ActionMode.Callback
  * Created by max on 2017/07/17.
  * Action mode trigger supportActionMode
  */
+/**
+ * Contract for action mode trigger
+ *
+ * @since 0.9.X
+ */
 interface ActionModeListener : Callback {
 
     /**

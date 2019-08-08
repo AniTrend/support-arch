@@ -2,6 +2,11 @@ package io.wax911.support.data.source.contract
 
 import androidx.lifecycle.LiveData
 
+/**
+ *
+ *
+ * @since v1.1.0
+ */
 interface ISourceObservable<O, P> {
 
     /**

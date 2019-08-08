@@ -1,8 +1,11 @@
 package io.wax911.support.data.auth.contract
 
-import okhttp3.Request
-
-interface ISupportAuthentication {
+/**
+ * Contract for token authentication use-cases
+ *
+ * @since v1.1.X
+ */
+interface ISupportAuthentication<R> {
 
     /**
      * Facade to provide information on authentication status of the application,
@@ -11,10 +14,10 @@ interface ISupportAuthentication {
     val isAuthenticated: Boolean
 
     /**
-     * Injects authentication headers if the application was authenticated,
-     * otherwise non
+     * Performs core operation of applying authentication credentials
+     * at runtime
      *
-     * @param requestBuilder
+     * @param resource object that need to be manipulated
      */
-    fun injectHeaders(requestBuilder: Request.Builder)
+    operator fun invoke(resource: R)
 }

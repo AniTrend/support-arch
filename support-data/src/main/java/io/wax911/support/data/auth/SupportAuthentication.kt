@@ -2,7 +2,13 @@ package io.wax911.support.data.auth
 
 import io.wax911.support.data.auth.contract.ISupportAuthentication
 
-abstract class SupportAuthentication<T> : ISupportAuthentication {
+/**
+ * An abstract helper class for solving authentication use-cases with tokens which may expire
+ * and require refreshing
+ *
+ * @since v1.1.X
+ */
+abstract class SupportAuthentication<T, R> : ISupportAuthentication<R> {
 
     protected val moduleTag: String = javaClass.simpleName
 

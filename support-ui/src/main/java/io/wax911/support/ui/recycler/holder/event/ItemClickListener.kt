@@ -3,10 +3,11 @@ package io.wax911.support.ui.recycler.holder.event
 import android.view.View
 
 /**
- * Created by max on 2017/11/15.
- * a click listener for view holders
+ * A click listener for view adapters with additional parameters for position
+ * and model that has been interacted with
+ *
+ * @since v1.1.0
  */
-
 interface ItemClickListener<T> {
 
     /**

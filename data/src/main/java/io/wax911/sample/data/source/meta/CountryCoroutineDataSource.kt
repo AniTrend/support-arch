@@ -1,6 +1,6 @@
 package io.wax911.sample.data.source.meta
 
-import io.wax911.sample.data.api.endpoint.MetaEndpoints
+import io.wax911.sample.data.api.endpoint.MetaEndpoint
 import io.wax911.sample.data.dao.query.CountryDao
 import io.wax911.sample.data.mapper.meta.CountryMapper
 import io.wax911.sample.data.model.meta.MediaCategory
@@ -10,7 +10,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 
 class CountryCoroutineDataSource(
-    private val metaEndpoints: MetaEndpoints,
+    private val metaEndpoint: MetaEndpoint,
     private val countryDao: CountryDao,
     private val mediaCategory: MediaCategory,
     job: Job? = null
@@ -25,7 +25,7 @@ class CountryCoroutineDataSource(
     override suspend fun invoke(): NetworkState {
         super.invoke()
         val result = async {
-            metaEndpoints.getCountries(mediaCategory)
+            metaEndpoint.getCountries(mediaCategory)
         }
 
         val mapper = CountryMapper(

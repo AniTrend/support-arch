@@ -18,13 +18,17 @@ import io.wax911.support.ui.view.contract.ISupportFragmentActivity
 import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
+/**
+ *
+ * @since 0.9.X
+ */
 abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), ISupportFragmentActivity<M, P>, SupportCoroutineHelper {
 
     protected val moduleTag: String = javaClass.simpleName
 
     private var isClosing: Boolean = false
 
-    protected var ISupportFragmentActivity : ISupportFragmentActivity<*, *>? = null
+    protected var supportFragmentActivity : ISupportFragmentActivity<*, *>? = null
 
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
@@ -99,17 +103,9 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
      * as appropriate.
      */
     override fun onBackPressed() {
-        if (ISupportFragmentActivity?.hasBackPressableAction() == true)
+        if (supportFragmentActivity?.hasBackPressableAction() == true)
             return
         return super.onBackPressed()
-    }
-
-    /**
-     * Called when the data is changed.
-     * @param data The new data
-     */
-    override fun onChanged(data: M?) {
-        Timber.tag(moduleTag).i("onChanged() from view liveData has received data")
     }
 
     override fun onSharedPreferenceChanged(preference: SharedPreferences?, key: String?) {

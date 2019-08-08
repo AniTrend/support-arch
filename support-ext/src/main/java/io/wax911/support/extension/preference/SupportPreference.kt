@@ -2,7 +2,7 @@ package io.wax911.support.extension.preference
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import io.wax911.support.extension.LAZY_MODE_UNSAFE
 
 abstract class SupportPreference(context: Context) {

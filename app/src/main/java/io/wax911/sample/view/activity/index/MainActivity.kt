@@ -72,7 +72,7 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
             setNavigationItemSelectedListener(this@MainActivity)
             setCheckedItem(selectedItem)
         }
-        updateUI()
+        onUpdateUserInterface()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -81,12 +81,10 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
         super.onSaveInstanceState(outState)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState != null) {
-            selectedItem = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_selected)
-            selectedTitle = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_title)
-        }
+        selectedItem = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_selected)
+        selectedTitle = savedInstanceState.getInt(SupportUiKeyStore.key_navigation_title)
     }
 
     override fun onBackPressed() {
@@ -162,21 +160,21 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
         bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
 
         supportFragment?.apply {
-            ISupportFragmentActivity = this@apply
+            supportFragmentActivity = this@apply
             supportFragmentManager.commit {
                 replace(R.id.contentFrame, this@apply, tag)
             }
         }
     }
 
-    override fun updateUI() {
+    override fun onUpdateUserInterface() {
         if (selectedItem != 0)
             onNavigate(selectedItem)
         else
             onNavigate(R.id.nav_popular_series)
     }
 
-    override fun makeRequest() {
+    override fun onFetchDataInitialize() {
 
     }
 }

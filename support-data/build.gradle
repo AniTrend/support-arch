@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion minSdk
         targetSdkVersion targetSdk
-        versionCode versionCode
-        versionName versionName
+        versionCode versionProductionCode
+        versionName versionProductionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -20,15 +20,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     testOptions {
         unitTests.returnDefaultValues = true
     }
     lintOptions {
         abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
@@ -51,7 +54,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
     implementation "androidx.room:room-ktx:$room"
     implementation "androidx.room:room-runtime:$room"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
@@ -78,7 +81,7 @@ dokka {
 
     linkMapping {
         dir = "src/main/java"
-        url = "https://github.com/AniTrend/support-app/tree/experimental/paging/support-data/src/main/java"
+        url = "https://github.com/anitrend/support-arch/tree/experimental/paging/support-data/src/main/java"
         suffix = "#L"
     }
 }

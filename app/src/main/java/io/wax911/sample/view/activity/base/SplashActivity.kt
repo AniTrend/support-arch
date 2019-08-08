@@ -8,7 +8,6 @@ import io.wax911.sample.databinding.ActivitySplashBinding
 import io.wax911.sample.view.activity.index.MainActivity
 import io.wax911.support.extension.startNewActivity
 import io.wax911.support.extension.util.SupportDateHelper
-import io.wax911.support.extension.util.contract.ISupportDateHelper
 import io.wax911.support.ui.activity.SupportActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -42,7 +41,7 @@ class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
             SupportDateHelper().getCurrentYear(0)
         )
         binding?.splashDescription?.text = description
-        makeRequest()
+        onFetchDataInitialize()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +49,7 @@ class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
         setContentView(binding?.root)
     }
 
-    override fun updateUI() {
+    override fun onUpdateUserInterface() {
         launch {
             delay(1000)
             withContext(Dispatchers.Main) {
@@ -61,8 +60,8 @@ class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
 
     }
 
-    override fun makeRequest() {
+    override fun onFetchDataInitialize() {
         supportPresenter.syncMetaData()
-        updateUI()
+        onUpdateUserInterface()
     }
 }

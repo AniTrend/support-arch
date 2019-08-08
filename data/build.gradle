@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion minSdk
         targetSdkVersion targetSdk
-        versionCode versionCode
-        versionName versionName
+        versionCode versionProductionCode
+        versionName versionProductionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -45,12 +45,15 @@ android {
             it.buildConfigField("int", "DATABASE_SCHEMA_VERSION", DATABASE_SCHEMA_VERSION)
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
     testOptions {
         unitTests.returnDefaultValues = true
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
@@ -83,7 +86,7 @@ dependencies {
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$androidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
     implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
     implementation "androidx.paging:paging-runtime:$paging"
     implementation "androidx.room:room-runtime:$room"

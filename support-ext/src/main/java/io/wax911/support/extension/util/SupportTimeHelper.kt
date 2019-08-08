@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
  *
  * @param supportCurrentUnixTime time to convert using the given [SupportDateTimeUnit]
  * @param supportTimeType type of comparison between the epoch time and target
- * @param supportTargetTime unit to compare against [supportCurrentUnixTime] - [SupportTime]
+ * @param supportTargetTime unit to compare against [supportCurrentUnixTime] - [SupportTimeInstance]
  * of the last checkpoint passed into [hasElapsed]
  */
 class SupportTimeHelper(
@@ -24,23 +24,23 @@ class SupportTimeHelper(
      * Checks if the time unix timestamp has a difference greater than or equal to the
      * [supportTargetTime] which has a measurement unit of [SupportDateTimeUnit]
      */
-    fun hasElapsed(unixTimeStamp: SupportTime) : Boolean {
+    fun hasElapsed(unixTimeInstance: SupportTimeInstance) : Boolean {
         return when (supportTimeType) {
             TIME_UNIT_DAYS ->
                 defaultSystemUnit.toDays(
-                    supportCurrentUnixTime - unixTimeStamp
+                    supportCurrentUnixTime - unixTimeInstance
                 ) >= supportTargetTime
             TIME_UNIT_HOURS ->
                 defaultSystemUnit.toHours(
-                    supportCurrentUnixTime - unixTimeStamp
+                    supportCurrentUnixTime - unixTimeInstance
                 ) >= supportTargetTime
             TIME_UNIT_MINUTES ->
                 defaultSystemUnit.toMinutes(
-                    supportCurrentUnixTime - unixTimeStamp
+                    supportCurrentUnixTime - unixTimeInstance
                 ) >= supportTargetTime
             TIME_UNITS_SECONDS ->
                 defaultSystemUnit.toSeconds(
-                    supportCurrentUnixTime - unixTimeStamp
+                    supportCurrentUnixTime - unixTimeInstance
                 ) >= supportTargetTime
             else -> false
         }
@@ -64,4 +64,4 @@ class SupportTimeHelper(
     }
 }
 
-typealias SupportTime = Long
+typealias SupportTimeInstance = Long

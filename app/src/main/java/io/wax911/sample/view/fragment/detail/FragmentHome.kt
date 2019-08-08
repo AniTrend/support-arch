@@ -80,19 +80,11 @@ class FragmentHome: SupportFragment<Nothing, CorePresenter, Nothing>()  {
     /**
      * Update views or bind a liveData to them
      */
-    override fun updateUI() {
+    override fun onUpdateUserInterface() {
 
     }
 
-    override fun makeRequest() {
-
-    }
-
-    /**
-     * Called when the data is changed.
-     * @param model The new data
-     */
-    override fun onChanged(model: Nothing?) {
+    override fun onFetchDataInitialize() {
 
     }
 

@@ -1,18 +1,21 @@
 package io.wax911.support.core.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import androidx.lifecycle.Transformations.map
-import androidx.lifecycle.ViewModel
 import io.wax911.support.core.viewmodel.contract.ISupportViewModel
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.model.UiModel
-import io.wax911.support.data.repository.SupportRepository
 import io.wax911.support.data.repository.contract.ISupportRepository
 
+/**
+ * A helper view model class that provides models, network states to the calling view
+ *
+ * @param repository
+ * @param state
+ */
 abstract class SupportViewModel<M, P>(
-    private val repository : ISupportRepository<M, P>
+    private val repository : ISupportRepository<M, P>,
+    private val state: SavedStateHandle? = null
 ) : ViewModel(), ISupportViewModel<M, P> {
 
     private val requestBundleLiveData = MutableLiveData<P>()

@@ -2,6 +2,11 @@ package io.wax911.support.data.source.core.contract
 
 import io.wax911.support.data.source.contract.IDataSource
 
+/**
+ *
+ *
+ * @since v1.1.0
+ */
 interface ICoreDataSource : IDataSource {
 
     /**

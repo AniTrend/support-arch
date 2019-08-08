@@ -3,6 +3,11 @@ package io.wax911.support.data.source.paging.contract
 import androidx.paging.PagingRequestHelper
 import io.wax911.support.data.source.contract.IDataSource
 
+/**
+ *
+ *
+ * @since v1.1.0
+ */
 interface IPagingDataSource : IDataSource {
 
     /**

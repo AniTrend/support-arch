@@ -13,6 +13,8 @@ import retrofit2.Response
  *
  * @param parentCoroutineJob parent coroutine from something that is lifecycle aware,
  * this enables us to cancels jobs automatically when the parent is also canceled
+ *
+ * @since v1.1.0
  */
 abstract class SupportPagingDataMapper<S, D>(
     private val pagingRequestCallback: PagingRequestHelper.Request.Callback,

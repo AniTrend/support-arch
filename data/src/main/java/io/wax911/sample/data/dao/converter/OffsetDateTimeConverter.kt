@@ -1,7 +1,7 @@
 package io.wax911.sample.data.dao.converter
 
 import androidx.room.TypeConverter
-import io.wax911.sample.data.api.RetroFactory
+import io.wax911.sample.data.api.endpoint.contract.TraktEndpointFactory
 import io.wax911.sample.data.extension.getTypeToken
 import io.wax911.support.data.dao.RoomConverter
 import java.time.OffsetDateTime
@@ -16,7 +16,7 @@ class OffsetDateTimeConverter: RoomConverter<OffsetDateTime> {
      */
     @TypeConverter
     override fun fromDatabaseValue(dbValue: String): OffsetDateTime? {
-        return RetroFactory.gson.fromJson(dbValue, getTypeToken<OffsetDateTime>())
+        return TraktEndpointFactory.GSON.fromJson(dbValue, getTypeToken<OffsetDateTime>())
     }
 
     /**
@@ -28,6 +28,6 @@ class OffsetDateTimeConverter: RoomConverter<OffsetDateTime> {
      */
     @TypeConverter
     override fun toDatabaseValue(entity: OffsetDateTime?): String {
-        return RetroFactory.gson.toJson(entity)
+        return TraktEndpointFactory.GSON.toJson(entity)
     }
 }

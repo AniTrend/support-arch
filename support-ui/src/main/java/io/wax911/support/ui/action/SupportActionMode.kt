@@ -9,9 +9,11 @@ import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
 import java.util.*
 
+
 /**
- * Created by max on 2017/07/17.
- * Custom action mode holder class
+ * A helper class for triggering action mode from [SupportViewHolder]
+ *
+ * @since 0.9.X
  */
 class SupportActionMode<T>(
     private val actionModeListener: ActionModeListener?,

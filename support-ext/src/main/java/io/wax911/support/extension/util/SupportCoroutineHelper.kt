@@ -3,6 +3,11 @@ package io.wax911.support.extension.util
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
+/**
+ *
+ *
+ * @since v1.1.0
+ */
 interface SupportCoroutineHelper : CoroutineScope {
 
     /**

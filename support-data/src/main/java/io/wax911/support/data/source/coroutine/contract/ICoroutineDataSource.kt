@@ -3,6 +3,11 @@ package io.wax911.support.data.source.coroutine.contract
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.source.contract.IDataSource
 
+/**
+ *
+ *
+ * @since v1.1.0
+ */
 interface ICoroutineDataSource : IDataSource {
 
     /**

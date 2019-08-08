@@ -8,6 +8,9 @@ import kotlinx.coroutines.*
  *
  * @param parentCoroutineJob parent coroutine from something that is lifecycle aware,
  * this enables us to cancels jobs automatically when the parent is also canceled
+ *
+ *
+ * @since v1.1.0
  */
 abstract class SupportDataMapper<S, D>(
     parentCoroutineJob: Job? = null

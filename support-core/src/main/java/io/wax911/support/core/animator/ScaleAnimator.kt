@@ -4,16 +4,18 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
 import android.view.animation.LinearInterpolator
-import io.wax911.support.core.animator.contract.SupportAnimator
+import io.wax911.support.core.animator.contract.ISupportAnimator
 
 /**
  * Created by max on 2018/02/24.
+ *
+ * Scale animator for recycler animations
  */
 
 class ScaleAnimator(
     private val from: Float = .85f,
     private val to: Float = 1f
-) : SupportAnimator {
+) : ISupportAnimator {
 
     override val interpolator = LinearInterpolator()
 

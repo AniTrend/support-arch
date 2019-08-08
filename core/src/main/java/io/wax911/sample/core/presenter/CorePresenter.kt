@@ -1,10 +1,7 @@
 package io.wax911.sample.core.presenter
 
 import android.content.Context
-import androidx.work.BackoffPolicy
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import io.wax911.sample.core.worker.CountryFetchWorker
 import io.wax911.sample.core.worker.GenreFetchWorker
 import io.wax911.sample.core.worker.LanguageFetchWorker
@@ -21,17 +18,17 @@ class CorePresenter(
      * Invokes works to run in the background to fetch genres and tags
      */
     fun syncMetaData() {
-        val countryWorker = OneTimeWorkRequestBuilder<CountryFetchWorker>()
+        val countryWorker = OneTimeWorkRequest.Builder(CountryFetchWorker::class.java)
             .setBackoffCriteria(BackoffPolicy.LINEAR, 20, TimeUnit.SECONDS)
             .addTag(CountryFetchWorker.TAG)
             .build()
 
-        val genreWorker = OneTimeWorkRequestBuilder<GenreFetchWorker>()
+        val genreWorker = OneTimeWorkRequest.Builder(GenreFetchWorker::class.java)
             .setBackoffCriteria(BackoffPolicy.LINEAR, 20, TimeUnit.SECONDS)
             .addTag(GenreFetchWorker.TAG)
             .build()
 
-        val languageWorker = OneTimeWorkRequestBuilder<LanguageFetchWorker>()
+        val languageWorker = OneTimeWorkRequest.Builder(LanguageFetchWorker::class.java)
             .setBackoffCriteria(BackoffPolicy.LINEAR, 20, TimeUnit.SECONDS)
             .addTag(LanguageFetchWorker.TAG)
             .build()

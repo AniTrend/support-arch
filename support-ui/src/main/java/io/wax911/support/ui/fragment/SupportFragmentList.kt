@@ -23,10 +23,13 @@ import io.wax911.support.ui.extension.onResponseResetStates
 import io.wax911.support.ui.fragment.contract.ISupportFragmentList
 import io.wax911.support.ui.recycler.SupportRecyclerView
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
-import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import io.wax911.support.ui.view.widget.SupportStateLayout
 import timber.log.Timber
 
+/**
+ *
+ * @since 0.9.X
+ */
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFragment<M, P, VM>(),
     ISupportFragmentList<M>, SwipeRefreshLayout.OnRefreshListener {
 
@@ -49,7 +52,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     private val snackBarOnClickListener = View.OnClickListener {
         if (supportStateLayout?.isLoading != true) {
             supportViewAdapter.networkState = NetworkState.LOADING
-            makeRequest()
+            onFetchDataInitialize()
             resetWidgetStates()
         } else
             Timber.tag(moduleTag).w("snackBarOnClickListener -> supportStateLayout is currently loading")
@@ -139,10 +142,17 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         supportRecyclerView?.apply {
             setHasFixedSize(true)
             isNestedScrollingEnabled = true
-            layoutManager = StaggeredGridLayoutManager(
-                resources.getInteger(columnSize),
-                StaggeredGridLayoutManager.VERTICAL
-            )
+            if (layoutManager == null)
+                layoutManager = StaggeredGridLayoutManager(
+                    resources.getInteger(columnSize),
+                    StaggeredGridLayoutManager.VERTICAL
+                )
+            if (adapter == null) {
+                adapter = supportViewAdapter.also {
+                    if (it.supportAction == null)
+                        it.supportAction = supportAction
+                }
+            }
         }
 
         supportStateLayout?.showLoading(loadingMessage = loadingMessage)
@@ -162,8 +172,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     override fun onStart() {
         super.onStart()
         when (supportViewAdapter.isEmpty()) {
-            true -> makeRequest()
-            else -> updateUI()
+            true -> onFetchDataInitialize()
+            else -> onUpdateUserInterface()
         }
     }
 
@@ -262,22 +272,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         supportViewModel?.refresh()
     }
 
-    /**
-     * Sets up the [io.wax911.support.ui.recycler.SupportRecyclerView] with
-     * [io.wax911.support.ui.recycler.adapter.SupportViewAdapter]
-     * and additional properties if needed, after it will change the state layout to empty or content.
-     */
-    override fun injectAdapter() {
-        supportViewAdapter.also {
-            when {
-                supportRecyclerView?.adapter == null -> {
-                    it.supportAction = supportAction
-                    supportRecyclerView?.adapter = it
-                }
-                else -> it.applyFilterIfRequired()
-            }
-        }
-    }
+
 
     /**
      * Handles post view model result after extraction or processing
@@ -285,11 +280,13 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
      * @param pagedList paged list holding data
      */
     override fun onPostModelChange(pagedList: PagedList<M>?) {
-        supportViewAdapter.submitList(pagedList)
+        with (supportViewAdapter) {
+            submitList(pagedList)
+            applyFilterIfRequired()
+        }
         supportRefreshLayout?.onResponseResetStates()
         supportStateLayout?.showContent()
-        injectAdapter()
-        updateUI()
+        onUpdateUserInterface()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {

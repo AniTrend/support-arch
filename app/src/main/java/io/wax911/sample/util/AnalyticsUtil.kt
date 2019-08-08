@@ -45,16 +45,17 @@ class AnalyticsUtil(context: Context): Timber.Tree(), ISupportAnalytics {
         }
     }
 
-    override fun logCurrentScreen(context: FragmentActivity, tag : String) {
+    override fun logCurrentScreen(context: FragmentActivity?, tag : String) {
         fabric?.currentActivity = context
-        analytics.setCurrentScreen(context, tag, null)
+        if (context != null)
+            analytics.setCurrentScreen(context, tag, null)
     }
 
     override fun logCurrentState(tag: String, bundle: Bundle) =
         analytics.logEvent(tag, bundle)
 
 
-    override fun logException(throwable: Throwable) =
+    override fun logException(throwable: Throwable?) =
         Crashlytics.logException(throwable)
 
     override fun log(priority: Int, tag: String?, message: String) =

@@ -2,6 +2,7 @@ package io.wax911.sample.view.fragment.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import io.wax911.sample.R
 import io.wax911.sample.adapter.recycler.ShowAdapter
@@ -58,7 +59,9 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
      * Invoke view model observer to watch for changes
      */
     override fun setUpViewModelObserver() {
-        supportViewModel.model.observe(this, this)
+        supportViewModel.model.observe(this, Observer {
+            onPostModelChange(it)
+        })
     }
 
     /**
@@ -81,7 +84,7 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
      *
      * Check implementation for more details
      */
-    override fun updateUI() {
+    override fun onUpdateUserInterface() {
 
     }
 
@@ -94,7 +97,7 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
      *
      * @see [SupportRepository.publishResult]
      */
-    override fun makeRequest() {
+    override fun onFetchDataInitialize() {
         val isNull = pagingMediaPayload?.also {
             supportViewModel(
                 parameter = it
@@ -106,14 +109,6 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
                     msg = "Media category not selected"
                 )
             )
-    }
-
-    /**
-     * Called when the data is changed.
-     * @param t  The new data
-     */
-    override fun onChanged(t: PagedList<Show>?) {
-        onPostModelChange(t)
     }
 
     companion object : InstanceCreator<FragmentShowList, IPagedMediaUseCase.Payload>({

@@ -6,6 +6,10 @@ import io.wax911.support.ui.R
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
 import io.wax911.support.ui.view.text.SingleLineTextView
 
+/**
+ *
+ * @since 0.9.X
+ */
 class SupportFooterViewHolder<T>(view: View) : SupportViewHolder<T>(view.rootView) {
 
     private val stateText : SingleLineTextView? = view.findViewById(R.id.stateText)
