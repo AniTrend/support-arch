@@ -63,12 +63,18 @@ dokka {
     moduleName = 'ext'
     outputFormat = 'kotlin-website'
     outputDirectory = "$buildDir/javadoc"
+    reportUndocumented = true
 
     linkMapping {
         dir = "src/main/java"
-        url = "https://github.com/anitrend/support-arch/tree/experimental/paging/support-ext/src/main/java"
+        url = "https://github.com/anitrend/support-arch/tree/develop/paging/support-ext/src/main/java"
         suffix = "#L"
     }
+}
+
+task dokkaJar(type: Jar) {
+    classifier = 'javadoc'
+    from dokka
 }
 
 task sourcesJar(type: Jar) {

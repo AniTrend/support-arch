@@ -74,12 +74,18 @@ dokka {
     moduleName = 'ui'
     outputFormat = 'kotlin-website'
     outputDirectory = "$buildDir/javadoc"
+    reportUndocumented = true
 
     linkMapping {
         dir = "src/main/java"
-        url = "https://github.com/AniTrend/support-app/tree/experimental/paging/support-ui/src/main/java"
+        url = "https://github.com/anitrend/support-app/tree/develop/paging/support-ui/src/main/java"
         suffix = "#L"
     }
+}
+
+task dokkaJar(type: Jar) {
+    classifier = 'javadoc'
+    from dokka
 }
 
 task sourcesJar(type: Jar) {
