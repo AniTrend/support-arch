@@ -1,12 +1,9 @@
 package io.wax911.support.data.mapper
 
 import androidx.paging.PagingRequestHelper
-import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.mapper.contract.ISupportDataMapper
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import retrofit2.Response
 
 /**
  * Provides functionality for mapping objects from one type to another

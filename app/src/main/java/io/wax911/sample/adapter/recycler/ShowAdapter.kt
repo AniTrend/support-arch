@@ -3,7 +3,6 @@ package io.wax911.sample.adapter.recycler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.wax911.sample.data.model.contract.TraktEntity
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.databinding.AdapterMediaItemBinding
 import io.wax911.support.core.presenter.SupportPresenter

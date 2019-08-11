@@ -1,7 +1,8 @@
 package io.wax911.support.data.mapper
 
 import io.wax911.support.data.mapper.contract.ISupportDataMapper
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 
 /**
  * Provides functionality for mapping objects from one type to another

@@ -2,7 +2,6 @@ package io.wax911.support.extension.util.contract
 
 import android.annotation.TargetApi
 import android.os.Build
-import io.wax911.support.extension.BuildConfig
 import java.text.SimpleDateFormat
 import java.util.*
 

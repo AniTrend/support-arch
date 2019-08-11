@@ -1,6 +1,9 @@
 package io.wax911.support.extension.util
 
-import android.net.*
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import androidx.lifecycle.*
 
 /**

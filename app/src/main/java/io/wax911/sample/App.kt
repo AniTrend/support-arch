@@ -5,7 +5,10 @@ import androidx.work.Configuration
 import io.wax911.sample.core.koin.coreModules
 import io.wax911.sample.core.koin.corePresenterModules
 import io.wax911.sample.core.koin.coreViewModelModules
-import io.wax911.sample.data.koin.*
+import io.wax911.sample.data.koin.dataModules
+import io.wax911.sample.data.koin.dataNetworkModules
+import io.wax911.sample.data.koin.dataRepositoryModules
+import io.wax911.sample.data.koin.dataUseCaseModules
 import io.wax911.sample.koin.appModules
 import io.wax911.sample.util.AnalyticsUtil
 import io.wax911.support.core.analytic.contract.ISupportAnalytics

@@ -2,7 +2,6 @@ package io.wax911.support.data.source.core
 
 import androidx.lifecycle.MutableLiveData
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.source.contract.IDataSource
 import io.wax911.support.data.source.core.contract.ICoreDataSource
 import io.wax911.support.extension.util.SupportConnectivityHelper
 import kotlinx.coroutines.Job

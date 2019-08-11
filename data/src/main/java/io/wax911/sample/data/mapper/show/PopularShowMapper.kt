@@ -3,10 +3,7 @@ package io.wax911.sample.data.mapper.show
 import androidx.paging.PagingRequestHelper
 import io.wax911.sample.data.arch.mapper.TraktTrendMapper
 import io.wax911.sample.data.dao.query.ShowDao
-import io.wax911.sample.data.model.container.Trending
 import io.wax911.sample.data.model.show.Show
-import io.wax911.support.data.mapper.SupportPagingDataMapper
-import retrofit2.Response
 import timber.log.Timber
 
 class PopularShowMapper(

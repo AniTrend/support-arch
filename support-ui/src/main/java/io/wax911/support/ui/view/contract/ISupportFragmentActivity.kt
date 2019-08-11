@@ -2,7 +2,6 @@ package io.wax911.support.ui.view.contract
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.core.viewmodel.SupportViewModel
 import io.wax911.support.data.repository.SupportRepository

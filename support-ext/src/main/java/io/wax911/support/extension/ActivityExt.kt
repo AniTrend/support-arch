@@ -2,10 +2,8 @@ package io.wax911.support.extension
 
 import android.app.Activity
 import android.content.Intent
-import android.view.Menu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.annotation.MenuRes
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
@@ -14,8 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 
 /**
  * Request to hide the soft input window from the context of the window

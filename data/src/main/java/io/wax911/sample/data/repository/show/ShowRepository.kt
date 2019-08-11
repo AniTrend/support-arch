@@ -3,7 +3,6 @@ package io.wax911.sample.data.repository.show
 import androidx.paging.PagedList
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.usecase.media.contract.IPagedMediaUseCase
-import io.wax911.sample.data.usecase.media.show.ShowPagedListUseCase
 import io.wax911.support.data.repository.SupportRepository
 
 class ShowRepository(
