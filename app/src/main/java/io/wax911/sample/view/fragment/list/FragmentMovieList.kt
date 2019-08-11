@@ -15,6 +15,7 @@ import io.wax911.sample.data.usecase.media.MediaRequestType
 import io.wax911.sample.data.usecase.media.contract.IPagedMediaUseCase
 import io.wax911.support.core.factory.InstanceCreator
 import io.wax911.support.data.model.NetworkState
+import io.wax911.support.extension.extras
 import io.wax911.support.ui.fragment.SupportFragment
 import io.wax911.support.ui.fragment.SupportFragmentList
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
@@ -57,7 +58,12 @@ class FragmentMovieList: SupportFragmentList<Movie, CorePresenter, PagedList<Mov
     override val retryButtonText: Int = R.string.action_retry
     override val columnSize: Int = R.integer.single_list_size
 
-    private var pagingMediaPayload: IPagedMediaUseCase.Payload? = null
+    private val pagingMediaPayload by extras(
+        MediaRequestType.selectedMediaType,
+        IPagedMediaUseCase.Payload(
+            MediaRequestType.MEDIA_TYPE_POPULAR
+        )
+    )
 
     /**
      * Invoke view model observer to watch for changes
@@ -77,9 +83,7 @@ class FragmentMovieList: SupportFragmentList<Movie, CorePresenter, PagedList<Mov
      * @param
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        pagingMediaPayload = arguments?.getParcelable(
-            MediaRequestType.selectedMediaType
-        )
+
     }
 
     /**
@@ -90,17 +94,9 @@ class FragmentMovieList: SupportFragmentList<Movie, CorePresenter, PagedList<Mov
     }
 
     override fun onFetchDataInitialize() {
-        val isNull = pagingMediaPayload?.also {
-            supportViewModel(
-                parameter = it
-            )
-        } == null
-        if (isNull)
-            changeLayoutState(
-                NetworkState.error(
-                    msg = "Media category not selected"
-                )
-            )
+        supportViewModel(
+            parameter = pagingMediaPayload
+        )
     }
 
     companion object : InstanceCreator<FragmentMovieList, IPagedMediaUseCase.Payload>({
