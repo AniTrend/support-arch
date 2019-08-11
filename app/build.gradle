@@ -65,8 +65,6 @@ dependencies {
     /** Material Design */
     implementation "com.google.android.material:material:$material"
 
-    implementation "androidx.constraintlayout:constraintlayout:$constraint"
-
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
     implementation "androidx.paging:paging-runtime:$paging"
@@ -75,6 +73,7 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshX"
