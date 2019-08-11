@@ -17,8 +17,7 @@ import org.koin.android.ext.android.inject
 
 class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
 
-    private val binding: ActivitySplashBinding?
-        get() = ActivitySplashBinding.inflate(layoutInflater)
+    private lateinit var binding: ActivitySplashBinding
 
     /**
      * Should be created lazily through injection or lazy delegate
@@ -40,13 +39,14 @@ class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
             R.string.app_splash_description,
             SupportDateHelper().getCurrentYear(0)
         )
-        binding?.splashDescription?.text = description
+        binding.splashDescription.text = description
         onFetchDataInitialize()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding?.root)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     override fun onUpdateUserInterface() {

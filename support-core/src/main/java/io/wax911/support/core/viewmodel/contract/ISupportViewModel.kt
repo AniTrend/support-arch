@@ -2,7 +2,6 @@ package io.wax911.support.core.viewmodel.contract
 
 import androidx.lifecycle.LiveData
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.repository.SupportRepository
 
 /**
  * Contract for view models that aids relaying commands to an underlying repository

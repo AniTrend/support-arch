@@ -2,19 +2,16 @@ package io.wax911.support.extension
 
 import android.app.Activity
 import android.content.Intent
-import android.view.Menu
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.annotation.MenuRes
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 
 /**
  * Request to hide the soft input window from the context of the window
@@ -49,3 +46,43 @@ fun FragmentActivity.startSharedTransitionActivity(target : View, data : Intent)
  */
 fun LifecycleOwner.isStateAtLeast(state: Lifecycle.State) =
     lifecycle.currentState.isAtLeast(state)
+
+/**
+ * Lazy intent parameters for fragment activities
+ *
+ * @param key lookup key for the embedded item in the [FragmentActivity.getIntent]
+ * @param default default value to use when key does not exist
+ *
+ * @return [Lazy] of the target type
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T : Any> FragmentActivity.extras(key: String, default: T) = lazy(LAZY_MODE_PUBLICATION) {
+    try {
+        if (intent?.extras?.containsKey(key) == true)
+            intent?.extras?.get(key) as T
+        else
+            default
+    } catch (e: Exception) {
+        error(e)
+    }
+}
+
+/**
+ * Lazy intent parameters for fragments
+ *
+ * @param key lookup key for the embedded item in the [Fragment.getArguments]
+ * @param default default value to use when key does not exist
+ *
+ * @return [Lazy] of the target type
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T : Any> Fragment.extras(key: String, default: T) = lazy(LAZY_MODE_PUBLICATION) {
+    try {
+        if (arguments?.containsKey(key) == true)
+            arguments?.get(key) as T
+        else
+            default
+    } catch (e: Exception) {
+        error(e)
+    }
+}

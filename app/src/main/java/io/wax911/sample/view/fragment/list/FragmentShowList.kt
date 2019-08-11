@@ -13,8 +13,7 @@ import io.wax911.sample.data.usecase.media.MediaRequestType
 import io.wax911.sample.data.usecase.media.contract.IPagedMediaUseCase
 import io.wax911.support.core.factory.InstanceCreator
 import io.wax911.support.core.viewmodel.SupportViewModel
-import io.wax911.support.data.model.NetworkState
-import io.wax911.support.extension.util.SupportExtKeyStore
+import io.wax911.support.extension.extras
 import io.wax911.support.ui.fragment.SupportFragmentList
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import org.koin.android.ext.android.inject
@@ -53,7 +52,12 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
     override val retryButtonText: Int = R.string.action_retry
     override val columnSize: Int = R.integer.single_list_size
 
-    private var pagingMediaPayload: IPagedMediaUseCase.Payload? = null
+    private val pagingMediaPayload by extras(
+        MediaRequestType.selectedMediaType,
+        IPagedMediaUseCase.Payload(
+            MediaRequestType.MEDIA_TYPE_POPULAR
+        )
+    )
 
     /**
      * Invoke view model observer to watch for changes
@@ -73,9 +77,7 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
      * @param
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
-        pagingMediaPayload = arguments?.getParcelable(
-            MediaRequestType.selectedMediaType
-        )
+
     }
 
     /**
@@ -98,17 +100,9 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
      * @see [SupportRepository.publishResult]
      */
     override fun onFetchDataInitialize() {
-        val isNull = pagingMediaPayload?.also {
-            supportViewModel(
-                parameter = it
-            )
-        } == null
-        if (isNull)
-            changeLayoutState(
-                NetworkState.error(
-                    msg = "Media category not selected"
-                )
-            )
+        supportViewModel(
+            parameter = pagingMediaPayload
+        )
     }
 
     companion object : InstanceCreator<FragmentShowList, IPagedMediaUseCase.Payload>({

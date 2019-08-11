@@ -54,6 +54,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs += [ "-Xuse-experimental=kotlin.Experimental" ]
     }
 }
 
@@ -81,7 +82,7 @@ dependencies {
     /** Material Design */
     implementation "com.google.android.material:material:$material"
 
-    implementation "androidx.constraintlayout:constraintlayout:$constraint"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"

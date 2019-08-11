@@ -1,7 +1,10 @@
 package io.wax911.sample.core.presenter
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.BackoffPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import io.wax911.sample.core.worker.CountryFetchWorker
 import io.wax911.sample.core.worker.GenreFetchWorker
 import io.wax911.sample.core.worker.LanguageFetchWorker

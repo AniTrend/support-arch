@@ -11,15 +11,11 @@ import io.wax911.sample.data.dao.converter.*
 import io.wax911.sample.data.dao.migration.MIGRATION_1_2
 import io.wax911.sample.data.dao.migration.MIGRATION_2_3
 import io.wax911.sample.data.dao.query.*
-import io.wax911.sample.data.entitiy.trending.TrendingMovie
-import io.wax911.sample.data.entitiy.trending.TrendingShow
 import io.wax911.sample.data.model.attribute.Country
 import io.wax911.sample.data.model.attribute.Genre
 import io.wax911.sample.data.model.attribute.Language
 import io.wax911.sample.data.model.movie.Movie
-import io.wax911.sample.data.model.movie.contract.MovieIds
 import io.wax911.sample.data.model.show.Show
-import io.wax911.sample.data.model.show.contract.ShowIds
 
 @Database(
     entities = [

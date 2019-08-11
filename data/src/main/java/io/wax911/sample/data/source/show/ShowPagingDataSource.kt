@@ -14,7 +14,6 @@ import io.wax911.sample.data.mapper.show.TrendingShowMapper
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.usecase.media.MediaRequestType
 import io.wax911.sample.data.usecase.media.contract.IPagedMediaUseCase
-import io.wax911.sample.data.usecase.media.show.ShowPagedListUseCase
 import io.wax911.support.data.source.contract.ISourceObservable
 import io.wax911.support.data.source.paging.SupportPagingDataSource
 import io.wax911.support.data.util.SupportDataKeyStore

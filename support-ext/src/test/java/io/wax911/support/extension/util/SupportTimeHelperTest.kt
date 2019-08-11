@@ -1,6 +1,7 @@
 package io.wax911.support.extension.util
 
-import org.junit.Assert.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**

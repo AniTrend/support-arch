@@ -3,8 +3,8 @@ package io.wax911.sample.core.worker
 import android.content.Context
 import androidx.work.WorkerParameters
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.data.usecase.meta.LanguageFetchUseCase
 import io.wax911.sample.data.model.meta.MediaCategoryContract
+import io.wax911.sample.data.usecase.meta.LanguageFetchUseCase
 import io.wax911.sample.data.usecase.meta.contract.IMetaUseCase
 import io.wax911.support.core.worker.SupportCoroutineWorker
 import io.wax911.support.extension.util.SupportConnectivityHelper
