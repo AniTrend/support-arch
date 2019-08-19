@@ -85,7 +85,7 @@ fun Context.getScreenDimens(): Point {
  * @throws UnsupportedOperationException if the attribute is defined but is
  *         not a color or drawable resource.
  */
-fun Context.getDrawableFromAttr(@AttrRes drawableAttr : Int): Drawable? {
+fun Context.getDrawableAttr(@AttrRes drawableAttr : Int): Drawable? {
     val drawableAttribute = obtainStyledAttributes(intArrayOf(drawableAttr))
     val drawable = drawableAttribute.getDrawable(0)
     drawableAttribute.recycle()
