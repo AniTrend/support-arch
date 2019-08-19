@@ -3,8 +3,8 @@ ext {
     targetSdk = 29
     minSdk = 21
 
-    versionProductionCode = 92
-    versionProductionName = '1.2.0-alpha15'
+    versionCode = 93
+    versionName = '1.2.0-alpha16'
 
     glide = '4.9.0'
     retrofit = '2.6.1'
