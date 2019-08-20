@@ -39,7 +39,7 @@ class SupportTimeHelper(
                 defaultSystemUnit.toMinutes(
                     supportCurrentUnixTime - unixTimeInstance
                 ) >= supportTargetTime
-            TIME_UNITS_SECONDS ->
+            TIME_UNIT_SECONDS ->
                 defaultSystemUnit.toSeconds(
                     supportCurrentUnixTime - unixTimeInstance
                 ) >= supportTargetTime
@@ -51,13 +51,13 @@ class SupportTimeHelper(
         const val TIME_UNIT_DAYS = "TIME_UNIT_DAYS"
         const val TIME_UNIT_HOURS = "TIME_UNIT_HOURS"
         const val TIME_UNIT_MINUTES = "TIME_UNIT_MINUTES"
-        const val TIME_UNITS_SECONDS = "TIME_UNITS_SECONDS"
+        const val TIME_UNIT_SECONDS = "TIME_UNIT_SECONDS"
 
         @StringDef(
             TIME_UNIT_DAYS,
             TIME_UNIT_HOURS,
             TIME_UNIT_MINUTES,
-            TIME_UNITS_SECONDS
+            TIME_UNIT_SECONDS
         )
         @Retention(AnnotationRetention.SOURCE)
         @Target(AnnotationTarget.TYPEALIAS, AnnotationTarget.VALUE_PARAMETER)
