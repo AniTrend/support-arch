@@ -56,7 +56,7 @@ fun LifecycleOwner.isStateAtLeast(state: Lifecycle.State) =
  * @return [Lazy] of the target type
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : Any> FragmentActivity.extras(key: String, default: T) = lazy(LAZY_MODE_PUBLICATION) {
+fun <T : Any> FragmentActivity.extra(key: String, default: T? = null) = lazy(LAZY_MODE_PUBLICATION) {
     try {
         if (intent?.extras?.containsKey(key) == true)
             intent?.extras?.get(key) as T
@@ -76,7 +76,7 @@ fun <T : Any> FragmentActivity.extras(key: String, default: T) = lazy(LAZY_MODE_
  * @return [Lazy] of the target type
  */
 @Suppress("UNCHECKED_CAST")
-fun <T : Any> Fragment.extras(key: String, default: T) = lazy(LAZY_MODE_PUBLICATION) {
+fun <T : Any> Fragment.argument(key: String, default: T? = null) = lazy(LAZY_MODE_PUBLICATION) {
     try {
         if (arguments?.containsKey(key) == true)
             arguments?.get(key) as T

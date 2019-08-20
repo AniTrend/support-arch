@@ -13,7 +13,7 @@ import io.wax911.sample.data.usecase.media.MediaRequestType
 import io.wax911.sample.data.usecase.media.contract.IPagedMediaUseCase
 import io.wax911.support.core.factory.InstanceCreator
 import io.wax911.support.core.viewmodel.SupportViewModel
-import io.wax911.support.extension.extras
+import io.wax911.support.extension.argument
 import io.wax911.support.ui.fragment.SupportFragmentList
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 import org.koin.android.ext.android.inject
@@ -52,11 +52,8 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
     override val retryButtonText: Int = R.string.action_retry
     override val columnSize: Int = R.integer.single_list_size
 
-    private val pagingMediaPayload by extras(
-        MediaRequestType.selectedMediaType,
-        IPagedMediaUseCase.Payload(
-            MediaRequestType.MEDIA_TYPE_POPULAR
-        )
+    private val pagingMediaPayload by argument<IPagedMediaUseCase.Payload>(
+        MediaRequestType.selectedMediaType
     )
 
     /**
@@ -100,9 +97,11 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
      * @see [SupportRepository.publishResult]
      */
     override fun onFetchDataInitialize() {
-        supportViewModel(
-            parameter = pagingMediaPayload
-        )
+        pagingMediaPayload?.also {
+            supportViewModel(
+                parameter = it
+            )
+        }
     }
 
     companion object : InstanceCreator<FragmentShowList, IPagedMediaUseCase.Payload>({
