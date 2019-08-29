@@ -2,28 +2,37 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
+    id 'org.jetbrains.dokka' version '0.9.18'
 }
 
 android {
-    compileSdkVersion rootProject.compileSdk
+    compileSdkVersion compileSdk
     defaultConfig {
-        minSdkVersion rootProject.minSdk
-        targetSdkVersion rootProject.targetSdk
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
         versionCode rootProject.versionCode
         versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
     }
-
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    lintOptions {
+        abortOnError false
+    }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += [ "-Xuse-experimental=kotlin.Experimental" ]
     }
 }
 
@@ -31,19 +40,65 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
 
     /** Material Design */
-    implementation "com.google.android.material:material:$rootProject.material"
+    implementation "com.google.android.material:material:$material"
 
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.anroidx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+    implementation "androidx.preference:preference:$preferenceX"
 
-    /** Java Streams Port */
-    implementation "com.annimon:stream:$rootProject.stream"
+    /** Timber */
+    implementation "com.jakewharton.timber:timber:$timber"
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$rootProject.junit"
-    androidTestImplementation "androidx.test:runner:$rootProject.runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espresso"
+    testImplementation "junit:junit:$junit"
+    testImplementation "io.mockk:mockk:$mockk"
+    androidTestImplementation "androidx.test:runner:$runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+}
+
+dokka {
+    moduleName = 'ext'
+    outputFormat = 'kotlin-website'
+    outputDirectory = "$buildDir/javadoc"
+    reportUndocumented = true
+
+    linkMapping {
+        dir = "src/main/java"
+        url = "https://github.com/anitrend/support-arch/tree/develop/paging/support-ext/src/main/java"
+        suffix = "#L"
+    }
+}
+
+task dokkaJar(type: Jar) {
+    setArchiveClassifier('javadoc')
+    from dokka
+}
+
+task sourcesJar(type: Jar) {
+    setArchiveClassifier('sources')
+    from android.sourceSets.main.java.sourceFiles
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    setArchiveClassifier('javadoc')
+    from javadoc.destinationDir
+}
+
+task classesJar(type: Jar) {
+    from "$buildDir/intermediates/classes/release"
+}
+
+artifacts {
+    archives classesJar
+    archives javadocJar
+    archives sourcesJar
 }

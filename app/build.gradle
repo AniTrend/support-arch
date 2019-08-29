@@ -1,44 +1,38 @@
 plugins {
     id("com.android.application")
-    id("io.fabric")
-    id("kotlin-kapt")
     id("kotlin-android")
     id("kotlin-android-extensions")
+    id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
-    compileSdkVersion rootProject.compileSdk
+    compileSdkVersion compileSdk
     defaultConfig {
-        minSdkVersion rootProject.minSdk
-        targetSdkVersion rootProject.targetSdk
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
         versionCode rootProject.versionCode
         versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        buildTypes.each {
-            it.buildConfigField("String", "API_URL", API_URL)
-            it.buildConfigField("String", "CLIENT_ID", CLIENT_ID)
-            it.buildConfigField("String", "CLIENT_SECRET", CLIENT_SECRET)
-            it.buildConfigField("int", "DATABASE_SCHEMA", DATABASE_SCHEMA)
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
     dataBinding {
         enabled = true
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
@@ -46,71 +40,83 @@ androidExtensions {
     experimental = true
 }
 
-/*configurations.all {
-    resolutionStrategy.force 'com.google.code.findbugs:jsr305:3.0.2'
-}*/
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':support-core')
-    implementation project(':support-ext')
-    implementation project(':support-ui')
+    /** Platform Dependencies */
+    implementation project(":support-core")
+    implementation project(":support-data")
+    implementation project(":support-ext")
+    implementation project(":support-ui")
+    implementation project(":core")
+    implementation project(":data")
+
+    /** Koin AndroidX Dependency Injection */
+    implementation "org.koin:koin-core:$koin"
+    implementation "org.koin:koin-core-ext:$koin"
+    implementation "org.koin:koin-androidx-scope:$koin"
+    implementation "org.koin:koin-androidx-viewmodel:$koin"
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlin"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesAndroid"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
     /** Material Design */
-    implementation "com.google.android.material:material:$rootProject.material"
-
-    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint"
+    implementation "com.google.android.material:material:$material"
 
     /** Architecture Components */
-    implementation "androidx.core:core-ktx:$rootProject.coreX"
-    implementation "android.arch.work:work-runtime:$rootProject.worker"
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.anroidx"
-    implementation "androidx.room:room-runtime:$rootProject.anroidx"
-    kapt "androidx.room:room-compiler:$rootProject.anroidx"
+    implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.paging:paging-runtime:$paging"
+    implementation "androidx.preference:preference:$preferenceX"
+    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
+    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
+    implementation "androidx.work:work-runtime-ktx:$workerKtx"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshX"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleX"
 
     /** Fire-base Libraries */
-    implementation "com.google.firebase:firebase-core:${rootProject.firebase}"
+    implementation "com.google.firebase:firebase-core:$firebase"
 
     /** Crash Analytics */
-    implementation "com.crashlytics.sdk.android:crashlytics:${rootProject.crashlytics}"
-
-    /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:3.12.1"
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics"
 
     /** Glide Libraries */
-    implementation "com.github.bumptech.glide:glide:$rootProject.glide"
-    kapt "com.github.bumptech.glide:compiler:$rootProject.glide"
-
-    /** Java Streams Port */
-    implementation "com.annimon:stream:$rootProject.stream"
-
-    /** Event Bus Library */
-    implementation "org.greenrobot:eventbus:$rootProject.eventBus"
-
-    /** State Layout Library */
-    implementation "com.github.nguyenhoanglam:ProgressLayout:$rootProject.stateLayout"
-
-    /** Material Dialogs */
-    implementation "com.afollestad.material-dialogs:core:$rootProject.materialDialogs"
-
-    /** Flex Box */
-    implementation "com.google.android:flexbox:$rootProject.flexBox"
+    implementation "com.github.bumptech.glide:glide:$glide"
+    kapt "com.github.bumptech.glide:compiler:$glide"
 
     /** Timber */
-    implementation "com.jakewharton.timber:timber:$rootProject.timber"
+    implementation "com.jakewharton.timber:timber:$timber"
+
+    /** Material Dialogs */
+    implementation "com.afollestad.material-dialogs:core:$materialDialogs"
+    implementation "com.afollestad.material-dialogs:input:$materialDialogs"
+    implementation "com.afollestad.material-dialogs:lifecycle:$materialDialogs"
+    implementation "com.afollestad.material-dialogs:bottomsheets:$materialDialogs"
+
+    /** Flex Box */
+    implementation "com.google.android:flexbox:$flexBox"
+
+    /** Smart Tab Layout */
+    implementation "com.ogaclejapan.smarttablayout:library:$smartTab"
+
+    /** Tap Target Prompt */
+    implementation "uk.co.samuelwall:material-tap-target-prompt:$tapTarget"
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$rootProject.junit"
-    androidTestImplementation "androidx.test:runner:$rootProject.runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espresso"
+    testImplementation "junit:junit:$junit"
+    testImplementation "io.mockk:mockk:$mockk"
+    androidTestImplementation "androidx.test:runner:$runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+
+    testImplementation "org.koin:koin-test:$koin"
 }
 
-apply plugin: 'com.google.gms.google-services'
+if (file("google-services.json").exists()) {
+    apply plugin: 'com.google.gms.google-services'
+    apply plugin: 'io.fabric'
+}

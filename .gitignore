@@ -214,3 +214,6 @@ fabric.properties
 
 
 # End of https://www.gitignore.io/api/java,kotlin,android,androidstudio
+
+# Exclude client credentail files
+secrets.properties

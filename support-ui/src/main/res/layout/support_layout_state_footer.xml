@@ -8,18 +8,20 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/spacing_lg">
 
-    <io.wax911.support.ui.view.widget.SupportProgress
+    <ProgressBar
         android:id="@+id/stateProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_marginEnd="@dimen/md_margin" />
+        android:layout_gravity="center_vertical"
+        style="?android:attr/progressBarStyleSmall" />
 
-    <TextView
+    <io.wax911.support.ui.view.text.SingleLineTextView
         android:id="@+id/stateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/md_margin"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/lg_margin"
+        android:layout_marginEnd="@dimen/lg_margin"
         tools:text="Loading" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

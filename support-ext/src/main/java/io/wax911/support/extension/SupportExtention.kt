@@ -1,6 +1,26 @@
 package io.wax911.support.extension
 
 
+
+/**
+ * No locks are used to synchronize an access to the [Lazy] instance value; if the instance is accessed from multiple threads,
+ * its behavior is undefined.
+ *
+ * This mode should not be used unless the [Lazy] instance is guaranteed never to be initialized from more than one thread.
+ */
+val LAZY_MODE_UNSAFE = LazyThreadSafetyMode.NONE
+
+/**
+ * Initializer function can be called several times on concurrent access to uninitialized [Lazy] instance value,
+ * but only the first returned value will be used as the value of [Lazy] instance.
+ */
+val LAZY_MODE_PUBLICATION = LazyThreadSafetyMode.PUBLICATION
+
+/**
+ * Locks are used to ensure that only a single thread can initialize the [Lazy] instance.
+ */
+val LAZY_MODE_SYNCHRONIZED = LazyThreadSafetyMode.SYNCHRONIZED
+
 /**
  * Potentially useless but returns an empty string, the signature may change in future
  *
@@ -15,10 +35,10 @@ fun String.Companion.empty() = ""
  *
  * @param exceptions words or characters to exclude during capitalization
  */
-fun String?.capitalizeWords(exceptions: List<String>? = null) : String = when {
+fun String?.capitalizeWords(exceptions: List<String>? = null): String = when {
     !this.isNullOrEmpty() -> {
         val result = StringBuilder(length)
-        val words = split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val words = split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }
         for ((index, word) in words.withIndex()) {
             when (word.isNotEmpty()) {
                 true -> {
@@ -33,14 +53,5 @@ fun String?.capitalizeWords(exceptions: List<String>? = null) : String = when {
     }
     else -> String.empty()
 }
-
-/**
- * Does an equality check as well as a nullability check
- *
- * @return true if two objects are the same otherwise
- *         false if one of them is null or both are not equal
- */
-fun Any?.equal(b : Any?) : Boolean =
-        this != null && b != null && this == b
 
 

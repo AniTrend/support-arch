@@ -8,11 +8,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 
 /**
  * Request to hide the soft input window from the context of the window
@@ -38,6 +37,7 @@ fun FragmentActivity.startSharedTransitionActivity(target : View, data : Intent)
     ActivityCompat.startActivity(this, data, transitionActivityOptions.toBundle())
 }
 
+
 /**
  * Compares if this State is greater or equal to the given [Lifecycle.State].
  *
@@ -47,6 +47,42 @@ fun FragmentActivity.startSharedTransitionActivity(target : View, data : Intent)
 fun LifecycleOwner.isStateAtLeast(state: Lifecycle.State) =
     lifecycle.currentState.isAtLeast(state)
 
+/**
+ * Lazy intent parameters for fragment activities
+ *
+ * @param key lookup key for the embedded item in the [FragmentActivity.getIntent]
+ * @param default default value to use when key does not exist
+ *
+ * @return [Lazy] of the target type
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T : Any> FragmentActivity.extra(key: String, default: T? = null) = lazy(LAZY_MODE_PUBLICATION) {
+    try {
+        if (intent?.extras?.containsKey(key) == true)
+            intent?.extras?.get(key) as T
+        else
+            default
+    } catch (e: Exception) {
+        error(e)
+    }
+}
 
-inline fun <reified T : ViewModel> FragmentActivity.getViewModelOf() =
-    ViewModelProviders.of(this).get(T::class.java)
+/**
+ * Lazy intent parameters for fragments
+ *
+ * @param key lookup key for the embedded item in the [Fragment.getArguments]
+ * @param default default value to use when key does not exist
+ *
+ * @return [Lazy] of the target type
+ */
+@Suppress("UNCHECKED_CAST")
+fun <T : Any> Fragment.argument(key: String, default: T? = null) = lazy(LAZY_MODE_PUBLICATION) {
+    try {
+        if (arguments?.containsKey(key) == true)
+            arguments?.get(key) as T
+        else
+            default
+    } catch (e: Exception) {
+        error(e)
+    }
+}

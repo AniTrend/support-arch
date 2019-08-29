@@ -4,9 +4,9 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- * Created by max on 2018/08/11.
+ *
+ * @since 0.9.X
  */
-
 class SupportSnapUtil(private val positionChangeListener: PositionChangeListener?) : PagerSnapHelper() {
 
     override fun findTargetSnapPosition(layoutManager: RecyclerView.LayoutManager, velocityX: Int, velocityY: Int): Int {

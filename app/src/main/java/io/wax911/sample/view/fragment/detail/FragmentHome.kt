@@ -5,20 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.wax911.sample.R
-import io.wax911.sample.presenter.BasePresenter
-import io.wax911.support.ui.fragment.SupportFragment
+import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.support.core.factory.InstanceCreator
+import io.wax911.support.ui.fragment.SupportFragment
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.koin.android.ext.android.inject
 
-class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
+class FragmentHome: SupportFragment<Nothing, CorePresenter, Nothing>()  {
 
-    companion object : InstanceCreator<FragmentHome, Bundle?>({
-        val fragment = FragmentHome()
-        fragment.arguments = it
-        fragment
-    })
-
-    override fun initPresenter(): BasePresenter = BasePresenter.newInstance(context)
+    /**
+     * Should be created lazily through injection or lazy delegate
+     *
+     * @return supportPresenter of the generic type specified
+     */
+    override val supportPresenter: CorePresenter by inject()
 
     /**
      * Additional initialization to be done in this method, if the overriding class is type of [SupportFragment]
@@ -71,21 +71,26 @@ class FragmentHome : SupportFragment<Nothing, BasePresenter, Nothing>()  {
     }
 
     /**
-     * Update views or bind a liveData to them
+     * Invoke view model observer to watch for changes
      */
-    override fun updateUI() {
-
-    }
-
-    override fun makeRequest() {
-
+    override fun setUpViewModelObserver() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     /**
-     * Called when the data is changed.
-     * @param model The new data
+     * Update views or bind a liveData to them
      */
-    override fun onChanged(model: Nothing?) {
+    override fun onUpdateUserInterface() {
 
     }
+
+    override fun onFetchDataInitialize() {
+
+    }
+
+    companion object : InstanceCreator<FragmentHome, Bundle?>({
+        val fragment = FragmentHome()
+        fragment.arguments = it
+        fragment
+    })
 }

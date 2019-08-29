@@ -1,47 +1,58 @@
 package io.wax911.support.ui.action
 
 import android.view.ActionMode
-import io.wax911.support.core.action.event.ActionModeListener
-import io.wax911.support.core.action.contract.ISupportActionMode
-import io.wax911.support.core.action.decorator.SelectionDecorator
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.recycler.adapter.SupportViewAdapter
-import io.wax911.support.core.recycler.holder.SupportViewHolder
+import io.wax911.support.ui.action.contract.ISupportActionMode
+import io.wax911.support.ui.action.decorator.SelectionDecorator
+import io.wax911.support.ui.action.event.ActionModeListener
+import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
+import io.wax911.support.ui.recycler.holder.SupportViewHolder
 import java.util.*
 
+
 /**
- * Created by max on 2017/07/17.
- * Custom action mode holder class
+ * A helper class for triggering action mode from [SupportViewHolder]
+ *
+ * @since 0.9.X
  */
-class SupportActionMode<T>(private val actionModeListener: ActionModeListener?,
-                           var presenter: SupportPresenter<*>): ISupportActionMode<T> {
+class SupportActionMode<T>(
+    private val actionModeListener: ActionModeListener?,
+    private val presenter: SupportPresenter<*>?
+): ISupportActionMode<T> {
 
     private var actionMode: ActionMode? = null
 
     private var supportViewAdapter: SupportViewAdapter<*>? = null
 
-    private val selectedItems: MutableList<T> by lazy { ArrayList<T>() }
+    private val selectedItems: MutableList<T> = ArrayList()
 
-    private var selectionDecorator: SelectionDecorator<T> = object: SelectionDecorator<T> { }
+    private var selectionDecorator: SelectionDecorator<T> =
+        object: SelectionDecorator<T> {
+
+        }
 
     private fun startActionMode(viewHolder: SupportViewHolder<T>) {
         if (selectedItems.isEmpty())
             actionMode = viewHolder.itemView.startActionMode(actionModeListener)
     }
 
-    private fun selectItem(viewHolder: SupportViewHolder<T>, objectItem: T) {
-        startActionMode(viewHolder)
-        selectedItems.add(objectItem)
-        selectionDecorator.setBackgroundColor(viewHolder, true)
-        actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
+    private fun selectItem(viewHolder: SupportViewHolder<T>, objectItem: T?) {
+        if (objectItem != null) {
+            startActionMode(viewHolder)
+            selectedItems.add(objectItem)
+            selectionDecorator.setBackgroundColor(viewHolder, true)
+            actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
+        }
     }
 
-    private fun deselectItem(viewHolder: SupportViewHolder<T>, objectItem: T) {
-        selectedItems.remove(objectItem)
-        selectionDecorator.setBackgroundColor(viewHolder, false)
-        when (selectedItems.isEmpty()) {
-            true -> actionMode?.finish()
-            false -> actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
+    private fun deselectItem(viewHolder: SupportViewHolder<T>, objectItem: T?) {
+        if (objectItem != null) {
+            selectedItems.remove(objectItem)
+            selectionDecorator.setBackgroundColor(viewHolder, false)
+            when (selectedItems.isEmpty()) {
+                true -> actionMode?.finish()
+                false -> actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
+            }
         }
     }
 
@@ -77,8 +88,8 @@ class SupportActionMode<T>(private val actionModeListener: ActionModeListener?,
      *
      *  @see SupportViewHolder.isClickable
      */
-    override fun isSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T) = when {
-        !presenter.isActionModeEnabled || selectedItems.isEmpty() -> true
+    override fun isSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T?) = when {
+        presenter?.isActionModeEnabled != true || selectedItems.isEmpty() -> true
         else -> when (selectedItems.contains(objectItem)) {
             true -> { deselectItem(viewHolder, objectItem); false }
             else -> { selectItem(viewHolder, objectItem); false }
@@ -97,8 +108,8 @@ class SupportActionMode<T>(private val actionModeListener: ActionModeListener?,
      *
      * @see SupportViewHolder.isLongClickable
      */
-    override fun isLongSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T) = when {
-        !presenter.isActionModeEnabled -> false
+    override fun isLongSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T?) = when {
+        presenter?.isActionModeEnabled != true -> false
         else ->  when (selectedItems.contains(objectItem)) {
             true -> { deselectItem(viewHolder, objectItem); true }
             else -> { selectItem(viewHolder, objectItem); true }

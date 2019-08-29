@@ -11,7 +11,7 @@ import org.junit.Test
 class SupportExtUnitTest {
 
     @Test
-    fun capitalise_exception_isValid() {
+    fun `capitalize words in sentence except is correct`() {
         val exceptions = ArrayList<String>().apply {
             add("just"); add("sentence")
         }
@@ -20,7 +20,7 @@ class SupportExtUnitTest {
     }
 
     @Test
-    fun capitalise_isValid() {
+    fun `capitalize words in sentence is correct`() {
         val output = "this is just a normal sentence".capitalizeWords()
         assertEquals("This Is Just A Normal Sentence", output)
     }

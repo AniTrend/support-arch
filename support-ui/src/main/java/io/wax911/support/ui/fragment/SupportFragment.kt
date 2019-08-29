@@ -1,42 +1,51 @@
 package io.wax911.support.ui.fragment
 
-import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.ActionMode
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import io.wax911.support.core.action.event.ActionModeListener
-import io.wax911.support.core.action.contract.ISupportActionMode
-import io.wax911.support.core.view.contract.CompatView
 import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.core.viewmodel.SupportViewModel
+import io.wax911.support.extension.LAZY_MODE_UNSAFE
 import io.wax911.support.ui.action.SupportActionMode
-import io.wax911.support.core.util.SupportCoroutineUtil
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import org.greenrobot.eventbus.EventBus
+import io.wax911.support.ui.action.contract.ISupportActionMode
+import io.wax911.support.ui.action.event.ActionModeListener
+import io.wax911.support.ui.view.contract.ISupportFragmentActivity
+import kotlinx.coroutines.SupervisorJob
+import timber.log.Timber
 
-abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener,
-        CompatView<VM, P>, SupportCoroutineUtil {
+/**
+ *
+ * @since 0.9.X
+ */
+abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, ISupportFragmentActivity<VM, P> {
+
+    protected val moduleTag: String = javaClass.simpleName
 
     @MenuRes
-    protected var inflateMenu: Int = CompatView.NO_MENU_ITEM
+    protected var inflateMenu: Int = ISupportFragmentActivity.NO_MENU_ITEM
     protected var snackBar: Snackbar? = null
 
-    protected val presenter: P by lazy { initPresenter() }
-    protected val viewModel: SupportViewModel<VM?, *>? by lazy { initViewModel() }
-    protected val supportAction: ISupportActionMode<M> by lazy {
-        SupportActionMode<M>(this, presenter)
+    /**
+     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob],
+     * preferably use [SupervisorJob](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-supervisor-job.html)
+     */
+    override val supervisorJob = SupervisorJob()
+
+    protected val supportAction: ISupportActionMode<M> by lazy(LAZY_MODE_UNSAFE) {
+        SupportActionMode<M>(
+            actionModeListener = this,
+            presenter = supportPresenter
+        )
     }
 
     /**
-     * Called to do initial creation of a fragment.  This is called after
-     * [.onAttach] and before
-     * [.onCreateView].
-     *
+     * Called to do initial creation of a fragment. This is called after
+     * [SupportFragment.onAttach] and before [SupportFragment.onCreateView].
      *
      * Note that this can be called while the fragment's activity is
      * still in the process of being created.  As such, you can not rely
@@ -45,8 +54,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * created, see [.onActivityCreated].
      *
      *
-     * Any restored child fragments will be created before the base
-     * `Fragment.onCreate` method returns.
+     * Any restored child fragments will be created before the base [SupportFragment.onCreate] method returns.
      *
      * @param savedInstanceState If the fragment is being re-created from
      * a previous saved state, this is the state.
@@ -57,58 +65,28 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     /**
-     * Called immediately after [.onCreateView]
-     * has returned, but before any saved state has been restored in to the view.
-     * This gives subclasses a chance to initialize themselves once
-     * they know their view hierarchy has been completely created.  The fragment's
-     * view hierarchy is not however attached to its parent at this point.
-     * @param view The View returned by [.onCreateView].
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-    }
-
-    /**
      * Called when the Fragment is visible to the user.  This is generally
-     * tied to [Activity.onStart] of the containing
+     * tied to [SupportFragment.onStart] of the containing
      * Activity's lifecycle.
      */
     override fun onStart() {
         super.onStart()
-        if (shouldSubscribe()) {
-            if (!EventBus.getDefault().isRegistered(this))
-                EventBus.getDefault().register(this)
-        }
-        if (!shouldDisableMenu())
-            setHasOptionsMenu(true)
-    }
-
-    /**
-     * Called when the Fragment is no longer started.  This is generally
-     * tied to [Activity.onStop] of the containing
-     * Activity's lifecycle.
-     */
-    override fun onStop() {
-        if (EventBus.getDefault().isRegistered(this))
-            EventBus.getDefault().unregister(this)
-        super.onStop()
+        setHasOptionsMenu(isMenuEnabled)
     }
 
     override fun onPause() {
-        presenter.onPause(this)
+        supportPresenter.onPause(this)
         super.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.onResume(this)
+        supportPresenter.onResume(this)
     }
 
     /**
      * Called when the fragment is no longer in use.  This is called
-     * after [.onStop] and before [.onDetach].
+     * after [SupportFragment.onStop] and before [SupportFragment.onDetach].
      */
     override fun onDestroy() {
         cancelAllChildren()
@@ -119,24 +97,23 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * Initialize the contents of the Fragment host's standard options menu.  You
      * should place your menu items in to <var>menu</var>.  For this method
      * to be called, you must have first called [.setHasOptionsMenu].  See
-     * [Activity.onCreateOptionsMenu]
+     * [SupportFragment.onCreateOptionsMenu]
      * for more information.
      *
      * @param menu The options menu in which you place your items.
      * @param inflater menu inflater
-     * @see .setHasOptionsMenu
      *
-     * @see .onPrepareOptionsMenu
-     *
-     * @see .onOptionsItemSelected
+     * @see SupportFragment.setHasOptionsMenu
+     * @see SupportFragment.onPrepareOptionsMenu
+     * @see SupportFragment.onOptionsItemSelected
      */
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        if (inflateMenu != CompatView.NO_MENU_ITEM)
-            inflater?.inflate(inflateMenu, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        if (inflateMenu != ISupportFragmentActivity.NO_MENU_ITEM)
+            inflater.inflate(inflateMenu, menu)
     }
 
     override fun hasBackPressableAction(): Boolean {
-        if (!supportAction.getAllSelectedItems().isEmpty()) {
+        if (supportAction.getAllSelectedItems().isNotEmpty()) {
             supportAction.clearSelection()
             return true
         }
@@ -149,7 +126,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
      * @param mode The current ActionMode being used
      */
     override fun onSelectionChanged(mode: ActionMode?, count: Int) {
-
+        Timber.tag(moduleTag).d("onSelectionChanged(mode: ActionMode?, count: Int) -> count = $count")
     }
 
     /**
@@ -198,20 +175,11 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        Log.d(getViewName(), "onSharedPreferenceChanged -> $key | Changed value")
+        Timber.tag(moduleTag).d("onSharedPreferenceChanged -> $key | Changed value")
     }
 
     /**
-     * Coroutine dispatcher specification
-     *
-     * @return [kotlinx.coroutines.Dispatchers.IO] by default
+     * Invoke view model observer to watch for changes
      */
-    override val coroutineDispatcher: CoroutineDispatcher
-        get() = Dispatchers.Default
-
-    /**
-     * Called when the data is changed.
-     * @param model The new data
-     */
-    abstract override fun onChanged(model: VM?)
+    protected abstract fun setUpViewModelObserver()
 }

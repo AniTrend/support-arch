@@ -5,15 +5,16 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Point
 import android.graphics.drawable.Drawable
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.WindowManager
 import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import timber.log.Timber
 
 /**
  * Exactly whether a device is low-RAM is ultimately up to the device configuration, but currently
@@ -23,34 +24,24 @@ import androidx.core.graphics.drawable.DrawableCompat
  *
  * @return true if this is a low-RAM device.
  */
-fun Context?.isLowRamDevice() : Boolean = this?.let {
+fun Context?.isLowRamDevice() = this?.let {
     val activityManager = it.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
     return ActivityManagerCompat.isLowRamDevice(activityManager)
 } ?: false
 
 /**
- * Check if the device has any active network connections like WiFi or Network data,
- * preferably use broadcast receivers if you want to do live updates of the internet connectivity status
- *
- * @return true if network connectivity exists, false otherwise.
- */
-fun Context?.isConnectedToNetwork() : Boolean = this?.let {
-    val connectivityManager = it
-        .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-    return connectivityManager?.activeNetworkInfo?.isConnected ?: false
-} ?: false
-
-/**
  * Start a new activity from context and avoid potential crashes from early API levels
  */
-inline fun <reified T> Context?.startNewActivity(params: Bundle?) {
+inline fun <reified T> Context?.startNewActivity(params: Bundle? = null) {
     try {
         val intent = Intent(this, T::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        params?.also { intent.putExtras(it) }
+        with (intent) {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            params?.also { putExtras(it) }
+        }
         this?.startActivity(intent)
     } catch (e: Exception) {
-        e.printStackTrace()
+        Timber.e(e)
     }
 }
 
@@ -60,12 +51,15 @@ inline fun <reified T> Context?.startNewActivity(params: Bundle?) {
  * @return The string list associated with the resource.
  * @throws Exception if the given ID does not exist.
  */
-fun Context.getStringList(@ArrayRes arrayRes : Int) : List<String> {
+fun Context.getStringList(@ArrayRes arrayRes : Int): List<String> {
     val array = resources.getStringArray(arrayRes)
     return array.toList()
 }
 
-fun Context.getLayoutInflater() : LayoutInflater =
+fun View.getLayoutInflater(): LayoutInflater =
+    context.getLayoutInflater()
+
+fun Context.getLayoutInflater(): LayoutInflater =
     getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 /**
@@ -75,7 +69,7 @@ fun Context.getLayoutInflater() : LayoutInflater =
  * @return A Point object to with the size information.
  * @see Point
  */
-fun Context.getScreenDimens() : Point {
+fun Context.getScreenDimens(): Point {
     val deviceDimens = Point()
     (getSystemService(Context.WINDOW_SERVICE) as WindowManager).apply {
         defaultDisplay?.getSize(deviceDimens)
@@ -91,7 +85,7 @@ fun Context.getScreenDimens() : Point {
  * @throws UnsupportedOperationException if the attribute is defined but is
  *         not a color or drawable resource.
  */
-fun Context.getDrawableFromAttr(@AttrRes drawableAttr : Int) : Drawable? {
+fun Context.getDrawableAttr(@AttrRes drawableAttr : Int): Drawable? {
     val drawableAttribute = obtainStyledAttributes(intArrayOf(drawableAttr))
     val drawable = drawableAttribute.getDrawable(0)
     drawableAttribute.recycle()
@@ -107,7 +101,7 @@ fun Context.getDrawableFromAttr(@AttrRes drawableAttr : Int) : Drawable? {
  * @throws UnsupportedOperationException if the attribute is defined but is
  *         not a color or drawable resource.
  */
-fun Context.getColorFromAttr(@AttrRes colorAttr : Int, defaultColor : Int = 0) : Int {
+fun Context.getColorFromAttr(@AttrRes colorAttr : Int, defaultColor : Int = 0): Int {
     val colorAttribute = obtainStyledAttributes(intArrayOf(colorAttr))
     @ColorInt val color = colorAttribute.getColor(0, defaultColor)
     colorAttribute.recycle()
@@ -136,7 +130,7 @@ fun Context.getCompatColor(@ColorRes colorRes: Int) =
  * @return Drawable An object that can be used to draw this resource.
  * @see Drawable
  */
-fun Context.getCompatDrawable(@DrawableRes resource : Int) : Drawable? =
+fun Context.getCompatDrawable(@DrawableRes resource : Int) =
     AppCompatResources.getDrawable(this, resource)
 
 /**
@@ -148,7 +142,7 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int) : Drawable? =
  * @param tintColor A specific color to tint the drawable
  * @return Drawable tinted with the tint color
  */
-fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor : Int) : Drawable? {
+fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor : Int): Drawable? {
     val drawableResource = AppCompatResources.getDrawable(this, resource)
     if (drawableResource != null) {
         val drawableResult = DrawableCompat.wrap(drawableResource).mutate()
@@ -169,7 +163,7 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor :
  * @param resource The resource id of the drawable or vector drawable
  * @return Drawable tinted with the tint color
  */
-fun Context.getTintedDrawableWithAttribute(@DrawableRes resource : Int, @AttrRes colorAttr: Int) : Drawable? {
+fun Context.getTintedDrawableWithAttribute(@DrawableRes resource : Int, @AttrRes colorAttr: Int): Drawable? {
     val originalDrawable = getCompatDrawable(resource)
     var drawable : Drawable? = null
     if (originalDrawable != null) {
@@ -189,7 +183,7 @@ fun Context.getTintedDrawableWithAttribute(@DrawableRes resource : Int, @AttrRes
  * @param colorAttr A specific color to tint the drawable
  * @return Drawable tinted with the tint color
  */
-fun Context.getTintedDrawable(@DrawableRes resource : Int, @AttrRes colorAttr : Int) : Drawable? {
+fun Context.getTintedDrawable(@DrawableRes resource : Int, @AttrRes colorAttr : Int): Drawable? {
     val originalDrawable = getCompatDrawable(resource)
     var drawable : Drawable? = null
     if (originalDrawable != null) {
@@ -197,17 +191,4 @@ fun Context.getTintedDrawable(@DrawableRes resource : Int, @AttrRes colorAttr : 
         DrawableCompat.setTint(drawable, getColorFromAttr(colorAttr))
     }
     return drawable
-}
-
-/**
- * Credits
- * @author hamakn
- * https://gist.github.com/hamakn/8939eb68a920a6d7a498
- */
-fun Context.getActionBarHeight() : Int {
-    val styledAttributes = theme.obtainStyledAttributes(
-        intArrayOf(android.R.attr.actionBarSize)
-    )
-    styledAttributes.recycle()
-    return styledAttributes.getDimension(0, 0f).toInt()
 }

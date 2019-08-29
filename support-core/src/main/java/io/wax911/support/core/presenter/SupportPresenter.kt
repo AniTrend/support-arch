@@ -2,33 +2,35 @@ package io.wax911.support.core.presenter
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Bundle
-import io.wax911.support.core.preference.SupportPreference
-import io.wax911.support.core.preference.event.OnSharedPreferencesLifecycleBind
-import io.wax911.support.core.recycler.event.SupportScrollListener
-import io.wax911.support.core.util.SupportCoroutineUtil
-import io.wax911.support.core.util.SupportLifecycleUtil
-import org.greenrobot.eventbus.EventBus
+import io.wax911.support.data.util.pagination.SupportPagingHelper
+import io.wax911.support.extension.preference.SupportPreference
+import io.wax911.support.extension.preference.event.OnSharedPreferenceBinder
+import io.wax911.support.extension.util.SupportExtKeyStore
 
-abstract class SupportPresenter<S : SupportPreference>(protected var context: Context?) : SupportScrollListener(),
-    OnSharedPreferencesLifecycleBind, SupportCoroutineUtil, SupportLifecycleUtil.LifecycleCallback {
+/**
+ * An abstract declaration of what responsibilities a presenter should undertake
+ *
+ * @param context application based context
+ * @param supportPreference implementation of application preferences
+ *
+ * @see SupportPreference
+ */
+abstract class SupportPresenter<S : SupportPreference>(
+    protected val context: Context,
+    val supportPreference: S
+): OnSharedPreferenceBinder {
 
-    init {
-        SupportLifecycleUtil(context).apply {
-            lifecycleCallback = this@SupportPresenter
-        }
-    }
+    val pagingHelper
+        get() = SupportPagingHelper(
+            pageSize = paginationSize(),
+            isPagingLimit = false
+        )
 
-    val bundle by lazy { Bundle() }
-
-    val supportPreference: S? by lazy { createPreference() }
+    protected open fun paginationSize(): Int = SupportExtKeyStore.pagingLimit
 
     /**
-     * Enables or disables action mode, behaviour should be implemented in your adapter, in
-     * the [io.wax911.support.core.recycler.holder.event.ItemClickListener].
+     * Enables or disables action mode, behaviour should be implemented in your adapter, in ItemClickLister.
      * Default value for this property is false
-     *
-     * @see io.wax911.support.core.recycler.holder.SupportViewHolder
      */
     var isActionModeEnabled: Boolean = false
 
@@ -45,61 +47,15 @@ abstract class SupportPresenter<S : SupportPreference>(protected var context: Co
      * Unregister any listeners from fragments or activities
      */
     override fun onPause(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        supportPreference?.sharedPreferences
-                ?.unregisterOnSharedPreferenceChangeListener(changeListener)
+        supportPreference.sharedPreferences
+                .unregisterOnSharedPreferenceChangeListener(changeListener)
     }
 
     /**
      * Register any listeners from fragments or activities
      */
     override fun onResume(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        supportPreference?.sharedPreferences
-                ?.registerOnSharedPreferenceChangeListener(changeListener)
-    }
-
-    /**
-     * Called when the parent lifecycle owners state changes to
-     * [androidx.fragment.app.FragmentActivity.onPause]
-     *
-     * @see [androidx.lifecycle.Lifecycle]
-     */
-    override fun onParentPaused() { }
-
-    /**
-     * Called when the parent lifecycle owners state changes to
-     * [androidx.fragment.app.FragmentActivity.onResume]
-     *
-     * @see [androidx.lifecycle.Lifecycle]
-     */
-    override fun onParentResumed() { }
-
-    /**
-     * Called when the parent lifecycle owners state changes to
-     * [androidx.fragment.app.FragmentActivity.onDestroy]
-     *
-     * @see [androidx.lifecycle.Lifecycle]
-     */
-    override fun onParentDestroyed() = cancelAllChildren()
-
-    /**
-     * Provides the preference object to the lazy initializer
-     *
-     * @return instance of the preference class
-     */
-    protected abstract fun createPreference() : S?
-
-    companion object {
-
-        /**
-         * Trigger all subscribers that may be listening. This method makes use of sticky broadcasts
-         * in case all subscribed listeners were not loaded in time for the broadcast
-         *
-         * @param param the object of type T to send
-         * @param isSticky set true to snackBar sticky post
-         */
-        fun <T> notifyAllListeners(param : T, isSticky: Boolean = false) = when {
-            isSticky -> EventBus.getDefault().postSticky(param)
-            else -> EventBus.getDefault().post(param)
-        }
+        supportPreference.sharedPreferences
+                .registerOnSharedPreferenceChangeListener(changeListener)
     }
 }
