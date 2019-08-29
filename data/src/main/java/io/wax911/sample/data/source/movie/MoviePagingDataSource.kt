@@ -40,7 +40,8 @@ class MoviePagingDataSource(
         )
 
         launch {
-            mapper.handleResponse(result)
+            val state = mapper.handleResponse(result)
+            networkState.postValue(state)
         }
     }
 
@@ -58,9 +59,9 @@ class MoviePagingDataSource(
         )
 
         launch {
-            mapper.handleResponse(result)
+            val state = mapper.handleResponse(result)
+            networkState.postValue(state)
         }
-
     }
 
     private fun fetchAnticipatedMovies(callback: PagingRequestHelper.Request.Callback) {
@@ -77,9 +78,9 @@ class MoviePagingDataSource(
         )
 
         launch {
-            mapper.handleResponse(result)
+            val state = mapper.handleResponse(result)
+            networkState.postValue(state)
         }
-
     }
 
     /**

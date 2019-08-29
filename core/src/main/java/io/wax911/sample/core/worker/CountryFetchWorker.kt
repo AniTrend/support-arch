@@ -7,6 +7,7 @@ import io.wax911.sample.data.model.meta.MediaCategoryContract
 import io.wax911.sample.data.usecase.meta.CountryFetchUseCase
 import io.wax911.sample.data.usecase.meta.contract.IMetaUseCase
 import io.wax911.support.core.worker.SupportCoroutineWorker
+import io.wax911.support.data.model.extension.isSuccess
 import io.wax911.support.extension.util.SupportConnectivityHelper
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -44,7 +45,7 @@ class CountryFetchWorker(
                 )
             )
 
-            if (showResult.isLoaded() && movieResult.isLoaded())
+            if (showResult.isSuccess() && movieResult.isSuccess())
                 return Result.success()
             return Result.failure()
         }
