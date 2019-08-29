@@ -7,17 +7,11 @@ import androidx.paging.PagedList
 import io.wax911.support.ui.R
 
 /**
+ * Fragment list contract
  *
  * @since 0.9.X
  */
 interface ISupportFragmentList<M> {
-
-    @get:StringRes
-    val retryButtonText: Int
-
-    @get:StringRes
-    val loadingMessage: Int
-        get() = R.string.supportTextLoading
 
     @get:IntegerRes
     val columnSize: Int
@@ -27,7 +21,6 @@ interface ISupportFragmentList<M> {
     @get:LayoutRes
     val inflateLayout: Int
         get() =  R.layout.support_list
-
 
     /**
      * Handles post view model result after extraction or processing

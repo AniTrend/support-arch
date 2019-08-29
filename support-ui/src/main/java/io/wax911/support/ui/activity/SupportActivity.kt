@@ -19,8 +19,11 @@ import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
 /**
+ * Core implementation for [androidx.appcompat.app.AppCompatActivity] components
  *
  * @since 0.9.X
+ * @see SupportCoroutineHelper
+ * @see ISupportFragmentActivity
  */
 abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), ISupportFragmentActivity<M, P>, SupportCoroutineHelper {
 

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.wax911.support.ui.view.contract.CustomView
 
 /**
- * Class [SupportRecyclerView] extends [RecyclerView] and adds position management on configuration changes.
+ * Class [SupportRecyclerView] extends [RecyclerView] and adds position management on stateConfiguration changes.
  *
  * @author FrantisekGazo
  * @author wax911

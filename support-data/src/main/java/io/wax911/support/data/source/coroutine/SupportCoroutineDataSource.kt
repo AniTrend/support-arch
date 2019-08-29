@@ -52,9 +52,9 @@ abstract class SupportCoroutineDataSource(
      * In this context the super.invoke() method will allow a retry action to be set
      */
     override suspend fun invoke(): NetworkState {
-        networkState.postValue(NetworkState.LOADING)
+        networkState.postValue(NetworkState.Loading)
         retry = { invoke() }
-        return NetworkState.LOADING
+        return NetworkState.Loading
     }
 
     /**

@@ -16,11 +16,17 @@ import io.wax911.support.extension.argument
 import io.wax911.support.ui.fragment.SupportFragmentList
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 import io.wax911.support.ui.recycler.holder.event.ItemClickListener
+import io.wax911.support.ui.util.SupportStateLayoutConfiguration
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FragmentMovieList: SupportFragmentList<Movie, CorePresenter, PagedList<Movie>>() {
 
+    override val supportStateConfiguration = SupportStateLayoutConfiguration(
+        R.drawable.ic_support_empty_state,
+        R.drawable.ic_support_empty_state,
+        R.string.supportTextLoading, R.string.action_retry
+    )
     override val supportPresenter by inject<CorePresenter>()
     override val supportViewModel by viewModel<MovieViewModel>()
 
@@ -50,7 +56,6 @@ class FragmentMovieList: SupportFragmentList<Movie, CorePresenter, PagedList<Mov
             }
         })
 
-    override val retryButtonText: Int = R.string.action_retry
     override val columnSize: Int = R.integer.single_list_size
 
     private val pagingMediaPayload by argument<IPagedMediaUseCase.Payload>(

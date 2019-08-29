@@ -3,17 +3,14 @@ package io.wax911.support.ui.view.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ViewFlipper
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.SupportStateContract
 import io.wax911.support.extension.getCompatDrawable
 import io.wax911.support.extension.getLayoutInflater
-import io.wax911.support.extension.gone
-import io.wax911.support.extension.visible
 import io.wax911.support.ui.R
+import io.wax911.support.ui.util.SupportStateLayoutConfiguration
 import io.wax911.support.ui.view.contract.CustomView
-import kotlinx.android.synthetic.main.support_layout_state.view.*
+import kotlinx.android.synthetic.main.support_state_layout_laoding.view.*
+import kotlinx.android.synthetic.main.support_state_layout_error.view.*
 
 /**
  * A state layout that supports nesting of children using a frame layout
@@ -25,20 +22,35 @@ class SupportStateLayout : ViewFlipper, CustomView {
     constructor(context: Context, attrs: AttributeSet?) :
             super(context, attrs) { onInit(context, attrs) }
 
-    var isLoading = false
-        private set(value) {
+    /**
+     * Configuration for that should be used by the different view states
+     */
+    var stateConfiguration: SupportStateLayoutConfiguration? = null
+        set(value) {
             field = value
-            if (value)
-                stateProgress.visible()
-            else
-                stateProgress.gone()
-            requestLayout()
+            field?.apply {
+                stateLayoutErrorRetryAction.setText(retryAction)
+                stateLayoutErrorImage.setImageDrawable(
+                    context.getCompatDrawable(errorDrawable)
+                )
+
+                stateLayoutLoadingText.setText(loadingMessage)
+                stateLayoutLoadingImage.setImageDrawable(
+                    context.getCompatDrawable(errorDrawable)
+                )
+            }
         }
+
+    /**
+     * Checks if the current view state is loading
+     */
+    val isLoading
+        get() = displayedChild == LOADING_VIEW
 
     var onWidgetInteraction: OnClickListener? = null
         set(value) {
             field = value
-            stateLinearContent.setOnClickListener(field)
+            stateLayoutErrorRetryAction.setOnClickListener(field)
         }
 
     /**
@@ -48,7 +60,7 @@ class SupportStateLayout : ViewFlipper, CustomView {
     override fun onInit(context: Context, attrs: AttributeSet?) {
         setInAnimation(context, android.R.anim.fade_in)
         setOutAnimation(context, android.R.anim.fade_out)
-        getLayoutInflater().inflate(R.layout.support_layout_state, this, true)
+        setupAdditionalViews()
     }
 
     /**
@@ -59,47 +71,42 @@ class SupportStateLayout : ViewFlipper, CustomView {
         onWidgetInteraction = null
     }
 
-    fun showLoading(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, @StringRes loadingMessage: Int) {
-        stateImage.setImageDrawable(context.getCompatDrawable(drawableRes))
-        stateText.text = context.getString(loadingMessage)
-        onStateChanged(NetworkState.LOADING)
+    private fun setupAdditionalViews() {
+        val loadingView = getLayoutInflater().inflate(R.layout.support_state_layout_laoding, null)
+        addView(loadingView)
+
+        val errorView = getLayoutInflater().inflate(R.layout.support_state_layout_error, null)
+        addView(errorView)
     }
 
-    fun showContent() = onStateChanged(NetworkState.LOADED)
-
-    fun showError(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, @StringRes errorMessage: Int) {
-        stateImage.setImageDrawable(context.getCompatDrawable(drawableRes))
-        stateText.text = context.getString(errorMessage)
-        onStateChanged(NetworkState.error(context.getString(errorMessage)))
-    }
-
-    fun showError(@DrawableRes drawableRes : Int = R.drawable.ic_support_empty_state, errorMessage: String?) {
-        stateImage.setImageDrawable(context.getCompatDrawable(drawableRes))
-        stateText.text = errorMessage
-        onStateChanged(NetworkState.error(errorMessage))
-    }
-
-    private fun onStateChanged(networkState: NetworkState) {
-        when (networkState.status) {
-            SupportStateContract.CONTENT -> {
-                isLoading = false
-                if (displayedChild != DEFAULT_VIEW)
-                    showNext()
+    /**
+     * Changes the layout state based on [NetworkState]
+     *
+     * @param networkState state to use
+     */
+    fun setNetworkState(networkState: NetworkState) {
+        when (networkState) {
+            is NetworkState.Loading -> {
+                displayedChild = LOADING_VIEW
             }
-            SupportStateContract.LOADING -> {
-                isLoading = true
-                if (displayedChild != DEFAULT_VIEW)
-                    showPrevious()
+            is NetworkState.Error -> {
+                stateLayoutErrorHeading.text = networkState.heading
+                stateLayoutErrorMessage.text = networkState.message
+                displayedChild = ERROR_VIEW
             }
-            else -> {
-                isLoading = false
-                if (displayedChild == DEFAULT_VIEW)
-                    showPrevious()
-            }
+            is NetworkState.Success ->
+                displayedChild = CONTENT_VIEW
         }
+        // TODO: not sure if we really need to request view to redraw/invalidate
+        // requestLayout()
     }
 
     companion object {
-        const val DEFAULT_VIEW = 1
+        /** First view inflated index which is loading view */
+        const val LOADING_VIEW = 0
+        /** Second view inflated in this case the error view */
+        const val ERROR_VIEW = 1
+        /** Third inflated view should be the current view wrapped by this layout */
+        const val CONTENT_VIEW = 2
     }
 }

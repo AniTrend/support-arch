@@ -1,6 +1,5 @@
 package androidx.paging.extension
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingRequestHelper
 import io.wax911.support.data.model.NetworkState
@@ -11,15 +10,15 @@ private fun getErrorMessage(report: PagingRequestHelper.StatusReport): String {
     }.first()
 }
 
-fun PagingRequestHelper.createStatusLiveData(): LiveData<NetworkState> {
+fun PagingRequestHelper.createStatusLiveData(): MutableLiveData<NetworkState> {
     val liveData = MutableLiveData<NetworkState>()
     addListener { report ->
         when {
-            report.hasRunning() -> liveData.postValue(NetworkState.LOADING)
+            report.hasRunning() -> liveData.postValue(NetworkState.Loading)
             report.hasError() -> liveData.postValue(
-                NetworkState.error(getErrorMessage(report))
+                NetworkState.Error(message = getErrorMessage(report))
             )
-            else -> liveData.postValue(NetworkState.LOADED)
+            else -> liveData.postValue(NetworkState.Success)
         }
     }
     return liveData

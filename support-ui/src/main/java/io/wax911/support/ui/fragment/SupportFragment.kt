@@ -19,8 +19,10 @@ import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
 /**
+ * Core implementation contract for detailed fragment which may not complex or mixed UI elements.
  *
  * @since 0.9.X
+ * @see ISupportFragmentActivity
  */
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, ISupportFragmentActivity<VM, P> {
 
@@ -28,7 +30,6 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
 
     @MenuRes
     protected var inflateMenu: Int = ISupportFragmentActivity.NO_MENU_ITEM
-    protected var snackBar: Snackbar? = null
 
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob],
@@ -66,7 +67,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
 
     /**
      * Called when the Fragment is visible to the user.  This is generally
-     * tied to [SupportFragment.onStart] of the containing
+     * tied to [Fragment.onStart] of the containing
      * Activity's lifecycle.
      */
     override fun onStart() {

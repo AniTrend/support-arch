@@ -2,7 +2,6 @@ package io.wax911.sample.data.api.interceptor
 
 import io.wax911.support.data.auth.contract.ISupportAuthentication
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.SupportStateContract
 import io.wax911.support.data.model.extension.isUnauthorized
 import okhttp3.*
 
@@ -23,7 +22,7 @@ class AuthInterceptor(private val authenticationHelper: ISupportAuthentication<R
      * application interceptor, such as when implementing client-specific retries.
      */
     override fun authenticate(route: Route?, response: Response): Request? {
-        val networkState = NetworkState(code = response.code, status = SupportStateContract.LOADING)
+        val networkState = NetworkState.Error(code = response.code)
         if (networkState.isUnauthorized()) {
             val requestBuilder = response.request.newBuilder()
             if (authenticationHelper.isAuthenticated) {

@@ -1,6 +1,7 @@
 package io.wax911.support.ui.recycler.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -14,24 +15,39 @@ import io.wax911.support.core.animator.ScaleAnimator
 import io.wax911.support.core.animator.contract.ISupportAnimator
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.SupportStateContract
 import io.wax911.support.extension.getLayoutInflater
 import io.wax911.support.ui.R
 import io.wax911.support.ui.action.contract.ISupportActionMode
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
+import io.wax911.support.ui.util.SupportStateLayoutConfiguration
+import timber.log.Timber
 import java.util.*
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
 /**
+ * Core implementation for handling complex logic for [androidx.paging.PagedListAdapter] and
+ * [androidx.recyclerview.widget.RecyclerView.ViewHolder] binding logic
  *
  * @since 0.9.X
+ * @see SupportViewHolder
  */
 abstract class SupportViewAdapter<T>(
     protected val presenter: SupportPresenter<*>,
     itemCallback: DiffUtil.ItemCallback<T> = getDefaultDiffItemCallback()
 ) : PagedListAdapter<T, SupportViewHolder<T>>(itemCallback), Filterable {
 
+    private val moduleTag = javaClass.simpleName
+
+    /**
+     * Retry click interceptor for recycler footer error
+     */
+    lateinit var retryFooterAction: View.OnClickListener
+    lateinit var stateConfiguration: SupportStateLayoutConfiguration
+
+    /**
+     * Assigned if the current adapter supports needs to support [ISupportActionMode]
+     */
     var supportAction: ISupportActionMode<T>? = null
         set(value) {
             field = value?.apply {
@@ -39,6 +55,9 @@ abstract class SupportViewAdapter<T>(
             }
         }
 
+    /**
+     * Network state which will be used by [SupportFooterLoadingViewHolder] or [SupportFooterErrorViewHolder]
+     */
     var networkState: NetworkState? = null
         set(value) {
             val previousState = field
@@ -57,10 +76,11 @@ abstract class SupportViewAdapter<T>(
             }
         }
 
-    private var lastPosition: Int = 0
+    private var lastAnimatedPosition: Int = 0
 
     /**
      * Invokes a filter to search for data on the current adapter
+     * TODO: Change to Live Data
      */
     var searchQuery: String? by Delegates.observable(null) {
             _: KProperty<*>, _: String?, _: String? -> applyFilterIfRequired()
@@ -74,11 +94,7 @@ abstract class SupportViewAdapter<T>(
      * @see [ISupportAnimator]
      */
     private var customSupportAnimator: ISupportAnimator? = null
-        get() {
-            if (field == null)
-                field = ScaleAnimator()
-            return field
-        }
+        get() = field ?: ScaleAnimator()
 
     /**
      * Return the stable ID for the item at <code>position</code>. If [hasStableIds]
@@ -104,15 +120,24 @@ abstract class SupportViewAdapter<T>(
 
     /**
      * Overridden implementation creates a default loading footer view when the [viewType] is
-     * [R.layout.support_layout_state_footer] otherwise [createDefaultViewHolder] is called to
-     * resolve the view holder type
+     * [R.layout.support_layout_state_footer_loading] or [R.layout.support_layout_state_footer_error]
+     * otherwise [createDefaultViewHolder] is called to resolve the view holder type
      */
     override fun onCreateViewHolder(parent: ViewGroup, @LayoutRes viewType: Int): SupportViewHolder<T> {
         val layoutInflater = parent.context.getLayoutInflater()
         return when (viewType) {
-            R.layout.support_layout_state_footer -> {
-                return SupportFooterViewHolder(layoutInflater.inflate(
-                    R.layout.support_layout_state_footer, parent, false)
+            R.layout.support_layout_state_footer_loading -> {
+                return SupportFooterLoadingViewHolder(
+                    layoutInflater.inflate(
+                        R.layout.support_layout_state_footer_loading, parent, false
+                    ), stateConfiguration
+                )
+            }
+            R.layout.support_layout_state_footer_error -> {
+                return SupportFooterErrorViewHolder(
+                    layoutInflater.inflate(
+                        R.layout.support_layout_state_footer_error, parent, false
+                    ), networkState, retryFooterAction, stateConfiguration
                 )
             }
             else -> createDefaultViewHolder(parent, viewType, layoutInflater)
@@ -171,14 +196,20 @@ abstract class SupportViewAdapter<T>(
      * Calls the the recycler view holder to perform view binding,
      * and selection mode decoration if [ISupportActionMode] is active
      *
-     * @see [SupportViewHolder.onBindViewHolder]
+     * @see [SupportViewHolder.invoke]
      */
     override fun onBindViewHolder(holder: SupportViewHolder<T>, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.support_layout_state_footer ->
+            R.layout.support_layout_state_footer_loading ->
                 holder(null)
-            else ->
+            R.layout.support_layout_state_footer_error ->
+                holder(null)
+            else -> runCatching {
                 holder(getItem(position))
+            }.exceptionOrNull()?.also {
+                it.printStackTrace()
+                Timber.tag(moduleTag).e(it)
+            }
         }
     }
 
@@ -186,7 +217,7 @@ abstract class SupportViewAdapter<T>(
      * Calls the the recycler view holder to perform view binding,
      * and selection mode decoration if [ISupportActionMode] is active
      *
-     * @see [SupportViewHolder.onBindViewHolder]
+     * @see [SupportViewHolder.invoke]
      */
     override fun onBindViewHolder(holder: SupportViewHolder<T>, position: Int, payloads: MutableList<Any>) {
         when {
@@ -231,19 +262,40 @@ abstract class SupportViewAdapter<T>(
     @LayoutRes
     override fun getItemViewType(position: Int): Int {
         if (hasExtraRow() && position == itemCount - 1)
-            return R.layout.support_layout_state_footer
+            return when (networkState) {
+                is NetworkState.Error ->
+                    R.layout.support_layout_state_footer_error
+                is NetworkState.Loading ->
+                    R.layout.support_layout_state_footer_loading
+                else -> super.getItemViewType(position)
+            }
+
         return super.getItemViewType(position)
     }
 
+    /**
+     * Returns the number of items currently available, with the exception of an extra row
+     * which is added when the [NetworkState] is [NetworkState.Loading] or [NetworkState.Error]
+     *
+     * @see hasExtraRow
+     */
     override fun getItemCount(): Int {
         return super.getItemCount() + if (hasExtraRow()) 1 else 0
     }
 
+    /**
+     * Returns a boolean indicating whether or not the adapter had data, and caters for [hasExtraRow]
+     *
+     * @return [Boolean]
+     * @see getItemCount
+     * @see hasExtraRow
+     */
     fun isEmpty(): Boolean {
         if (hasExtraRow())
             return itemCount < 2
         return itemCount < 1
     }
+
     /**
      * Returns a filter that can be used to constrain data with a filtering
      * pattern.
@@ -296,10 +348,22 @@ abstract class SupportViewAdapter<T>(
         }
     }
 
-    private fun hasExtraRow() = networkState?.status != SupportStateContract.CONTENT
+    /**
+     *
+     */
+    private fun hasExtraRow() = networkState != null &&
+            (networkState is NetworkState.Loading || networkState is NetworkState.Error)
 
+    /**
+     * Returns a boolean to instruct the [GridLayoutManager] if an item at the position should
+     * use a span size count of 1 otherwise defaults to the intended size
+     *
+     * @param position recycler position being rendered
+     * @see setLayoutSpanSize
+     */
     protected fun isFullSpanItem(position: Int): Boolean =
-        getItemViewType(position) == R.layout.support_layout_state_footer
+        getItemViewType(position) == R.layout.support_layout_state_footer_loading ||
+        getItemViewType(position) == R.layout.support_layout_state_footer_error
 
     /**
      * Initial implementation is only specific for group types of recyclers,
@@ -329,7 +393,7 @@ abstract class SupportViewAdapter<T>(
 
     private fun animateViewHolder(holder: SupportViewHolder<T>?, position: Int) {
         holder?.apply {
-            when (position > lastPosition) {
+            when (position > lastAnimatedPosition) {
                 true -> customSupportAnimator?.also { supportAnimator ->
                     supportAnimator.getAnimators(itemView).forEach { animator ->
                         with(animator) {
@@ -340,7 +404,7 @@ abstract class SupportViewAdapter<T>(
                     }
                 }
             }
-            lastPosition = position
+            lastAnimatedPosition = position
         }
     }
 
@@ -353,6 +417,7 @@ abstract class SupportViewAdapter<T>(
     }
 
     companion object {
+
         /**
          * Provides default behaviour for item callback to compare objects
          */

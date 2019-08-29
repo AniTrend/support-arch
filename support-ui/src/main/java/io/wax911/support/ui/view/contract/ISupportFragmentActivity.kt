@@ -7,6 +7,12 @@ import io.wax911.support.core.viewmodel.SupportViewModel
 import io.wax911.support.data.repository.SupportRepository
 import io.wax911.support.extension.util.SupportCoroutineHelper
 
+/**
+ * Contract for implementing [androidx.fragment.app.FragmentActivity] based components
+ *
+ * @since 0.9.X
+ * @see SupportCoroutineHelper
+ */
 interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCoroutineHelper,
     SharedPreferences.OnSharedPreferenceChangeListener {
 
