@@ -65,15 +65,15 @@ val dataNetworkModules = module {
 
     single {
         val okHttpClientBuilder = OkHttpClient.Builder()
-            .readTimeout(35, TimeUnit.SECONDS)
-            .connectTimeout(35, TimeUnit.SECONDS)
+            .readTimeout(15, TimeUnit.SECONDS)
+            .connectTimeout(15, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
             .addInterceptor(ClientInterceptor())
             .authenticator(get<AuthInterceptor>())
         when {
             BuildConfig.DEBUG -> {
                 val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
+                    level = HttpLoggingInterceptor.Level.HEADERS
                 }
                 okHttpClientBuilder.addInterceptor(httpLoggingInterceptor)
             }

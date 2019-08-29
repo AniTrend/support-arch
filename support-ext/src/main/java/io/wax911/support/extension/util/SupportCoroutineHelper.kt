@@ -4,7 +4,7 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 /**
- *
+ * Contract for implementing coroutine scope preference on [SupervisorJob]
  *
  * @since v1.1.0
  */

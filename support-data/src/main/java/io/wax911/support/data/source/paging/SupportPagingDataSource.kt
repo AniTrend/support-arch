@@ -41,12 +41,10 @@ abstract class SupportPagingDataSource<T>(
 
     override val networkState = pagingRequestHelper.createStatusLiveData()
 
-    protected val supportPagingHelper by lazy {
-        SupportPagingHelper(
-            isPagingLimit = false,
-            pageSize = SupportExtKeyStore.pagingLimit
-        )
-    }
+    protected val supportPagingHelper = SupportPagingHelper(
+        isPagingLimit = false,
+        pageSize = SupportExtKeyStore.pagingLimit
+    )
 
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload

@@ -4,10 +4,11 @@ import androidx.paging.PagingRequestHelper
 import io.wax911.support.data.mapper.SupportDataMapper
 import io.wax911.support.data.mapper.contract.IMapperHelper
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.SupportStateContract
+import io.wax911.support.data.model.extension.isWTF
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import retrofit2.Response
+import timber.log.Timber
 
 /**
  * TraktTrendMapper specific mapper, extends and overrides the [handleResponse] callback
@@ -31,18 +32,29 @@ abstract class TraktTrendMapper<S, D> (
      * @return network state of the deferred result
      */
     override suspend fun handleResponse(deferred: Deferred<Response<S>>): NetworkState {
-        val response = deferred.await()
-        return if (response.isSuccessful && response.body() != null) {
-            val mapped = onResponseMapFrom(response.body()!!)
-            onResponseDatabaseInsert(mapped)
-            pagingRequestHelper?.recordSuccess()
-            NetworkState.LOADED
-        } else {
-            pagingRequestHelper?.recordFailure(Throwable(response.message()))
-            NetworkState(
-                status = SupportStateContract.ERROR,
-                message = response.message(),
-                code = response.code()
+        val result = runCatching {
+            val response = deferred.await()
+            if (response.isSuccessful && response.body() != null) {
+                val mapped = onResponseMapFrom(response.body()!!)
+                onResponseDatabaseInsert(mapped)
+                pagingRequestHelper?.recordSuccess()
+                NetworkState.Success
+            } else {
+                pagingRequestHelper?.recordFailure(Throwable(response.message()))
+                NetworkState.Error(
+                    heading = response.message(),
+                    message = response.errorBody()?.string(),
+                    code = response.code()
+                )
+            }
+        }
+
+        return result.getOrElse {
+            it.printStackTrace()
+            Timber.tag(moduleTag).e(it)
+            NetworkState.Error(
+                heading = "Internal Application Error",
+                message = it.message
             )
         }
     }

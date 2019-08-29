@@ -7,9 +7,11 @@ import io.wax911.support.ui.recycler.holder.event.ItemClickListener
 
 
 /**
- * Recycler view holder implementation
+ * Core implementation for [androidx.recyclerview.widget.RecyclerView.ViewHolder] with additional
+ * functionality for supporting [ISupportActionMode]
  *
  * @since v1.1.0
+ * @see ISupportActionMode
  */
 abstract class SupportViewHolder<T>(
     view: View
@@ -19,7 +21,8 @@ abstract class SupportViewHolder<T>(
 
     /**
      * Constructs an int pair container with a boolean representing a valid adapter position
-     * @return IntPair
+     *
+     * @return [Pair] of [Int] and [Boolean]
      */
     private fun isValidIndexPair(): Pair<Int, Boolean> =
             Pair(adapterPosition, adapterPosition != RecyclerView.NO_POSITION)

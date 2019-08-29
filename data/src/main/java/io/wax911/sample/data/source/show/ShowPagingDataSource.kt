@@ -14,11 +14,16 @@ import io.wax911.sample.data.mapper.show.TrendingShowMapper
 import io.wax911.sample.data.model.show.Show
 import io.wax911.sample.data.usecase.media.MediaRequestType
 import io.wax911.sample.data.usecase.media.contract.IPagedMediaUseCase
+import io.wax911.support.data.mapper.contract.IMapperHelper
+import io.wax911.support.data.model.NetworkState
 import io.wax911.support.data.source.contract.ISourceObservable
 import io.wax911.support.data.source.paging.SupportPagingDataSource
 import io.wax911.support.data.util.SupportDataKeyStore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import timber.log.Timber
 
 class ShowPagingDataSource(
@@ -41,7 +46,8 @@ class ShowPagingDataSource(
         )
 
         launch {
-            mapper.handleResponse(result)
+            val state = mapper.handleResponse(result)
+            networkState.postValue(state)
         }
     }
 
@@ -59,9 +65,9 @@ class ShowPagingDataSource(
         )
 
         launch {
-            mapper.handleResponse(result)
+            val state = mapper.handleResponse(result)
+            networkState.postValue(state)
         }
-
     }
 
     private fun fetchAnticipatedShows(callback: PagingRequestHelper.Request.Callback) {
@@ -78,9 +84,9 @@ class ShowPagingDataSource(
         )
 
         launch {
-            mapper.handleResponse(result)
+            val state = mapper.handleResponse(result)
+            networkState.postValue(state)
         }
-
     }
 
     /**

@@ -10,12 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.snackbar.Snackbar
 import io.wax911.support.core.presenter.SupportPresenter
 import io.wax911.support.data.model.NetworkState
-import io.wax911.support.data.model.contract.SupportStateContract
+import io.wax911.support.data.model.extension.isLoading
 import io.wax911.support.extension.isStateAtLeast
-import io.wax911.support.extension.snackBar
 import io.wax911.support.extension.util.SupportExtKeyStore
 import io.wax911.support.ui.R
 import io.wax911.support.ui.extension.configureWidgetBehaviorWith
@@ -23,16 +21,21 @@ import io.wax911.support.ui.extension.onResponseResetStates
 import io.wax911.support.ui.fragment.contract.ISupportFragmentList
 import io.wax911.support.ui.recycler.SupportRecyclerView
 import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
+import io.wax911.support.ui.util.SupportStateLayoutConfiguration
 import io.wax911.support.ui.view.widget.SupportStateLayout
 import timber.log.Timber
 
 /**
+ * Core implementation for fragments that rely on pagination/non-paginated data sets
  *
  * @since 0.9.X
+ * @see SupportFragment
+ * @see ISupportFragmentList
  */
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFragment<M, P, VM>(),
     ISupportFragmentList<M>, SwipeRefreshLayout.OnRefreshListener {
 
+    protected abstract val supportStateConfiguration: SupportStateLayoutConfiguration
     protected abstract val supportViewAdapter: SupportViewAdapter<M>
 
     protected var supportStateLayout: SupportStateLayout? = null
@@ -41,28 +44,22 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
 
     private val stateLayoutOnClick = View.OnClickListener {
         if (supportStateLayout?.isLoading != true) {
-            supportStateLayout?.showLoading(loadingMessage = loadingMessage)
-            onRefresh()
-            resetWidgetStates()
-        } else
-            Timber.tag(moduleTag).w("stateLayoutOnClick -> supportStateLayout is currently loading")
-    }
-
-
-    private val snackBarOnClickListener = View.OnClickListener {
-        if (supportStateLayout?.isLoading != true) {
-            supportViewAdapter.networkState = NetworkState.LOADING
+            supportViewModel?.retry()
             onFetchDataInitialize()
-            resetWidgetStates()
         } else
-            Timber.tag(moduleTag).w("snackBarOnClickListener -> supportStateLayout is currently loading")
+            Timber.tag(moduleTag).i("stateLayoutOnClick -> supportStateLayout is currently loading")
     }
 
+    private val adapterFooterRetryAction = View.OnClickListener {
+        if (supportStateLayout?.isLoading != true)
+            onFetchDataInitialize()
+        else
+            Timber.tag(moduleTag).i("adapterFooterRetryAction -> supportStateLayout is currently loading")
+    }
 
     private val onRefreshObserver = Observer<NetworkState> { networkState ->
-        supportRefreshLayout?.isRefreshing = networkState.status == SupportStateContract.LOADING
-        if (networkState.status != SupportStateContract.LOADING)
-            changeLayoutState(networkState)
+        supportRefreshLayout?.isRefreshing = networkState.isLoading()
+        changeLayoutState(networkState)
     }
 
     private val onNetworkObserver = Observer<NetworkState> {
@@ -75,13 +72,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
     /**
      * Checks and resets swipe refresh layout and snack bar states
      */
-    private fun resetWidgetStates() {
+    private fun resetWidgetStates() =
         supportRefreshLayout?.onResponseResetStates()
-        snackBar?.apply {
-            if (isShown)
-                dismiss()
-        }
-    }
 
     /**
      * Called to do initial creation of a fragment.  This is called after
@@ -134,6 +126,10 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
             supportRecyclerView = findViewById(R.id.supportRecyclerView)
         }
 
+        supportStateLayout?.stateConfiguration = supportStateConfiguration
+        supportViewAdapter.stateConfiguration = supportStateConfiguration
+        supportViewAdapter.retryFooterAction = adapterFooterRetryAction
+
         supportRefreshLayout?.apply {
             configureWidgetBehaviorWith(activity)
             setOnRefreshListener(this@SupportFragmentList)
@@ -148,14 +144,12 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
                     StaggeredGridLayoutManager.VERTICAL
                 )
             if (adapter == null) {
-                adapter = supportViewAdapter.also {
-                    if (it.supportAction == null)
-                        it.supportAction = supportAction
+                adapter = supportViewAdapter.also { adapter ->
+                    if (adapter.supportAction == null)
+                        adapter.supportAction = supportAction
                 }
             }
         }
-
-        supportStateLayout?.showLoading(loadingMessage = loadingMessage)
 
         setUpViewModelObserver()
         supportViewModel?.networkState?.observe(this, onNetworkObserver)
@@ -166,7 +160,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
 
     /**
      * Called when the Fragment is visible to the user.  This is generally
-     * tied to [Activity.onStart] of the containing
+     * tied to [SupportFragment.onStart] of the containing
      * Activity's lifecycle.
      */
     override fun onStart() {
@@ -229,38 +223,23 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         }
     }
 
+    /**
+     * Informs the underlying [SupportStateLayout] of changes to the [NetworkState]
+     *
+     * @param networkState New state from the application
+     */
     protected fun changeLayoutState(networkState: NetworkState?) {
         if (isStateAtLeast(Lifecycle.State.RESUMED)) {
-            supportRefreshLayout?.onResponseResetStates()
-            if (supportPresenter.pagingHelper.isFirstPage()) {
-                supportStateLayout?.showLoading(loadingMessage = loadingMessage)
-                networkState?.apply {
-                    if (message.isNullOrEmpty()) {
-                        when (networkState.status) {
-                            SupportStateContract.ERROR ->
-                                supportStateLayout?.showError(
-                                    errorMessage = message
-                                )
-                            SupportStateContract.CONTENT -> {
-                                supportStateLayout?.showContent()
-                                supportPresenter.pagingHelper.onPageNext()
-                            }
-                            SupportStateContract.LOADING ->
-                                supportStateLayout?.showLoading(
-                                    loadingMessage = loadingMessage
-                                )
-                        }
-                    } else {
-                        snackBar = supportStateLayout?.snackBar(message!!, Snackbar.LENGTH_INDEFINITE)
-                            ?.setAction(retryButtonText, snackBarOnClickListener)
-                        snackBar?.show()
-                    }
-                }
-            } else {
-                supportStateLayout?.showError(
-                    errorMessage = networkState?.message
+            supportStateLayout?.setNetworkState(
+                networkState ?: NetworkState.Error(
+                    heading = "Unknown State",
+                    message = "The application is in an unknown state ¯\\_(ツ)_/¯"
                 )
-            }
+            )
+            if (networkState is NetworkState.Success)
+                supportPresenter.pagingHelper.onPageNext()
+
+            resetWidgetStates()
         }
     }
 
@@ -272,8 +251,6 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         supportViewModel?.refresh()
     }
 
-
-
     /**
      * Handles post view model result after extraction or processing
      *
@@ -284,9 +261,12 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
             submitList(pagedList)
             applyFilterIfRequired()
         }
-        supportRefreshLayout?.onResponseResetStates()
-        supportStateLayout?.showContent()
+
+        if (!pagedList.isNullOrEmpty())
+            supportStateLayout?.setNetworkState(NetworkState.Success)
+
         onUpdateUserInterface()
+        resetWidgetStates()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
