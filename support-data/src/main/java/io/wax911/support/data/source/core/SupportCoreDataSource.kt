@@ -53,7 +53,7 @@ abstract class SupportCoreDataSource(
      * @see networkState
      */
     override fun invoke() {
-        networkState.postValue(NetworkState.LOADING)
+        networkState.postValue(NetworkState.Success)
         retry = { invoke() }
     }
 

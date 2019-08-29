@@ -39,7 +39,7 @@ fun SupportRecyclerView.setUpWith(supportAdapter: SupportViewAdapter<*>, vertica
 }
 
 /**
- * This method applies the most common configuration for the widget, things like direction, colors, behavior etc.
+ * This method applies the most common stateConfiguration for the widget, things like direction, colors, behavior etc.
  */
 fun SwipeRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?) = context?.also {
     setProgressBackgroundColorSchemeColor(it.getColorFromAttr(R.attr.rootColor))

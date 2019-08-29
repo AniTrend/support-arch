@@ -5,7 +5,7 @@ import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
 
 /**
- * Contract for action model
+ * Contract for action mode implementation
  *
  * @since 0.9.X
  */

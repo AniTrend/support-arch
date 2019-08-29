@@ -1,6 +1,7 @@
 package io.wax911.support.extension.util
 
 import androidx.annotation.StringDef
+import io.wax911.support.extension.annotation.SupportExperimental
 import io.wax911.support.extension.util.SupportTimeHelper.Companion.SupportDateTimeUnit
 import java.util.concurrent.TimeUnit
 
@@ -13,6 +14,7 @@ import java.util.concurrent.TimeUnit
  * @param supportTargetTime unit to compare against [supportCurrentUnixTime] - [SupportTimeInstance]
  * of the last checkpoint passed into [hasElapsed]
  */
+@SupportExperimental
 class SupportTimeHelper(
     val supportCurrentUnixTime: Long = System.currentTimeMillis(),
     val supportTargetTime: Int,

@@ -1,6 +1,6 @@
 package io.wax911.support.data.source.contract
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import io.wax911.support.data.model.NetworkState
 import io.wax911.support.extension.util.SupportCoroutineHelper
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,7 +17,7 @@ interface IDataSource : SupportCoroutineHelper {
      * Observable for network state during requests that the UI can monitor and
      * act based on state changes
      */
-    val networkState: LiveData<NetworkState>
+    val networkState: MutableLiveData<NetworkState>
 
     /**
      * Coroutine dispatcher specification

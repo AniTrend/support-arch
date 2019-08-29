@@ -2,18 +2,23 @@ package io.wax911.support.ui.recycler.adapter
 
 import android.view.View
 import android.widget.ProgressBar
+import androidx.work.impl.constraints.NetworkState
 import io.wax911.support.ui.R
 import io.wax911.support.ui.recycler.holder.SupportViewHolder
+import io.wax911.support.ui.util.SupportStateLayoutConfiguration
 import io.wax911.support.ui.view.text.SingleLineTextView
 
 /**
+ * Footer view holder for representing loading status
  *
  * @since 0.9.X
  */
-class SupportFooterViewHolder<T>(view: View) : SupportViewHolder<T>(view.rootView) {
+class SupportFooterLoadingViewHolder<T>(
+    view: View,
+    private val configuration: SupportStateLayoutConfiguration
+) : SupportViewHolder<T>(view.rootView) {
 
-    private val stateText : SingleLineTextView? = view.findViewById(R.id.stateText)
-    private val stateProgress : ProgressBar? = view.findViewById(R.id.stateProgress)
+    private val stateText : SingleLineTextView? = view.findViewById(R.id.stateFooterLoadingText)
 
     /**
      * Load images, text, buttons, etc. in this method from the given parameter
@@ -21,7 +26,7 @@ class SupportFooterViewHolder<T>(view: View) : SupportViewHolder<T>(view.rootVie
      * @param model Is the liveData at the current adapter position
      */
     override fun invoke(model: T?) {
-        stateText?.setText(R.string.supportTextLoading)
+        stateText?.setText(configuration.loadingMessage)
     }
 
     /**
