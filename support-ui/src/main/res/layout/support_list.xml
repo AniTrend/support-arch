@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.wax911.support.ui.view.widget.SupportStateLayout
+<co.anitrend.arch.ui.view.widget.SupportStateLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/progressLayout"
     android:layout_width="match_parent"
@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:descendantFocusability="blocksDescendants">
 
-        <io.wax911.support.ui.recycler.SupportRecyclerView
+        <co.anitrend.arch.ui.recycler.SupportRecyclerView
             android:id="@+id/supportRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -19,4 +19,4 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</io.wax911.support.ui.view.widget.SupportStateLayout>
+</co.anitrend.arch.ui.view.widget.SupportStateLayout>

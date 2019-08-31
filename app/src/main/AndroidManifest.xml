@@ -21,7 +21,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <meta-data
-            android:name="android.app.shortcuts"
+            android:name="android.shortcuts"
             android:resource="@xml/shortcuts" />
 
         <activity android:name=".view.activity.base.SplashActivity">

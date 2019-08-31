@@ -5,7 +5,7 @@
     <data>
         <variable
             name="entity"
-            type="io.wax911.sample.data.model.contract.TraktEntity" />
+            type="io.wax911.sample.domain.entities.contract.TraktEntity" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="@dimen/lg_margin">
 
-        <io.wax911.support.ui.view.image.SupportImageView
+        <co.anitrend.arch.ui.view.image.SupportImageView
             android:id="@+id/showTrailer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -22,7 +22,7 @@
             app:aspectRatio=".55"
             tools:scaleType="centerCrop"/>
 
-        <io.wax911.support.ui.view.text.SingleLineTextView
+        <co.anitrend.arch.ui.view.text.SingleLineTextView
             android:id="@+id/showTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

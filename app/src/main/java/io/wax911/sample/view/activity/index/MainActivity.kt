@@ -1,6 +1,7 @@
 package io.wax911.sample.view.activity.index
 
 import android.os.Bundle
+import android.text.TextUtils.replace
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
@@ -14,13 +15,15 @@ import com.google.android.material.navigation.NavigationView
 import io.wax911.sample.R
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.view.TraktTrendActivity
-import io.wax911.sample.data.usecase.media.MediaRequestType
-import io.wax911.sample.data.usecase.media.contract.IPagedMediaUseCase
+import io.wax911.sample.domain.usecases.movie.MovieRequestType
+import io.wax911.sample.domain.usecases.movie.TraktMovieUseCase
+import io.wax911.sample.domain.usecases.show.ShowRequestType
+import io.wax911.sample.domain.usecases.show.TraktShowUseCase
 import io.wax911.sample.view.fragment.list.FragmentMovieList
 import io.wax911.sample.view.fragment.list.FragmentShowList
-import io.wax911.support.ui.activity.SupportActivity
-import io.wax911.support.ui.fragment.SupportFragment
-import io.wax911.support.ui.util.SupportUiKeyStore
+import co.anitrend.arch.ui.activity.SupportActivity
+import co.anitrend.arch.ui.fragment.SupportFragment
+import co.anitrend.arch.ui.util.SupportUiKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
@@ -141,17 +144,27 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
             R.id.nav_popular_series -> {
                 selectedTitle = R.string.nav_popular_series
                 supportFragment = FragmentShowList.newInstance(
-                    IPagedMediaUseCase.Payload(
-                        MediaRequestType.MEDIA_TYPE_POPULAR
-                    )
+                    Bundle().also {
+                        it.putParcelable(
+                            FragmentShowList.PARAM_SHOW_TYPE,
+                            TraktShowUseCase.Payload(
+                                ShowRequestType.ShowPopular
+                            )
+                        )
+                    }
                 )
             }
             R.id.nav_popular_movies -> {
                 selectedTitle = R.string.nav_popular_movies
                 supportFragment = FragmentMovieList.newInstance(
-                    IPagedMediaUseCase.Payload(
-                        MediaRequestType.MEDIA_TYPE_POPULAR
-                    )
+                    Bundle().also {
+                        it.putParcelable(
+                            FragmentMovieList.PARAM_MOVIE_TYPE,
+                            TraktMovieUseCase.Payload(
+                                MovieRequestType.MoviePopular
+                            )
+                        )
+                    }
                 )
             }
         }

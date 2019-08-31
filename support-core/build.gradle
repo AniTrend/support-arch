@@ -13,12 +13,17 @@ android {
         versionCode rootProject.versionCode
         versionName rootProject.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
     }
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -44,6 +49,7 @@ dependencies {
 
     implementation project(':support-ext')
     implementation project(':support-data')
+    implementation project(':support-domain')
 
     /** Koin AndroidX Dependency Injection */
     implementation "org.koin:koin-core:$koin"
@@ -81,7 +87,7 @@ dokka {
 
     linkMapping {
         dir = "src/main/java"
-        url = "https://github.com/anitrend/support-arch/tree/develop/paging/support-core/src/main/java"
+        url = "https://github.com/anitrend/support-arch/tree/develop/support-core/src/main/java"
         suffix = "#L"
     }
 }
