@@ -1,4 +1,4 @@
-include ':support-core', ':support-ext', ':support-ui', ':support-data'
+include ':support-core', ':support-ext', ':support-ui', ':support-data', ':support-domain'
 
 if (System.getenv("CI") == null)
     include ':app', ':core', ':data', ':domain'

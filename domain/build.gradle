@@ -1,52 +1,13 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-kapt")
     id("kotlin-android-extensions")
 }
 
-android {
-    compileSdkVersion compileSdk
-    defaultConfig {
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-}
+apply from: "../gradle/gradle-common-config.gradle"
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Platform Dependencies */
-    implementation project(":support-data")
-    implementation project(":support-ext")
-
-    /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-core:$koin"
-    implementation "org.koin:koin-core-ext:$koin"
-    implementation "org.koin:koin-androidx-scope:$koin"
-
-    /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
-
-    /** Timber */
-    implementation "com.jakewharton.timber:timber:$timber"
-
-    /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    implementation project(":support-domain")
 }

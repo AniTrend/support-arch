@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import io.wax911.sample.core.util.ThumbnailHelper
-import io.wax911.sample.data.model.contract.TraktEntity
+import io.wax911.sample.domain.entities.contract.TraktEntity
 
 @BindingAdapter("imageUrl")
 fun AppCompatImageView.setImageUrl(url: String?) = url?.also {

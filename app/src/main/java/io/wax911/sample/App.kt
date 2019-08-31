@@ -5,13 +5,10 @@ import androidx.work.Configuration
 import io.wax911.sample.core.koin.coreModules
 import io.wax911.sample.core.koin.corePresenterModules
 import io.wax911.sample.core.koin.coreViewModelModules
-import io.wax911.sample.data.koin.dataModules
-import io.wax911.sample.data.koin.dataNetworkModules
-import io.wax911.sample.data.koin.dataRepositoryModules
-import io.wax911.sample.data.koin.dataUseCaseModules
 import io.wax911.sample.koin.appModules
-import io.wax911.sample.util.AnalyticsUtil
-import io.wax911.support.core.analytic.contract.ISupportAnalytics
+import io.wax911.sample.analytics.AnalyticsLogger
+import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import io.wax911.sample.data.koin.*
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -40,6 +37,7 @@ class App : Application(), Configuration.Provider {
                     corePresenterModules,
 
                     dataModules,
+                    dataSourceModules,
                     dataUseCaseModules,
                     dataNetworkModules,
                     dataRepositoryModules
@@ -54,7 +52,7 @@ class App : Application(), Configuration.Provider {
     private fun plantLoggingTree() {
         when (BuildConfig.DEBUG) {
             true -> Timber.plant(Timber.DebugTree())
-            else -> Timber.plant(analyticsUtil as AnalyticsUtil)
+            else -> Timber.plant(analyticsUtil as AnalyticsLogger)
         }
     }
 

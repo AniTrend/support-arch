@@ -5,22 +5,23 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import io.wax911.sample.R
-import io.wax911.sample.adapter.recycler.ShowAdapter
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.viewmodel.show.ShowViewModel
-import io.wax911.sample.data.model.show.Show
-import io.wax911.sample.data.usecase.media.MediaRequestType
-import io.wax911.sample.data.usecase.media.contract.IPagedMediaUseCase
-import io.wax911.support.core.factory.InstanceCreator
-import io.wax911.support.core.viewmodel.SupportViewModel
-import io.wax911.support.extension.argument
-import io.wax911.support.ui.fragment.SupportFragmentList
-import io.wax911.support.ui.recycler.holder.event.ItemClickListener
-import io.wax911.support.ui.util.SupportStateLayoutConfiguration
+import io.wax911.sample.data.entitiy.show.ShowEntity
+import io.wax911.sample.domain.usecases.show.TraktShowUseCase
+import co.anitrend.arch.core.viewmodel.SupportViewModel
+import co.anitrend.arch.extension.argument
+import co.anitrend.arch.ui.fragment.SupportFragmentList
+import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
+import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
+import io.wax911.sample.adapter.recycler.ShowAdapter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show>>() {
+class FragmentShowList : SupportFragmentList<ShowEntity, CorePresenter, PagedList<ShowEntity>>() {
+
+    private val pagingMediaPayload
+            by argument<TraktShowUseCase.Payload>(PARAM_SHOW_TYPE)
 
     // we could inject this as a singleton through DI
     override val supportStateConfiguration = SupportStateLayoutConfiguration(
@@ -28,39 +29,53 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
         R.drawable.ic_support_empty_state,
         R.string.supportTextLoading, R.string.action_retry
     )
+
     override val supportPresenter by inject<CorePresenter>()
     override val supportViewModel by viewModel<ShowViewModel>()
 
     override val supportViewAdapter =
-        ShowAdapter(supportPresenter, object : ItemClickListener<Show> {
-            /**
-             * When the target view from [View.OnClickListener]
-             * is clicked from a view holder this method will be called
-             *
-             * @param target view that has been clicked
-             * @param data the liveData that at the click index
-             */
-            override fun onItemClick(target: View, data: Pair<Int, Show?>) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+        ShowAdapter(
+            supportPresenter,
+            object : ItemClickListener<ShowEntity> {
+                /**
+                 * When the target view from [View.OnClickListener]
+                 * is clicked from a view holder this method will be called
+                 *
+                 * @param target view that has been clicked
+                 * @param data the liveData that at the click index
+                 */
+                /**
+                 * When the target view from [View.OnClickListener]
+                 * is clicked from a view holder this method will be called
+                 *
+                 * @param target view that has been clicked
+                 * @param data the liveData that at the click index
+                 */
+                override fun onItemClick(target: View, data: Pair<Int, ShowEntity?>) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
 
-            /**
-             * When the target view from [View.OnLongClickListener]
-             * is clicked from a view holder this method will be called
-             *
-             * @param target view that has been long clicked
-             * @param data the liveData that at the long click index
-             */
-            override fun onItemLongClick(target: View, data: Pair<Int, Show?>) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                /**
+                 * When the target view from [View.OnLongClickListener]
+                 * is clicked from a view holder this method will be called
+                 *
+                 * @param target view that has been long clicked
+                 * @param data the liveData that at the long click index
+                 */
+                /**
+                 * When the target view from [View.OnLongClickListener]
+                 * is clicked from a view holder this method will be called
+                 *
+                 * @param target view that has been long clicked
+                 * @param data the liveData that at the long click index
+                 */
+                override fun onItemLongClick(target: View, data: Pair<Int, ShowEntity?>) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
             }
-        })
+        )
 
     override val columnSize: Int = R.integer.single_list_size
-
-    private val pagingMediaPayload by argument<IPagedMediaUseCase.Payload>(
-        MediaRequestType.selectedMediaType
-    )
 
     /**
      * Invoke view model observer to watch for changes
@@ -110,11 +125,14 @@ class FragmentShowList : SupportFragmentList<Show, CorePresenter, PagedList<Show
         }
     }
 
-    companion object : InstanceCreator<FragmentShowList, IPagedMediaUseCase.Payload>({
-        FragmentShowList().apply {
-            arguments = Bundle().apply {
-                putParcelable(MediaRequestType.selectedMediaType, it)
-            }
+    companion object {
+
+        const val PARAM_SHOW_TYPE = "FragmentShowList:PARAM_SHOW_TYPE"
+
+        fun newInstance(bundle: Bundle?): FragmentShowList {
+            val fragment = FragmentShowList()
+            fragment.arguments = bundle
+            return fragment
         }
-    })
+    }
 }

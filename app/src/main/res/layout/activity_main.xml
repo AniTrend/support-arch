@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.activity.index.MainActivity">
+    tools:context="io.wax911.sample.view.activity.index.MainActivity">
 
     <include layout="@layout/content_main" />
 
