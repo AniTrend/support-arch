@@ -12,8 +12,8 @@ import com.bumptech.glide.load.engine.cache.MemorySizeCalculator
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import io.wax911.sample.R
-import io.wax911.support.extension.getCompatDrawable
-import io.wax911.support.extension.isLowRamDevice
+import co.anitrend.arch.extension.getCompatDrawable
+import co.anitrend.arch.extension.isLowRamDevice
 
 @GlideModule
 class GlideAppModule : AppGlideModule() {

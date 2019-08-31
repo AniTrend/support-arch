@@ -5,14 +5,10 @@ plugins {
     id("kotlin-android-extensions")
 }
 
+apply from: "../gradle/gradle-common-config.gradle"
+
 android {
-    compileSdkVersion compileSdk
     defaultConfig {
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
@@ -21,10 +17,6 @@ android {
     }
 
     buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
         buildTypes.each {
             def secretsProps = new Properties()
             file(".config/secrets.properties").withInputStream {
@@ -32,6 +24,7 @@ android {
             }
             it.buildConfigField("String", "clientId", secretsProps['clientId'])
             it.buildConfigField("String", "clientSecret", secretsProps['clientSecret'])
+            it.buildConfigField("String", "tmdbSecret", secretsProps['tmdbSecret'])
 
             def configProps = new Properties()
             file(".config/configuration.properties").withInputStream {
@@ -45,28 +38,14 @@ android {
             it.buildConfigField("int", "DATABASE_SCHEMA_VERSION", DATABASE_SCHEMA_VERSION)
         }
     }
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
-    compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += [ "-Xuse-experimental=kotlin.Experimental" ]
-    }
-}
-
-androidExtensions {
-    experimental = true
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Platform Dependencies */
+    implementation project(":domain")
     implementation project(":support-data")
+    implementation project(":support-domain")
     implementation project(":support-ext")
 
     /** Koin AndroidX Dependency Injection */
@@ -75,7 +54,6 @@ dependencies {
     implementation "org.koin:koin-androidx-scope:$koin"
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
@@ -94,8 +72,12 @@ dependencies {
     implementation "androidx.room:room-ktx:$room"
     kapt "androidx.room:room-compiler:$room"
 
-    /** Timber */
-    implementation "com.jakewharton.timber:timber:$timber"
+    /** Tmdb & Trakt Wrappers */
+    implementation "com.uwetrottmann.tmdb2:tmdb-java:2.1.1"
+    implementation ('com.uwetrottmann.trakt5:trakt-java:6.3.0') {
+        exclude group: 'org.threeten', module: 'threetenbp'
+    }
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
@@ -103,9 +85,5 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
     androidTestImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 }

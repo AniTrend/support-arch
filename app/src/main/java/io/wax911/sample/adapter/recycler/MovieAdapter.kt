@@ -3,17 +3,17 @@ package io.wax911.sample.adapter.recycler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.wax911.sample.data.model.movie.Movie
+import io.wax911.sample.data.entitiy.movie.MovieEntity
 import io.wax911.sample.databinding.AdapterMediaItemBinding
-import io.wax911.support.core.presenter.SupportPresenter
-import io.wax911.support.ui.recycler.adapter.SupportViewAdapter
-import io.wax911.support.ui.recycler.holder.SupportViewHolder
-import io.wax911.support.ui.recycler.holder.event.ItemClickListener
+import co.anitrend.arch.core.presenter.SupportPresenter
+import co.anitrend.arch.ui.recycler.adapter.SupportViewAdapter
+import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
+import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 
 class MovieAdapter(
     presenter: SupportPresenter<*>,
-    private val clickListener: ItemClickListener<Movie>
-) : SupportViewAdapter<Movie>(presenter) {
+    private val clickListener: ItemClickListener<MovieEntity>
+) : SupportViewAdapter<MovieEntity>(presenter) {
 
     /**
      * Should provide the required view holder, this function is a substitute for [onCreateViewHolder] which now
@@ -23,20 +23,20 @@ class MovieAdapter(
         parent: ViewGroup,
         viewType: Int,
         layoutInflater: LayoutInflater
-    ): SupportViewHolder<Movie> {
+    ): SupportViewHolder<MovieEntity> {
         return MovieViewHolder(AdapterMediaItemBinding.inflate(layoutInflater, parent, false))
     }
 
     inner class MovieViewHolder(
         private val binding: AdapterMediaItemBinding
-    ) : SupportViewHolder<Movie>(binding.root) {
+    ) : SupportViewHolder<MovieEntity>(binding.root) {
 
         /**
          * Load images, text, buttons, etc. in this method from the given parameter
          *
          * @param model Is the liveData at the current adapter position
          */
-        override fun invoke(model: Movie?) {
+        override fun invoke(model: MovieEntity?) {
             with (binding) {
                 entity = model
                 executePendingBindings()
@@ -65,7 +65,7 @@ class MovieAdapter(
         override fun onItemClick(view: View) {
             performClick(
                 clickListener = clickListener,
-                entity = binding.entity as Movie?,
+                entity = binding.entity as MovieEntity?,
                 view = view
             )
         }
