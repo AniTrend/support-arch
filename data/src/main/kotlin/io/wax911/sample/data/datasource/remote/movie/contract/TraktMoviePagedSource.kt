@@ -1,10 +1,10 @@
 package io.wax911.sample.data.datasource.remote.movie.contract
 
 import androidx.paging.PagedList
-import io.wax911.sample.data.datasource.local.query.MovieDao
-import io.wax911.sample.data.entitiy.movie.MovieEntity
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
+import io.wax911.sample.data.datasource.local.query.MovieDao
+import io.wax911.sample.data.entitiy.movie.MovieEntity
 
 abstract class TraktMoviePagedSource : SupportPagingDataSource<MovieEntity>() {
 
