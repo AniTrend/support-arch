@@ -1,10 +1,10 @@
 package io.wax911.sample.data.datasource.remote.show.contract
 
 import androidx.paging.PagedList
-import io.wax911.sample.data.datasource.local.query.ShowDao
-import io.wax911.sample.data.entitiy.show.ShowEntity
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
+import io.wax911.sample.data.datasource.local.query.ShowDao
+import io.wax911.sample.data.entitiy.show.ShowEntity
 
 abstract class TraktShowPagedSource : SupportPagingDataSource<ShowEntity>() {
 
