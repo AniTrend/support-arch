@@ -7,11 +7,10 @@ import android.view.animation.LinearInterpolator
 import co.anitrend.arch.core.animator.contract.ISupportAnimator
 
 /**
- * Created by max on 2018/02/24.
- *
  * Scale animator for recycler animations
+ *
+ * @since v0.9.X
  */
-
 class ScaleAnimator(
     private val from: Float = .85f,
     private val to: Float = 1f

@@ -3,7 +3,7 @@ package co.anitrend.arch.data.source.paging.contract
 import co.anitrend.arch.data.source.contract.IDataSource
 
 /**
- *
+ * Contract for abstract paging data source implementation
  *
  * @since v1.1.0
  */

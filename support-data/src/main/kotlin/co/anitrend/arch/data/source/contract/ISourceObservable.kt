@@ -3,7 +3,8 @@ package co.anitrend.arch.data.source.contract
 import androidx.lifecycle.LiveData
 
 /**
- *
+ * Observable data source result interface, used in concrete data sources for
+ * returning an observable live data persisted result
  *
  * @since v1.1.0
  */

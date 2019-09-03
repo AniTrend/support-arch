@@ -1,17 +1,17 @@
 package co.anitrend.arch.ui.recycler.adapter
 
 import android.view.View
-import com.google.android.material.button.MaterialButton
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import co.anitrend.arch.ui.view.text.SingleLineTextView
+import com.google.android.material.button.MaterialButton
 
 /**
  * Footer view holder for representing loading errors
  *
- * @since 1.2.0
+ * @since v1.2.0
  */
 class SupportFooterErrorViewHolder<T>(
     view: View,

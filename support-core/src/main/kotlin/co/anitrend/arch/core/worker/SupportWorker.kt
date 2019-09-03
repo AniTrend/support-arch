@@ -21,6 +21,8 @@ import co.anitrend.arch.core.presenter.SupportPresenter
  * A Worker is given a maximum of ten minutes to finish its execution and return a
  * [androidx.work.ListenableWorker.Result].  After this time has expired, the Worker will be
  * signalled to stop.
+ *
+ * @since v0.9.X
  */
 abstract class SupportWorker<P : SupportPresenter<*>>(
     context: Context,

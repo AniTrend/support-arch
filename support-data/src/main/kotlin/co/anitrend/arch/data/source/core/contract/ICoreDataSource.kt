@@ -3,7 +3,7 @@ package co.anitrend.arch.data.source.core.contract
 import co.anitrend.arch.data.source.contract.IDataSource
 
 /**
- *
+ * Contract for core data source abstraction
  *
  * @since v1.1.0
  */

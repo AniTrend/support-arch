@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 /**
- *
+ * Contract for data sources
  *
  * @since v1.1.0
  */

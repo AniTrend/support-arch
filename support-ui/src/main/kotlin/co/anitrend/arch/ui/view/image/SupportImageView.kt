@@ -3,9 +3,9 @@ package co.anitrend.arch.ui.view.image
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import com.bumptech.glide.Glide
-import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.arch.ui.R
+import co.anitrend.arch.ui.view.contract.CustomView
+import com.bumptech.glide.Glide
 
 /**
  *
@@ -14,7 +14,7 @@ import co.anitrend.arch.ui.R
  * This widget also support defined references like [R.integer.grid_list_x2]
  * instead of just raw values
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
 class SupportImageView : AppCompatImageView, CustomView {
 

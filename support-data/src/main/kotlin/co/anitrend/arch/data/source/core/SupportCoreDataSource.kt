@@ -1,8 +1,8 @@
 package co.anitrend.arch.data.source.core
 
 import androidx.lifecycle.MutableLiveData
-import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.data.source.core.contract.ICoreDataSource
+import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.util.SupportConnectivityHelper
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -14,12 +14,9 @@ import org.koin.core.inject
  * This data source is targeted for UI components, but not for [androidx.paging.PagedList]
  * dependant resources that may require boundary callbacks.
  *
- * @param parentCoroutineJob parent coroutine from something that is lifecycle aware,
- * this enables us to cancels jobs automatically when the parent is also canceled
+ * @since v1.1.0
  */
-abstract class SupportCoreDataSource(
-    parentCoroutineJob: Job? = null
-) : ICoreDataSource, KoinComponent {
+abstract class SupportCoreDataSource : ICoreDataSource, KoinComponent {
 
     protected val moduleTag: String = javaClass.simpleName
 
@@ -31,9 +28,9 @@ abstract class SupportCoreDataSource(
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */
-    override val supervisorJob: Job = SupervisorJob(parentCoroutineJob)
+    override val supervisorJob: Job = SupervisorJob()
 
-    override val networkState = MutableLiveData<co.anitrend.arch.domain.entities.NetworkState>()
+    override val networkState = MutableLiveData<NetworkState>()
 
     /**
      * Function reference for the retry event
@@ -53,7 +50,7 @@ abstract class SupportCoreDataSource(
      * @see networkState
      */
     override fun invoke() {
-        networkState.postValue(co.anitrend.arch.domain.entities.NetworkState.Success)
+        networkState.postValue(NetworkState.Loading)
         retry = { invoke() }
     }
 

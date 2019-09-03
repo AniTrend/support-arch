@@ -1,7 +1,7 @@
 package co.anitrend.arch.extension.util
 
 /**
- *
+ * Shared constant value holder
  *
  * @since v1.1.0
  */

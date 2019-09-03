@@ -4,10 +4,9 @@ import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import androidx.paging.extension.createStatusLiveData
 import co.anitrend.arch.data.source.paging.contract.IPagingDataSource
-import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.arch.extension.util.SupportConnectivityHelper
 import co.anitrend.arch.extension.util.SupportExtKeyStore
-import kotlinx.coroutines.Job
+import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import kotlinx.coroutines.SupervisorJob
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -18,12 +17,9 @@ import java.util.concurrent.Executors
  * A non-coroutine that depends on [androidx.lifecycle.LiveData] to publish results.
  * This data source is targeted for UI components that depend on [androidx.paging.PagedList]
  *
- * @param parentCoroutineJob parent coroutine from something that is lifecycle aware,
- * this enables us to cancels jobs automatically when the parent is also canceled
+ * @since v1.1.0
  */
-abstract class SupportPagingDataSource<T>(
-    parentCoroutineJob: Job? = null
-) : PagedList.BoundaryCallback<T>(), IPagingDataSource, KoinComponent {
+abstract class SupportPagingDataSource<T> : PagedList.BoundaryCallback<T>(), IPagingDataSource, KoinComponent {
 
     protected val moduleTag: String = javaClass.simpleName
 
@@ -35,7 +31,7 @@ abstract class SupportPagingDataSource<T>(
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */
-    override val supervisorJob = SupervisorJob(parentCoroutineJob)
+    override val supervisorJob = SupervisorJob()
 
     protected val pagingRequestHelper = PagingRequestHelper(IO_EXECUTOR)
 

@@ -9,7 +9,7 @@ import co.anitrend.arch.extension.util.SupportCoroutineHelper
 /**
  * Contract for implementing [androidx.fragment.app.FragmentActivity] based components
  *
- * @since 0.9.X
+ * @since v0.9.X
  * @see SupportCoroutineHelper
  */
 interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCoroutineHelper,

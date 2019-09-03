@@ -6,6 +6,8 @@ import android.view.animation.Interpolator
 
 /**
  * Contract details for animators
+ *
+ * @since v0.9.X
  */
 interface ISupportAnimator {
 

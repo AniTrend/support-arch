@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Helper to add snap support to [RecyclerView]
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
 class SupportSnapUtil(private val positionChangeListener: PositionChangeListener?) : PagerSnapHelper() {
 

@@ -11,7 +11,7 @@ import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 /**
  * A helper interface for applying decorations on sections for [co.anitrend.arch.ui.action.SupportActionMode]
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
 interface SelectionDecorator<T> {
 

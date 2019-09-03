@@ -4,7 +4,7 @@ import androidx.paging.PagedList
 import co.anitrend.arch.extension.util.SupportExtKeyStore.pagingLimit
 
 /**
- *
+ * Shared constant value holder
  *
  * @since v1.1.0
  */

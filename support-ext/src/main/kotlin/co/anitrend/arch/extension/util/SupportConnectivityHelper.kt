@@ -18,6 +18,8 @@ import androidx.lifecycle.*
  * connected, we stop listening to connectivity.¬
  *
  * Credits io.plaidapp.core.ui
+ *
+ * @since v1.2.0
  */
 class SupportConnectivityHelper(
     private val connectivityManager: ConnectivityManager?

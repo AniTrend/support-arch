@@ -1,7 +1,7 @@
 package co.anitrend.arch.ui.util
 
 /**
- *
+ * Shared constant holder
  *
  * @since v1.1.0
  */

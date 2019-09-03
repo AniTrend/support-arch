@@ -20,7 +20,7 @@ import timber.log.Timber
 /**
  * Core implementation contract for detailed fragment which may not complex or mixed UI elements.
  *
- * @since 0.9.X
+ * @since v0.9.X
  * @see ISupportFragmentActivity
  */
 abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, ISupportFragmentActivity<VM, P> {

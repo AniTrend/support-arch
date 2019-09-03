@@ -6,15 +6,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
+ * Contract for date helper
  *
- *
- * @since v1.1.0
+ * @since v1.2.0
  */
 interface ISupportDateHelper {
 
     /**
      * [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) date format pattern, this default pattern
-     * targets API level 24+
+     * targets API level [Build.VERSION_CODES.N] and up
      *
      * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
      * @since 1.2.0
@@ -25,7 +25,6 @@ interface ISupportDateHelper {
 
     /**
      * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
-     * @since 1.2.0
      */
     val defaultOutputDatePattern
         get() =  "yyyy-MM-dd HH:mm:ss"
@@ -43,7 +42,6 @@ interface ISupportDateHelper {
      * @return date string following the output pattern of [outputDatePattern]
      *
      * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
-     * @since 1.2.0
      */
     fun convertFromUnixTimeStamp(
         unixTimeStamp: Long,
@@ -77,7 +75,6 @@ interface ISupportDateHelper {
      * @return Unix based time stamp of type [Long] measured in milliseconds
      *
      * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
-     * @since 1.2.0
      */
     fun convertToUnixTimeStamp(
         originDate: String,
@@ -112,7 +109,6 @@ interface ISupportDateHelper {
      * @return date string following the output pattern of [outputDatePattern]
      *
      * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
-     * @since 1.2.0
      */
     fun convertToTimeStamp(
         originDate: String,

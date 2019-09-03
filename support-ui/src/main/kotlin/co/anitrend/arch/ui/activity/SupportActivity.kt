@@ -23,7 +23,7 @@ import timber.log.Timber
 /**
  * Core implementation for [androidx.appcompat.app.AppCompatActivity] components
  *
- * @since 0.9.X
+ * @since v0.9.X
  * @see SupportCoroutineHelper
  * @see ISupportFragmentActivity
  */

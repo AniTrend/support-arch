@@ -7,7 +7,7 @@ import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 /**
  * Contract for action mode implementation
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
 interface ISupportActionMode<T> {
 
