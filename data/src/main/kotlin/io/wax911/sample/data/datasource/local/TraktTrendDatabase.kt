@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import io.wax911.sample.data.BuildConfig
 import io.wax911.sample.data.datasource.local.converter.*
 import io.wax911.sample.data.datasource.local.migration.MIGRATION_1_2
 import io.wax911.sample.data.datasource.local.migration.MIGRATION_2_3
@@ -12,7 +13,6 @@ import io.wax911.sample.data.datasource.local.query.MovieDao
 import io.wax911.sample.data.datasource.local.query.ShowDao
 import io.wax911.sample.data.entitiy.movie.MovieEntity
 import io.wax911.sample.data.entitiy.show.ShowEntity
-import io.wax911.sample.data.BuildConfig
 
 @Database(
     entities = [

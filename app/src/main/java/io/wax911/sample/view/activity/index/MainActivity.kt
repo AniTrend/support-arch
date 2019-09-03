@@ -1,7 +1,6 @@
 package io.wax911.sample.view.activity.index
 
 import android.os.Bundle
-import android.text.TextUtils.replace
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
@@ -10,6 +9,9 @@ import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.commit
+import co.anitrend.arch.ui.activity.SupportActivity
+import co.anitrend.arch.ui.fragment.SupportFragment
+import co.anitrend.arch.ui.util.SupportUiKeyStore
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.navigation.NavigationView
 import io.wax911.sample.R
@@ -21,9 +23,6 @@ import io.wax911.sample.domain.usecases.show.ShowRequestType
 import io.wax911.sample.domain.usecases.show.TraktShowUseCase
 import io.wax911.sample.view.fragment.list.FragmentMovieList
 import io.wax911.sample.view.fragment.list.FragmentShowList
-import co.anitrend.arch.ui.activity.SupportActivity
-import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.arch.ui.util.SupportUiKeyStore
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 

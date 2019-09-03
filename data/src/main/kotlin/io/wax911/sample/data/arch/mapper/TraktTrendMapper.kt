@@ -4,7 +4,6 @@ import androidx.paging.PagingRequestHelper
 import co.anitrend.arch.data.mapper.SupportDataMapper
 import co.anitrend.arch.data.mapper.contract.IMapperHelper
 import co.anitrend.arch.domain.entities.NetworkState
-import kotlinx.coroutines.Job
 import retrofit2.Call
 import timber.log.Timber
 
@@ -15,9 +14,8 @@ import timber.log.Timber
  * @see SupportDataMapper
  */
 abstract class TraktTrendMapper<S, D> (
-    parentCoroutineJob: Job? = null,
     private val pagingRequestHelper: PagingRequestHelper.Request.Callback? = null
-): SupportDataMapper<S, D>(parentCoroutineJob), IMapperHelper<Call<S>> {
+): SupportDataMapper<S, D>(), IMapperHelper<Call<S>> {
 
     /**
      * Response handler for coroutine contexts which need to observe [NetworkState]
@@ -34,7 +32,9 @@ abstract class TraktTrendMapper<S, D> (
                 pagingRequestHelper?.recordSuccess()
                 NetworkState.Success
             } else {
-                pagingRequestHelper?.recordFailure(Throwable(response.message()))
+                pagingRequestHelper?.recordFailure(
+                    Throwable(response.message())
+                )
                 NetworkState.Error(
                     heading = response.message(),
                     message = response.errorBody()?.string(),

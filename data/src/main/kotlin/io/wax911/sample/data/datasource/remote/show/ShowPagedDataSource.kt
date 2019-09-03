@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import androidx.paging.toLiveData
+import co.anitrend.arch.data.source.contract.ISourceObservable
+import co.anitrend.arch.data.util.SupportDataKeyStore
 import com.uwetrottmann.trakt5.enums.Extended
 import com.uwetrottmann.trakt5.services.Shows
 import io.wax911.sample.data.datasource.local.query.ShowDao
 import io.wax911.sample.data.datasource.remote.show.contract.TraktShowPagedSource
+import io.wax911.sample.data.entitiy.show.ShowEntity
 import io.wax911.sample.data.mapper.show.PopularShowMapper
 import io.wax911.sample.data.mapper.show.TrendingShowMapper
-import io.wax911.sample.data.entitiy.show.ShowEntity
-import co.anitrend.arch.data.source.contract.ISourceObservable
-import co.anitrend.arch.data.util.SupportDataKeyStore
 import kotlinx.coroutines.launch
 
 class ShowPagedDataSource(

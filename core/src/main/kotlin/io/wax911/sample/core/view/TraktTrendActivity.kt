@@ -7,8 +7,6 @@ import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.extension.getCompatColor
 import co.anitrend.arch.ui.activity.SupportActivity
 import io.wax911.sample.core.R
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 
 
 /**

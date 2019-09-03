@@ -3,9 +3,9 @@ package io.wax911.sample.data.entitiy.movie
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import io.wax911.sample.data.entitiy.movie.contract.MovieEntityIds
 import io.wax911.sample.domain.entities.contract.TraktEntity
 import io.wax911.sample.domain.entities.contract.TraktRankEntity
-import io.wax911.sample.data.entitiy.movie.contract.MovieEntityIds
 
 @Entity
 data class MovieEntity(

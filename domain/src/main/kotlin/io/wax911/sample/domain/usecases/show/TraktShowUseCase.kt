@@ -1,9 +1,9 @@
 package io.wax911.sample.domain.usecases.show
 
 import android.os.Parcelable
+import co.anitrend.arch.domain.common.IUserInterfaceState
 import io.wax911.sample.domain.common.IPagedMediaUseCase
 import io.wax911.sample.domain.repositories.show.ITraktShowRepository
-import co.anitrend.arch.domain.common.IUserInterfaceState
 import kotlinx.android.parcel.Parcelize
 
 abstract class TraktShowUseCase<R: IUserInterfaceState<*>>(
