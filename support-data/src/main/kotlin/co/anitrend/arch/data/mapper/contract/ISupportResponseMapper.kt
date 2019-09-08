@@ -5,7 +5,7 @@ package co.anitrend.arch.data.mapper.contract
  *
  * @since v1.1.0
  */
-interface ISupportDataMapper<in S, D> {
+interface ISupportResponseMapper<in S, D> {
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
@@ -13,7 +13,7 @@ interface ISupportDataMapper<in S, D> {
      *
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
-     * @see [IMapperHelper.invoke]
+     * @see [ISupportResponseHelper.invoke]
      */
     suspend fun onResponseMapFrom(source: S): D
 
@@ -22,7 +22,7 @@ interface ISupportDataMapper<in S, D> {
      * called in [retrofit2.Callback.onResponse]
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     * @see [IMapperHelper.invoke]
+     * @see [ISupportResponseHelper.invoke]
      */
     suspend fun onResponseDatabaseInsert(mappedData: D)
 }

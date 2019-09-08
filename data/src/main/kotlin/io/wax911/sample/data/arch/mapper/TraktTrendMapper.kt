@@ -1,8 +1,8 @@
 package io.wax911.sample.data.arch.mapper
 
 import androidx.paging.PagingRequestHelper
-import co.anitrend.arch.data.mapper.SupportDataMapper
-import co.anitrend.arch.data.mapper.contract.IMapperHelper
+import co.anitrend.arch.data.mapper.SupportResponseMapper
+import co.anitrend.arch.data.mapper.contract.ISupportResponseHelper
 import co.anitrend.arch.domain.entities.NetworkState
 import retrofit2.Call
 import timber.log.Timber
@@ -11,11 +11,11 @@ import timber.log.Timber
  * TraktTrendMapper specific mapper, extends and overrides the [invoke] callback
  * this makes it easier for us to implement error logging and provide better error messages
  *
- * @see SupportDataMapper
+ * @see SupportResponseMapper
  */
 abstract class TraktTrendMapper<S, D> (
     private val pagingRequestHelper: PagingRequestHelper.Request.Callback? = null
-): SupportDataMapper<S, D>(), IMapperHelper<Call<S>> {
+): SupportResponseMapper<S, D>(), ISupportResponseHelper<Call<S>> {
 
     /**
      * Response handler for coroutine contexts which need to observe [NetworkState]
