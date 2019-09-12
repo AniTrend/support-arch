@@ -39,7 +39,7 @@ class SupportStateLayout : ViewFlipper, CustomView {
 
                 stateLayoutLoadingText.setText(loadingMessage)
                 stateLayoutLoadingImage.setImageDrawable(
-                    context.getCompatDrawable(errorDrawable)
+                    context.getCompatDrawable(loadingDrawable)
                 )
             }
         }
@@ -75,10 +75,14 @@ class SupportStateLayout : ViewFlipper, CustomView {
     }
 
     private fun setupAdditionalViews() {
-        val loadingView = getLayoutInflater().inflate(R.layout.support_state_layout_laoding, null)
+        val loadingView = getLayoutInflater().inflate(
+            R.layout.support_state_layout_laoding, null
+        )
         addView(loadingView)
 
-        val errorView = getLayoutInflater().inflate(R.layout.support_state_layout_error, null)
+        val errorView = getLayoutInflater().inflate(
+            R.layout.support_state_layout_error, null
+        )
         addView(errorView)
     }
 
@@ -90,18 +94,21 @@ class SupportStateLayout : ViewFlipper, CustomView {
     fun setNetworkState(networkState: NetworkState) {
         when (networkState) {
             is NetworkState.Loading -> {
-                displayedChild = LOADING_VIEW
+                if (displayedChild != LOADING_VIEW)
+                    displayedChild = LOADING_VIEW
             }
             is NetworkState.Error -> {
                 stateLayoutErrorHeading.text = networkState.heading
                 stateLayoutErrorMessage.text = networkState.message
-                displayedChild = ERROR_VIEW
+                if (displayedChild != ERROR_VIEW)
+                    displayedChild = ERROR_VIEW
+                requestLayout()
             }
-            is NetworkState.Success ->
-                displayedChild = CONTENT_VIEW
+            is NetworkState.Success -> {
+                if (displayedChild != CONTENT_VIEW)
+                    displayedChild = CONTENT_VIEW
+            }
         }
-        // TODO: not sure if we really need to request view to redraw/invalidate
-        // requestLayout()
     }
 
     companion object {
