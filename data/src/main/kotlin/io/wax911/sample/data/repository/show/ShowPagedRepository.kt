@@ -3,16 +3,16 @@ package io.wax911.sample.data.repository.show
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
-import io.wax911.sample.data.datasource.remote.show.contract.TraktShowPagedSource
-import io.wax911.sample.data.entitiy.show.ShowEntity
-import io.wax911.sample.domain.repositories.show.ITraktShowRepository
 import co.anitrend.arch.data.model.UserInterfaceState
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.domain.entities.NetworkState
+import io.wax911.sample.data.datasource.remote.show.contract.TraktShowPagedSource
+import io.wax911.sample.data.entitiy.show.ShowEntity
+import io.wax911.sample.domain.repositories.show.ITraktShowRepository
 
 class ShowPagedRepository(
     private val showPagedDataSource: TraktShowPagedSource
-) : SupportRepository(), ITraktShowRepository<UserInterfaceState<PagedList<ShowEntity>>> {
+) : SupportRepository(showPagedDataSource), ITraktShowRepository<UserInterfaceState<PagedList<ShowEntity>>> {
 
     override fun getPopularShows(): UserInterfaceState<PagedList<ShowEntity>> {
         // we are using a mutable live data to trigger refresh requests which eventually calls

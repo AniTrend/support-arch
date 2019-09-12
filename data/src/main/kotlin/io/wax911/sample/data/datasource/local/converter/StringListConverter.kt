@@ -1,9 +1,9 @@
 package io.wax911.sample.data.datasource.local.converter
 
 import androidx.room.TypeConverter
+import co.anitrend.arch.data.dao.RoomConverter
 import com.google.gson.Gson
 import io.wax911.sample.data.extension.getTypeToken
-import co.anitrend.arch.data.dao.RoomConverter
 import org.koin.core.KoinComponent
 import org.koin.core.get
 

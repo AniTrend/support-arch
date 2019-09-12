@@ -1,15 +1,11 @@
 package co.anitrend.arch.data.mapper.contract
 
-import co.anitrend.arch.extension.util.SupportCoroutineHelper
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-
 /**
  * Contract for handling network responses to mapping flow
  *
  * @since v1.1.0
  */
-interface ISupportDataMapper<in S, D> : SupportCoroutineHelper {
+interface ISupportResponseMapper<in S, D> {
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
@@ -17,9 +13,7 @@ interface ISupportDataMapper<in S, D> : SupportCoroutineHelper {
      *
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
-     *
-     * @see [IMapperHelper.invoke]
-     * @see [mapFrom]
+     * @see [ISupportResponseHelper.invoke]
      */
     suspend fun onResponseMapFrom(source: S): D
 
@@ -28,16 +22,7 @@ interface ISupportDataMapper<in S, D> : SupportCoroutineHelper {
      * called in [retrofit2.Callback.onResponse]
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     *
-     * @see [IMapperHelper.invoke]
+     * @see [ISupportResponseHelper.invoke]
      */
     suspend fun onResponseDatabaseInsert(mappedData: D)
-
-    /**
-     * Coroutine dispatcher specification
-     *
-     * @return [kotlinx.coroutines.Dispatchers.Default] by default
-     */
-    override val coroutineDispatcher: CoroutineDispatcher
-        get() = Dispatchers.IO
 }

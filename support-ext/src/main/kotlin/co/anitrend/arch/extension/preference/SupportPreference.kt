@@ -5,13 +5,17 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
 
-abstract class SupportPreference(context: Context) {
+/**
+ * Core abstract implementation for application preferences
+ *
+ * @since v0.9.X
+ */
+abstract class SupportPreference(protected val context: Context) {
 
     val sharedPreferences: SharedPreferences by lazy(LAZY_MODE_UNSAFE) {
         PreferenceManager.getDefaultSharedPreferences(context)
     }
 
-    @Volatile
     var isAuthenticated = false
         get() = sharedPreferences.getBoolean(IS_AUTHENTICATED, false)
         set(value) {
@@ -37,6 +41,5 @@ abstract class SupportPreference(context: Context) {
         const val VERSION_CODE = "_versionCode"
         const val IS_NEW_INSTALLATION = "_isNewInstallation"
         const val IS_AUTHENTICATED = "_isAuthenticated"
-        const val IS_LIGHT_THEME = "_isLightTheme"
     }
 }

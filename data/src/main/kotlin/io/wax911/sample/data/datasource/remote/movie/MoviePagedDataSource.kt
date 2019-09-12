@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import androidx.paging.toLiveData
+import co.anitrend.arch.data.source.contract.ISourceObservable
+import co.anitrend.arch.data.util.SupportDataKeyStore
 import com.uwetrottmann.trakt5.enums.Extended
 import com.uwetrottmann.trakt5.services.Movies
 import io.wax911.sample.data.datasource.local.query.MovieDao
@@ -11,8 +13,6 @@ import io.wax911.sample.data.datasource.remote.movie.contract.TraktMoviePagedSou
 import io.wax911.sample.data.entitiy.movie.MovieEntity
 import io.wax911.sample.data.mapper.movie.PopularMovieMapper
 import io.wax911.sample.data.mapper.movie.TrendingMovieMapper
-import co.anitrend.arch.data.source.contract.ISourceObservable
-import co.anitrend.arch.data.util.SupportDataKeyStore
 import kotlinx.coroutines.launch
 
 class MoviePagedDataSource(

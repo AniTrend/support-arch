@@ -9,8 +9,7 @@ import co.anitrend.arch.ui.view.contract.CustomView
 /**
  * Extends [RecyclerView] and adds position management on stateConfiguration changes.
  *
- * @author wax911
- * @since 0.9.X
+ * @since v0.9.X
  */
 class SupportRecyclerView : RecyclerView, CustomView {
 

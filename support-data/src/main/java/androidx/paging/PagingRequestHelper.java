@@ -15,7 +15,11 @@
  */
 package androidx.paging;
 
-import androidx.annotation.*;
+import androidx.annotation.AnyThread;
+import androidx.annotation.GuardedBy;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;

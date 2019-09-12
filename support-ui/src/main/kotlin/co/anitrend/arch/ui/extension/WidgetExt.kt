@@ -17,7 +17,7 @@ import co.anitrend.arch.ui.recycler.adapter.SupportViewAdapter
  * @param vertical if the layout adapter should be vertical or horizontal
  * @param recyclerLayoutManager optional layout manager if you do not wish to use the default
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
 fun SupportRecyclerView.setUpWith(supportAdapter: SupportViewAdapter<*>, vertical: Boolean = true,
                                   recyclerLayoutManager: RecyclerView.LayoutManager? = null) {

@@ -28,7 +28,7 @@ import timber.log.Timber
 /**
  * Core implementation for fragments that rely on pagination/non-paginated data sets
  *
- * @since 0.9.X
+ * @since v0.9.X
  * @see SupportFragment
  * @see ISupportFragmentList
  */

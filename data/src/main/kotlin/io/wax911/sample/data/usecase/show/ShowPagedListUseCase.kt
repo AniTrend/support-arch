@@ -1,11 +1,10 @@
 package io.wax911.sample.data.usecase.show
 
 import androidx.paging.PagedList
+import co.anitrend.arch.data.model.UserInterfaceState
 import io.wax911.sample.data.entitiy.show.ShowEntity
 import io.wax911.sample.data.repository.show.ShowPagedRepository
-import io.wax911.sample.domain.repositories.show.ITraktShowRepository
 import io.wax911.sample.domain.usecases.show.TraktShowUseCase
-import co.anitrend.arch.data.model.UserInterfaceState
 
 class ShowPagedListUseCase(
     private val showPagedRepository: ShowPagedRepository

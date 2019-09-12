@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit
  * @param supportTimeType type of comparison between the epoch time and target
  * @param supportTargetTime unit to compare against [supportCurrentUnixTime] - [SupportTimeInstance]
  * of the last checkpoint passed into [hasElapsed]
+ *
+ * @since v1.2.0
  */
 @SupportExperimental
 class SupportTimeHelper(

@@ -9,7 +9,7 @@ import co.anitrend.arch.ui.view.contract.CustomView
 /**
  * Single line text view that truncates at the end of the string
  *
- * @since 1.0.X
+ * @since v0.9.X
  */
 class SingleLineTextView : AppCompatTextView, CustomView {
 

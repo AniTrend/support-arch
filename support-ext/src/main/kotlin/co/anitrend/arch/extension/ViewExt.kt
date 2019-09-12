@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
-import co.anitrend.arch.extension.R
 
 
 /**

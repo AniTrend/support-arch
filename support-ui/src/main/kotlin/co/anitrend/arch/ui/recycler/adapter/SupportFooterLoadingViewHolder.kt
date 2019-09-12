@@ -9,7 +9,7 @@ import co.anitrend.arch.ui.view.text.SingleLineTextView
 /**
  * Footer view holder for representing loading status
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
 class SupportFooterLoadingViewHolder<T>(
     view: View,

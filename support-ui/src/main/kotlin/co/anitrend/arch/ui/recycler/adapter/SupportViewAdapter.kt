@@ -29,7 +29,7 @@ import kotlin.reflect.KProperty
  * Core implementation for handling complex logic for [androidx.paging.PagedListAdapter] and
  * [androidx.recyclerview.widget.RecyclerView.ViewHolder] binding logic
  *
- * @since 0.9.X
+ * @since v0.9.X
  * @see SupportViewHolder
  */
 abstract class SupportViewAdapter<T>(

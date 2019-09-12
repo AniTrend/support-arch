@@ -1,23 +1,15 @@
 package co.anitrend.arch.data.repository.contract
 
-import co.anitrend.arch.extension.util.SupportCoroutineHelper
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-
 /**
- *
+ * Repository contract with support for canceling coroutines [onCleared]
  *
  * @since v1.1.0
  */
-interface ISupportRepository : SupportCoroutineHelper {
+interface ISupportRepository {
 
     /**
-     * Deals with cancellation of any pending or on going operations that the repository is busy with
+     * Deals with cancellation of any pending or on going operations that the repository
+     * might be working on
      */
-    fun onCleared() {
-        cancelAllChildren()
-    }
-
-    override val coroutineDispatcher: CoroutineDispatcher
-        get() = Dispatchers.IO
+    fun onCleared()
 }

@@ -1,7 +1,7 @@
 package co.anitrend.arch.extension.util.pagination.contract
 
 /**
- *
+ * Contract for paging helper
  *
  * @since v1.1.0
  */

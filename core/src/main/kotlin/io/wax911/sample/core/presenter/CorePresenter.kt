@@ -1,8 +1,8 @@
 package io.wax911.sample.core.presenter
 
 import android.content.Context
-import io.wax911.sample.data.util.Settings
 import co.anitrend.arch.core.presenter.SupportPresenter
+import io.wax911.sample.data.util.Settings
 
 class CorePresenter(
     context: Context,

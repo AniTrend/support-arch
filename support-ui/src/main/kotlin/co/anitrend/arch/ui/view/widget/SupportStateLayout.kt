@@ -6,17 +6,17 @@ import android.widget.ViewFlipper
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getCompatDrawable
 import co.anitrend.arch.extension.getLayoutInflater
+import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import co.anitrend.arch.ui.view.contract.CustomView
-import co.anitrend.arch.ui.R
-import kotlinx.android.synthetic.main.support_state_layout_laoding.view.*
 import kotlinx.android.synthetic.main.support_state_layout_error.view.*
+import kotlinx.android.synthetic.main.support_state_layout_laoding.view.*
 
 /**
  * A state layout that supports [NetworkState.Loading] and [NetworkState.Error] states
  * by default by using a [ViewFlipper] as the underlying view
  *
- * @since 1.1.0
+ * @since v1.1.0
  */
 class SupportStateLayout : ViewFlipper, CustomView {
 

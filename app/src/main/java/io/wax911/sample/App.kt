@@ -2,13 +2,13 @@ package io.wax911.sample
 
 import android.app.Application
 import androidx.work.Configuration
+import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import io.wax911.sample.analytics.AnalyticsLogger
 import io.wax911.sample.core.koin.coreModules
 import io.wax911.sample.core.koin.corePresenterModules
 import io.wax911.sample.core.koin.coreViewModelModules
-import io.wax911.sample.koin.appModules
-import io.wax911.sample.analytics.AnalyticsLogger
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import io.wax911.sample.data.koin.*
+import io.wax911.sample.koin.appModules
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

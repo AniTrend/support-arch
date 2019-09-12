@@ -1,9 +1,8 @@
 package io.wax911.sample.data.datasource.local.converter
 
 import androidx.room.TypeConverter
-import com.uwetrottmann.trakt5.enums.Status
-import io.wax911.sample.data.extension.getTypeToken
 import co.anitrend.arch.data.dao.RoomConverter
+import com.uwetrottmann.trakt5.enums.Status
 import org.koin.core.KoinComponent
 
 class StatusConverter: RoomConverter<Status>, KoinComponent {

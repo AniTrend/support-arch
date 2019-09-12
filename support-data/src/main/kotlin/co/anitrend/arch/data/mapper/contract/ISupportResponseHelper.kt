@@ -9,7 +9,7 @@ import kotlinx.coroutines.Deferred
  *
  * @since v1.1.0
  */
-interface IMapperHelper<in S> {
+interface ISupportResponseHelper<in S> {
 
     /**
      * Response handler for coroutine contexts which need to observe [NetworkState]

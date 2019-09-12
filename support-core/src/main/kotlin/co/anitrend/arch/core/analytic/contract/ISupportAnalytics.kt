@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentActivity
 
 /**
  * Contract for analytics or crash reporting
+ *
+ * @since v1.0.X
  */
 interface ISupportAnalytics {
 

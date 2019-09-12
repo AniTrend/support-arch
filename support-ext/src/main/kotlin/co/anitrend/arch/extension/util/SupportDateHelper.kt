@@ -6,7 +6,7 @@ import co.anitrend.arch.extension.util.contract.ISupportDateHelper
 import java.util.*
 
 /**
- *
+ * Date helper utility
  *
  * @since v1.1.0
  */

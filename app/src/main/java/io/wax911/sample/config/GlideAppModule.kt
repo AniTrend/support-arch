@@ -1,6 +1,8 @@
 package io.wax911.sample.config
 
 import android.content.Context
+import co.anitrend.arch.extension.getCompatDrawable
+import co.anitrend.arch.extension.isLowRamDevice
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.DecodeFormat
@@ -12,8 +14,6 @@ import com.bumptech.glide.load.engine.cache.MemorySizeCalculator
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 import io.wax911.sample.R
-import co.anitrend.arch.extension.getCompatDrawable
-import co.anitrend.arch.extension.isLowRamDevice
 
 @GlideModule
 class GlideAppModule : AppGlideModule() {

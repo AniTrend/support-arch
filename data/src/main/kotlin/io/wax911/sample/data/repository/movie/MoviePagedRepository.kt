@@ -3,16 +3,16 @@ package io.wax911.sample.data.repository.movie
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
-import io.wax911.sample.data.datasource.remote.movie.contract.TraktMoviePagedSource
-import io.wax911.sample.data.entitiy.movie.MovieEntity
-import io.wax911.sample.domain.repositories.movie.ITraktMovieRepository
 import co.anitrend.arch.data.model.UserInterfaceState
 import co.anitrend.arch.data.repository.SupportRepository
 import co.anitrend.arch.domain.entities.NetworkState
+import io.wax911.sample.data.datasource.remote.movie.contract.TraktMoviePagedSource
+import io.wax911.sample.data.entitiy.movie.MovieEntity
+import io.wax911.sample.domain.repositories.movie.ITraktMovieRepository
 
 class MoviePagedRepository(
     private val moviePagedDataSource: TraktMoviePagedSource
-) : SupportRepository(), ITraktMovieRepository<UserInterfaceState<PagedList<MovieEntity>>> {
+) : SupportRepository(moviePagedDataSource), ITraktMovieRepository<UserInterfaceState<PagedList<MovieEntity>>> {
 
     /**
      * @return popular movies

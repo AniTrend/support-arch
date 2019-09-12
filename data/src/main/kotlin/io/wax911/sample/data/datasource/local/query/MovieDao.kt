@@ -3,8 +3,8 @@ package io.wax911.sample.data.datasource.local.query
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Query
-import io.wax911.sample.data.entitiy.movie.MovieEntity
 import co.anitrend.arch.data.dao.ISupportQuery
+import io.wax911.sample.data.entitiy.movie.MovieEntity
 
 @Dao
 interface MovieDao: ISupportQuery<MovieEntity> {

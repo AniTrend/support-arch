@@ -8,7 +8,7 @@ import co.anitrend.arch.ui.R
 /**
  * Fragment list contract
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
 interface ISupportFragmentList<M> {
 

@@ -1,13 +1,12 @@
 package io.wax911.sample.view.activity.base
 
 import android.os.Bundle
+import co.anitrend.arch.extension.startNewActivity
+import co.anitrend.arch.extension.util.SupportDateHelper
 import io.wax911.sample.R
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.view.TraktTrendActivity
 import io.wax911.sample.view.activity.index.MainActivity
-import co.anitrend.arch.extension.startNewActivity
-import co.anitrend.arch.extension.util.SupportDateHelper
-import co.anitrend.arch.ui.activity.SupportActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

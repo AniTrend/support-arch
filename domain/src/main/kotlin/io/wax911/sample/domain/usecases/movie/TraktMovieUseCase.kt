@@ -1,9 +1,9 @@
 package io.wax911.sample.domain.usecases.movie
 
 import android.os.Parcelable
+import co.anitrend.arch.domain.common.IUserInterfaceState
 import io.wax911.sample.domain.common.IPagedMediaUseCase
 import io.wax911.sample.domain.repositories.movie.ITraktMovieRepository
-import co.anitrend.arch.domain.common.IUserInterfaceState
 import kotlinx.android.parcel.Parcelize
 
 abstract class TraktMovieUseCase<R: IUserInterfaceState<*>>(

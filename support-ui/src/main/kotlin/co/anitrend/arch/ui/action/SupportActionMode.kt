@@ -13,7 +13,7 @@ import java.util.*
 /**
  * A helper class for triggering action mode from [SupportViewHolder]
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
 class SupportActionMode<T>(
     private val actionModeListener: ActionModeListener?,

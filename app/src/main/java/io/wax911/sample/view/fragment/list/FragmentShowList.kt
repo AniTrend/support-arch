@@ -4,17 +4,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
-import io.wax911.sample.R
-import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.core.viewmodel.show.ShowViewModel
-import io.wax911.sample.data.entitiy.show.ShowEntity
-import io.wax911.sample.domain.usecases.show.TraktShowUseCase
 import co.anitrend.arch.core.viewmodel.SupportViewModel
 import co.anitrend.arch.extension.argument
 import co.anitrend.arch.ui.fragment.SupportFragmentList
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
+import io.wax911.sample.R
 import io.wax911.sample.adapter.recycler.ShowAdapter
+import io.wax911.sample.core.presenter.CorePresenter
+import io.wax911.sample.core.viewmodel.show.ShowViewModel
+import io.wax911.sample.data.entitiy.show.ShowEntity
+import io.wax911.sample.domain.usecases.show.TraktShowUseCase
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -120,7 +120,7 @@ class FragmentShowList : SupportFragmentList<ShowEntity, CorePresenter, PagedLis
     override fun onFetchDataInitialize() {
         pagingMediaPayload?.also {
             supportViewModel(
-                parameter = it
+                payload = it
             )
         }
     }

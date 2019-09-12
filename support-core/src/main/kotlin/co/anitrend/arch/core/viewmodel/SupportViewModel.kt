@@ -11,6 +11,7 @@ import co.anitrend.arch.domain.usecases.core.ISupportCoreUseCase
  * A helper view model class that provides models, network states to the calling view
  *
  * @param state optional initial state to use
+ * @since v0.9.X
  */
 abstract class SupportViewModel<P, R>(
     private val state: SavedStateHandle? = null
@@ -18,10 +19,10 @@ abstract class SupportViewModel<P, R>(
 
     protected abstract val useCase: ISupportCoreUseCase<P, UserInterfaceState<R>>
 
-    private val requestBundleLiveData = MutableLiveData<P>()
+    private val payload = MutableLiveData<P>()
 
     private val useCaseResult: LiveData<UserInterfaceState<R>> =
-        map(requestBundleLiveData) { useCase(it) }
+        map(payload) { useCase(it) }
 
     override val model: LiveData<R?> =
         Transformations.switchMap(useCaseResult) { it.model }
@@ -36,11 +37,10 @@ abstract class SupportViewModel<P, R>(
     /**
      * Forwards queries for the repository to handle
      *
-     * @see [co.anitrend.arch.domain.usecases.core.ISupportCoreUseCase.invoke]
-     * @param parameter request data to be used by the repository
+     * @param payload request data to be used by the repository
      */
-    override fun invoke(parameter: P) {
-        requestBundleLiveData.value = parameter
+    override fun invoke(payload: P) {
+        this.payload.value = payload
     }
 
     /**
@@ -63,12 +63,7 @@ abstract class SupportViewModel<P, R>(
     }
 
     /**
-     * Returns the current request bundle, this is nullable
-     */
-    override fun currentRequestParameter(): P? = requestBundleLiveData.value
-
-    /**
-     * Requests the repository to perform a refresh operation on the underlying database
+     * Requests the repository to perform a refreshAndInvalidate operation on the underlying database
      */
     override fun refresh() {
         val uiModel = useCaseResult.value

@@ -6,7 +6,7 @@ import android.view.View
  * A click listener for view adapters with additional parameters for position
  * and model that has been interacted with
  *
- * @since 1.1.0
+ * @since v1.1.0
  */
 interface ItemClickListener<T> {
 
