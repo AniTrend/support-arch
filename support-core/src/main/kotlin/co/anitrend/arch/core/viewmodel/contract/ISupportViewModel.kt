@@ -26,13 +26,6 @@ interface ISupportViewModel<P, R> {
     val refreshState: LiveData<NetworkState>?
 
     /**
-     * Forwards queries for the repository to handle
-     *
-     * @param payload request data to be used by the repository
-     */
-    operator fun invoke(payload: P)
-
-    /**
      * Checks if the live data stored in the repository has is not null
      *
      * @return [Boolean] true or false
@@ -40,12 +33,19 @@ interface ISupportViewModel<P, R> {
     fun hasModelData(): Boolean = model.value != null
 
     /**
-     * Requests the repository to perform a retry operation
+     * Starts view model operations
+     *
+     * @param parameter request payload
+     */
+    operator fun invoke(parameter: P)
+
+    /**
+     * Requests the use case to perform a retry operation
      */
     fun retry()
 
     /**
-     * Requests the repository to perform a refreshAndInvalidate operation on the underlying database
+     * Requests the use case to perform a refresh operation
      */
     fun refresh()
 }
