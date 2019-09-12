@@ -10,7 +10,7 @@ import co.anitrend.arch.extension.util.SupportCoroutineHelper
  * @since v1.1.0
  */
 abstract class SupportRepository(
-    private val coroutine: SupportCoroutineHelper
+    private val coroutine: SupportCoroutineHelper? = null
 ) : ISupportRepository {
 
     protected val moduleTag: String = javaClass.simpleName
@@ -20,6 +20,6 @@ abstract class SupportRepository(
      * might be working on
      */
     override fun onCleared() {
-        coroutine.cancelAllChildren()
+        coroutine?.cancelAllChildren()
     }
 }
