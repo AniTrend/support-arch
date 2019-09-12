@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
  *
  * @since v1.1.0
  */
-interface ISourceObservable<O, P> {
+interface ISourceObservable<P, R> {
 
     /**
      * Returns the appropriate observable which we will monitor for updates,
@@ -17,5 +17,5 @@ interface ISourceObservable<O, P> {
      *
      * @param parameter to use when executing
      */
-    operator fun invoke(parameter: P): LiveData<O>
+    operator fun invoke(parameter: P): LiveData<R>
 }

@@ -1,6 +1,7 @@
 package co.anitrend.arch.data.source.paging.contract
 
 import co.anitrend.arch.data.source.contract.IDataSource
+import kotlinx.coroutines.launch
 
 /**
  * Contract for abstract paging data source implementation
@@ -12,13 +13,15 @@ interface IPagingDataSource : IDataSource {
     /**
      * Clears data sources (databases, preferences, e.t.c)
      */
-    fun clearDataSource()
+    suspend fun clearDataSource()
 
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
     fun invalidateAndRefresh() {
-        clearDataSource()
+        launch {
+            clearDataSource()
+        }
     }
 
     /**
