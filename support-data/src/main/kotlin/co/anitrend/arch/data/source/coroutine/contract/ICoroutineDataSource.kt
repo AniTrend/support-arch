@@ -8,13 +8,7 @@ import co.anitrend.arch.domain.entities.NetworkState
  *
  * @since v1.1.0
  */
-interface ICoroutineDataSource : IDataSource {
-
-    /**
-     * Handles the requesting data from a the network source and returns
-     * [NetworkState] to the caller after execution
-     */
-    suspend operator fun invoke(): NetworkState
+interface ICoroutineDataSource<P, R> : IDataSource {
 
     /**
      * Clears data sources (databases, preferences, e.t.c)

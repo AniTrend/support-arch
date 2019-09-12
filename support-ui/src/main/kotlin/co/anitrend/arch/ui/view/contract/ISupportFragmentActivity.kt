@@ -3,7 +3,7 @@ package co.anitrend.arch.ui.view.contract
 import android.content.SharedPreferences
 import android.os.Bundle
 import co.anitrend.arch.core.presenter.SupportPresenter
-import co.anitrend.arch.core.viewmodel.SupportViewModel
+import co.anitrend.arch.core.viewmodel.contract.ISupportViewModel
 import co.anitrend.arch.extension.util.SupportCoroutineHelper
 
 /**
@@ -37,7 +37,7 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCorouti
      *
      * @return view model of the given type
      */
-    val supportViewModel: SupportViewModel<*, VM>?
+    val supportViewModel: ISupportViewModel<*, VM>?
         get() = null
 
     /**
@@ -66,13 +66,13 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCorouti
     fun onUpdateUserInterface()
 
     /**
-     * Handles the complex logic required to dispatch network request to [SupportViewModel]
+     * Handles the complex logic required to dispatch network request to [ISupportViewModel]
      * to either request from the network or database cache.
      *
      * The results of the dispatched network or cache call will be published by the
-     * [androidx.lifecycle.LiveData] specifically [SupportViewModel.model]
+     * [androidx.lifecycle.LiveData] specifically [ISupportViewModel.model]
      *
-     * @see [SupportViewModel.requestBundleLiveData]
+     * @see [ISupportViewModel.invoke]
      */
     fun onFetchDataInitialize()
 

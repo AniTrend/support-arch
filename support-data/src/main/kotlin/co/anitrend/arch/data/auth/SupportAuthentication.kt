@@ -8,9 +8,9 @@ import co.anitrend.arch.data.auth.contract.ISupportAuthentication
  *
  * @since v1.1.X
  */
-abstract class SupportAuthentication<T, R> : ISupportAuthentication<R> {
+abstract class SupportAuthentication : ISupportAuthentication {
 
-    protected val moduleTag: String = javaClass.simpleName
+    override val moduleTag: String = javaClass.simpleName
 
     /**
      * Checks if the data source that contains the token is valid,
@@ -30,17 +30,4 @@ abstract class SupportAuthentication<T, R> : ISupportAuthentication<R> {
      * optionally the implementation can perform these operation internally
      */
     protected abstract fun refreshToken(): Boolean
-
-    /**
-     * If using Oauth 2 then once the user has approved your client they will be redirected to your redirect URI,
-     * included in the URL fragment will be an access_token parameter that includes the JWT access token
-     * used to make requests on their behalf.
-     *
-     * Otherwise this could just be an authentication result that should be handled and complete the authentication
-     * process on the users behalf
-     *
-     * @param authPayload payload from an authenticating source
-     * @return True if the operation was successful, false otherwise
-     */
-    abstract suspend fun handleCallbackUri(authPayload: T): Boolean
 }

@@ -127,6 +127,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM> : SupportFrag
         }
 
         supportStateLayout?.stateConfiguration = supportStateConfiguration
+        supportStateLayout?.setNetworkState(NetworkState.Loading)
         supportViewAdapter.stateConfiguration = supportStateConfiguration
         supportViewAdapter.retryFooterAction = adapterFooterRetryAction
 

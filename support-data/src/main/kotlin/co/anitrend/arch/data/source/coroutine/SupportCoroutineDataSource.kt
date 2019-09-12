@@ -15,7 +15,7 @@ import org.koin.core.inject
  *
  * @since v1.1.0
  */
-abstract class SupportCoroutineDataSource : ICoroutineDataSource, KoinComponent {
+abstract class SupportCoroutineDataSource<P, R> : ICoroutineDataSource<P, R>, KoinComponent {
 
     protected val moduleTag: String = javaClass.simpleName
 
@@ -34,24 +34,12 @@ abstract class SupportCoroutineDataSource : ICoroutineDataSource, KoinComponent 
     /**
      * Function reference for the retry event
      */
-    protected var retry: (suspend () -> NetworkState)? = null
+    protected var retry: (suspend () -> R)? = null
 
     private suspend fun retryPreviousRequest() {
         val prevRetry = retry
         retry = null
         prevRetry?.invoke()
-    }
-
-    /**
-     * Handles the requesting data from a the network source and return
-     * [NetworkState] to the caller after execution.
-     *
-     * In this context the super.invoke() method will allow a retry action to be set
-     */
-    override suspend fun invoke(): NetworkState {
-        networkState.postValue(NetworkState.Loading)
-        retry = { invoke() }
-        return NetworkState.Loading
     }
 
     /**
