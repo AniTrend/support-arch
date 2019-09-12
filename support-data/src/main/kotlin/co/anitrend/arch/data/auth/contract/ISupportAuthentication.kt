@@ -5,19 +5,13 @@ package co.anitrend.arch.data.auth.contract
  *
  * @since v1.1.X
  */
-interface ISupportAuthentication<R> {
+interface ISupportAuthentication {
+
+    val moduleTag: String
 
     /**
      * Facade to provide information on authentication status of the application,
      * on demand
      */
     val isAuthenticated: Boolean
-
-    /**
-     * Performs core operation of applying authentication credentials
-     * at runtime
-     *
-     * @param resource object that need to be manipulated
-     */
-    operator fun invoke(resource: R)
 }
