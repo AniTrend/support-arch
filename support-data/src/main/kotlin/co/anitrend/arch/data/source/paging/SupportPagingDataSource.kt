@@ -4,14 +4,14 @@ import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import androidx.paging.extension.createStatusLiveData
 import co.anitrend.arch.data.source.paging.contract.IPagingDataSource
+import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
 import co.anitrend.arch.extension.util.SupportConnectivityHelper
 import co.anitrend.arch.extension.util.SupportExtKeyStore
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.asExecutor
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 /**
  * A non-coroutine that depends on [androidx.lifecycle.LiveData] to publish results.
@@ -33,9 +33,13 @@ abstract class SupportPagingDataSource<T> : PagedList.BoundaryCallback<T>(), IPa
      */
     override val supervisorJob = SupervisorJob()
 
-    protected val pagingRequestHelper = PagingRequestHelper(IO_EXECUTOR)
+    protected val pagingRequestHelper by lazy(LAZY_MODE_UNSAFE) {
+        PagingRequestHelper(coroutineDispatcher.asExecutor())
+    }
 
-    override val networkState = pagingRequestHelper.createStatusLiveData()
+    override val networkState by lazy(LAZY_MODE_UNSAFE) {
+        pagingRequestHelper.createStatusLiveData()
+    }
 
     protected val supportPagingHelper = SupportPagingHelper(
         isPagingLimit = false,
@@ -55,9 +59,5 @@ abstract class SupportPagingDataSource<T> : PagedList.BoundaryCallback<T>(), IPa
      */
     override fun retryRequest() {
         pagingRequestHelper.retryAllFailed()
-    }
-
-    companion object {
-        val IO_EXECUTOR: ExecutorService = Executors.newSingleThreadExecutor()
     }
 }
