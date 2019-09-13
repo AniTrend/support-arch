@@ -7,13 +7,13 @@ import io.wax911.sample.data.repository.movie.MoviePagedRepository
 import io.wax911.sample.domain.usecases.movie.TraktMovieUseCase
 
 class MoviePagedListUseCase(
-    private val moviePagedRepository: MoviePagedRepository
-) : TraktMovieUseCase<UserInterfaceState<PagedList<MovieEntity>>>(moviePagedRepository) {
+    repository: MoviePagedRepository
+) : TraktMovieUseCase<UserInterfaceState<PagedList<MovieEntity>>>(repository) {
 
     /**
      * Informs underlying repositories or related components running background operations to stop
      */
     override fun onCleared() {
-        moviePagedRepository.onCleared()
+        (repository as MoviePagedRepository).onCleared()
     }
 }

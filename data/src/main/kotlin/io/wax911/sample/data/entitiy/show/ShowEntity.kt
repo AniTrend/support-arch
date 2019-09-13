@@ -3,6 +3,7 @@ package io.wax911.sample.data.entitiy.show
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.RoomWarnings
 import com.uwetrottmann.trakt5.entities.Airs
 import com.uwetrottmann.trakt5.enums.Status
 import io.wax911.sample.data.entitiy.show.contract.ShowEntityIds
@@ -10,6 +11,7 @@ import io.wax911.sample.domain.entities.contract.TraktEntity
 import io.wax911.sample.domain.entities.contract.TraktRankEntity
 
 @Entity
+@SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
 data class ShowEntity(
     @PrimaryKey(autoGenerate = true)
     override val id: Int = 0,

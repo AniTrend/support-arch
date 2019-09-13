@@ -20,8 +20,6 @@ class MoviePagedDataSource(
     private val movieEndpoint: Movies
 )  : TraktMoviePagedSource() {
 
-    private lateinit var executionTarget: (PagingRequestHelper.Request.Callback) -> Unit
-
     private fun getPopularMovies(callback: PagingRequestHelper.Request.Callback) {
         val call =
             movieEndpoint.popular(
@@ -31,13 +29,11 @@ class MoviePagedDataSource(
             )
 
         val mapper = PopularMovieMapper(
-            movieDao = movieDao,
-            pagingRequestHelper = callback
+            movieDao = movieDao
         )
 
         launch {
-            val state = mapper(call)
-            networkState.postValue(state)
+            mapper(call, callback)
         }
     }
 
@@ -50,38 +46,11 @@ class MoviePagedDataSource(
             )
 
         val mapper = TrendingMovieMapper(
-            movieDao = movieDao,
-            pagingRequestHelper = callback
+            movieDao = movieDao
         )
 
         launch {
-            val state = mapper(call)
-            networkState.postValue(state)
-        }
-    }
-
-    /**
-     * Called when zero items are returned from an initial load of the PagedList's data source.
-     */
-    override fun onZeroItemsLoaded() {
-        pagingRequestHelper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            executionTarget(it)
-        }
-    }
-
-    /**
-     * Called when the item at the end of the PagedList has been loaded, and access has
-     * occurred within [PagedList.Config.prefetchDistance] of it.
-     *
-     *
-     * No more data will be appended to the PagedList after this item.
-     *
-     * @param itemAtEnd The first item of PagedList
-     */
-    override fun onItemAtEndLoaded(itemAtEnd: MovieEntity) {
-        pagingRequestHelper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-            supportPagingHelper.onPageNext()
-            executionTarget(it)
+            mapper(call, callback)
         }
     }
 
@@ -92,7 +61,7 @@ class MoviePagedDataSource(
      * @see MovieDao.getPopularItems
      */
     override val popularMovieObservable =
-        object : ISourceObservable<PagedList<MovieEntity>, Nothing?> {
+        object : ISourceObservable<Nothing?, PagedList<MovieEntity>> {
             /**
              * Returns the appropriate observable which we will monitor for updates,
              * common implementation may include but not limited to returning
@@ -119,7 +88,7 @@ class MoviePagedDataSource(
      * @see MovieDao.getPopularItems
      */
     override val trendingMovieObservable =
-        object : ISourceObservable<PagedList<MovieEntity>, Nothing?> {
+        object : ISourceObservable<Nothing?, PagedList<MovieEntity>> {
             /**
              * Returns the appropriate observable which we will monitor for updates,
              * common implementation may include but not limited to returning
@@ -142,9 +111,7 @@ class MoviePagedDataSource(
     /**
      * Clears data sources (databases, preferences, e.t.c)
      */
-    override fun clearDataSource() {
-        launch {
-            movieDao.deleteAll()
-        }
+    override suspend fun clearDataSource() {
+        movieDao.deleteAll()
     }
 }

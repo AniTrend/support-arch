@@ -1,6 +1,5 @@
 package io.wax911.sample.data.mapper.show
 
-import androidx.paging.PagingRequestHelper
 import com.uwetrottmann.trakt5.entities.TrendingShow
 import io.wax911.sample.data.arch.mapper.TraktTrendMapper
 import io.wax911.sample.data.datasource.local.query.ShowDao
@@ -10,11 +9,8 @@ import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
 
 class TrendingShowMapper(
-    private val showDao: ShowDao,
-    pagingRequestHelper: PagingRequestHelper.Request.Callback
-) : TraktTrendMapper<List<TrendingShow>, List<ShowEntity>>(
-    pagingRequestHelper = pagingRequestHelper
-) {
+    private val showDao: ShowDao
+) : TraktTrendMapper<List<TrendingShow>, List<ShowEntity>>() {
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,

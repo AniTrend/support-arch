@@ -5,9 +5,3 @@ plugins {
 }
 
 apply from: "../gradle/gradle-common-config.gradle"
-
-dependencies {
-
-    /** Platform Dependencies */
-    implementation project(":support-domain")
-}

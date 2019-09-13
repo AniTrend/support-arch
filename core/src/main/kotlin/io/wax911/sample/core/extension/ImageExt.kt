@@ -1,4 +1,4 @@
-package io.wax911.sample.widget.image
+package io.wax911.sample.core.extension
 
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter

@@ -1,5 +1,6 @@
 package io.wax911.sample.data.arch.mapper
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingRequestHelper
 import co.anitrend.arch.data.mapper.SupportResponseMapper
 import co.anitrend.arch.data.mapper.contract.ISupportResponseHelper
@@ -13,9 +14,36 @@ import timber.log.Timber
  *
  * @see SupportResponseMapper
  */
-abstract class TraktTrendMapper<S, D> (
-    private val pagingRequestHelper: PagingRequestHelper.Request.Callback? = null
-): SupportResponseMapper<S, D>(), ISupportResponseHelper<Call<S>> {
+abstract class TraktTrendMapper<S, D>: SupportResponseMapper<S, D>(), ISupportResponseHelper<Call<S>> {
+
+    /**
+     * Response handler for coroutine contexts, mainly for paging
+     *
+     * @param resource awaiting execution
+     * @param pagingRequestHelper optional paging request callback
+     */
+    override suspend fun invoke(
+        resource: Call<S>,
+        pagingRequestHelper: PagingRequestHelper.Request.Callback
+    ) {
+        val result = runCatching {
+            val response = resource.execute()
+            if (response.isSuccessful && response.body() != null) {
+                val mapped = onResponseMapFrom(response.body()!!)
+                onResponseDatabaseInsert(mapped)
+                pagingRequestHelper.recordSuccess()
+            } else {
+                pagingRequestHelper.recordFailure(
+                    Throwable(response.message())
+                )
+            }
+        }
+
+        result.getOrElse {
+            it.printStackTrace()
+            Timber.tag(moduleTag).e(it)
+        }
+    }
 
     /**
      * Response handler for coroutine contexts which need to observe [NetworkState]
@@ -29,12 +57,8 @@ abstract class TraktTrendMapper<S, D> (
             if (response.isSuccessful && response.body() != null) {
                 val mapped = onResponseMapFrom(response.body()!!)
                 onResponseDatabaseInsert(mapped)
-                pagingRequestHelper?.recordSuccess()
                 NetworkState.Success
             } else {
-                pagingRequestHelper?.recordFailure(
-                    Throwable(response.message())
-                )
                 NetworkState.Error(
                     heading = response.message(),
                     message = response.errorBody()?.string(),
@@ -51,5 +75,16 @@ abstract class TraktTrendMapper<S, D> (
                 message = it.message
             )
         }
+    }
+
+    /**
+     * Response handler for coroutine contexts which need to observe [NetworkState]
+     *
+     * @param resource awaiting execution
+     * @param networkState for the deferred result
+     */
+    override suspend fun invoke(resource: Call<S>, networkState: MutableLiveData<NetworkState>) {
+        val state = invoke(resource)
+        networkState.postValue(state)
     }
 }

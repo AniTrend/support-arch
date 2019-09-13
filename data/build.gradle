@@ -43,24 +43,15 @@ android {
 dependencies {
 
     /** Platform Dependencies */
-    implementation project(":domain")
-    implementation project(":support-data")
     implementation project(":support-domain")
+    implementation project(":support-data")
     implementation project(":support-ext")
+    implementation project(":domain")
 
     /** Koin AndroidX Dependency Injection */
     implementation "org.koin:koin-core:$koin"
     implementation "org.koin:koin-core-ext:$koin"
     implementation "org.koin:koin-androidx-scope:$koin"
-
-    /** Kotlin Libraries */
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
-
-    /** Material Design */
-    implementation "com.google.android.material:material:$material"
-
-    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
 
     /** Architecture Components */
     implementation "androidx.core:core-ktx:$ktx"
@@ -77,13 +68,10 @@ dependencies {
     implementation ('com.uwetrottmann.trakt5:trakt-java:6.3.0') {
         exclude group: 'org.threeten', module: 'threetenbp'
     }
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation "com.jakewharton.threetenabp:threetenabp:$threetenabp"
 
     /** Retrofit Libraries */
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
-
-    /** Testing-only dependencies */
-    androidTestImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 }

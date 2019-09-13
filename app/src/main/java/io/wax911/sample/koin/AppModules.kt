@@ -1,14 +1,16 @@
 package io.wax911.sample.koin
 
-import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
-import io.wax911.sample.analytics.AnalyticsLogger
-import org.koin.android.ext.koin.androidContext
+import io.wax911.sample.core.koin.coreModules
+import io.wax911.sample.data.koin.dataModules
+import io.wax911.sample.service.FileProviderService
 import org.koin.dsl.module
 
-val appModules = module {
-    factory<ISupportAnalytics> {
-        AnalyticsLogger(
-            context = androidContext()
-        )
+private val appModule = module {
+    factory {
+        FileProviderService()
     }
 }
+
+val appModules = listOf(
+    appModule
+) + coreModules + dataModules

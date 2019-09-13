@@ -3,6 +3,7 @@ package io.wax911.sample.data.koin
 import android.content.Context
 import android.net.ConnectivityManager
 import co.anitrend.arch.extension.util.SupportConnectivityHelper
+import co.anitrend.arch.extension.util.SupportDateHelper
 import com.google.gson.Gson
 import com.uwetrottmann.trakt5.TraktV2
 import io.wax911.sample.data.BuildConfig
@@ -17,7 +18,7 @@ import io.wax911.sample.data.util.Settings
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-val dataModules = module {
+private val dataModule = module {
     factory {
         Settings(
             context = androidContext()
@@ -29,9 +30,15 @@ val dataModules = module {
             context = androidContext()
         )
     }
+
+    single {
+        SupportDateHelper(
+            context = androidContext()
+        )
+    }
 }
 
-val dataNetworkModules = module {
+private val networkModule = module {
     single {
         Gson().newBuilder()
             .setLenient()
@@ -56,20 +63,20 @@ val dataNetworkModules = module {
     }
 }
 
-val dataUseCaseModules = module {
+private val useCaseModule = module {
     factory {
         ShowPagedListUseCase(
-            showPagedRepository = get<ShowPagedRepository>()
+            repository = get()
         )
     }
     factory {
         MoviePagedListUseCase(
-            moviePagedRepository = get<MoviePagedRepository>()
+            repository = get()
         )
     }
 }
 
-val dataSourceModules = module {
+private val sourceModule = module {
     factory {
         ShowPagedDataSource(
             showEndpoint = get<TraktV2>().shows(),
@@ -84,16 +91,20 @@ val dataSourceModules = module {
     }
 }
 
-val dataRepositoryModules = module {
+private val repositoryModule = module {
     factory {
         ShowPagedRepository(
-            showPagedDataSource = get<ShowPagedDataSource>()
+            source = get<ShowPagedDataSource>()
         )
     }
 
     factory {
         MoviePagedRepository(
-            moviePagedDataSource = get<MoviePagedDataSource>()
+            source = get<MoviePagedDataSource>()
         )
     }
 }
+
+val dataModules = listOf(
+    dataModule, networkModule, useCaseModule, sourceModule, repositoryModule
+)

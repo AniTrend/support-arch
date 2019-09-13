@@ -16,6 +16,8 @@ import org.koin.android.ext.android.inject
 
 class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
 
+    private val supportDateHelper by inject<SupportDateHelper>()
+
     /**
      * Should be created lazily through injection or lazy delegate
      *
@@ -34,7 +36,7 @@ class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
     override fun initializeComponents(savedInstanceState: Bundle?) {
         val description = getString(
             R.string.app_splash_description,
-            SupportDateHelper().getCurrentYear(0)
+            supportDateHelper.getCurrentYear(0)
         )
         splash_description.text = description
         onFetchDataInitialize()

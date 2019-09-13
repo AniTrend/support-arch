@@ -1,6 +1,5 @@
 package io.wax911.sample.data.mapper.movie
 
-import androidx.paging.PagingRequestHelper
 import com.uwetrottmann.trakt5.entities.Movie
 import io.wax911.sample.data.arch.mapper.TraktTrendMapper
 import io.wax911.sample.data.datasource.local.query.MovieDao
@@ -10,11 +9,8 @@ import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
 
 class PopularMovieMapper(
-    private val movieDao: MovieDao,
-    pagingRequestHelper: PagingRequestHelper.Request.Callback
-) : TraktTrendMapper<List<Movie>, List<MovieEntity>>(
-    pagingRequestHelper = pagingRequestHelper
-) {
+    private val movieDao: MovieDao
+) : TraktTrendMapper<List<Movie>, List<MovieEntity>>() {
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
