@@ -24,6 +24,7 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -76,8 +77,8 @@ dokka {
     reportUndocumented = true
 
     linkMapping {
-        dir = "src/main/java"
-        url = "https://github.com/anitrend/support-arch/tree/develop/support-ext/src/main/java"
+        dir = "src/main/kotlin"
+        url = "https://github.com/anitrend/support-arch/tree/develop/support-ext/src/main/kotlin"
         suffix = "#L"
     }
 }
