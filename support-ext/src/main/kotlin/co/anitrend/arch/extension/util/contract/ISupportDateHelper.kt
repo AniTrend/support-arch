@@ -1,7 +1,12 @@
 package co.anitrend.arch.extension.util.contract
 
 import android.annotation.TargetApi
+import android.content.Context
 import android.os.Build
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZoneOffset
+import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,6 +33,14 @@ interface ISupportDateHelper {
      */
     val defaultOutputDatePattern
         get() =  "yyyy-MM-dd HH:mm:ss"
+
+    /** [Three Ten Android Backport](https://github.com/JakeWharton/ThreeTenABP)
+     * Should handle initialization of ThreeTenABP if you are overriding the interface
+     * and wish to make use of the default methods
+     *
+     * @param context application context
+     */
+    fun initializeThreeTenBackPort(context: Context)
 
     /**
      * Helper utility for converting unix timestamp to a date string format
@@ -116,20 +129,19 @@ interface ISupportDateHelper {
         outputDatePattern: String = defaultOutputDatePattern,
         targetTimeZone: TimeZone = TimeZone.getDefault()
     ): String? {
-        val dateFormatter = SimpleDateFormat(
-            inputPattern,
-            Locale.getDefault()
-        )
-
-        with (dateFormatter) {
-            timeZone = targetTimeZone
-        }
+        val dateFormatter = DateTimeFormatter.ofPattern(
+            inputPattern, Locale.getDefault()
+        ).withZone(ZoneId.of(targetTimeZone.id))
 
         val convertedDate = dateFormatter.parse(originDate)
+        val zonedDateTime = ZonedDateTime.from(convertedDate).toOffsetDateTime()
 
         return convertedDate?.let {
-            val outputSampleDateFormat = SimpleDateFormat(outputDatePattern, Locale.getDefault())
-            outputSampleDateFormat.format(it)
+            val outputSampleDateFormat = DateTimeFormatter.ofPattern(
+                outputDatePattern, Locale.getDefault()
+            )
+
+            zonedDateTime.format(outputSampleDateFormat)
         }
     }
 }
