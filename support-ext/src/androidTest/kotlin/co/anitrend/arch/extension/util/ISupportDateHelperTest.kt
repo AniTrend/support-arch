@@ -1,26 +1,35 @@
 package co.anitrend.arch.extension.util
 
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
+import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.arch.extension.util.contract.ISupportDateHelper
+import junit.framework.Assert.assertEquals
 import org.junit.Assert
 import org.junit.Test
+import org.junit.runner.RunWith
 import java.util.*
 
 /**
- * Example local unit test, which will execute on the development machine (host).
+ * Instrumented test, which will execute on an Android device.
  *
- * @see [Testing documentation](http://d.android.com/tools/testing)
+ * @see [Testing documentation](http://d.android.com/tools/testing).
  */
+
+@RunWith(AndroidJUnit4ClassRunner::class)
 class ISupportDateHelperTest {
+    
+    private val appContext by lazy { InstrumentationRegistry.getInstrumentation().context }
 
     private val supportDateHelper : ISupportDateHelper by lazy {
-        SupportDateHelper()
+        SupportDateHelper(appContext)
     }
 
     /**
      * Skipping these tests for now due to
      * [Simple Date Error](https://stackoverflow.com/questions/44588429/unknown-pattern-character-x-when-using-simpledateformat/44588864)
      */
-    fun `date conversion from iso 8601 to short date timestamp`() {
+    @Test
+    fun date_conversion_from_iso_8601_to_short_date_timestamp() {
         val targetTimeZone = "GMT+2"
         val input = "2019-01-09T07:30:00-08:00"
 
@@ -33,7 +42,7 @@ class ISupportDateHelperTest {
 
         val expected = "2019-01-09 17:30:00"
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
 
@@ -41,7 +50,8 @@ class ISupportDateHelperTest {
      * Skipping these tests for now due to
      * [Simple Date Error](https://stackoverflow.com/questions/44588429/unknown-pattern-character-x-when-using-simpledateformat/44588864)
      */
-    fun `date conversion from iso RCF 822 to short date timestamp`() {
+    @Test
+    fun date_conversion_from_iso_RCF_822_to_short_date_timestamp() {
         val targetTimeZone = "GMT+2"
         val input = "2019-01-09T07:30:00-0800"
 
@@ -54,7 +64,7 @@ class ISupportDateHelperTest {
 
         val expected = "2019-01-09 17:30:00"
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
 
@@ -62,24 +72,25 @@ class ISupportDateHelperTest {
      * Skipping these tests for now due to
      * [Simple Date Error](https://stackoverflow.com/questions/44588429/unknown-pattern-character-x-when-using-simpledateformat/44588864)
      */
-    fun `date conversion from RFC 822 format to short date timestamp`() {
+    @Test
+    fun date_conversion_from_RFC_822_format_to_short_date_timestamp() {
         val targetTimeZone = "GMT+2"
         val input = "Sat, 22 Jun 2019 15:00:00 GMT"
 
         val actual = supportDateHelper.convertToTimeStamp(
             originDate = input,
-            inputPattern = "EEE, dd MMM yyyy HH:mm:ss ZZZ",
+            inputPattern = "EEE, dd MMM yyyy HH:mm:ss Z",
             outputDatePattern = "yyyy-MM-dd HH:mm:ss",
             targetTimeZone = TimeZone.getTimeZone(targetTimeZone)
         )
 
         val expected = "2019-06-22 17:00:00"
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `date conversion from RFC 822 format to unix timestamp`() {
+    fun date_conversion_from_RFC_822_format_to_unix_timestamp() {
         val targetTimeZone = "GMT+2"
         val input = "Sat, 22 Jun 2019 15:00:00 GMT"
 
@@ -91,14 +102,15 @@ class ISupportDateHelperTest {
 
         val expected = 1561215600000
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     /**
      * Skipping these tests for now due to
      * [Simple Date Error](https://stackoverflow.com/questions/44588429/unknown-pattern-character-x-when-using-simpledateformat/44588864)
      */
-    fun `date conversion from iso 8601 to unix timestamp`() {
+    @Test
+    fun date_conversion_from_iso_8601_to_unix_timestamp() {
         val targetTimeZone = "GMT+2"
         val input = "2019-01-09T07:30:00-08:00"
 
@@ -110,11 +122,11 @@ class ISupportDateHelperTest {
 
         val expected = 1547047800000
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `date conversion from iso RCF 822 to unix timestamp`() {
+    fun date_conversion_from_iso_RCF_822_to_unix_timestamp() {
         val targetTimeZone = "GMT+2"
         val input = "2019-01-09T07:30:00-0800"
 
@@ -126,11 +138,11 @@ class ISupportDateHelperTest {
 
         val expected = 1547047800000
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
-    fun `unix timestamp conversion from iso 8601`() {
+    fun unix_timestamp_conversion_from_iso_8601() {
         val targetTimeZone = "GMT+2"
         val input = 1561215600000
 
@@ -142,6 +154,6 @@ class ISupportDateHelperTest {
 
         val expected = "2019-06-22 17:00:00"
 
-        Assert.assertEquals(expected, actual)
+        assertEquals(expected, actual)
     }
 }
