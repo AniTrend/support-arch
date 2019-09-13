@@ -63,6 +63,9 @@ dependencies {
     /** Timber */
     implementation "com.jakewharton.timber:timber:$timber"
 
+    /** ThreeTen Android Backport */
+    implementation "com.jakewharton.threetenabp:threetenabp:$threetenabp"
+
     /** Testing-only dependencies */
     testImplementation "junit:junit:$junit"
     testImplementation "io.mockk:mockk:$mockk"
