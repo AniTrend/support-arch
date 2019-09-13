@@ -23,14 +23,13 @@ class SupportDateHelper(context: Context) : ISupportDateHelper {
      * @return current season index
      */
     val currentSeasonIndex
-        @IntRange(from = 0, to = 4)
-        get() = SeasonType.ALL.indexOf(currentSeason)
+        get() = SeasonType.valueOf(currentSeason.name)
 
     /**
      * @return current seasons name
      */
-    val currentSeason: String
-        @SeasonType get() {
+    val currentSeason: SeasonType
+         get() {
             return when (Calendar.getInstance().get(Calendar.MONTH)) {
                 in 2..4 -> SeasonType.SPRING
                 in 5..7 -> SeasonType.SUMMER
