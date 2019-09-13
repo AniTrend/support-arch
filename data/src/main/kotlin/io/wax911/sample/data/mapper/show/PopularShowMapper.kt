@@ -1,6 +1,5 @@
 package io.wax911.sample.data.mapper.show
 
-import androidx.paging.PagingRequestHelper
 import io.wax911.sample.data.arch.mapper.TraktTrendMapper
 import io.wax911.sample.data.datasource.local.query.ShowDao
 import io.wax911.sample.data.entitiy.show.ShowEntity
@@ -9,11 +8,8 @@ import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
 
 class PopularShowMapper(
-    private val showDao: ShowDao,
-    pagingRequestHelper: PagingRequestHelper.Request.Callback
-) : TraktTrendMapper<List<com.uwetrottmann.trakt5.entities.Show>, List<ShowEntity>>(
-    pagingRequestHelper = pagingRequestHelper
-) {
+    private val showDao: ShowDao
+) : TraktTrendMapper<List<com.uwetrottmann.trakt5.entities.Show>, List<ShowEntity>>() {
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
@@ -66,7 +62,7 @@ class PopularShowMapper(
      */
     override suspend fun onResponseDatabaseInsert(mappedData: List<ShowEntity>) {
         if (mappedData.isNotEmpty())
-            showDao.insert(mappedData)
+            showDao.upsert(mappedData)
         else
             Timber.tag(moduleTag).i("onResponseDatabaseInsert(mappedData: List<ShowEntity>) -> mappedData is empty")
     }

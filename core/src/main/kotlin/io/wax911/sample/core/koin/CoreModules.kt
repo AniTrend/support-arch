@@ -1,5 +1,7 @@
 package io.wax911.sample.core.koin
 
+import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import io.wax911.sample.core.analytics.AnalyticsLogger
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.viewmodel.movie.MovieViewModel
 import io.wax911.sample.core.viewmodel.show.ShowViewModel
@@ -7,11 +9,15 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val coreModules = module {
-
+private val coreModule = module {
+    factory<ISupportAnalytics> {
+        AnalyticsLogger(
+            context = androidContext()
+        )
+    }
 }
 
-val corePresenterModules = module {
+private val presenterModule = module {
     factory {
         CorePresenter(
             androidContext(),
@@ -20,7 +26,7 @@ val corePresenterModules = module {
     }
 }
 
-val coreViewModelModules = module {
+private val viewModelModule = module {
     viewModel {
         ShowViewModel(
             useCase = get()
@@ -32,3 +38,7 @@ val coreViewModelModules = module {
         )
     }
 }
+
+val coreModules = listOf(
+    coreModule, presenterModule, viewModelModule
+)

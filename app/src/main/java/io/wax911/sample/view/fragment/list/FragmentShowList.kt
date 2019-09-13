@@ -120,7 +120,7 @@ class FragmentShowList : SupportFragmentList<ShowEntity, CorePresenter, PagedLis
     override fun onFetchDataInitialize() {
         pagingMediaPayload?.also {
             supportViewModel(
-                payload = it
+                parameter = it
             )
         }
     }

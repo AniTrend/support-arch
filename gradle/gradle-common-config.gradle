@@ -16,6 +16,7 @@
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -36,14 +37,17 @@ androidExtensions {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    
-    
+
+    /** Platform Dependencies */
+    implementation project(":support-domain")
+
     /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
     
     /** Timber */
     implementation "com.jakewharton.timber:timber:$timber"
-    
     
     /** Testing-only dependencies */
     testImplementation "junit:junit:$junit"

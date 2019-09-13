@@ -7,7 +7,7 @@ import io.wax911.sample.domain.repositories.movie.ITraktMovieRepository
 import kotlinx.android.parcel.Parcelize
 
 abstract class TraktMovieUseCase<R: IUserInterfaceState<*>>(
-    private val movieRepository: ITraktMovieRepository<R>
+    protected val repository: ITraktMovieRepository<R>
 ) : IPagedMediaUseCase<TraktMovieUseCase.Payload, R> {
 
     /**
@@ -17,8 +17,8 @@ abstract class TraktMovieUseCase<R: IUserInterfaceState<*>>(
      */
     override fun invoke(param: Payload): R {
         return when (param.requestType) {
-            MovieRequestType.MoviePopular -> movieRepository.getPopularMovies()
-            MovieRequestType.MovieTrending -> movieRepository.getTrendingMovies()
+            MovieRequestType.MoviePopular -> repository.getPopularMovies()
+            MovieRequestType.MovieTrending -> repository.getTrendingMovies()
         }
     }
 

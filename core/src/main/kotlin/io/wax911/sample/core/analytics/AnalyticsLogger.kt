@@ -1,4 +1,4 @@
-package io.wax911.sample.analytics
+package io.wax911.sample.core.analytics
 
 import android.content.Context
 import android.os.Bundle
@@ -9,7 +9,7 @@ import co.anitrend.arch.extension.empty
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.analytics.FirebaseAnalytics
 import io.fabric.sdk.android.Fabric
-import io.wax911.sample.BuildConfig
+import io.wax911.sample.core.BuildConfig
 import timber.log.Timber
 
 class AnalyticsLogger(

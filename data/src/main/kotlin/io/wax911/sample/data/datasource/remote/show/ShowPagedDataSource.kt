@@ -20,8 +20,6 @@ class ShowPagedDataSource(
     private val showEndpoint: Shows
 ) : TraktShowPagedSource() {
 
-    private lateinit var executionTarget: (PagingRequestHelper.Request.Callback) -> Unit
-
     private fun getPopularShows(callback: PagingRequestHelper.Request.Callback) {
         val call = showEndpoint.popular(
             supportPagingHelper.page,
@@ -30,13 +28,11 @@ class ShowPagedDataSource(
         )
 
         val mapper = PopularShowMapper(
-            showDao = showDao,
-            pagingRequestHelper = callback
+            showDao = showDao
         )
 
         launch {
-            val state = mapper(call)
-            networkState.postValue(state)
+            mapper(call, callback)
         }
     }
 
@@ -48,38 +44,11 @@ class ShowPagedDataSource(
         )
 
         val mapper = TrendingShowMapper(
-            showDao = showDao,
-            pagingRequestHelper = callback
+            showDao = showDao
         )
 
         launch {
-            val state = mapper(call)
-            networkState.postValue(state)
-        }
-    }
-
-    /**
-     * Called when zero items are returned from an initial load of the PagedList's data source.
-     */
-    override fun onZeroItemsLoaded() {
-        pagingRequestHelper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            executionTarget(it)
-        }
-    }
-
-    /**
-     * Called when the item at the end of the PagedList has been loaded, and access has
-     * occurred within [PagedList.Config.prefetchDistance] of it.
-     *
-     *
-     * No more data will be appended to the PagedList after this item.
-     *
-     * @param itemAtEnd The first item of PagedList
-     */
-    override fun onItemAtEndLoaded(itemAtEnd: ShowEntity) {
-        pagingRequestHelper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-            supportPagingHelper.onPageNext()
-            executionTarget(it)
+            mapper(call, callback)
         }
     }
 
@@ -90,7 +59,7 @@ class ShowPagedDataSource(
      * @see ShowDao.getPopularItems
      */
     override val popularShowObservable =
-        object : ISourceObservable<PagedList<ShowEntity>, Nothing?> {
+        object : ISourceObservable<Nothing?, PagedList<ShowEntity>> {
             /**
              * Returns the appropriate observable which we will monitor for updates,
              * common implementation may include but not limited to returning
@@ -116,7 +85,7 @@ class ShowPagedDataSource(
      * @see ShowDao.getPopularItems
      */
     override val trendingShowObservable =
-        object : ISourceObservable<PagedList<ShowEntity>, Nothing?> {
+        object : ISourceObservable<Nothing?, PagedList<ShowEntity>> {
             /**
              * Returns the appropriate observable which we will monitor for updates,
              * common implementation may include but not limited to returning
@@ -139,9 +108,7 @@ class ShowPagedDataSource(
     /**
      * Clears data sources (databases, preferences, e.t.c)
      */
-    override fun clearDataSource() {
-        launch {
-            showDao.deleteAll()
-        }
+    override suspend fun clearDataSource() {
+        showDao.deleteAll()
     }
 }

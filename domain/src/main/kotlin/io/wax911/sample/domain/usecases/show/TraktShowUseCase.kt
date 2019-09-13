@@ -7,7 +7,7 @@ import io.wax911.sample.domain.repositories.show.ITraktShowRepository
 import kotlinx.android.parcel.Parcelize
 
 abstract class TraktShowUseCase<R: IUserInterfaceState<*>>(
-    private val showRepository: ITraktShowRepository<R>
+    protected val repository: ITraktShowRepository<R>
 ) : IPagedMediaUseCase<TraktShowUseCase.Payload, R> {
 
     /**
@@ -17,8 +17,8 @@ abstract class TraktShowUseCase<R: IUserInterfaceState<*>>(
      */
     override fun invoke(param: Payload): R {
         return when (param.requestType) {
-            ShowRequestType.ShowPopular -> showRepository.getPopularShows()
-            ShowRequestType.ShowTrending -> showRepository.getTrendingShows()
+            ShowRequestType.ShowPopular -> repository.getPopularShows()
+            ShowRequestType.ShowTrending -> repository.getTrendingShows()
         }
     }
 

@@ -1,4 +1,4 @@
-package co.anitrend.sample.data.arch
+package io.wax911.sample.data.arch
 
 @Experimental(level = Experimental.Level.WARNING)
 @Retention(AnnotationRetention.SOURCE)

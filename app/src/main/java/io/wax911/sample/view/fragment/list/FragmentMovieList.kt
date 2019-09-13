@@ -106,7 +106,7 @@ class FragmentMovieList: SupportFragmentList<MovieEntity, CorePresenter, PagedLi
     override fun onFetchDataInitialize() {
         pagingMediaPayload?.also {
             supportViewModel(
-                payload = it
+                parameter = it
             )
         }
     }
