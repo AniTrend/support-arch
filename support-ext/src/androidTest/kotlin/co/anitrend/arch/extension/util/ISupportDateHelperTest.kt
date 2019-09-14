@@ -7,6 +7,7 @@ import junit.framework.Assert.assertEquals
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.threeten.bp.format.DateTimeFormatter
 import java.util.*
 
 /**
@@ -24,10 +25,6 @@ class ISupportDateHelperTest {
         SupportDateHelper(appContext)
     }
 
-    /**
-     * Skipping these tests for now due to
-     * [Simple Date Error](https://stackoverflow.com/questions/44588429/unknown-pattern-character-x-when-using-simpledateformat/44588864)
-     */
     @Test
     fun date_conversion_from_iso_8601_to_short_date_timestamp() {
         val targetTimeZone = "GMT+2"
@@ -45,11 +42,6 @@ class ISupportDateHelperTest {
         assertEquals(expected, actual)
     }
 
-
-    /**
-     * Skipping these tests for now due to
-     * [Simple Date Error](https://stackoverflow.com/questions/44588429/unknown-pattern-character-x-when-using-simpledateformat/44588864)
-     */
     @Test
     fun date_conversion_from_iso_RCF_822_to_short_date_timestamp() {
         val targetTimeZone = "GMT+2"
@@ -66,12 +58,7 @@ class ISupportDateHelperTest {
 
         assertEquals(expected, actual)
     }
-
-
-    /**
-     * Skipping these tests for now due to
-     * [Simple Date Error](https://stackoverflow.com/questions/44588429/unknown-pattern-character-x-when-using-simpledateformat/44588864)
-     */
+    
     @Test
     fun date_conversion_from_RFC_822_format_to_short_date_timestamp() {
         val targetTimeZone = "GMT+2"
@@ -79,7 +66,9 @@ class ISupportDateHelperTest {
 
         val actual = supportDateHelper.convertToTimeStamp(
             originDate = input,
-            inputPattern = "EEE, dd MMM yyyy HH:mm:ss Z",
+            locale = Locale.US,
+            dateTimeFormatter = DateTimeFormatter.RFC_1123_DATE_TIME,
+            //inputPattern = "EEE, dd MMM yyyy HH:mm:ss z",
             outputDatePattern = "yyyy-MM-dd HH:mm:ss",
             targetTimeZone = TimeZone.getTimeZone(targetTimeZone)
         )
@@ -96,7 +85,8 @@ class ISupportDateHelperTest {
 
         val actual = supportDateHelper.convertToUnixTimeStamp(
             originDate = input,
-            inputPattern = "EEE, dd MMM yyyy HH:mm:ss ZZZ",
+            locale = Locale.US,
+            dateTimeFormatter = DateTimeFormatter.RFC_1123_DATE_TIME,
             targetTimeZone = TimeZone.getTimeZone(targetTimeZone)
         )
 
@@ -105,10 +95,6 @@ class ISupportDateHelperTest {
         assertEquals(expected, actual)
     }
 
-    /**
-     * Skipping these tests for now due to
-     * [Simple Date Error](https://stackoverflow.com/questions/44588429/unknown-pattern-character-x-when-using-simpledateformat/44588864)
-     */
     @Test
     fun date_conversion_from_iso_8601_to_unix_timestamp() {
         val targetTimeZone = "GMT+2"
