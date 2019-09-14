@@ -2,8 +2,9 @@ package io.wax911.sample.data.arch.mapper
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingRequestHelper
+import co.anitrend.arch.data.common.ISupportPagingResonse
+import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.data.mapper.SupportResponseMapper
-import co.anitrend.arch.data.mapper.contract.ISupportResponseHelper
 import co.anitrend.arch.domain.entities.NetworkState
 import retrofit2.Call
 import timber.log.Timber
@@ -14,7 +15,8 @@ import timber.log.Timber
  *
  * @see SupportResponseMapper
  */
-abstract class TraktTrendMapper<S, D>: SupportResponseMapper<S, D>(), ISupportResponseHelper<Call<S>> {
+abstract class TraktTrendMapper<S, D>: SupportResponseMapper<S, D>(),
+    ISupportPagingResonse<Call<S>>, ISupportResponse<Call<S>, D> {
 
     /**
      * Response handler for coroutine contexts, mainly for paging
@@ -51,40 +53,39 @@ abstract class TraktTrendMapper<S, D>: SupportResponseMapper<S, D>(), ISupportRe
      * @param resource awaiting execution
      * @return [NetworkState] for the deferred result
      */
-    override suspend fun invoke(resource: Call<S>): NetworkState {
+    override suspend fun invoke(
+        resource: Call<S>,
+        networkState: MutableLiveData<NetworkState>
+    ): D? {
         val result = runCatching {
             val response = resource.execute()
             if (response.isSuccessful && response.body() != null) {
                 val mapped = onResponseMapFrom(response.body()!!)
                 onResponseDatabaseInsert(mapped)
-                NetworkState.Success
+                networkState.postValue(NetworkState.Success)
+                mapped
             } else {
-                NetworkState.Error(
-                    heading = response.message(),
-                    message = response.errorBody()?.string(),
-                    code = response.code()
+                networkState.postValue(
+                    NetworkState.Error(
+                        heading = response.message(),
+                        message = response.errorBody()?.string(),
+                        code = response.code()
+                    )
                 )
+                null
             }
         }
 
         return result.getOrElse {
             it.printStackTrace()
             Timber.tag(moduleTag).e(it)
-            NetworkState.Error(
-                heading = "Internal Application Error",
-                message = it.message
+            networkState.postValue(
+                NetworkState.Error(
+                    heading = "Internal Application Error",
+                    message = it.message
+                )
             )
+            null
         }
-    }
-
-    /**
-     * Response handler for coroutine contexts which need to observe [NetworkState]
-     *
-     * @param resource awaiting execution
-     * @param networkState for the deferred result
-     */
-    override suspend fun invoke(resource: Call<S>, networkState: MutableLiveData<NetworkState>) {
-        val state = invoke(resource)
-        networkState.postValue(state)
     }
 }
