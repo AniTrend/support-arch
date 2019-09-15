@@ -13,7 +13,6 @@ interface ISupportResponseMapper<in S, D> {
      *
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
-     * @see [ISupportResponseHelper.invoke]
      */
     suspend fun onResponseMapFrom(source: S): D
 
@@ -22,7 +21,6 @@ interface ISupportResponseMapper<in S, D> {
      * called in [retrofit2.Callback.onResponse]
      *
      * @param mappedData mapped object from [onResponseMapFrom] to insert into the database
-     * @see [ISupportResponseHelper.invoke]
      */
     suspend fun onResponseDatabaseInsert(mappedData: D)
 }
