@@ -65,7 +65,7 @@ dependencies {
 
     /** Tmdb & Trakt Wrappers */
     implementation "com.uwetrottmann.tmdb2:tmdb-java:2.1.1"
-    implementation ('com.uwetrottmann.trakt5:trakt-java:6.3.0') {
+    implementation ('com.uwetrottmann.trakt5:trakt-java:6.4.0') {
         exclude group: 'org.threeten', module: 'threetenbp'
     }
     implementation "com.jakewharton.threetenabp:threetenabp:$threetenabp"
