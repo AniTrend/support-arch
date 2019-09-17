@@ -1,5 +1,6 @@
 package co.anitrend.arch.extension.util
 
+import co.anitrend.arch.extension.annotation.SupportExperimental
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -9,6 +10,7 @@ import org.junit.Test
  *
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
+@SupportExperimental
 class SupportTimeHelperTest {
 
     @Test

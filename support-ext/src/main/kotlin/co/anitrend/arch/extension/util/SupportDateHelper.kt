@@ -20,12 +20,6 @@ class SupportDateHelper(context: Context) : ISupportDateHelper {
     }
 
     /**
-     * @return current season index
-     */
-    val currentSeasonIndex
-        get() = SeasonType.valueOf(currentSeason.name)
-
-    /**
      * @return current seasons name
      */
     val currentSeason: SeasonType
