@@ -1,2 +1,4 @@
+jdk:
+  - openjdk8
 env:
   CI: "true"
