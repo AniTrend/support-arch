@@ -20,24 +20,23 @@ import co.anitrend.arch.ui.extension.configureWidgetBehaviorWith
 import co.anitrend.arch.ui.extension.onResponseResetStates
 import co.anitrend.arch.ui.fragment.contract.ISupportFragmentList
 import co.anitrend.arch.ui.recycler.SupportRecyclerView
-import co.anitrend.arch.ui.recycler.adapter.SupportListAdapter
+import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import timber.log.Timber
 
 /**
- * Core implementation for fragments that rely on paginated/non-paginated data sets
- * using standard [List] collections
+ * Core implementation for fragments that rely on pagination data sets using [PagedList]
  *
- * @since v1.2.0
+ * @since v0.9.X
  * @see SupportFragment
  * @see ISupportFragmentList
  */
-abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
+abstract class SupportFragmentPagedList<M, P : SupportPresenter<*>, VM> :
     SupportFragment<M, P, VM>(), ISupportFragmentList<M>{
 
     protected abstract val supportStateConfiguration: SupportStateLayoutConfiguration
-    protected abstract val supportListAdapter: SupportListAdapter<M>
+    protected abstract val supportPagedListAdapter: SupportPagedListAdapter<M>
 
     protected var supportStateLayout: SupportStateLayout? = null
     protected var supportRefreshLayout: SwipeRefreshLayout? = null
@@ -64,8 +63,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
     }
 
     private val onNetworkObserver = Observer<NetworkState> {
-        when (!supportListAdapter.isEmpty()) {
-            true -> supportListAdapter.networkState = it
+        when (!supportPagedListAdapter.isEmpty()) {
+            true -> supportPagedListAdapter.networkState = it
             false -> changeLayoutState(it)
         }
     }
@@ -129,12 +128,12 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
 
         supportStateLayout?.stateConfiguration = supportStateConfiguration
         supportStateLayout?.setNetworkState(NetworkState.Loading)
-        supportListAdapter.stateConfiguration = supportStateConfiguration
-        supportListAdapter.retryFooterAction = adapterFooterRetryAction
+        supportPagedListAdapter.stateConfiguration = supportStateConfiguration
+        supportPagedListAdapter.retryFooterAction = adapterFooterRetryAction
 
         supportRefreshLayout?.apply {
             configureWidgetBehaviorWith(activity)
-            setOnRefreshListener(this@SupportFragmentList)
+            setOnRefreshListener(this@SupportFragmentPagedList)
         }
 
         supportRecyclerView?.apply {
@@ -146,7 +145,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
                     StaggeredGridLayoutManager.VERTICAL
                 )
             if (adapter == null) {
-                adapter = supportListAdapter.also { adapter ->
+                adapter = supportPagedListAdapter.also { adapter ->
                     if (adapter.supportAction == null)
                         adapter.supportAction = supportAction
                 }
@@ -167,7 +166,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
      */
     override fun onStart() {
         super.onStart()
-        when (supportListAdapter.isEmpty()) {
+        when (supportPagedListAdapter.isEmpty()) {
             true -> onFetchDataInitialize()
             else -> onUpdateUserInterface()
         }
@@ -257,7 +256,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
      * @param pagedList paged list holding data
      */
     override fun onPostModelChange(pagedList: PagedList<M>?) {
-        with (supportListAdapter) {
+        with (supportPagedListAdapter) {
             submitList(pagedList)
         }
 

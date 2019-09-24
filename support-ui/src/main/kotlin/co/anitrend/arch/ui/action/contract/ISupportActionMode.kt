@@ -1,7 +1,7 @@
 package co.anitrend.arch.ui.action.contract
 
 import co.anitrend.arch.ui.action.decorator.SelectionDecorator
-import co.anitrend.arch.ui.recycler.adapter.SupportViewAdapter
+import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 
 /**
@@ -78,5 +78,5 @@ interface ISupportActionMode<T> {
      *
      * @param supportViewAdapter current recycler view adapter
      */
-    fun setRecyclerViewAdapter(supportViewAdapter: SupportViewAdapter<*>)
+    fun setRecyclerViewAdapter(supportViewAdapter: ISupportViewAdapter<*>)
 }

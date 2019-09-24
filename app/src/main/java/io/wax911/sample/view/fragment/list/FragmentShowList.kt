@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import co.anitrend.arch.core.viewmodel.SupportViewModel
 import co.anitrend.arch.extension.argument
-import co.anitrend.arch.ui.fragment.SupportFragmentList
+import co.anitrend.arch.ui.fragment.SupportFragmentPagedList
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import io.wax911.sample.R
@@ -18,7 +18,7 @@ import io.wax911.sample.domain.usecases.show.TraktShowUseCase
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FragmentShowList : SupportFragmentList<ShowEntity, CorePresenter, PagedList<ShowEntity>>() {
+class FragmentShowList : SupportFragmentPagedList<ShowEntity, CorePresenter, PagedList<ShowEntity>>() {
 
     private val pagingMediaPayload
             by argument<TraktShowUseCase.Payload>(PARAM_SHOW_TYPE)
@@ -33,7 +33,7 @@ class FragmentShowList : SupportFragmentList<ShowEntity, CorePresenter, PagedLis
     override val supportPresenter by inject<CorePresenter>()
     override val supportViewModel by viewModel<ShowViewModel>()
 
-    override val supportViewAdapter =
+    override val supportPagedListAdapter =
         ShowAdapter(
             supportPresenter,
             object : ItemClickListener<ShowEntity> {
@@ -87,11 +87,11 @@ class FragmentShowList : SupportFragmentList<ShowEntity, CorePresenter, PagedLis
     }
 
     /**
-     * Additional initialization to be done in this method, if the overriding class is type of [SupportFragmentList]
-     * then this method will be called in [SupportFragmentList.onCreate].
+     * Additional initialization to be done in this method, if the overriding class is type of [SupportFragmentPagedList]
+     * then this method will be called in [SupportFragmentPagedList.onCreate].
      * invokes this function
      *
-     * @see [SupportFragmentList.onCreate]
+     * @see [SupportFragmentPagedList.onCreate]
      * @param
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {

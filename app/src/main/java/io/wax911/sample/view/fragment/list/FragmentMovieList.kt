@@ -5,8 +5,8 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import co.anitrend.arch.extension.argument
-import co.anitrend.arch.ui.fragment.SupportFragmentList
-import co.anitrend.arch.ui.recycler.adapter.SupportViewAdapter
+import co.anitrend.arch.ui.fragment.SupportFragmentPagedList
+import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import io.wax911.sample.R
@@ -18,7 +18,7 @@ import io.wax911.sample.domain.usecases.movie.TraktMovieUseCase
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FragmentMovieList: SupportFragmentList<MovieEntity, CorePresenter, PagedList<MovieEntity>>() {
+class FragmentMovieList: SupportFragmentPagedList<MovieEntity, CorePresenter, PagedList<MovieEntity>>() {
 
     private val pagingMediaPayload
             by argument<TraktMovieUseCase.Payload>(PARAM_MOVIE_TYPE)
@@ -32,7 +32,7 @@ class FragmentMovieList: SupportFragmentList<MovieEntity, CorePresenter, PagedLi
     override val supportPresenter by inject<CorePresenter>()
     override val supportViewModel by viewModel<MovieViewModel>()
 
-    override val supportViewAdapter: SupportViewAdapter<MovieEntity> =
+    override val supportPagedListAdapter: SupportPagedListAdapter<MovieEntity> =
         MovieAdapter(
             supportPresenter,
             object : ItemClickListener<MovieEntity> {
@@ -85,11 +85,11 @@ class FragmentMovieList: SupportFragmentList<MovieEntity, CorePresenter, PagedLi
     }
 
     /**
-     * Additional initialization to be done in this method, if the overriding class is type of [SupportFragmentList]
-     * then this method will be called in [SupportFragmentList.onCreate].
+     * Additional initialization to be done in this method, if the overriding class is type of [SupportFragmentPagedList]
+     * then this method will be called in [SupportFragmentPagedList.onCreate].
      * invokes this function
      *
-     * @see [SupportFragmentList.onCreate]
+     * @see [SupportFragmentPagedList.onCreate]
      * @param
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
