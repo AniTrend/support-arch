@@ -64,6 +64,12 @@ class SupportStateLayout : ViewFlipper, CustomView {
         setInAnimation(context, android.R.anim.fade_in)
         setOutAnimation(context, android.R.anim.fade_out)
         setupAdditionalViews()
+
+        attrs?.apply {
+            val a = context.obtainStyledAttributes(this, R.styleable.SupportStateLayout)
+            displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, CONTENT_VIEW)
+            a.recycle()
+        }
     }
 
     /**

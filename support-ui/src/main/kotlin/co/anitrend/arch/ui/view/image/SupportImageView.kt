@@ -36,7 +36,6 @@ class SupportImageView : AppCompatImageView, CustomView {
             val a = context.obtainStyledAttributes(this, R.styleable.SupportImageView)
             aspectRatio = a.getFloat(R.styleable.SupportImageView_aspectRatio, DEFAULT_ASPECT_RATIO)
             a.recycle()
-
         }
     }
 
