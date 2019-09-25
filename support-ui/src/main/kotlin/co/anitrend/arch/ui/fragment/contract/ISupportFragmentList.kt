@@ -3,14 +3,17 @@ package co.anitrend.arch.ui.fragment.contract
 import androidx.annotation.IntegerRes
 import androidx.annotation.LayoutRes
 import androidx.paging.PagedList
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.R
+import co.anitrend.arch.ui.view.widget.SupportStateLayout
 
 /**
  * Fragment list contract
  *
  * @since v0.9.X
  */
-interface ISupportFragmentList<M> {
+interface ISupportFragmentList<M> : SwipeRefreshLayout.OnRefreshListener {
 
     @get:IntegerRes
     val columnSize: Int
@@ -27,4 +30,11 @@ interface ISupportFragmentList<M> {
      * @param pagedList paged list holding data
      */
     fun onPostModelChange(pagedList: PagedList<M>?)
+
+    /**
+     * Informs the underlying [SupportStateLayout] of changes to the [NetworkState]
+     *
+     * @param networkState New state from the application
+     */
+    fun changeLayoutState(networkState: NetworkState?)
 }

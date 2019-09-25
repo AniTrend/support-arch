@@ -3,7 +3,7 @@ package co.anitrend.arch.data.source.coroutine
 import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.data.source.coroutine.contract.ICoroutineDataSource
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.extension.util.SupportConnectivityHelper
+import co.anitrend.arch.extension.network.SupportConnectivity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import org.koin.core.KoinComponent
@@ -22,7 +22,7 @@ abstract class SupportCoroutineDataSource<P, R> : ICoroutineDataSource<P, R>, Ko
     /**
      * Connectivity helper utility with live data observable capabilities
      */
-    protected val connectivityHelper by inject<SupportConnectivityHelper>()
+    protected val connectivityHelper by inject<SupportConnectivity>()
 
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]

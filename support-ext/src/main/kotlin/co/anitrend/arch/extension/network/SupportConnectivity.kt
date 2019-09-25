@@ -1,10 +1,11 @@
-package co.anitrend.arch.extension.util
+package co.anitrend.arch.extension.network
 
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import androidx.lifecycle.*
+import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 
 /**
  * Lifecycle aware connectivity checker that exposes the network connected status via a LiveData.
@@ -21,9 +22,11 @@ import androidx.lifecycle.*
  *
  * @since v1.2.0
  */
-class SupportConnectivityHelper(
+class SupportConnectivity(
     private val connectivityManager: ConnectivityManager?
-): LifecycleObserver {
+): SupportLifecycle {
+
+    override val moduleTag: String = this::class.java.simpleName
 
     /**
      * Check if the device is connected to any network with internet capabilities
@@ -57,16 +60,16 @@ class SupportConnectivityHelper(
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun stopMonitoringConnectivity() {
+    override fun onPause() {
+        super.onPause()
         if (monitoringConnectivity) {
             connectivityManager?.unregisterNetworkCallback(connectivityCallback)
             monitoringConnectivity = false
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun startMonitoringConnectivity() {
+    override fun onResume() {
+        super.onResume()
         connectivityManager?.registerNetworkCallback(
             NetworkRequest.Builder()
                 .addCapability(

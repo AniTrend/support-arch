@@ -1,4 +1,4 @@
-package co.anitrend.arch.ui.recycler.adapter
+package co.anitrend.arch.ui.recycler.common
 
 import android.view.View
 import co.anitrend.arch.ui.R

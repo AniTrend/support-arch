@@ -4,15 +4,15 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.core.viewmodel.contract.ISupportViewModel
-import co.anitrend.arch.extension.util.SupportCoroutineHelper
+import co.anitrend.arch.extension.coroutine.SupportCoroutine
 
 /**
  * Contract for implementing [androidx.fragment.app.FragmentActivity] based components
  *
  * @since v0.9.X
- * @see SupportCoroutineHelper
+ * @see SupportCoroutine
  */
-interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCoroutineHelper,
+interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCoroutine,
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**

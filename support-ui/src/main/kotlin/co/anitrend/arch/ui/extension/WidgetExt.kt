@@ -7,7 +7,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.extension.getColorFromAttr
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.recycler.SupportRecyclerView
-import co.anitrend.arch.ui.recycler.adapter.SupportViewAdapter
+import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 
 /**
  * Sets up a recycler view by handling all the boilerplate code associated with it using
@@ -19,7 +19,7 @@ import co.anitrend.arch.ui.recycler.adapter.SupportViewAdapter
  *
  * @since v0.9.X
  */
-fun SupportRecyclerView.setUpWith(supportAdapter: SupportViewAdapter<*>, vertical: Boolean = true,
+fun SupportRecyclerView.setUpWith(supportAdapter: SupportPagedListAdapter<*>, vertical: Boolean = true,
                                   recyclerLayoutManager: RecyclerView.LayoutManager? = null) {
     setHasFixedSize(true)
     isNestedScrollingEnabled = true

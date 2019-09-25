@@ -13,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.extension.getCompatColor
-import co.anitrend.arch.extension.util.SupportCoroutineHelper
+import co.anitrend.arch.extension.coroutine.SupportCoroutine
 import co.anitrend.arch.ui.view.contract.ISupportFragmentActivity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -24,10 +24,11 @@ import timber.log.Timber
  * Core implementation for [androidx.appcompat.app.AppCompatActivity] components
  *
  * @since v0.9.X
- * @see SupportCoroutineHelper
+ * @see SupportCoroutine
  * @see ISupportFragmentActivity
  */
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), ISupportFragmentActivity<M, P>, SupportCoroutineHelper {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), ISupportFragmentActivity<M, P>,
+    SupportCoroutine {
 
     protected val moduleTag: String = javaClass.simpleName
 

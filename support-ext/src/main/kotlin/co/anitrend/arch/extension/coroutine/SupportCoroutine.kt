@@ -1,18 +1,17 @@
-package co.anitrend.arch.extension.util
+package co.anitrend.arch.extension.coroutine
 
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 /**
- * Contract for implementing coroutine scope preference on [SupervisorJob]
+ * Contract for implementing coroutine scope preference on [SupervisorJob](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-supervisor-job.html)
  *
  * @since v1.1.0
  */
-interface SupportCoroutineHelper : CoroutineScope {
+interface SupportCoroutine : CoroutineScope {
 
     /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob],
-     * preferably use [SupervisorJob](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-supervisor-job.html)
+     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */
     val supervisorJob: Job
 
@@ -32,7 +31,6 @@ interface SupportCoroutineHelper : CoroutineScope {
      */
     val scope: CoroutineScope
         get() = CoroutineScope(coroutineContext)
-
 
     /**
      * Coroutine dispatcher specification

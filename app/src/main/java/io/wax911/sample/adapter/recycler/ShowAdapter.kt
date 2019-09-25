@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import co.anitrend.arch.core.presenter.SupportPresenter
-import co.anitrend.arch.ui.recycler.adapter.SupportViewAdapter
+import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 import io.wax911.sample.data.entitiy.show.ShowEntity
@@ -13,7 +13,7 @@ import io.wax911.sample.databinding.AdapterMediaItemBinding
 class ShowAdapter(
     presenter: SupportPresenter<*>,
     private val clickListener: ItemClickListener<ShowEntity>
-) : SupportViewAdapter<ShowEntity>(presenter) {
+) : SupportPagedListAdapter<ShowEntity>(presenter) {
 
     /**
      * Should provide the required view holder, this function is a substitute for [onCreateViewHolder] which now

@@ -17,6 +17,34 @@ import androidx.core.graphics.drawable.DrawableCompat
 import timber.log.Timber
 
 /**
+ * Extension for getting system services
+ */
+inline fun <reified T> Context.systemServiceOf(serviceName: String): T? =
+    getSystemService(serviceName) as T?
+
+/**
+ * Starts a foreground service using the specified type and action
+ */
+inline fun <reified T> Context.startServiceInForeground(intentAction: String) {
+    val intent = Intent(this, T::class.java).apply {
+        action = intentAction
+        setClass(this@startServiceInForeground, T::class.java)
+    }
+    ContextCompat.startForegroundService(this, intent)
+}
+
+/**
+ * Starts a background service using the specified type and action
+ */
+inline fun <reified T> Context.startServiceInBackground(intentAction: String) {
+    val intent = Intent(this, T::class.java).apply {
+        action = intentAction
+        setClass(this@startServiceInBackground, T::class.java)
+    }
+    startService(intent)
+}
+
+/**
  * Exactly whether a device is low-RAM is ultimately up to the device configuration, but currently
  * it generally means something in the class of a 512MB device with about a 800x480 or less screen.
  * This is mostly intended to be used by apps to determine whether they should

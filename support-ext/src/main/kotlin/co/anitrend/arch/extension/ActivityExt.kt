@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 
 /**
  * Request to hide the soft input window from the context of the window
@@ -37,7 +38,6 @@ fun FragmentActivity.startSharedTransitionActivity(target : View, data : Intent)
     ActivityCompat.startActivity(this, data, transitionActivityOptions.toBundle())
 }
 
-
 /**
  * Compares if this State is greater or equal to the given [Lifecycle.State].
  *
@@ -46,6 +46,25 @@ fun FragmentActivity.startSharedTransitionActivity(target : View, data : Intent)
  */
 fun LifecycleOwner.isStateAtLeast(state: Lifecycle.State) =
     lifecycle.currentState.isAtLeast(state)
+
+/**
+ * Adds an observer on the lifecycle owner. This **must** be registered earlier than the lifecycle
+ * events you intend on listening to, preferably [FragmentActivity.onCreate]
+ *
+ * @param supportLifecycle Observer notify of owner lifecycle state changes
+ * @see [SupportLifecycle]
+ */
+fun LifecycleOwner.attach(supportLifecycle: SupportLifecycle) =
+    lifecycle.addObserver(supportLifecycle)
+
+/**
+ * Removes an observer on the lifecycle owner. This **must** be un-registered later than the lifecycle
+ * events you being listened to, preferably [FragmentActivity.onDestroy]
+ *
+ * @param supportLifecycle Observer notify of owner lifecycle state changes
+ */
+fun LifecycleOwner.detach(supportLifecycle: SupportLifecycle) =
+    lifecycle.removeObserver(supportLifecycle)
 
 /**
  * Lazy intent parameters for fragment activities
