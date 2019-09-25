@@ -1,6 +1,10 @@
 package co.anitrend.arch.extension
 
 import android.app.ActivityManager
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Point
@@ -9,12 +13,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.fragment.app.FragmentActivity
 import timber.log.Timber
+import java.util.*
+import kotlin.system.exitProcess
+
+const val delayDuration = 100
 
 /**
  * Extension for getting system services
@@ -42,6 +52,70 @@ inline fun <reified T> Context.startServiceInBackground(intentAction: String) {
         setClass(this@startServiceInBackground, T::class.java)
     }
     startService(intent)
+}
+/**
+ * Extension helper for context that helps us restart the application
+ */
+inline fun <reified T> Context.restartApplication() {
+    runCatching {
+        val startTargetIntentId = 1510
+        val startTargetIntent = Intent(this, T::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            this, startTargetIntentId, startTargetIntent,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+        val alarmManager = systemServiceOf<AlarmManager>(Context.ALARM_SERVICE)
+        alarmManager?.set(
+            AlarmManager.RTC,
+            System.currentTimeMillis() + delayDuration,
+            pendingIntent
+        )
+        exitProcess(0)
+    }.exceptionOrNull()?.run {
+        Timber.tag("restartApplication").e(this)
+    }
+}
+
+/**
+ * Schedule a repeating alarm that has inexact trigger time requirements
+ *
+ * @param enabled schedules or cancels the scheduled task
+ * @param interval duration between each alarm event
+ */
+inline fun <reified T> Context.scheduleWithAlarm(enabled: Boolean, interval: Long) {
+    val intent = Intent(this, T::class.java)
+    val pendingIntent: PendingIntent? = PendingIntent.getBroadcast(
+        this,
+        0,
+        intent,
+        PendingIntent.FLAG_UPDATE_CURRENT
+    )
+    val alarmManager = systemServiceOf<AlarmManager>(Context.ALARM_SERVICE)
+    alarmManager?.run {
+        if (!enabled) {
+            cancel(pendingIntent)
+        } else {
+            cancel(pendingIntent)
+            if (interval > 0)
+                setInexactRepeating(
+                    AlarmManager.RTC_WAKEUP,
+                    Calendar.getInstance().timeInMillis,
+                    interval,
+                    pendingIntent
+                )
+        }
+    }
+}
+
+/**
+ * Sets the given [content] into clipboard.
+ */
+fun Context.copyToClipboard(label: String, content: String) {
+    val clipboardManager = systemServiceOf<ClipboardManager>(
+        Context.CLIPBOARD_SERVICE
+    )
+    val clip = ClipData.newPlainText(label, content)
+    clipboardManager?.setPrimaryClip(clip)
 }
 
 /**
@@ -82,10 +156,14 @@ fun Context.toggleKeyboard(show: Boolean) {
  *
  * @return true if this is a low-RAM device.
  */
-fun Context?.isLowRamDevice() = this?.let {
-    val activityManager = it.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-    return ActivityManagerCompat.isLowRamDevice(activityManager)
-} ?: false
+fun Context?.isLowRamDevice(): Boolean {
+    val activityManager = this?.systemServiceOf<ActivityManager>(
+        Context.ACTIVITY_SERVICE
+    )
+    return if (activityManager != null)
+         ActivityManagerCompat.isLowRamDevice(activityManager)
+    else false
+}
 
 /**
  * Start a new activity from context and avoid potential crashes from early API levels
