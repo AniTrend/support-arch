@@ -45,6 +45,36 @@ inline fun <reified T> Context.startServiceInBackground(intentAction: String) {
 }
 
 /**
+* Request to show or hide the soft input window from the context of the window that is currently
+ * accepting input.
+ *
+ * This should be called as a result of the user doing some actually than fairly explicitly
+ * requests to have the input window shown or hidden.
+ *
+ * @param show True if the keyboard should be shown otherwise False to hide it
+*/
+fun Context.toggleKeyboard(show: Boolean) {
+    runCatching {
+        val windowToken = (this as FragmentActivity).window.decorView.windowToken
+        val inputMethodManager = systemServiceOf<InputMethodManager>(
+            Context.INPUT_METHOD_SERVICE
+        )
+        if (inputMethodManager != null && windowToken != null)
+            if (show)
+                inputMethodManager.toggleSoftInput(
+                    InputMethodManager.SHOW_FORCED,
+                    0
+                )
+            else
+                inputMethodManager.hideSoftInputFromWindow(
+                    windowToken, 0
+                )
+    }.exceptionOrNull()?.run {
+        Timber.tag("toggleKeyboard").e(this)
+    }
+}
+
+/**
  * Exactly whether a device is low-RAM is ultimately up to the device configuration, but currently
  * it generally means something in the class of a 512MB device with about a 800x480 or less screen.
  * This is mostly intended to be used by apps to determine whether they should
