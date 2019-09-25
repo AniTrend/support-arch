@@ -2,7 +2,7 @@ package io.wax911.sample.data.koin
 
 import android.content.Context
 import android.net.ConnectivityManager
-import co.anitrend.arch.extension.util.SupportConnectivityHelper
+import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.util.SupportDateHelper
 import com.google.gson.Gson
 import com.uwetrottmann.trakt5.TraktV2
@@ -47,7 +47,7 @@ private val networkModule = module {
     }
 
     factory {
-        SupportConnectivityHelper(
+        SupportConnectivity(
             androidContext().getSystemService(
                 Context.CONNECTIVITY_SERVICE
             ) as ConnectivityManager?

@@ -5,7 +5,7 @@ import androidx.paging.PagingRequestHelper
 import androidx.paging.extension.createStatusLiveData
 import co.anitrend.arch.data.source.paging.contract.IPagingDataSource
 import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
-import co.anitrend.arch.extension.util.SupportConnectivityHelper
+import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.util.SupportExtKeyStore
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import kotlinx.coroutines.SupervisorJob
@@ -26,7 +26,7 @@ abstract class SupportPagingDataSource<T> : PagedList.BoundaryCallback<T>(), IPa
     /**
      * Connectivity helper utility with live data observable capabilities
      */
-    protected val connectivityHelper by inject<SupportConnectivityHelper>()
+    protected val connectivityHelper by inject<SupportConnectivity>()
 
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]

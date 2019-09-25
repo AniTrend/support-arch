@@ -1,7 +1,7 @@
 package co.anitrend.arch.data.repository
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.arch.extension.util.SupportCoroutineHelper
+import co.anitrend.arch.extension.coroutine.SupportCoroutine
 
 /**
  * Core repository implementation with data source cancellation support
@@ -10,7 +10,7 @@ import co.anitrend.arch.extension.util.SupportCoroutineHelper
  * @since v1.1.0
  */
 abstract class SupportRepository(
-    private val coroutine: SupportCoroutineHelper? = null
+    private val coroutine: SupportCoroutine? = null
 ) : ISupportRepository {
 
     protected val moduleTag: String = javaClass.simpleName
