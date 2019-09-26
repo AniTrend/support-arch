@@ -32,6 +32,9 @@ class SupportStateLayout : ViewFlipper, CustomView {
         set(value) {
             field = value
             field?.apply {
+                setInAnimation(context, inAnimation)
+                setOutAnimation(context, outAnimation)
+
                 stateLayoutErrorRetryAction.setText(retryAction)
                 stateLayoutErrorImage.setImageDrawable(
                     context.getCompatDrawable(errorDrawable)
@@ -61,8 +64,6 @@ class SupportStateLayout : ViewFlipper, CustomView {
      * additional attribute initialization
      */
     override fun onInit(context: Context, attrs: AttributeSet?) {
-        setInAnimation(context, android.R.anim.fade_in)
-        setOutAnimation(context, android.R.anim.fade_out)
         setupAdditionalViews()
 
         attrs?.apply {
