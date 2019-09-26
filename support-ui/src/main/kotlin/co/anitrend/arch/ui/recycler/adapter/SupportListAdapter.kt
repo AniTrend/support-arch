@@ -96,9 +96,8 @@ abstract class SupportListAdapter<T>(
             }
         }
 
-
     /**
-     * Return the stable ID for the item at <code>position</code>. If [hasStableIds]
+     * Return the stable ID for the item at [position]. If [hasStableIds]
      * would return false this method should return [RecyclerView.NO_ID].
      *
      * The default implementation of this method returns [RecyclerView.NO_ID].
