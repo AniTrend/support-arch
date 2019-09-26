@@ -345,6 +345,18 @@ abstract class SupportListAdapter<T>(
         return mDiffer.currentList[position]
     }
 
+    /**
+     * Returns the List currently being displayed by the Adapter.
+     *
+     * This is not necessarily the most recent list passed to [submitList],
+     * because a diff is computed asynchronously between the new list and the current list before
+     * updating the currentList value.
+     *
+     * @return The list currently being displayed.
+     */
+    fun getCurrentList(): List<T> {
+        return mDiffer.currentList
+    }
 
     /**
      * Set the new list to be displayed.
