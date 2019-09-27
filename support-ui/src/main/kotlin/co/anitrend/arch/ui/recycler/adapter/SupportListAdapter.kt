@@ -244,18 +244,15 @@ abstract class SupportListAdapter<T>(
         position: Int,
         payloads: MutableList<Any>
     ) {
-        when {
-            payloads.isNotEmpty() -> {
-                animateViewHolder(holder, position)
-                val model = getItem(position)
-                with(holder) {
-                    supportActionMode = supportAction
-                    invoke(model)
-                    onBindSelectionState(model)
-                }
-            }
-            else -> onBindViewHolder(holder, position)
+        animateViewHolder(holder, position)
+        val model = getItem(position)
+        with(holder) {
+            supportActionMode = supportAction
+            invoke(model)
+            onBindSelectionState(model)
         }
+        if (payloads.isEmpty())
+            onBindViewHolder(holder, position)
     }
 
     /**
@@ -337,7 +334,7 @@ abstract class SupportListAdapter<T>(
     }
 
     fun getItem(position: Int): T? {
-        if (position <= RecyclerView.NO_POSITION || position > mDiffer.currentList.size) {
+        if (position <= RecyclerView.NO_POSITION || position >= mDiffer.currentList.size) {
             Timber.tag(moduleTag).w("Requesting out of bounds index at position: $position")
             return null
         }

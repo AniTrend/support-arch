@@ -214,19 +214,20 @@ abstract class SupportPagedListAdapter<T>(
      *
      * @see [SupportViewHolder.invoke]
      */
-    override fun onBindViewHolder(holder: SupportViewHolder<T>, position: Int, payloads: MutableList<Any>) {
-        when {
-            payloads.isNotEmpty() -> {
-                animateViewHolder(holder, position)
-                val model = getItem(position)
-                with (holder) {
-                    supportActionMode = supportAction
-                    invoke(model)
-                    onBindSelectionState(model)
-                }
-            }
-            else -> onBindViewHolder(holder, position)
+    override fun onBindViewHolder(
+        holder: SupportViewHolder<T>,
+        position: Int, payloads:
+        MutableList<Any>
+    ) {
+        animateViewHolder(holder, position)
+        val model = getItem(position)
+        with(holder) {
+            supportActionMode = supportAction
+            invoke(model)
+            onBindSelectionState(model)
         }
+        if (payloads.isEmpty())
+            onBindViewHolder(holder, position)
     }
 
     /**
