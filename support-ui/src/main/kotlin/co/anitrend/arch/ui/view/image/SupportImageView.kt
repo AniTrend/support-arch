@@ -16,9 +16,9 @@ import com.bumptech.glide.Glide
  *
  * @since v0.9.X
  */
-class SupportImageView : AppCompatImageView, CustomView {
+open class SupportImageView : AppCompatImageView, CustomView {
 
-    private var aspectRatio = DEFAULT_ASPECT_RATIO
+    protected open var aspectRatio = DEFAULT_ASPECT_RATIO
 
     constructor(context: Context) :
             super(context) { onInit(context) }
@@ -31,7 +31,7 @@ class SupportImageView : AppCompatImageView, CustomView {
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization
      */
-    override fun onInit(context: Context, attrs: AttributeSet?) {
+    final override fun onInit(context: Context, attrs: AttributeSet?) {
         attrs?.apply {
             val a = context.obtainStyledAttributes(this, R.styleable.SupportImageView)
             aspectRatio = a.getFloat(R.styleable.SupportImageView_aspectRatio, DEFAULT_ASPECT_RATIO)
