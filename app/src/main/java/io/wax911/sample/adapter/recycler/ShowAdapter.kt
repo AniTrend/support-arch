@@ -3,6 +3,7 @@ package io.wax911.sample.adapter.recycler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
@@ -14,6 +15,17 @@ class ShowAdapter(
     presenter: SupportPresenter<*>,
     private val clickListener: ItemClickListener<ShowEntity>
 ) : SupportPagedListAdapter<ShowEntity>(presenter) {
+
+    /**
+     * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
+     * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
+     *
+     * The identifiable id of each item should unique, and if non exists
+     * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
+     */
+    override fun getStableIdFor(item: ShowEntity?): Long {
+        return item?.id?.toLong() ?: RecyclerView.NO_ID
+    }
 
     /**
      * Should provide the required view holder, this function is a substitute for [onCreateViewHolder] which now

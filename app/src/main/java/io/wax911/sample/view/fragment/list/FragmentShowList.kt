@@ -7,6 +7,7 @@ import androidx.paging.PagedList
 import co.anitrend.arch.core.viewmodel.SupportViewModel
 import co.anitrend.arch.extension.argument
 import co.anitrend.arch.ui.fragment.SupportFragmentPagedList
+import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import io.wax911.sample.R
@@ -33,47 +34,16 @@ class FragmentShowList : SupportFragmentPagedList<ShowEntity, CorePresenter, Pag
     override val supportPresenter by inject<CorePresenter>()
     override val supportViewModel by viewModel<ShowViewModel>()
 
-    override val supportPagedListAdapter =
-        ShowAdapter(
-            supportPresenter,
-            object : ItemClickListener<ShowEntity> {
-                /**
-                 * When the target view from [View.OnClickListener]
-                 * is clicked from a view holder this method will be called
-                 *
-                 * @param target view that has been clicked
-                 * @param data the liveData that at the click index
-                 */
-                /**
-                 * When the target view from [View.OnClickListener]
-                 * is clicked from a view holder this method will be called
-                 *
-                 * @param target view that has been clicked
-                 * @param data the liveData that at the click index
-                 */
-                override fun onItemClick(target: View, data: Pair<Int, ShowEntity?>) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-
-                /**
-                 * When the target view from [View.OnLongClickListener]
-                 * is clicked from a view holder this method will be called
-                 *
-                 * @param target view that has been long clicked
-                 * @param data the liveData that at the long click index
-                 */
-                /**
-                 * When the target view from [View.OnLongClickListener]
-                 * is clicked from a view holder this method will be called
-                 *
-                 * @param target view that has been long clicked
-                 * @param data the liveData that at the long click index
-                 */
-                override fun onItemLongClick(target: View, data: Pair<Int, ShowEntity?>) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
+    override val supportViewAdapter =
+        ShowAdapter(supportPresenter, object : ItemClickListener<ShowEntity> {
+            override fun onItemClick(target: View, data: Pair<Int, ShowEntity?>) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
-        )
+
+            override fun onItemLongClick(target: View, data: Pair<Int, ShowEntity?>) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
 
     override val columnSize: Int = R.integer.single_list_size
 
