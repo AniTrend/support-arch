@@ -104,9 +104,9 @@ abstract class SupportPagedListAdapter<T>(
      * @return the stable ID of the item at position
      */
     override fun getItemId(position: Int): Long {
-        return when (!hasStableIds()) {
-            true -> super.getItemId(position)
-            else -> getItem(position)?.hashCode()?.toLong() ?: 0
+        return when (hasStableIds()) {
+            true -> getStableIdFor(getItem(position))
+            else -> super.getItemId(position)
         }
     }
 
