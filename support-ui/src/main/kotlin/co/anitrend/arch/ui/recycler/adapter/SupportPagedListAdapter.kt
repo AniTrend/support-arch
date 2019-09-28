@@ -98,7 +98,7 @@ abstract class SupportPagedListAdapter<T>(
         }
 
     /**
-     * Return the stable ID for the item at <code>position</code>. If [hasStableIds]
+     * Return the stable ID for the item at [position]. If [hasStableIds]
      * would return false this method should return [RecyclerView.NO_ID].
      *
      * The default implementation of this method returns [RecyclerView.NO_ID].
@@ -214,19 +214,20 @@ abstract class SupportPagedListAdapter<T>(
      *
      * @see [SupportViewHolder.invoke]
      */
-    override fun onBindViewHolder(holder: SupportViewHolder<T>, position: Int, payloads: MutableList<Any>) {
-        when {
-            payloads.isNotEmpty() -> {
-                animateViewHolder(holder, position)
-                val model = getItem(position)
-                with (holder) {
-                    supportActionMode = supportAction
-                    invoke(model)
-                    onBindSelectionState(model)
-                }
-            }
-            else -> onBindViewHolder(holder, position)
+    override fun onBindViewHolder(
+        holder: SupportViewHolder<T>,
+        position: Int, payloads:
+        MutableList<Any>
+    ) {
+        animateViewHolder(holder, position)
+        val model = getItem(position)
+        with(holder) {
+            supportActionMode = supportAction
+            invoke(model)
+            onBindSelectionState(model)
         }
+        if (payloads.isEmpty())
+            onBindViewHolder(holder, position)
     }
 
     /**

@@ -36,12 +36,12 @@
 
         <provider
                 android:authorities="${applicationId}.provider"
-                android:name=".service.FileProviderService"
+                android:name="co.anitrend.arch.core.provider.SupportFileProvider"
                 android:grantUriPermissions="true"
                 android:exported="false">
             <meta-data
                     android:name="android.support.FILE_PROVIDER_PATHS"
-                    android:resource="@xml/file_provider_paths"/>
+                    android:resource="@xml/support_file_provider_paths"/>
         </provider>
 
     </application>

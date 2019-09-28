@@ -1,9 +1,7 @@
 package co.anitrend.arch.extension
 
-import android.app.Activity
 import android.content.Intent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
@@ -13,17 +11,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
-
-/**
- * Request to hide the soft input window from the context of the window
- * that is currently accepting input. This should be called as a result
- * of the user doing some actually than fairly explicitly requests to
- * have the input window hidden.
- */
-fun FragmentActivity?.hideKeyboard() = this?.apply {
-    val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.hideSoftInputFromWindow(window.decorView.windowToken, 0)
-}
 
 /**
  * Starts a shared transition of activities connected by views

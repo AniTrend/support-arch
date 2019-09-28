@@ -96,9 +96,8 @@ abstract class SupportListAdapter<T>(
             }
         }
 
-
     /**
-     * Return the stable ID for the item at <code>position</code>. If [hasStableIds]
+     * Return the stable ID for the item at [position]. If [hasStableIds]
      * would return false this method should return [RecyclerView.NO_ID].
      *
      * The default implementation of this method returns [RecyclerView.NO_ID].
@@ -245,18 +244,15 @@ abstract class SupportListAdapter<T>(
         position: Int,
         payloads: MutableList<Any>
     ) {
-        when {
-            payloads.isNotEmpty() -> {
-                animateViewHolder(holder, position)
-                val model = getItem(position)
-                with(holder) {
-                    supportActionMode = supportAction
-                    invoke(model)
-                    onBindSelectionState(model)
-                }
-            }
-            else -> onBindViewHolder(holder, position)
+        animateViewHolder(holder, position)
+        val model = getItem(position)
+        with(holder) {
+            supportActionMode = supportAction
+            invoke(model)
+            onBindSelectionState(model)
         }
+        if (payloads.isEmpty())
+            onBindViewHolder(holder, position)
     }
 
     /**
@@ -338,7 +334,7 @@ abstract class SupportListAdapter<T>(
     }
 
     fun getItem(position: Int): T? {
-        if (position <= RecyclerView.NO_POSITION || position > mDiffer.currentList.size) {
+        if (position <= RecyclerView.NO_POSITION || position >= mDiffer.currentList.size) {
             Timber.tag(moduleTag).w("Requesting out of bounds index at position: $position")
             return null
         }
@@ -346,6 +342,18 @@ abstract class SupportListAdapter<T>(
         return mDiffer.currentList[position]
     }
 
+    /**
+     * Returns the List currently being displayed by the Adapter.
+     *
+     * This is not necessarily the most recent list passed to [submitList],
+     * because a diff is computed asynchronously between the new list and the current list before
+     * updating the currentList value.
+     *
+     * @return The list currently being displayed.
+     */
+    fun getCurrentList(): List<T> {
+        return mDiffer.currentList
+    }
 
     /**
      * Set the new list to be displayed.
