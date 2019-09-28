@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import co.anitrend.arch.core.animator.ScaleAnimator
 import co.anitrend.arch.core.animator.contract.ISupportAnimator
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
@@ -36,8 +35,7 @@ interface ISupportViewAdapter<T> : Filterable {
     var lastAnimatedPosition: Int
 
     /**
-     * Get currently set animation type for recycler view holder items,
-     * if no custom animation is set [ScaleAnimator]
+     * Get currently set animation type for recycler view holder items
      *
      * @see [ISupportAnimator]
      */
