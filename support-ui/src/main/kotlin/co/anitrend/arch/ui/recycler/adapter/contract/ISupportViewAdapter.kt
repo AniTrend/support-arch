@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import co.anitrend.arch.core.animator.ScaleAnimator
 import co.anitrend.arch.core.animator.contract.ISupportAnimator
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
@@ -36,8 +35,7 @@ interface ISupportViewAdapter<T> : Filterable {
     var lastAnimatedPosition: Int
 
     /**
-     * Get currently set animation type for recycler view holder items,
-     * if no custom animation is set [ScaleAnimator]
+     * Get currently set animation type for recycler view holder items
      *
      * @see [ISupportAnimator]
      */
@@ -58,6 +56,15 @@ interface ISupportViewAdapter<T> : Filterable {
      * Network state which will be used by [SupportFooterLoadingViewHolder] or [SupportFooterErrorViewHolder]
      */
     var networkState: NetworkState?
+
+    /**
+     * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
+     * [androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds] is set to true.
+     *
+     * The identifiable id of each item should unique, and if non exists
+     * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
+     */
+    fun getStableIdFor(item: T?): Long
 
     /**
      * Should provide the required view holder, this function is a substitute for [onCreateViewHolder] which now

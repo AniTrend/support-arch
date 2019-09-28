@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.support_state_layout_laoding.view.*
  *
  * @since v1.1.0
  */
-class SupportStateLayout : ViewFlipper, CustomView {
+open class SupportStateLayout : ViewFlipper, CustomView {
 
     constructor(context: Context) :
             super(context) { onInit(context) }
@@ -63,7 +63,7 @@ class SupportStateLayout : ViewFlipper, CustomView {
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization
      */
-    override fun onInit(context: Context, attrs: AttributeSet?) {
+    final override fun onInit(context: Context, attrs: AttributeSet?) {
         setupAdditionalViews()
 
         attrs?.apply {
@@ -81,7 +81,7 @@ class SupportStateLayout : ViewFlipper, CustomView {
         onWidgetInteraction = null
     }
 
-    private fun setupAdditionalViews() {
+    protected open fun setupAdditionalViews() {
         val loadingView = getLayoutInflater().inflate(
             R.layout.support_state_layout_laoding, null
         )
@@ -98,7 +98,7 @@ class SupportStateLayout : ViewFlipper, CustomView {
      *
      * @param networkState state to use
      */
-    fun setNetworkState(networkState: NetworkState) {
+    open fun setNetworkState(networkState: NetworkState) {
         when (networkState) {
             is NetworkState.Loading -> {
                 if (displayedChild != LOADING_VIEW)

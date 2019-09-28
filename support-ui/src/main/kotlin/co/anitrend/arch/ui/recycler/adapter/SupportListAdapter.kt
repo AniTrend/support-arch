@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.*
-import co.anitrend.arch.core.animator.ScaleAnimator
 import co.anitrend.arch.core.animator.contract.ISupportAnimator
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
@@ -45,13 +44,11 @@ abstract class SupportListAdapter<T>(
     override var lastAnimatedPosition: Int = 0
 
     /**
-     * Get currently set animation type for recycler view holder items,
-     * if no custom animation is set [ScaleAnimator]
+     * Get currently set animation type for recycler view holder items
      *
      * @see [ISupportAnimator]
      */
     override var customSupportAnimator: ISupportAnimator? = null
-        get() = field ?: ScaleAnimator()
 
     /**
      * Retry click interceptor for recycler footer error
@@ -106,9 +103,9 @@ abstract class SupportListAdapter<T>(
      * @return the stable ID of the item at position
      */
     override fun getItemId(position: Int): Long {
-        return when (!hasStableIds()) {
-            true -> super.getItemId(position)
-            else -> getItem(position)?.hashCode()?.toLong() ?: 0
+        return when (hasStableIds()) {
+            true -> getStableIdFor(getItem(position))
+            else -> super.getItemId(position)
         }
     }
 
@@ -209,21 +206,18 @@ abstract class SupportListAdapter<T>(
 
     /**
      * Called by RecyclerView to display the data at the specified position. This method
-     * should update the contents of the [ViewHolder.itemView] to reflect the item at
-     * the given position.
-     *
+     * should update the contents of the [androidx.recyclerview.widget.RecyclerView.ViewHolder.itemView]
+     * to reflect the item at the given position.
      *
      * Note that unlike [android.widget.ListView], RecyclerView will not call this method
      * again if the position of the item changes in the data set unless the item itself is
      * invalidated or the new position cannot be determined. For this reason, you should only
      * use the `position` parameter while acquiring the related data item inside
      * this method and should not keep a copy of it. If you need the position of an item later
-     * on (e.g. in a click listener), use [ViewHolder.getAdapterPosition] which will
-     * have the updated adapter position.
-     *
+     * on (e.g. in a click listener), use [androidx.recyclerview.widget.RecyclerView.ViewHolder.getAdapterPosition]
+     * which will have the updated adapter position.
      *
      * Partial bind vs full bind:
-     *
      *
      * The payloads parameter is a merge list from [.notifyItemChanged] or
      * [.notifyItemRangeChanged].  If the payloads list is not empty,
@@ -300,7 +294,7 @@ abstract class SupportListAdapter<T>(
      * @return The total number of items in this adapter.
      */
     override fun getItemCount(): Int {
-        return mDiffer.currentList.size + if (hasExtraRow()) 1 else 0
+        return getCurrentList().size + if (hasExtraRow()) 1 else 0
     }
 
     /**
@@ -334,12 +328,17 @@ abstract class SupportListAdapter<T>(
     }
 
     fun getItem(position: Int): T? {
-        if (position <= RecyclerView.NO_POSITION || position >= mDiffer.currentList.size) {
+        val currentList = getCurrentList()
+        if (position <= RecyclerView.NO_POSITION || position >= currentList.size) {
+            return null
+        }
+
+        if (position >= itemCount) {
             Timber.tag(moduleTag).w("Requesting out of bounds index at position: $position")
             return null
         }
 
-        return mDiffer.currentList[position]
+        return currentList[position]
     }
 
     /**

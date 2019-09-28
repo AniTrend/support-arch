@@ -32,46 +32,17 @@ class FragmentMovieList: SupportFragmentPagedList<MovieEntity, CorePresenter, Pa
     override val supportPresenter by inject<CorePresenter>()
     override val supportViewModel by viewModel<MovieViewModel>()
 
-    override val supportPagedListAdapter: SupportPagedListAdapter<MovieEntity> =
-        MovieAdapter(
-            supportPresenter,
-            object : ItemClickListener<MovieEntity> {
-                /**
-                 * When the target view from [View.OnClickListener]
-                 * is clicked from a view holder this method will be called
-                 *
-                 * @param target view that has been clicked
-                 * @param data the liveData that at the click index
-                 */
-                /**
-                 * When the target view from [View.OnClickListener]
-                 * is clicked from a view holder this method will be called
-                 *
-                 * @param target view that has been clicked
-                 * @param data the liveData that at the click index
-                 */
-                override fun onItemClick(target: View, data: Pair<Int, MovieEntity?>) {
+    override val supportViewAdapter =
+        MovieAdapter(supportPresenter, object : ItemClickListener<MovieEntity> {
 
-                }
+            override fun onItemClick(target: View, data: Pair<Int, MovieEntity?>) {
 
-                /**
-                 * When the target view from [View.OnLongClickListener]
-                 * is clicked from a view holder this method will be called
-                 *
-                 * @param target view that has been long clicked
-                 * @param data the liveData that at the long click index
-                 */
-                /**
-                 * When the target view from [View.OnLongClickListener]
-                 * is clicked from a view holder this method will be called
-                 *
-                 * @param target view that has been long clicked
-                 * @param data the liveData that at the long click index
-                 */
-                override fun onItemLongClick(target: View, data: Pair<Int, MovieEntity?>) {
+            }
 
-                }
-            })
+            override fun onItemLongClick(target: View, data: Pair<Int, MovieEntity?>) {
+
+            }
+        })
 
     override val columnSize: Int = R.integer.single_list_size
 

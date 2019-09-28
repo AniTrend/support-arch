@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import co.anitrend.arch.core.animator.ScaleAnimator
 import co.anitrend.arch.core.animator.contract.ISupportAnimator
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
@@ -46,13 +45,11 @@ abstract class SupportPagedListAdapter<T>(
     override var lastAnimatedPosition: Int = 0
 
     /**
-     * Get currently set animation type for recycler view holder items,
-     * if no custom animation is set [ScaleAnimator]
+     * Get currently set animation type for recycler view holder items
      *
      * @see [ISupportAnimator]
      */
     override var customSupportAnimator: ISupportAnimator? = null
-        get() = field ?: ScaleAnimator()
 
     /**
      * Retry click interceptor for recycler footer error
@@ -107,9 +104,9 @@ abstract class SupportPagedListAdapter<T>(
      * @return the stable ID of the item at position
      */
     override fun getItemId(position: Int): Long {
-        return when (!hasStableIds()) {
-            true -> super.getItemId(position)
-            else -> getItem(position)?.hashCode()?.toLong() ?: 0
+        return when (hasStableIds()) {
+            true -> getStableIdFor(getItem(position))
+            else -> super.getItemId(position)
         }
     }
 
