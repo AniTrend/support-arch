@@ -16,13 +16,6 @@ abstract class SupportPreference(protected val context: Context) {
         PreferenceManager.getDefaultSharedPreferences(context)
     }
 
-    var isAuthenticated = false
-        get() = sharedPreferences.getBoolean(IS_AUTHENTICATED, false)
-        set(value) {
-            field = value
-            sharedPreferences.edit().putBoolean(IS_AUTHENTICATED, value).apply()
-        }
-
     var isNewInstallation = true
         get() = sharedPreferences.getBoolean(IS_NEW_INSTALLATION, true)
         set(value) {
@@ -40,6 +33,5 @@ abstract class SupportPreference(protected val context: Context) {
     companion object {
         const val VERSION_CODE = "_versionCode"
         const val IS_NEW_INSTALLATION = "_isNewInstallation"
-        const val IS_AUTHENTICATED = "_isAuthenticated"
     }
 }
