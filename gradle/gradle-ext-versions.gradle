@@ -6,7 +6,7 @@ ext {
     versionCode = 110
     versionName = '1.2.0-rc01'
 
-    glide = '4.9.0'
+    glide = '4.10.0'
     retrofit = '2.6.1'
 
     material = '1.1.0-alpha10'
