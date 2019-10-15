@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.ContentFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/stateLinearContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/stateLayoutLoadingImage"
+            android:layout_width="@dimen/avatar_size_xl"
+            android:layout_height="@dimen/avatar_size_xl"
+            android:layout_gravity="center"
+            tools:src="@drawable/ic_support_empty_state" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/lg_margin" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/stateLayoutLoadingProgressBar"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <co.anitrend.arch.ui.view.text.SingleLineTextView
+                android:id="@+id/stateLayoutLoadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/lg_margin"
+                android:layout_marginEnd="@dimen/lg_margin"
+                tools:text="Loading" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.ContentFrameLayout>

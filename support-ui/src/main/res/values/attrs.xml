@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SupportImageView">
+        <!-- Aspect ratio given in float format or @integer declarations -->
+        <attr name="aspectRatio" format="float|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="SupportStateLayout">
+        <!-- Initial state to show -->
+        <attr name="showState" format="enum">
+            <enum name="loading" value="0" />
+            <enum name="error" value="1" />
+            <enum name="content" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

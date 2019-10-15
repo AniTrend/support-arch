@@ -1,57 +1,25 @@
 package io.wax911.sample
 
-import android.app.Application
-import io.wax911.sample.util.AnalyticsUtil
-import io.wax911.support.core.analytic.contract.ISupportAnalytics
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.greenrobot.eventbus.EventBus
-import timber.log.Timber
+import io.wax911.sample.core.TraktTrendApplication
+import io.wax911.sample.koin.appModules
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
-class App : Application() {
+class App : TraktTrendApplication() {
 
-    @Volatile
-    var analyticsUtil: ISupportAnalytics? = null
-
-    init {
-        EventBus.builder().logNoSubscriberMessages(BuildConfig.DEBUG)
-                .sendNoSubscriberEvent(BuildConfig.DEBUG)
-                .sendSubscriberExceptionEvent(BuildConfig.DEBUG)
-                .throwSubscriberException(BuildConfig.DEBUG)
-                .installDefaultEventBus()
-    }
-
-    /**
-     * Called when the application is starting, before any activity, service,
-     * or receiver objects (excluding content providers) have been created.
+    /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      *
-     *
-     * Implementations should be as quick as possible (for example using
-     * lazy initialization of state) since the time spent in this function
-     * directly impacts the performance of starting the first activity,
-     * service, or receiver in a process.
-     *
-     *
-     * If you override this method, be sure to call `super.onCreate()`.
-     *
-     *
-     * Be aware that direct boot may also affect callback order on
-     * Android [android.os.Build.VERSION_CODES.N] and later devices.
-     * Until the user unlocks the device, only direct boot aware components are
-     * allowed to run. You should consider that all direct boot unaware
-     * components, including such [android.content.ContentProvider], are
-     * disabled until user unlock happens, especially when component callback
-     * order matters.
+     * Initializes dependencies for the entire application, this function is automatically called
+     * in [onCreate] as the first call to assure all injections are available
      */
-    override fun onCreate() {
-        super.onCreate()
-        GlobalScope.launch(Dispatchers.IO) {
-            analyticsUtil = AnalyticsUtil.newInstance(this@App)
-            if (BuildConfig.DEBUG)
-                Timber.plant(Timber.DebugTree())
-            else
-                Timber.plant(analyticsUtil as AnalyticsUtil)
+    override fun initializeDependencyInjection() {
+        startKoin {
+            androidLogger()
+            androidContext(
+                applicationContext
+            )
+            modules(appModules)
         }
     }
 }
