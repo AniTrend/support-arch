@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    id 'org.jetbrains.dokka' version '0.9.18'
+    id 'org.jetbrains.dokka' version '0.10.0'
 }
 
 android {
@@ -54,20 +54,30 @@ dependencies {
     /** Testing-only dependencies */
     testImplementation "junit:junit:$junit"
     testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
 }
 
 dokka {
-    moduleName = 'domain'
-    outputFormat = 'kotlin-website'
+    outputFormat = 'javadoc'
     outputDirectory = "$buildDir/javadoc"
-    reportUndocumented = true
 
-    linkMapping {
-        dir = "src/main/kotlin"
-        url = "https://github.com/anitrend/support-arch/tree/develop/support-domain/src/main/kotlin"
-        suffix = "#L"
+    configuration {
+        moduleName = 'domain'
+        reportUndocumented = true
+        platform = "JVM"
+        jdkVersion = 8
+
+        perPackageOption {
+            prefix = "kotlin"
+            skipDeprecated = false
+            reportUndocumented = true
+            includeNonPublic = false
+        }
+
+        sourceLink {
+            path = "src/main/kotlin"
+            url = "https://github.com/anitrend/support-arch/tree/develop/support-domain/src/main/kotlin"
+            lineSuffix = "#L"
+        }
     }
 }
 

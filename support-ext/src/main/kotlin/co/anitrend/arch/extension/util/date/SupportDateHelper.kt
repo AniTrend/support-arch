@@ -1,4 +1,4 @@
-package co.anitrend.arch.extension.util
+package co.anitrend.arch.extension.util.date
 
 import android.content.Context
 import androidx.annotation.IntRange

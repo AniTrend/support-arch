@@ -16,7 +16,7 @@ import org.koin.core.inject
  *
  * @since v1.1.0
  */
-abstract class SupportCoreDataSource<P> : ICoreDataSource, KoinComponent {
+abstract class SupportCoreDataSource : ICoreDataSource, KoinComponent {
 
     protected val moduleTag: String = javaClass.simpleName
 

@@ -196,7 +196,7 @@ fun View.getLayoutInflater(): LayoutInflater =
     context.getLayoutInflater()
 
 fun Context.getLayoutInflater(): LayoutInflater =
-    getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    systemServiceOf<LayoutInflater>(Context.LAYOUT_INFLATER_SERVICE)!!
 
 /**
  * Gets the size of the display, in pixels. Value returned by this method does
@@ -207,7 +207,7 @@ fun Context.getLayoutInflater(): LayoutInflater =
  */
 fun Context.getScreenDimens(): Point {
     val deviceDimens = Point()
-    (getSystemService(Context.WINDOW_SERVICE) as WindowManager).apply {
+    systemServiceOf<WindowManager>(Context.WINDOW_SERVICE)?.apply {
         defaultDisplay?.getSize(deviceDimens)
     }
     return deviceDimens

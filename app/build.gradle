@@ -25,6 +25,7 @@ android {
 dependencies {
 
     /** Platform Dependencies */
+    implementation project(":support-theme")
     implementation project(":support-core")
     implementation project(":support-ext")
     implementation project(":support-ui")
