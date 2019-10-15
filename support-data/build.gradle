@@ -82,15 +82,27 @@ dependencies {
 }
 
 dokka {
-    moduleName = 'data'
-    outputFormat = 'kotlin-website'
+    outputFormat = 'javadoc'
     outputDirectory = "$buildDir/javadoc"
-    reportUndocumented = true
 
-    linkMapping {
-        dir = "src/main/kotlin"
-        url = "https://github.com/anitrend/support-arch/tree/develop/support-data/src/main/kotlin"
-        suffix = "#L"
+    configuration {
+        moduleName = 'data'
+        reportUndocumented = true
+        platform = "JVM"
+        jdkVersion = 8
+
+        perPackageOption {
+            prefix = "kotlin"
+            skipDeprecated = false
+            reportUndocumented = true
+            includeNonPublic = false
+        }
+
+        sourceLink {
+            path = "src/main/kotlin"
+            url = "https://github.com/anitrend/support-arch/tree/develop/support-data/src/main/kotlin"
+            lineSuffix = "#L"
+        }
     }
 }
 
