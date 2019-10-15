@@ -2,7 +2,7 @@ package io.wax911.sample.view.activity.base
 
 import android.os.Bundle
 import co.anitrend.arch.extension.startNewActivity
-import co.anitrend.arch.extension.util.SupportDateHelper
+import co.anitrend.arch.extension.util.date.SupportDateHelper
 import io.wax911.sample.R
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.view.TraktTrendActivity

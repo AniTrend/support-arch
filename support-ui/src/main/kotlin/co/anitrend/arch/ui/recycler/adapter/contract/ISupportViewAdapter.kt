@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import co.anitrend.arch.core.animator.contract.ISupportAnimator
+import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.recycler.common.SupportFooterErrorViewHolder
@@ -119,7 +119,7 @@ interface ISupportViewAdapter<T> : Filterable {
                 true -> customSupportAnimator?.also { supportAnimator ->
                     supportAnimator.getAnimators(itemView).forEach { animator ->
                         with(animator) {
-                            duration = supportAnimator.getAnimationDuration().toLong()
+                            duration = supportAnimator.getAnimationDuration().duration
                             interpolator = supportAnimator.interpolator
                             start()
                         }

@@ -1,6 +1,8 @@
 package co.anitrend.arch.extension.util
 
 import co.anitrend.arch.extension.annotation.SupportExperimental
+import co.anitrend.arch.extension.util.time.SupportTimeHelper
+import co.anitrend.arch.extension.util.time.SupportTimeInstance
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

@@ -5,7 +5,9 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
+import co.anitrend.arch.extension.annotation.SupportExperimental
 import com.google.android.material.snackbar.Snackbar
+import kotlin.math.roundToInt
 
 
 /**
@@ -35,8 +37,19 @@ fun View.visible() {
     visibility = View.VISIBLE
 }
 
-fun View.snackBar(stringRes: String, duration: Int): Snackbar {
+@JvmOverloads
+fun View.snackBar(
+    @StringRes
+    stringRes: Int,
+    duration: Int,
+    @StringRes
+    actionRes: Int,
+    action: ((Snackbar) -> Unit)? = null
+): Snackbar {
     val snackBar = Snackbar.make(this, stringRes, duration)
+    action?.run {
+        snackBar.setAction(actionRes) { action.invoke(snackBar) }
+    }
     snackBar.view.setBackgroundColor(context.getColorFromAttr(R.attr.colorPrimaryDark))
     val mainTextView = snackBar.view.findViewById<TextView>(R.id.snackbar_text)
     val actionTextView = snackBar.view.findViewById<TextView>(R.id.snackbar_action)
@@ -47,7 +60,7 @@ fun View.snackBar(stringRes: String, duration: Int): Snackbar {
 }
 
 fun View.snackBar(@StringRes stringRes: Int, duration: Int): Snackbar =
-    snackBar(context.getString(stringRes), duration)
+    snackBar(stringRes, duration, 0)
 
 fun Float.dipToPx() : Int {
     val scale = Resources.getSystem().displayMetrics.density
@@ -61,7 +74,7 @@ fun Float.pxToDip() : Int {
 
 fun Float.spToPx() : Int {
     val scaledDensity = Resources.getSystem().displayMetrics.scaledDensity
-    return Math.round(this * scaledDensity)
+    return (this * scaledDensity).roundToInt()
 }
 
 fun Float.isSmallWidthScreen() : Boolean {
@@ -83,6 +96,7 @@ fun Float.isWideScreen() : Boolean {
  * @author hamakn
  * https://gist.github.com/hamakn/8939eb68a920a6d7a498
  */
+@SupportExperimental
 fun Resources.getStatusBarHeight() : Int {
     var statusBarHeight = 0
     val resourceId = getIdentifier("status_bar_height", "dimen", "android")
@@ -96,6 +110,7 @@ fun Resources.getStatusBarHeight() : Int {
  * @author hamakn
  * https://gist.github.com/hamakn/8939eb68a920a6d7a498
  */
+@SupportExperimental
 fun Resources.getNavigationBarHeight() : Int {
     var navigationBarHeight = 0
     val resourceId = getIdentifier("navigation_bar_height", "dimen", "android")

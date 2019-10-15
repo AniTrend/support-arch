@@ -41,7 +41,7 @@ fun LifecycleOwner.isStateAtLeast(state: Lifecycle.State) =
  * @param supportLifecycle Observer notify of owner lifecycle state changes
  * @see [SupportLifecycle]
  */
-fun LifecycleOwner.attach(supportLifecycle: SupportLifecycle) =
+fun LifecycleOwner.attachComponent(supportLifecycle: SupportLifecycle) =
     lifecycle.addObserver(supportLifecycle)
 
 /**
@@ -50,7 +50,7 @@ fun LifecycleOwner.attach(supportLifecycle: SupportLifecycle) =
  *
  * @param supportLifecycle Observer notify of owner lifecycle state changes
  */
-fun LifecycleOwner.detach(supportLifecycle: SupportLifecycle) =
+fun LifecycleOwner.detachComponent(supportLifecycle: SupportLifecycle) =
     lifecycle.removeObserver(supportLifecycle)
 
 /**

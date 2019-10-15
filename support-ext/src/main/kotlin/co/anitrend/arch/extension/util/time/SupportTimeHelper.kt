@@ -1,8 +1,6 @@
-package co.anitrend.arch.extension.util
+package co.anitrend.arch.extension.util.time
 
-import androidx.annotation.StringDef
 import co.anitrend.arch.extension.annotation.SupportExperimental
-import co.anitrend.arch.extension.util.SupportTimeHelper.Companion.SupportDateTimeUnit
 import java.util.concurrent.TimeUnit
 
 
@@ -20,8 +18,7 @@ import java.util.concurrent.TimeUnit
 class SupportTimeHelper(
     val supportCurrentUnixTime: Long = System.currentTimeMillis(),
     val supportTargetTime: Int,
-    @SupportDateTimeUnit
-    val supportTimeType: String
+    val supportTimeType: SupportDateTimeUnit
 ) {
     private val defaultSystemUnit = TimeUnit.MILLISECONDS
 
@@ -31,41 +28,23 @@ class SupportTimeHelper(
      */
     fun hasElapsed(unixTimeInstance: SupportTimeInstance) : Boolean {
         return when (supportTimeType) {
-            TIME_UNIT_DAYS ->
+            SupportDateTimeUnit.TIME_UNIT_DAYS ->
                 defaultSystemUnit.toDays(
                     supportCurrentUnixTime - unixTimeInstance
                 ) >= supportTargetTime
-            TIME_UNIT_HOURS ->
+            SupportDateTimeUnit.TIME_UNIT_HOURS ->
                 defaultSystemUnit.toHours(
                     supportCurrentUnixTime - unixTimeInstance
                 ) >= supportTargetTime
-            TIME_UNIT_MINUTES ->
+            SupportDateTimeUnit.TIME_UNIT_MINUTES ->
                 defaultSystemUnit.toMinutes(
                     supportCurrentUnixTime - unixTimeInstance
                 ) >= supportTargetTime
-            TIME_UNIT_SECONDS ->
+            SupportDateTimeUnit.TIME_UNIT_SECONDS ->
                 defaultSystemUnit.toSeconds(
                     supportCurrentUnixTime - unixTimeInstance
                 ) >= supportTargetTime
-            else -> false
         }
-    }
-
-    companion object {
-        const val TIME_UNIT_DAYS = "TIME_UNIT_DAYS"
-        const val TIME_UNIT_HOURS = "TIME_UNIT_HOURS"
-        const val TIME_UNIT_MINUTES = "TIME_UNIT_MINUTES"
-        const val TIME_UNIT_SECONDS = "TIME_UNIT_SECONDS"
-
-        @StringDef(
-            TIME_UNIT_DAYS,
-            TIME_UNIT_HOURS,
-            TIME_UNIT_MINUTES,
-            TIME_UNIT_SECONDS
-        )
-        @Retention(AnnotationRetention.SOURCE)
-        @Target(AnnotationTarget.TYPEALIAS, AnnotationTarget.VALUE_PARAMETER)
-        annotation class SupportDateTimeUnit
     }
 }
 

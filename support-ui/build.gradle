@@ -46,6 +46,7 @@ dependencies {
 
     implementation project(':support-ext')
     implementation project(':support-core')
+    implementation project(':support-theme')
     implementation project(':support-domain')
 
     /** Kotlin Libraries */
