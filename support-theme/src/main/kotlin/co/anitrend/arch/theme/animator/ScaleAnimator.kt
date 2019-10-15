@@ -1,10 +1,10 @@
-package co.anitrend.arch.core.animator
+package co.anitrend.arch.theme.animator
 
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
 import android.view.animation.LinearInterpolator
-import co.anitrend.arch.core.animator.contract.ISupportAnimator
+import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 
 /**
  * Scale animator for recycler animations
