@@ -58,7 +58,7 @@ dependencies {
 
 dokka {
     outputFormat = 'javadoc'
-    outputDirectory = "$buildDir/javadoc"
+    outputDirectory = "$buildDir/docs/javadoc"
 
     configuration {
         moduleName = 'theme'
@@ -77,6 +77,11 @@ dokka {
             path = "src/main/kotlin"
             url = "https://github.com/anitrend/support-arch/tree/develop/support-theme/src/main/kotlin"
             lineSuffix = "#L"
+        }
+
+        externalDocumentationLink {
+            url = new URL("https://developer.android.com/reference/kotlin/")
+            packageListUrl = new URL("https://developer.android.com/reference/androidx/package-list")
         }
     }
 }
@@ -106,7 +111,8 @@ task classesJar(type: Jar) {
 }
 
 artifacts {
+    archives dokkaJar
     archives classesJar
-    archives javadocJar
+    //archives javadocJar
     archives sourcesJar
 }

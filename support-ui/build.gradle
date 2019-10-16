@@ -78,7 +78,7 @@ dependencies {
 
 dokka {
     outputFormat = 'javadoc'
-    outputDirectory = "$buildDir/javadoc"
+    outputDirectory = "$buildDir/docs/javadoc"
 
     configuration {
         moduleName = 'ui'
@@ -98,12 +98,17 @@ dokka {
             url = "https://github.com/anitrend/support-arch/tree/develop/support-ui/src/main/kotlin"
             lineSuffix = "#L"
         }
+
+        externalDocumentationLink {
+            url = new URL("https://developer.android.com/reference/kotlin/")
+            packageListUrl = new URL("https://developer.android.com/reference/androidx/package-list")
+        }
     }
 }
 
 task dokkaJar(type: Jar) {
     setArchiveClassifier('javadoc')
-    from dokka
+    from dokka.outputDirectory
 }
 
 task sourcesJar(type: Jar) {
@@ -126,7 +131,8 @@ task classesJar(type: Jar) {
 }
 
 artifacts {
+    archives dokkaJar
     archives classesJar
-    archives javadocJar
+    //archives javadocJar
     archives sourcesJar
 }
