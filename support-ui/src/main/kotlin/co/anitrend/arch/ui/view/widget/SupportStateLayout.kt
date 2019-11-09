@@ -64,11 +64,14 @@ open class SupportStateLayout : ViewFlipper, CustomView {
      * additional attribute initialization
      */
     final override fun onInit(context: Context, attrs: AttributeSet?) {
-        setupAdditionalViews()
+        if (!isInEditMode)
+            setupAdditionalViews()
 
         attrs?.apply {
             val a = context.obtainStyledAttributes(this, R.styleable.SupportStateLayout)
-            displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, CONTENT_VIEW)
+            runCatching {
+                displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, CONTENT_VIEW)
+            }.exceptionOrNull()?.printStackTrace()
             a.recycle()
         }
     }
