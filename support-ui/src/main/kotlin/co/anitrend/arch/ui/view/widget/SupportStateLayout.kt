@@ -75,9 +75,7 @@ open class SupportStateLayout : ViewFlipper, CustomView {
 
         attrs?.apply {
             val a = context.obtainStyledAttributes(this, R.styleable.SupportStateLayout)
-            runCatching {
-                displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, CONTENT_VIEW)
-            }.exceptionOrNull()?.printStackTrace()
+            displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, CONTENT_VIEW)
             a.recycle()
         }
     }
