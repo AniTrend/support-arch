@@ -80,7 +80,7 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home)
-            super.onBackPressed()
+            onBackPressed()
         return super.onOptionsItemSelected(item)
     }
 
