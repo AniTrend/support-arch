@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.core.presenter.SupportPresenter
@@ -54,7 +57,6 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
     }
 
     override val onRefreshObserver = Observer<NetworkState> { networkState ->
-        supportRefreshLayout?.isRefreshing = networkState.isLoading()
         when (!supportViewAdapter.isEmpty()) {
             true -> supportViewAdapter.networkState = networkState
             false -> changeLayoutState(networkState)
@@ -163,17 +165,24 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
             isNestedScrollingEnabled = true
         }
 
-        setUpViewModelObserver()
-        supportViewModel?.networkState?.observe(
-            this,
-            onNetworkObserver
-        )
-        supportViewModel?.refreshState?.observe(
-            this,
-            onRefreshObserver
-        )
-
         return view
+    }
+
+    /**
+     * Called immediately after [.onCreateView]
+     * has returned, but before any saved state has been restored in to the view.
+     * This gives subclasses a chance to initialize themselves once
+     * they know their view hierarchy has been completely created.  The fragment's
+     * view hierarchy is not however attached to its parent at this point.
+     * @param view The View returned by [.onCreateView].
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpViewModelObserver()
+        supportViewModel?.networkState?.observe(this, onNetworkObserver)
+        supportViewModel?.refreshState?.observe(this, onRefreshObserver)
     }
 
     /**
@@ -281,6 +290,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
 
         if (!model.isNullOrEmpty())
             supportStateLayout?.setNetworkState(NetworkState.Success)
+        else
+            supportStateLayout?.setNetworkState(NetworkState.Loading)
 
         onUpdateUserInterface()
         resetWidgetStates()
