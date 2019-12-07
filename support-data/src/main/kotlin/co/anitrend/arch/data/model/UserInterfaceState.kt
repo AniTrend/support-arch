@@ -27,9 +27,11 @@ data class UserInterfaceState<T> internal constructor(
             model: LiveData<T>,
             source: IPagingDataSource
         ) : UserInterfaceState<T> {
-            val refreshTrigger = MutableLiveData<Unit>()
+            val refreshTrigger = MutableLiveData<NetworkState>()
             val refreshState = Transformations.switchMap(refreshTrigger) {
-                MutableLiveData<NetworkState>()
+                val state = MutableLiveData<NetworkState>()
+                state.postValue(it)
+                state
             }
 
             return UserInterfaceState(
@@ -38,7 +40,7 @@ data class UserInterfaceState<T> internal constructor(
                 refreshState = refreshState,
                 refresh = {
                     source.invalidateAndRefresh()
-                    refreshTrigger.value = null
+                    refreshTrigger.value = NetworkState.Loading
                 },
                 retry = {
                     source.retryRequest()
@@ -50,9 +52,11 @@ data class UserInterfaceState<T> internal constructor(
             model: LiveData<T>,
             source: ICoreDataSource
         ) : UserInterfaceState<T> {
-            val refreshTrigger = MutableLiveData<Unit>()
+            val refreshTrigger = MutableLiveData<NetworkState>()
             val refreshState = Transformations.switchMap(refreshTrigger) {
-                MutableLiveData<NetworkState>()
+                val state = MutableLiveData<NetworkState>()
+                state.postValue(it)
+                state
             }
 
             return UserInterfaceState(
@@ -61,7 +65,7 @@ data class UserInterfaceState<T> internal constructor(
                 refreshState = refreshState,
                 refresh = {
                     source.invalidateAndRefresh()
-                    refreshTrigger.value = null
+                    refreshTrigger.value = NetworkState.Loading
                 },
                 retry = {
                     source.retryRequest()
