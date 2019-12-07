@@ -7,7 +7,7 @@ ext {
     versionName = '1.2.0-rc05'
 
     glide = '4.10.0'
-    retrofit = '2.6.1'
+    retrofit = '2.6.2'
 
     material = '1.1.0-beta01'
     preferenceX = "1.1.0"
