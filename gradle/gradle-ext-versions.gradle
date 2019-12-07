@@ -14,15 +14,15 @@ ext {
     swipeRefreshX = "1.0.0"
     constraintX = '1.1.3'
 
-    lifecycleStateX = '1.0.0-beta01'
-    lifecycleX = '2.1.0'
+    lifecycleStateX = '1.0.0-rc02'
+    lifecycleX = '2.2.0-rc03'
     room = '2.2.2'
     paging = '2.1.0'
     pagingKtx = '2.1.0'
-    ktx = '1.1.0'
-    fragmentKtx = '1.1.0'
-    workerKtx = '2.2.0'
-    navigation = '2.1.0'
+    ktx = '1.2.0-rc01'
+    fragmentKtx = '1.2.0-rc02'
+    workerKtx = '2.3.0-beta01'
+    navigation = '2.2.0-rc02'
     firebase = '17.2.0'
 
     koin = '2.0.1'
