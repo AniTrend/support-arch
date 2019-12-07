@@ -143,7 +143,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(inflateLayout, container, false)?.apply {
-            supportStateLayout = findViewById(R.id.progressLayout)
+            supportStateLayout = findViewById(R.id.supportStateLayout)
             supportRefreshLayout = findViewById(R.id.supportRefreshLayout)
             supportRecyclerView = findViewById(R.id.supportRecyclerView)
         }
