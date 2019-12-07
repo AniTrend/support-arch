@@ -3,7 +3,6 @@ package co.anitrend.arch.data.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.data.source.core.contract.ICoreDataSource
 import co.anitrend.arch.data.source.paging.contract.IPagingDataSource
 import co.anitrend.arch.domain.common.IUserInterfaceState
