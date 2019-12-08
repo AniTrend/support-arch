@@ -28,18 +28,20 @@ abstract class SupportPagingDataSource<T>(
      */
     final override val supervisorJob = SupervisorJob()
 
-    protected val pagingRequestHelper by lazy(LAZY_MODE_UNSAFE) {
+    protected val pagingRequestHelper by lazy {
         PagingRequestHelper(coroutineDispatcher.asExecutor())
     }
 
-    override val networkState by lazy(LAZY_MODE_UNSAFE) {
+    override val networkState by lazy {
         pagingRequestHelper.createStatusLiveData()
     }
 
-    protected val supportPagingHelper = SupportPagingHelper(
-        isPagingLimit = false,
-        pageSize = SupportExtKeyStore.pagingLimit
-    )
+    protected val supportPagingHelper by lazy {
+        SupportPagingHelper(
+            isPagingLimit = false,
+            pageSize = SupportExtKeyStore.pagingLimit
+        )
+    }
 
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload
