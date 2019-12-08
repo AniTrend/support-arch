@@ -1,4 +1,4 @@
-package io.wax911.sample.view.fragment.list
+package io.wax911.sample.movie.ui.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -6,15 +6,14 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import co.anitrend.arch.extension.argument
 import co.anitrend.arch.ui.fragment.SupportFragmentPagedList
-import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import io.wax911.sample.R
-import io.wax911.sample.adapter.recycler.MovieAdapter
+import io.wax911.sample.movie.ui.adapter.recycler.MovieAdapter
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.core.viewmodel.movie.MovieViewModel
 import io.wax911.sample.data.entitiy.movie.MovieEntity
 import io.wax911.sample.domain.usecases.movie.TraktMovieUseCase
+import io.wax911.sample.movie.viewmodel.MovieViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

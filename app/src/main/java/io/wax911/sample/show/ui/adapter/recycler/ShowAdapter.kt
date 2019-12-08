@@ -1,4 +1,4 @@
-package io.wax911.sample.adapter.recycler
+package io.wax911.sample.show.ui.adapter.recycler
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +8,13 @@ import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
-import io.wax911.sample.data.entitiy.movie.MovieEntity
+import io.wax911.sample.data.entitiy.show.ShowEntity
 import io.wax911.sample.databinding.AdapterMediaItemBinding
 
-class MovieAdapter(
+class ShowAdapter(
     presenter: SupportPresenter<*>,
-    private val clickListener: ItemClickListener<MovieEntity>
-) : SupportPagedListAdapter<MovieEntity>(presenter) {
+    private val clickListener: ItemClickListener<ShowEntity>
+) : SupportPagedListAdapter<ShowEntity>(presenter) {
 
     /**
      * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
@@ -23,7 +23,7 @@ class MovieAdapter(
      * The identifiable id of each item should unique, and if non exists
      * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
      */
-    override fun getStableIdFor(item: MovieEntity?): Long {
+    override fun getStableIdFor(item: ShowEntity?): Long {
         return item?.id?.toLong() ?: RecyclerView.NO_ID
     }
 
@@ -35,20 +35,21 @@ class MovieAdapter(
         parent: ViewGroup,
         viewType: Int,
         layoutInflater: LayoutInflater
-    ): SupportViewHolder<MovieEntity> {
-        return MovieViewHolder(AdapterMediaItemBinding.inflate(layoutInflater, parent, false))
+    ): SupportViewHolder<ShowEntity> {
+        return ShowViewHolder(AdapterMediaItemBinding.inflate(layoutInflater, parent, false))
     }
 
-    inner class MovieViewHolder(
+
+    inner class ShowViewHolder(
         private val binding: AdapterMediaItemBinding
-    ) : SupportViewHolder<MovieEntity>(binding.root) {
+    ): SupportViewHolder<ShowEntity>(binding.root) {
 
         /**
          * Load images, text, buttons, etc. in this method from the given parameter
          *
          * @param model Is the liveData at the current adapter position
          */
-        override fun invoke(model: MovieEntity?) {
+        override fun invoke(model: ShowEntity?) {
             with (binding) {
                 entity = model
                 executePendingBindings()
@@ -77,7 +78,7 @@ class MovieAdapter(
         override fun onItemClick(view: View) {
             performClick(
                 clickListener = clickListener,
-                entity = binding.entity as MovieEntity?,
+                entity = binding.entity as ShowEntity?,
                 view = view
             )
         }

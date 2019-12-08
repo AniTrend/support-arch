@@ -6,6 +6,7 @@ import androidx.paging.PagingRequestHelper
 import androidx.paging.toLiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.data.util.SupportDataKeyStore
+import co.anitrend.arch.extension.SupportDispatchers
 import com.uwetrottmann.trakt5.enums.Extended
 import com.uwetrottmann.trakt5.services.Shows
 import io.wax911.sample.data.datasource.local.query.ShowDao
@@ -17,8 +18,9 @@ import kotlinx.coroutines.launch
 
 class ShowPagedDataSource(
     private val showDao: ShowDao,
-    private val showEndpoint: Shows
-) : TraktShowPagedSource() {
+    private val showEndpoint: Shows,
+    dispatchers: SupportDispatchers
+) : TraktShowPagedSource(dispatchers) {
 
     private fun getPopularShows(callback: PagingRequestHelper.Request.Callback) {
         val call = showEndpoint.popular(

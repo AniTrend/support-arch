@@ -18,7 +18,6 @@ abstract class TraktTrendApplication : Application(), Configuration.Provider {
      */
     protected abstract fun initializeDependencyInjection()
 
-
     /**
      * Timber logging tree depending on the build type we plant the appropriate tree
      */

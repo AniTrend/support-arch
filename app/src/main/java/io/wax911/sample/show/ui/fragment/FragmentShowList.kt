@@ -1,4 +1,4 @@
-package io.wax911.sample.view.fragment.list
+package io.wax911.sample.show.ui.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -7,13 +7,12 @@ import androidx.paging.PagedList
 import co.anitrend.arch.core.viewmodel.SupportViewModel
 import co.anitrend.arch.extension.argument
 import co.anitrend.arch.ui.fragment.SupportFragmentPagedList
-import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import io.wax911.sample.R
-import io.wax911.sample.adapter.recycler.ShowAdapter
+import io.wax911.sample.show.ui.adapter.recycler.ShowAdapter
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.core.viewmodel.show.ShowViewModel
+import io.wax911.sample.show.viewmodel.ShowViewModel
 import io.wax911.sample.data.entitiy.show.ShowEntity
 import io.wax911.sample.domain.usecases.show.TraktShowUseCase
 import org.koin.android.ext.android.inject
@@ -35,15 +34,17 @@ class FragmentShowList : SupportFragmentPagedList<ShowEntity, CorePresenter, Pag
     override val supportViewModel by viewModel<ShowViewModel>()
 
     override val supportViewAdapter =
-        ShowAdapter(supportPresenter, object : ItemClickListener<ShowEntity> {
-            override fun onItemClick(target: View, data: Pair<Int, ShowEntity?>) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+        ShowAdapter(
+            supportPresenter,
+            object : ItemClickListener<ShowEntity> {
+                override fun onItemClick(target: View, data: Pair<Int, ShowEntity?>) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
 
-            override fun onItemLongClick(target: View, data: Pair<Int, ShowEntity?>) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        })
+                override fun onItemLongClick(target: View, data: Pair<Int, ShowEntity?>) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+            })
 
     override val columnSize: Int = R.integer.single_list_size
 

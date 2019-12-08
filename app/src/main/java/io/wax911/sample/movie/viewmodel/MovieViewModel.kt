@@ -1,4 +1,4 @@
-package io.wax911.sample.core.viewmodel.movie
+package io.wax911.sample.movie.viewmodel
 
 import androidx.paging.PagedList
 import co.anitrend.arch.core.viewmodel.SupportPagingViewModel

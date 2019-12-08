@@ -6,6 +6,7 @@ import androidx.paging.PagingRequestHelper
 import androidx.paging.toLiveData
 import co.anitrend.arch.data.source.contract.ISourceObservable
 import co.anitrend.arch.data.util.SupportDataKeyStore
+import co.anitrend.arch.extension.SupportDispatchers
 import com.uwetrottmann.trakt5.enums.Extended
 import com.uwetrottmann.trakt5.services.Movies
 import io.wax911.sample.data.datasource.local.query.MovieDao
@@ -17,8 +18,9 @@ import kotlinx.coroutines.launch
 
 class MoviePagedDataSource(
     private val movieDao: MovieDao,
-    private val movieEndpoint: Movies
-)  : TraktMoviePagedSource() {
+    private val movieEndpoint: Movies,
+    dispatchers: SupportDispatchers
+)  : TraktMoviePagedSource(dispatchers) {
 
     private fun getPopularMovies(callback: PagingRequestHelper.Request.Callback) {
         val call =

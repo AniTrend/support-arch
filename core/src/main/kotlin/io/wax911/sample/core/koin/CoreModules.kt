@@ -1,12 +1,10 @@
 package io.wax911.sample.core.koin
 
 import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
+import co.anitrend.arch.extension.SupportDispatchers
 import io.wax911.sample.core.analytics.AnalyticsLogger
 import io.wax911.sample.core.presenter.CorePresenter
-import io.wax911.sample.core.viewmodel.movie.MovieViewModel
-import io.wax911.sample.core.viewmodel.show.ShowViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 private val coreModule = module {
@@ -14,6 +12,10 @@ private val coreModule = module {
         AnalyticsLogger(
             context = androidContext()
         )
+    }
+
+    single {
+        SupportDispatchers()
     }
 }
 
@@ -26,19 +28,6 @@ private val presenterModule = module {
     }
 }
 
-private val viewModelModule = module {
-    viewModel {
-        ShowViewModel(
-            useCase = get()
-        )
-    }
-    viewModel {
-        MovieViewModel(
-            useCase = get()
-        )
-    }
-}
-
 val coreModules = listOf(
-    coreModule, presenterModule, viewModelModule
+    coreModule, presenterModule
 )

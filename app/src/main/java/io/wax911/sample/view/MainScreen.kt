@@ -1,4 +1,4 @@
-package io.wax911.sample.view.activity.index
+package io.wax911.sample.view
 
 import android.os.Bundle
 import android.view.Menu
@@ -21,12 +21,12 @@ import io.wax911.sample.domain.usecases.movie.MovieRequestType
 import io.wax911.sample.domain.usecases.movie.TraktMovieUseCase
 import io.wax911.sample.domain.usecases.show.ShowRequestType
 import io.wax911.sample.domain.usecases.show.TraktShowUseCase
-import io.wax911.sample.view.fragment.list.FragmentMovieList
-import io.wax911.sample.view.fragment.list.FragmentShowList
+import io.wax911.sample.movie.ui.fragment.FragmentMovieList
+import io.wax911.sample.show.ui.fragment.FragmentShowList
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 
-class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationView.OnNavigationItemSelectedListener {
+class MainScreen : TraktTrendActivity<Nothing, CorePresenter>(), NavigationView.OnNavigationItemSelectedListener {
 
     private val bottomDrawerBehavior: BottomSheetBehavior<FrameLayout>?
         get() = BottomSheetBehavior.from(bottomNavigationDrawer)
@@ -50,7 +50,9 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
         setSupportActionBar(bottomAppBar)
         bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
         if (intent.hasExtra(SupportUiKeyStore.arg_redirect))
-            selectedItem = intent.getIntExtra(SupportUiKeyStore.arg_redirect, R.id.nav_popular_series)
+            selectedItem = intent.getIntExtra(SupportUiKeyStore.arg_redirect,
+                R.id.nav_popular_series
+            )
     }
 
     /**
@@ -71,7 +73,7 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
             Toast.makeText(this, "Fab Clicked", Toast.LENGTH_SHORT).show()
         }
         bottomNavigationView.apply {
-            setNavigationItemSelectedListener(this@MainActivity)
+            setNavigationItemSelectedListener(this@MainScreen)
             setCheckedItem(selectedItem)
         }
         onUpdateUserInterface()
@@ -138,8 +140,8 @@ class MainActivity : TraktTrendActivity<Nothing, CorePresenter>(), NavigationVie
                 }
                 recreate()
             }
-            R.id.nav_about -> Toast.makeText(this@MainActivity, "About", Toast.LENGTH_SHORT).show()
-            R.id.nav_contact -> Toast.makeText(this@MainActivity, "Contact", Toast.LENGTH_SHORT).show()
+            R.id.nav_about -> Toast.makeText(this@MainScreen, "About", Toast.LENGTH_SHORT).show()
+            R.id.nav_contact -> Toast.makeText(this@MainScreen, "Contact", Toast.LENGTH_SHORT).show()
             R.id.nav_popular_series -> {
                 selectedTitle = R.string.nav_popular_series
                 supportFragment = FragmentShowList.newInstance(
