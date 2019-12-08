@@ -11,7 +11,7 @@ import co.anitrend.arch.extension.util.SupportExtKeyStore.pagingLimit
 object SupportDataKeyStore {
 
     val PAGING_CONFIGURATION = PagedList.Config.Builder()
-        .setEnablePlaceholders(false)
+        .setEnablePlaceholders(true)
         .setPageSize(pagingLimit)
         .setPrefetchDistance(15)
         .setMaxSize(75)

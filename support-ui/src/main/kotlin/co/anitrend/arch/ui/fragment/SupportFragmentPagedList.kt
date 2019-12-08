@@ -1,6 +1,9 @@
 package co.anitrend.arch.ui.fragment
 
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.fragment.contract.ISupportFragmentList
@@ -37,11 +40,21 @@ abstract class SupportFragmentPagedList<M, P : SupportPresenter<*>, VM> : Suppor
      */
     fun onPostModelChange(model: PagedList<M>?) {
         with (supportViewAdapter as SupportPagedListAdapter<M>) {
-            submitList(model)
+            submitList(model) /*{
+                // Workaround for an issue where RecyclerView incorrectly uses the loading / spinner
+                // item added to the end of the list as an anchor during initial load.
+                val layoutManager = (supportRecyclerView?.layoutManager as StaggeredGridLayoutManager)
+                val position = layoutManager.findFirstCompletelyVisibleItemPositions(null)
+                if (position.first() != RecyclerView.NO_POSITION) {
+                    supportRecyclerView?.scrollToPosition(position.first())
+                }
+            }*/
         }
 
         if (!model.isNullOrEmpty())
             supportStateLayout?.setNetworkState(NetworkState.Success)
+        else
+            supportStateLayout?.setNetworkState(NetworkState.Loading)
 
         onUpdateUserInterface()
         resetWidgetStates()

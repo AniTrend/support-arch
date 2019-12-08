@@ -53,6 +53,12 @@ open class SupportStateLayout : ViewFlipper, CustomView {
     val isLoading
         get() = displayedChild == LOADING_VIEW
 
+    val isError
+        get() = displayedChild == ERROR_VIEW
+
+    val isContent
+        get() = displayedChild == CONTENT_VIEW
+
     var onWidgetInteraction: OnClickListener? = null
         set(value) {
             field = value
@@ -64,7 +70,8 @@ open class SupportStateLayout : ViewFlipper, CustomView {
      * additional attribute initialization
      */
     final override fun onInit(context: Context, attrs: AttributeSet?) {
-        setupAdditionalViews()
+        if (!isInEditMode)
+            setupAdditionalViews()
 
         attrs?.apply {
             val a = context.obtainStyledAttributes(this, R.styleable.SupportStateLayout)
@@ -101,18 +108,18 @@ open class SupportStateLayout : ViewFlipper, CustomView {
     open fun setNetworkState(networkState: NetworkState) {
         when (networkState) {
             is NetworkState.Loading -> {
-                if (displayedChild != LOADING_VIEW)
+                if (!isLoading)
                     displayedChild = LOADING_VIEW
             }
             is NetworkState.Error -> {
                 stateLayoutErrorHeading.text = networkState.heading
                 stateLayoutErrorMessage.text = networkState.message
-                if (displayedChild != ERROR_VIEW)
+                if (!isError)
                     displayedChild = ERROR_VIEW
                 requestLayout()
             }
             is NetworkState.Success -> {
-                if (displayedChild != CONTENT_VIEW)
+                if (!isContent)
                     displayedChild = CONTENT_VIEW
             }
         }

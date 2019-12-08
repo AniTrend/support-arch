@@ -5,15 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.domain.entities.isLoading
-import co.anitrend.arch.extension.isStateAtLeast
 import co.anitrend.arch.extension.util.SupportExtKeyStore
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.extension.configureWidgetBehaviorWith
@@ -22,7 +22,6 @@ import co.anitrend.arch.ui.fragment.contract.ISupportFragmentList
 import co.anitrend.arch.ui.recycler.SupportRecyclerView
 import co.anitrend.arch.ui.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
-import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import timber.log.Timber
 
@@ -46,27 +45,28 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
     override val stateLayoutOnClick = View.OnClickListener {
         if (supportStateLayout?.isLoading != true) {
             supportViewModel?.retry()
-            onFetchDataInitialize()
         } else
             Timber.tag(moduleTag).i("stateLayoutOnClick -> supportStateLayout is currently loading")
     }
 
     override val adapterFooterRetryAction = View.OnClickListener {
         if (supportStateLayout?.isLoading != true)
-            onFetchDataInitialize()
+            supportViewModel?.retry()
         else
             Timber.tag(moduleTag).i("adapterFooterRetryAction -> supportStateLayout is currently loading")
     }
 
     override val onRefreshObserver = Observer<NetworkState> { networkState ->
-        supportRefreshLayout?.isRefreshing = networkState.isLoading()
-        changeLayoutState(networkState)
+        when (!supportViewAdapter.isEmpty()) {
+            true -> supportViewAdapter.networkState = networkState
+            false -> changeLayoutState(networkState)
+        }
     }
 
-    override val onNetworkObserver = Observer<NetworkState> {
+    override val onNetworkObserver = Observer<NetworkState> { networkState ->
         when (!supportViewAdapter.isEmpty()) {
-            true -> supportViewAdapter.networkState = it
-            false -> changeLayoutState(it)
+            true -> supportViewAdapter.networkState = networkState
+            false -> changeLayoutState(networkState)
         }
     }
 
@@ -143,7 +143,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(inflateLayout, container, false)?.apply {
-            supportStateLayout = findViewById(R.id.progressLayout)
+            supportStateLayout = findViewById(R.id.supportStateLayout)
             supportRefreshLayout = findViewById(R.id.supportRefreshLayout)
             supportRecyclerView = findViewById(R.id.supportRecyclerView)
         }
@@ -165,11 +165,24 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
             isNestedScrollingEnabled = true
         }
 
+        return view
+    }
+
+    /**
+     * Called immediately after [.onCreateView]
+     * has returned, but before any saved state has been restored in to the view.
+     * This gives subclasses a chance to initialize themselves once
+     * they know their view hierarchy has been completely created.  The fragment's
+     * view hierarchy is not however attached to its parent at this point.
+     * @param view The View returned by [.onCreateView].
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setUpViewModelObserver()
         supportViewModel?.networkState?.observe(this, onNetworkObserver)
         supportViewModel?.refreshState?.observe(this, onRefreshObserver)
-
-        return view
     }
 
     /**
@@ -243,12 +256,14 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
     override fun changeLayoutState(networkState: NetworkState?) {
         if (supportViewAdapter.hasExtraRow())
             supportViewAdapter.networkState = networkState
-        supportStateLayout?.setNetworkState(
-            networkState ?: NetworkState.Error(
-                heading = "Unknown State",
-                message = "The application is in an unknown state ¯\\_(ツ)_/¯"
+        else {
+            supportStateLayout?.setNetworkState(
+                networkState ?: NetworkState.Error(
+                    heading = "Unknown State",
+                    message = "The application is in an unknown state ¯\\_(ツ)_/¯"
+                )
             )
-        )
+        }
         if (networkState is NetworkState.Success)
             supportPresenter.pagingHelper.onPageNext()
 
@@ -275,6 +290,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
 
         if (!model.isNullOrEmpty())
             supportStateLayout?.setNetworkState(NetworkState.Success)
+        else
+            supportStateLayout?.setNetworkState(NetworkState.Loading)
 
         onUpdateUserInterface()
         resetWidgetStates()

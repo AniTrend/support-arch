@@ -362,7 +362,7 @@ abstract class SupportListAdapter<T>(
      *
      * @param list The new list to be displayed.
      */
-    fun submitList(list: List<T>?) {
-        mDiffer.submitList(list)
+    fun submitList(list: List<T>?, commitCallback: Runnable? = null) {
+        mDiffer.submitList(list, commitCallback)
     }
 }
