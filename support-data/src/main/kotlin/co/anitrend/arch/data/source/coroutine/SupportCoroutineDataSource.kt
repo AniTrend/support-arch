@@ -24,11 +24,6 @@ abstract class SupportCoroutineDataSource<P, R>(
     protected val moduleTag: String = javaClass.simpleName
 
     /**
-     * Connectivity helper utility with live data observable capabilities
-     */
-    protected val connectivityHelper by inject<SupportConnectivity>()
-
-    /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */
     final override val supervisorJob: Job = SupervisorJob()
