@@ -2,7 +2,7 @@ package io.wax911.sample.data.arch.mapper
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingRequestHelper
-import co.anitrend.arch.data.common.ISupportPagingResonse
+import co.anitrend.arch.data.common.ISupportPagingResponse
 import co.anitrend.arch.data.common.ISupportResponse
 import co.anitrend.arch.data.mapper.SupportResponseMapper
 import co.anitrend.arch.domain.entities.NetworkState
@@ -16,7 +16,7 @@ import timber.log.Timber
  * @see SupportResponseMapper
  */
 abstract class TraktTrendMapper<S, D>: SupportResponseMapper<S, D>(),
-    ISupportPagingResonse<Call<S>>, ISupportResponse<Call<S>, D> {
+    ISupportPagingResponse<Call<S>>, ISupportResponse<Call<S>, D> {
 
     /**
      * Response handler for coroutine contexts, mainly for paging
