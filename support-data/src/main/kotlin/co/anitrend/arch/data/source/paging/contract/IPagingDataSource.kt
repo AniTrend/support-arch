@@ -1,6 +1,8 @@
 package co.anitrend.arch.data.source.paging.contract
 
 import co.anitrend.arch.data.source.contract.IDataSource
+import co.anitrend.arch.extension.SupportDispatchers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -19,7 +21,7 @@ interface IPagingDataSource : IDataSource {
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
     fun invalidateAndRefresh() {
-        launch {
+        launch(Dispatchers.IO) {
             clearDataSource()
         }
     }
