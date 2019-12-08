@@ -15,9 +15,7 @@ import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.extension.getCompatColor
 import co.anitrend.arch.extension.coroutine.SupportCoroutine
 import co.anitrend.arch.ui.view.contract.ISupportFragmentActivity
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 import timber.log.Timber
 
 /**
@@ -27,19 +25,14 @@ import timber.log.Timber
  * @see SupportCoroutine
  * @see ISupportFragmentActivity
  */
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), ISupportFragmentActivity<M, P>,
-    SupportCoroutine {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
+    ISupportFragmentActivity<M, P>, CoroutineScope by MainScope() {
 
     protected val moduleTag: String = javaClass.simpleName
 
     private var isClosing: Boolean = false
 
     protected var supportFragmentActivity : ISupportFragmentActivity<*, *>? = null
-
-    /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
-     */
-    override val supervisorJob = SupervisorJob()
 
     /**
      * Can be used to configure custom theme styling as desired
@@ -99,11 +92,6 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         return false
     }
 
-    override fun onDestroy() {
-        cancelAllChildren()
-        super.onDestroy()
-    }
-
     /**
      * Take care of popping the fragment back stack or finishing the activity
      * as appropriate.
@@ -118,11 +106,4 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         if (!key.isNullOrEmpty())
             Timber.tag(moduleTag).d("onSharedPreferenceChanged -> $key | Changed value")
     }
-
-    /**
-     * Coroutine dispatcher specification
-     *
-     * @return [kotlinx.coroutines.Dispatchers.Default] by default
-     */
-    override val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Main
 }

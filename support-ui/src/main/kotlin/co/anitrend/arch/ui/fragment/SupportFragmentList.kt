@@ -6,14 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.paging.PagedList
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.domain.entities.isLoading
 import co.anitrend.arch.extension.util.SupportExtKeyStore
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.extension.configureWidgetBehaviorWith
@@ -34,7 +30,7 @@ import timber.log.Timber
  * @see ISupportFragmentList
  */
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
-    SupportFragment<M, P, VM>(), ISupportFragmentList<M>{
+    SupportFragment<M, P, VM>(), ISupportFragmentList<M> {
 
     override var supportStateLayout: SupportStateLayout? = null
     override var supportRefreshLayout: SwipeRefreshLayout? = null
