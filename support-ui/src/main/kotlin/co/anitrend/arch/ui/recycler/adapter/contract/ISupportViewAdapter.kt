@@ -7,10 +7,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.*
 import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
@@ -25,7 +22,7 @@ import java.util.*
  */
 interface ISupportViewAdapter<T> : Filterable {
 
-     val moduleTag: String
+    val moduleTag: String
 
     /**
      * Invokes a filter to search for data on the current adapter
