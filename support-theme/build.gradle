@@ -51,6 +51,9 @@ dependencies {
     /** Kotlin Libraries */
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
 
+    /** Material Design */
+    implementation "com.google.android.material:material:$material"
+
     /** Testing-only dependencies */
     testImplementation "junit:junit:$junit"
     testImplementation "io.mockk:mockk:$mockk"
