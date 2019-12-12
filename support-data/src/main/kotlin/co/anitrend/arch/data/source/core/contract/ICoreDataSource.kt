@@ -1,6 +1,7 @@
 package co.anitrend.arch.data.source.core.contract
 
 import co.anitrend.arch.data.source.contract.IDataSource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -20,7 +21,7 @@ interface ICoreDataSource : IDataSource {
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
     fun invalidateAndRefresh() {
-        launch {
+        launch(Dispatchers.IO) {
             clearDataSource()
         }
     }

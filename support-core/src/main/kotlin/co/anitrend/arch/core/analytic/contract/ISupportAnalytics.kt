@@ -17,8 +17,6 @@ interface ISupportAnalytics {
     fun logException(throwable: Throwable)
     fun log(priority: Int = Log.VERBOSE, tag: String?, message: String)
 
-    fun clearUserSession()
-    fun setCrashAnalyticUser(userIdentifier: String)
-
-    fun resetAnalyticsData()
+    fun clearCrashAnalyticsSession()
+    fun setCrashAnalyticIdentifier(identifier: String)
 }

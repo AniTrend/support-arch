@@ -23,7 +23,7 @@
             android:name="android.shortcuts"
             android:resource="@xml/shortcuts" />
 
-        <activity android:name=".view.activity.base.SplashActivity">
+        <activity android:name=".splash.ui.activity.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.activity.index.MainActivity"
+        <activity android:name=".view.MainScreen"
             android:launchMode="singleTop"/>
 
         <provider

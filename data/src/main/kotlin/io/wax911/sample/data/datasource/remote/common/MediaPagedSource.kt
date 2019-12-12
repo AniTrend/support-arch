@@ -3,11 +3,14 @@ package io.wax911.sample.data.datasource.remote.common
 import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import co.anitrend.arch.data.source.paging.SupportPagingDataSource
+import co.anitrend.arch.extension.SupportDispatchers
 
 /**
  * For the sake of this sample we will reuse this class
  */
-abstract class MediaPagedSource<T> : SupportPagingDataSource<T>() {
+abstract class MediaPagedSource<T>(
+    dispatchers: SupportDispatchers
+) : SupportPagingDataSource<T>(dispatchers) {
 
     protected lateinit var executionTarget: (PagingRequestHelper.Request.Callback) -> Unit
 

@@ -4,7 +4,7 @@ import android.content.Context
 import co.anitrend.arch.core.presenter.SupportPresenter
 import io.wax911.sample.data.util.Settings
 
-class CorePresenter(
+open class CorePresenter(
     context: Context,
     settings: Settings
 ): SupportPresenter<Settings>(context, settings)

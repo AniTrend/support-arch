@@ -1,4 +1,4 @@
-package io.wax911.sample.view.activity.base
+package io.wax911.sample.splash.ui.activity
 
 import android.os.Bundle
 import co.anitrend.arch.extension.startNewActivity
@@ -6,7 +6,7 @@ import co.anitrend.arch.extension.util.date.SupportDateHelper
 import io.wax911.sample.R
 import io.wax911.sample.core.presenter.CorePresenter
 import io.wax911.sample.core.view.TraktTrendActivity
-import io.wax911.sample.view.activity.index.MainActivity
+import io.wax911.sample.view.MainScreen
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 
-class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
+class SplashScreen : TraktTrendActivity<Nothing, CorePresenter>() {
 
     private val supportDateHelper by inject<SupportDateHelper>()
 
@@ -51,7 +51,7 @@ class SplashActivity : TraktTrendActivity<Nothing, CorePresenter>() {
         launch {
             delay(1000)
             withContext(Dispatchers.Main) {
-                startNewActivity<MainActivity>(intent.extras)
+                startNewActivity<MainScreen>(intent.extras)
                 finish()
             }
         }

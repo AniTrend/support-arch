@@ -2,6 +2,7 @@ package io.wax911.sample.data.koin
 
 import android.content.Context
 import android.net.ConnectivityManager
+import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.systemServiceOf
 import co.anitrend.arch.extension.util.date.SupportDateHelper
@@ -81,13 +82,15 @@ private val sourceModule = module {
     factory {
         ShowPagedDataSource(
             showEndpoint = get<TraktV2>().shows(),
-            showDao = get<TraktTrendDatabase>().showDao()
+            showDao = get<TraktTrendDatabase>().showDao(),
+            dispatchers = get()
         )
     }
     factory {
         MoviePagedDataSource(
             movieEndpoint = get<TraktV2>().movies(),
-            movieDao = get<TraktTrendDatabase>().movieDao()
+            movieDao = get<TraktTrendDatabase>().movieDao(),
+            dispatchers = get()
         )
     }
 }

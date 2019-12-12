@@ -26,7 +26,6 @@ dependencies {
     implementation "org.koin:koin-core:$koin"
     implementation "org.koin:koin-core-ext:$koin"
     implementation "org.koin:koin-androidx-scope:$koin"
-    implementation "org.koin:koin-androidx-viewmodel:$koin"
 
     /** Material Design */
     implementation "com.google.android.material:material:$material"

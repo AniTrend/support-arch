@@ -11,6 +11,7 @@ import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getLayoutInflater
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
+import co.anitrend.arch.ui.recycler.SupportAdapterObserverProxy
 import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.recycler.common.SupportFooterErrorViewHolder
 import co.anitrend.arch.ui.recycler.common.SupportFooterLoadingViewHolder
@@ -168,6 +169,29 @@ abstract class SupportListAdapter<T>(
     }
 
     /**
+     * Register a new observer to listen for data changes.
+     *
+     * The adapter may publish a variety of events describing specific changes.
+     * Not all adapters may support all change types and some may fall back to a generic
+     * `something changed`
+     * [RecyclerView.AdapterDataObserver.onChanged] event if more specific data is not available.
+     *
+     * Components registering observers with an adapter are responsible for
+     * unregistering [unregisterAdapterDataObserver] those observers when finished.
+     *
+     * @param observer Observer to register
+     *
+     * @see unregisterAdapterDataObserver
+     */
+    override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
+        super.registerAdapterDataObserver(
+            SupportAdapterObserverProxy(
+                observer, 1
+            )
+        )
+    }
+
+    /**
      * Called by RecyclerView when it starts observing this Adapter.
      *
      * Keep in mind that same adapter may be observed by multiple RecyclerViews.
@@ -238,15 +262,20 @@ abstract class SupportListAdapter<T>(
         position: Int,
         payloads: MutableList<Any>
     ) {
-        animateViewHolder(holder, position)
-        val model = getItem(position)
-        with(holder) {
-            supportActionMode = supportAction
-            invoke(model)
-            onBindSelectionState(model)
+        runCatching {
+            animateViewHolder(holder, position)
+            val model = getItem(position)
+            with(holder) {
+                supportActionMode = supportAction
+                invoke(model)
+                onBindSelectionState(model)
+            }
+            if (payloads.isEmpty())
+                onBindViewHolder(holder, position)
+        }.exceptionOrNull()?.also {
+            it.printStackTrace()
+            Timber.tag(moduleTag).e(it)
         }
-        if (payloads.isEmpty())
-            onBindViewHolder(holder, position)
     }
 
     /**

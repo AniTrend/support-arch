@@ -9,7 +9,7 @@
         android:shortcutShortLabel="@string/action_search">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="io.wax911.sample.view.activity.index.MainActivity"
+            android:targetClass="io.wax911.sample.view.MainScreen"
             android:targetPackage="io.wax911.sample" />
     </shortcut>
 </shortcuts>

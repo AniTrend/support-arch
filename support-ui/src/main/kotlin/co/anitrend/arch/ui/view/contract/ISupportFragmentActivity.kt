@@ -10,9 +10,8 @@ import co.anitrend.arch.extension.coroutine.SupportCoroutine
  * Contract for implementing [androidx.fragment.app.FragmentActivity] based components
  *
  * @since v0.9.X
- * @see SupportCoroutine
  */
-interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCoroutine,
+interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> :
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**

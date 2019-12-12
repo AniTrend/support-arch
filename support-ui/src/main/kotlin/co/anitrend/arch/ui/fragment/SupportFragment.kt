@@ -14,6 +14,8 @@ import co.anitrend.arch.ui.action.SupportActionMode
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.action.event.ActionModeListener
 import co.anitrend.arch.ui.view.contract.ISupportFragmentActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
@@ -23,18 +25,13 @@ import timber.log.Timber
  * @since v0.9.X
  * @see ISupportFragmentActivity
  */
-abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, ISupportFragmentActivity<VM, P> {
+abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(),
+    ActionModeListener, ISupportFragmentActivity<VM, P>, CoroutineScope by MainScope() {
 
     protected val moduleTag: String = javaClass.simpleName
 
     @MenuRes
     protected var inflateMenu: Int = ISupportFragmentActivity.NO_MENU_ITEM
-
-    /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob],
-     * preferably use [SupervisorJob](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-supervisor-job.html)
-     */
-    override val supervisorJob = SupervisorJob()
 
     protected val supportAction: ISupportActionMode<M> by lazy(LAZY_MODE_UNSAFE) {
         SupportActionMode<M>(
@@ -82,15 +79,6 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     override fun onResume() {
         super.onResume()
         supportPresenter.onResume(this)
-    }
-
-    /**
-     * Called when the fragment is no longer in use.  This is called
-     * after [SupportFragment.onStop] and before [SupportFragment.onDetach].
-     */
-    override fun onDestroy() {
-        cancelAllChildren()
-        super.onDestroy()
     }
 
     /**
