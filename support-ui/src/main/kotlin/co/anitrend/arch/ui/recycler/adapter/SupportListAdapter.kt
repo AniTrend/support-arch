@@ -5,14 +5,12 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.*
-import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getLayoutInflater
 import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
-import co.anitrend.arch.ui.recycler.SupportAdapterObserverProxy
 import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.recycler.common.SupportFooterErrorViewHolder
 import co.anitrend.arch.ui.recycler.common.SupportFooterLoadingViewHolder
@@ -162,29 +160,6 @@ abstract class SupportListAdapter<T>(
     override fun onViewDetachedFromWindow(holder: SupportViewHolder<T>) {
         super.onViewDetachedFromWindow(holder)
         holder.itemView.clearAnimation()
-    }
-
-    /**
-     * Register a new observer to listen for data changes.
-     *
-     * The adapter may publish a variety of events describing specific changes.
-     * Not all adapters may support all change types and some may fall back to a generic
-     * `something changed`
-     * [RecyclerView.AdapterDataObserver.onChanged] event if more specific data is not available.
-     *
-     * Components registering observers with an adapter are responsible for
-     * unregistering [unregisterAdapterDataObserver] those observers when finished.
-     *
-     * @param observer Observer to register
-     *
-     * @see unregisterAdapterDataObserver
-     */
-    override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
-        super.registerAdapterDataObserver(
-            SupportAdapterObserverProxy(
-                observer, 1
-            )
-        )
     }
 
     /**
