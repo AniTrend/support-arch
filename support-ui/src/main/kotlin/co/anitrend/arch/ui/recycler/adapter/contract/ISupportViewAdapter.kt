@@ -42,7 +42,11 @@ interface ISupportViewAdapter<T> : Filterable {
      * Retry click interceptor for recycler footer error
      */
     var retryFooterAction: View.OnClickListener
-    var stateConfiguration: SupportStateLayoutConfiguration
+
+    /**
+     * Configuration for the state based footer
+     */
+    val stateConfiguration: SupportStateLayoutConfiguration
 
     /**
      * Assigned if the current adapter supports needs to support [ISupportActionMode]

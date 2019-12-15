@@ -9,6 +9,7 @@ import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getLayoutInflater
+import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.recycler.SupportAdapterObserverProxy
@@ -28,6 +29,7 @@ import timber.log.Timber
  */
 abstract class SupportListAdapter<T>(
     protected val presenter: SupportPresenter<*>,
+    override val stateConfiguration: SupportStateLayoutConfiguration,
     itemCallback: DiffUtil.ItemCallback<T> = ISupportViewAdapter.getDefaultDiffItemCallback()
 ) : ISupportViewAdapter<T>, RecyclerView.Adapter<SupportViewHolder<T>>() {
 
@@ -55,12 +57,6 @@ abstract class SupportListAdapter<T>(
      * Retry click interceptor for recycler footer error
      */
     override lateinit var retryFooterAction: View.OnClickListener
-
-    /**
-     * Configuration for the state based footer
-     */
-    override lateinit var stateConfiguration: SupportStateLayoutConfiguration
-
 
     /**
      * Assigned if the current adapter supports needs to support [ISupportActionMode]
