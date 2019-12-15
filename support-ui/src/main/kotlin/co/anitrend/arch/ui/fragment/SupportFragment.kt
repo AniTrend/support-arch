@@ -2,10 +2,8 @@ package co.anitrend.arch.ui.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.ActionMode
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.*
+import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import co.anitrend.arch.core.presenter.SupportPresenter
@@ -16,7 +14,6 @@ import co.anitrend.arch.ui.action.event.ActionModeListener
 import co.anitrend.arch.ui.view.contract.ISupportFragmentActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.SupervisorJob
 import timber.log.Timber
 
 /**
@@ -31,7 +28,10 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(),
     protected val moduleTag: String = javaClass.simpleName
 
     @MenuRes
-    protected var inflateMenu: Int = ISupportFragmentActivity.NO_MENU_ITEM
+    protected open var inflateMenu: Int = ISupportFragmentActivity.NO_MENU_ITEM
+
+    @LayoutRes
+    protected open val inflateLayout: Int = ISupportFragmentActivity.NO_LAYOUT_ITEM
 
     protected val supportAction: ISupportActionMode<M> by lazy(LAZY_MODE_UNSAFE) {
         SupportActionMode<M>(
@@ -59,6 +59,39 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
+    }
+
+    /**
+     * Called to have the fragment instantiate its user interface view. This is optional, and
+     * non-graphical fragments can return null. This will be called between
+     * [onCreate] & [onActivityCreated].
+     *
+     * A default View can be returned by calling [Fragment] in your
+     * constructor. Otherwise, this method returns null.
+     *
+     * It is recommended to __only__ inflate the layout in this method and move
+     * logic that operates on the returned View to [onViewCreated].
+     *
+     * If you return a View from here, you will later be called in [onDestroyView]
+     * when the view is being released.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container If non-null, this is the parent view that the fragment's UI should be
+     * attached to.  The fragment should not add the view itself, but this can be used to generate
+     * the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
+     */
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return if (inflateLayout != ISupportFragmentActivity.NO_LAYOUT_ITEM) {
+            inflater.inflate(inflateLayout, container, false)
+        } else super.onCreateView(inflater, container, savedInstanceState)
     }
 
     /**
