@@ -32,15 +32,6 @@ interface ISupportFragmentList<M> : SwipeRefreshLayout.OnRefreshListener {
     val columnSize: Int
         get() = R.integer.grid_list_x3
 
-    /**
-     * Layout to inflate if you need a custom layout, this requires you to manually bind common controls
-     *
-     * @see R.layout.support_list
-     */
-    @get:LayoutRes
-    val inflateLayout: Int
-        get() =  R.layout.support_list
-
     val stateLayoutOnClick: View.OnClickListener
 
     val adapterFooterRetryAction: View.OnClickListener
