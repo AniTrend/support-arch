@@ -32,6 +32,8 @@ import timber.log.Timber
 abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
     SupportFragment<M, P, VM>(), ISupportFragmentList<M> {
 
+    override val inflateLayout: Int = R.layout.support_list
+
     override var supportStateLayout: SupportStateLayout? = null
     override var supportRefreshLayout: SwipeRefreshLayout? = null
     override var supportRecyclerView: SupportRecyclerView? = null
@@ -138,7 +140,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
      * @return Return the [View] for the fragment's UI, or null.
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(inflateLayout, container, false)?.apply {
+        val view = super.onCreateView(inflater, container, savedInstanceState)?.apply {
             supportStateLayout = findViewById(R.id.supportStateLayout)
             supportRefreshLayout = findViewById(R.id.supportRefreshLayout)
             supportRecyclerView = findViewById(R.id.supportRecyclerView)
@@ -285,8 +287,12 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
 
         if (!model.isNullOrEmpty())
             supportStateLayout?.setNetworkState(NetworkState.Success)
-        else
-            supportStateLayout?.setNetworkState(NetworkState.Loading)
+        else {
+            if (supportViewAdapter.hasExtraRow())
+                supportViewAdapter.networkState = NetworkState.Loading
+            else
+                supportStateLayout?.setNetworkState(NetworkState.Loading)
+        }
 
         onUpdateUserInterface()
         resetWidgetStates()
