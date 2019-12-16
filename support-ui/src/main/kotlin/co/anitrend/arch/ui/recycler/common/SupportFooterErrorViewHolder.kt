@@ -4,6 +4,7 @@ import android.view.View
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
+import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import co.anitrend.arch.ui.view.text.SingleLineTextView
 import com.google.android.material.button.MaterialButton
@@ -49,5 +50,5 @@ class SupportFooterErrorViewHolder<T>(
      *
      * @param view the view that has been clicked
      */
-    override fun onItemClick(view: View) {}
+    override fun onItemClick(view: View, itemClickListener: ItemClickListener<T>) {}
 }

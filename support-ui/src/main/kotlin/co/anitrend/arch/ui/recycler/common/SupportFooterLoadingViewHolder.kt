@@ -3,6 +3,7 @@ package co.anitrend.arch.ui.recycler.common
 import android.view.View
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
+import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import co.anitrend.arch.ui.view.text.SingleLineTextView
 
@@ -33,9 +34,7 @@ class SupportFooterLoadingViewHolder<T>(
      *
      * @see com.bumptech.glide.Glide
      */
-    override fun onViewRecycled() {
-
-    }
+    override fun onViewRecycled() { }
 
     /**
      * Handle any onclick events from our views, optionally you can call
@@ -43,7 +42,5 @@ class SupportFooterLoadingViewHolder<T>(
      *
      * @param view the view that has been clicked
      */
-    override fun onItemClick(view: View) {
-
-    }
+    override fun onItemClick(view: View, itemClickListener: ItemClickListener<T>) { }
 }
