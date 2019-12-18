@@ -54,8 +54,10 @@ abstract class SupportFragmentPagedList<M, P : SupportPresenter<*>, VM> : Suppor
         if (!model.isNullOrEmpty())
             supportStateLayout?.setNetworkState(NetworkState.Success)
         else {
-            if (supportViewAdapter.hasExtraRow())
+            if (supportViewAdapter.hasExtraRow()) {
+                supportStateLayout?.setNetworkState(NetworkState.Success)
                 supportViewAdapter.networkState = NetworkState.Loading
+            }
             else
                 supportStateLayout?.setNetworkState(NetworkState.Loading)
         }
