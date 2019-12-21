@@ -58,8 +58,8 @@ abstract class SupportFragmentPagedList<M, P : SupportPresenter<*>, VM> : Suppor
                 supportStateLayout?.setNetworkState(NetworkState.Success)
                 supportViewAdapter.networkState = NetworkState.Loading
             }
-            else
-                supportStateLayout?.setNetworkState(NetworkState.Loading)
+            /*else
+                supportStateLayout?.setNetworkState(NetworkState.Loading)*/
         }
 
         onUpdateUserInterface()

@@ -299,8 +299,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
                 supportStateLayout?.setNetworkState(NetworkState.Success)
                 supportViewAdapter.networkState = NetworkState.Loading
             }
-            else
-                supportStateLayout?.setNetworkState(NetworkState.Loading)
+            /*else
+                supportStateLayout?.setNetworkState(NetworkState.Loading)*/
         }
 
         onUpdateUserInterface()
