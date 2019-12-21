@@ -97,7 +97,7 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> :
      *
      * @param key preference key that has been changed
      */
-    fun isPreferenceKeyValid(key: String) = true
+    fun isPreferenceKeyValid(key: String) = false
 
     companion object {
 
