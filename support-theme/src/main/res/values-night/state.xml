@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <bool name="isNightMode">false</bool>
     <bool name="isLightStatusBar">false</bool>
     <bool name="isLightNavigationBar">false</bool>
 </resources>
