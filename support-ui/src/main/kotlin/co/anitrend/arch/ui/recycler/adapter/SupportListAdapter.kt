@@ -185,18 +185,7 @@ abstract class SupportListAdapter<T>(
      * @see [SupportViewHolder.invoke]
      */
     override fun onBindViewHolder(holder: SupportViewHolder<T>, position: Int) {
-        when (getItemViewType(position)) {
-            R.layout.support_layout_state_footer_loading ->
-                holder(null)
-            R.layout.support_layout_state_footer_error ->
-                holder(null)
-            else -> runCatching {
-                holder(getItem(position))
-            }.exceptionOrNull()?.also {
-                it.printStackTrace()
-                Timber.tag(moduleTag).e(it)
-            }
-        }
+        bindViewHolderByType(holder, position)
     }
 
     /**
@@ -233,20 +222,10 @@ abstract class SupportListAdapter<T>(
         position: Int,
         payloads: MutableList<Any>
     ) {
-        runCatching {
-            animateViewHolder(holder, position)
-            val model = getItem(position)
-            with(holder) {
-                supportActionMode = supportAction
-                invoke(model)
-                onBindSelectionState(model)
-            }
-            if (payloads.isEmpty())
-                onBindViewHolder(holder, position)
-        }.exceptionOrNull()?.also {
-            it.printStackTrace()
-            Timber.tag(moduleTag).e(it)
-        }
+        if (payloads.isEmpty())
+            onBindViewHolder(holder, position)
+        else
+            bindViewHolderByType(holder, position)
     }
 
     /**
@@ -327,6 +306,40 @@ abstract class SupportListAdapter<T>(
         notifyDataSetChanged()
     }
 
+    /**
+     * Binds content view holder
+     */
+    override fun bindContentViewHolder(holder: SupportViewHolder<T>, position: Int) {
+        runCatching {
+            animateViewHolder(holder, position)
+            val model = getItem(position)
+            with(holder) {
+                supportActionMode = supportAction
+                invoke(model)
+                onBindSelectionState(model)
+            }
+        }.exceptionOrNull()?.also {
+            it.printStackTrace()
+            Timber.tag(moduleTag).e(it)
+        }
+    }
+
+    /**
+     * Binds view holder by view type at [position]
+     */
+    override fun bindViewHolderByType(holder: SupportViewHolder<T>, position: Int) {
+        when (getItemViewType(position)) {
+            R.layout.support_layout_state_footer_loading ->
+                holder(null)
+            R.layout.support_layout_state_footer_error ->
+                holder(null)
+            else -> bindContentViewHolder(holder, position)
+        }
+    }
+
+    /**
+     * Returns a model at the given index
+     */
     fun getItem(position: Int): T? {
         val currentList = getCurrentList()
         if (position <= RecyclerView.NO_POSITION || position >= currentList.size) {
