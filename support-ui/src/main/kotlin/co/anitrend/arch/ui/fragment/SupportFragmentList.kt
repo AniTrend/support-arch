@@ -256,16 +256,13 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
      * @param networkState New state from the application
      */
     override fun changeLayoutState(networkState: NetworkState?) {
-        if (supportViewAdapter.hasExtraRow()) {
+        if (supportViewAdapter.hasExtraRow() || networkState !is NetworkState.Error) {
             supportStateLayout?.setNetworkState(NetworkState.Success)
             supportViewAdapter.networkState = networkState
         }
         else {
             supportStateLayout?.setNetworkState(
-                networkState ?: NetworkState.Error(
-                    heading = "Unknown State",
-                    message = "The application is in an unknown state ¯\\_(ツ)_/¯"
-                )
+                networkState
             )
         }
         if (networkState is NetworkState.Success)
