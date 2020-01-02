@@ -13,7 +13,7 @@ import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
  * @see ISupportActionMode
  */
 abstract class SupportViewHolder<T>(
-    view: View
+    protected val view: View
 ) : RecyclerView.ViewHolder(view) {
 
     var supportActionMode: ISupportActionMode<T>? = null
