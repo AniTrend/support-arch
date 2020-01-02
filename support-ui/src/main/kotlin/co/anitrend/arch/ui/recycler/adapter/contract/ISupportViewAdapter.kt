@@ -20,7 +20,7 @@ import java.util.*
 /**
  * Contract for view adapters
  */
-interface ISupportViewAdapter<T> : Filterable {
+interface ISupportViewAdapter<T> {
 
     val moduleTag: String
 
@@ -148,56 +148,14 @@ interface ISupportViewAdapter<T> : Filterable {
     fun updateSelection()
 
     /**
-     * Returns a filter that can be used to constrain data with a filtering
-     * pattern.
-     *
-     * This method is usually implemented by [android.widget.Adapter]
-     * classes.
-     *
-     * @return a filter used to constrain data
+     * Binds content view holder at [position]
      */
-    override fun getFilter(): Filter = object : Filter() {
+    fun bindContentViewHolder(holder: SupportViewHolder<T>, position: Int)
 
-        /**
-         *
-         * Invoked in a worker thread to filter the data according to the
-         * constraint. Subclasses must implement this method to perform the
-         * filtering operation. Results computed by the filtering operation
-         * must be returned as a [android.widget.Filter.FilterResults] that
-         * will then be published in the UI thread through
-         * [.publishResult].
-         *
-         *
-         * **Contract:** When the constraint is null, the original
-         * data must be restored.
-         *
-         * @param constraint the constraint used to filter the data
-         * @return the results of the filtering operation
-         *
-         * @see .filter
-         * @see .publishResult
-         * @see android.widget.Filter.FilterResults
-         */
-        override fun performFiltering(constraint: CharSequence?) = FilterResults().apply {
-            values = Collections.EMPTY_LIST
-        }
-
-        /**
-         * Invoked in the UI thread to publish the filtering results in the
-         * user interface. Subclasses must implement this method to display the
-         * results computed in [.performFiltering].
-         *
-         * @param constraint the constraint used to filter the data
-         * @param results the results of the filtering operation
-         *
-         * @see .filter
-         * @see .performFiltering
-         * @see android.widget.Filter.FilterResults
-         */
-        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-
-        }
-    }
+    /**
+     * Binds view holder by view type at [position]
+     */
+    fun bindViewHolderByType(holder: SupportViewHolder<T>, position: Int)
 
     companion object {
 
@@ -206,6 +164,7 @@ interface ISupportViewAdapter<T> : Filterable {
          */
         fun <T> getDefaultDiffItemCallback(): DiffUtil.ItemCallback<T> {
             return object : DiffUtil.ItemCallback<T>() {
+
                 /**
                  * Called to check whether two objects represent the same item.
                  *
