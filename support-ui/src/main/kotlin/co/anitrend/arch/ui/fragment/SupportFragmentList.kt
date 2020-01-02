@@ -291,13 +291,9 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
 
         if (!model.isNullOrEmpty())
             supportStateLayout?.setNetworkState(NetworkState.Success)
-        else {
-            if (supportViewAdapter.hasExtraRow()) {
-                supportStateLayout?.setNetworkState(NetworkState.Success)
-                supportViewAdapter.networkState = NetworkState.Loading
-            }
-            /*else
-                supportStateLayout?.setNetworkState(NetworkState.Loading)*/
+        else if (supportViewAdapter.hasExtraRow()) {
+            supportStateLayout?.setNetworkState(NetworkState.Success)
+            supportViewAdapter.networkState = NetworkState.Loading
         }
 
         onUpdateUserInterface()
