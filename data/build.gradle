@@ -70,7 +70,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room"
 
     /** Tmdb & Trakt Wrappers */
-    implementation "com.uwetrottmann.tmdb2:tmdb-java:2.1.1"
+    implementation "com.uwetrottmann.tmdb2:tmdb-java:2.2.0"
     implementation ('com.uwetrottmann.trakt5:trakt-java:6.4.0') {
         exclude group: 'org.threeten', module: 'threetenbp'
     }
