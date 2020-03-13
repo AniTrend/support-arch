@@ -3,7 +3,7 @@ package co.anitrend.arch.extension
 import android.app.ActivityManager
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.ClipData
+import android.content.*
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -46,13 +46,15 @@ inline fun <reified T> Context.startServiceInForeground(intentAction: String) {
 
 /**
  * Starts a background service using the specified type and action
+ *
+ * @see stopServiceMatching
  */
-inline fun <reified T> Context.startServiceInBackground(intentAction: String) {
+inline fun <reified T> Context.startServiceInBackground(intentAction: String): ComponentName? {
     val intent = Intent(this, T::class.java).apply {
         action = intentAction
         setClass(this@startServiceInBackground, T::class.java)
     }
-    startService(intent)
+    return startService(intent)
 }
 
 /**
