@@ -54,6 +54,24 @@ inline fun <reified T> Context.startServiceInBackground(intentAction: String) {
     }
     startService(intent)
 }
+
+/**
+ * Request that a given application service be stopped.  If the service is
+ * not running, nothing happens.
+ *
+ * @return If there is a service matching the given Intent that is already
+ * running, then it is stopped and `true` is returned; else `false` is returned.
+ *
+ * @see Context.stopService
+ */
+inline fun <reified T> Context.stopServiceMatching(intentAction: String): Boolean {
+    val intent = Intent(this, T::class.java).apply {
+        action = intentAction
+        setClass(this@stopServiceMatching, T::class.java)
+    }
+    return stopService(intent)
+}
+
 /**
  * Extension helper for context that helps us restart the application
  */
