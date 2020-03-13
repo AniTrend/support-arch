@@ -65,7 +65,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
 
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleStateX"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleX"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
     implementation "androidx.work:work-runtime-ktx:$workerKtx"

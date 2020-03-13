@@ -116,13 +116,14 @@ open class SupportStateLayout : ViewFlipper, CustomView {
                 stateLayoutErrorMessage.text = networkState.message
                 if (!isError)
                     displayedChild = ERROR_VIEW
-                requestLayout()
             }
             is NetworkState.Success -> {
                 if (!isContent)
                     displayedChild = CONTENT_VIEW
             }
         }
+        if (!isInLayout)
+            requestLayout()
     }
 
     companion object {

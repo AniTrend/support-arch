@@ -7,6 +7,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.TypedArray
 import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -327,4 +328,19 @@ fun Context.getTintedDrawable(@DrawableRes resource : Int, @AttrRes colorAttr : 
         DrawableCompat.setTint(drawable, getColorFromAttr(colorAttr))
     }
     return drawable
+}
+
+/**
+ * Auto disposable extension for recycling and catching exceptions for typed arrays
+ */
+inline fun TypedArray.use(block: (TypedArray) -> Unit) {
+    try {
+        block(this)
+    } catch (e: Exception) {
+        e.printStackTrace()
+    } finally {
+        runCatching {
+            recycle()
+        }
+    }
 }

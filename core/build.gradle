@@ -46,7 +46,6 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$workerKtx"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleX"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleStateX"
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleX"
 
     /** Retrofit Libraries */
