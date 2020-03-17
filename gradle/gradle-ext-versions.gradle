@@ -6,37 +6,37 @@ ext {
     versionCode = 126
     versionName = '1.3.0-beta02'
 
-    glide = '4.10.0'
+    glide = '4.11.0'
     retrofit = '2.7.0'
 
-    material = '1.1.0-beta02'
+    material = '1.1.0'
     preferenceX = "1.1.0"
     swipeRefreshX = "1.0.0"
     constraintX = '1.1.3'
 
-    lifecycleX = '2.2.0-rc03'
-    room = '2.2.3'
+    lifecycleX = '2.2.0'
+    room = '2.2.4'
     paging = '2.1.1'
-    pagingKtx = '2.1.0'
-    ktx = '1.2.0-rc01'
-    fragmentKtx = '1.2.0-rc04'
-    workerKtx = '2.3.0-beta02'
-    navigation = '2.2.0-rc04'
-    firebase = '17.2.1'
+    pagingKtx = '2.1.1'
+    ktx = '1.2.0'
+    fragmentKtx = '1.2.2'
+    workerKtx = '2.3.3'
+    navigation = '2.2.1'
+    firebase = '17.2.3'
 
     koin = '2.1.3'
-    kotlinVersion = '1.3.61'
+    kotlinVersion = '1.3.70'
 
     mockk = '1.9.3'
     junit = '4.12'
     runner = '1.2.0'
     espresso = '3.2.0'
 
-    flexBox = '2.0.0'
+    flexBox = '2.0.1'
     crashlytics = '2.10.1'
     coroutinesCore = '1.3.0'
-    coroutinesAndroid = '1.3.0'
-    materialDialogs = '3.1.0'
+    coroutinesAndroid = '1.3.3'
+    materialDialogs = '3.2.1'
 
     gson = '2.8.5'
     timber = '4.7.1'
@@ -44,5 +44,5 @@ ext {
     smartTab = '2.0.0'
     tapTarget = '3.0.0'
     okHttpLogger = '4.0.1'
-    threetenabp = '1.2.1'
+    threetenabp = '1.2.2'
 }
