@@ -26,8 +26,6 @@ import timber.log.Timber
  * @see SupportViewHolder
  */
 abstract class SupportListAdapter<T>(
-    protected val presenter: SupportPresenter<*>,
-    override val stateConfiguration: SupportStateLayoutConfiguration,
     itemCallback: DiffUtil.ItemCallback<T> = ISupportViewAdapter.getDefaultDiffItemCallback()
 ) : ISupportViewAdapter<T>, RecyclerView.Adapter<SupportViewHolder<T>>() {
 
