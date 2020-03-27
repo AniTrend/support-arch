@@ -1,13 +1,10 @@
 package co.anitrend.arch.extension.preference.contract
 
-import android.content.SharedPreferences
-
 /**
  * Default preference contract
  */
 interface ISupportPreference {
 
-    val sharedPreferences: SharedPreferences
 
     var isNewInstallation: Boolean
     var versionCode: Int
