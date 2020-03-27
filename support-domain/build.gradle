@@ -49,11 +49,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
+    testImplementation("junit:junit:$junit")
+    testImplementation("io.mockk:mockk:$mockk")
 }
 
 dokka {
