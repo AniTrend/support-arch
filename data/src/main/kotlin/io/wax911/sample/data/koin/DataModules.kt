@@ -2,7 +2,6 @@ package io.wax911.sample.data.koin
 
 import android.content.Context
 import android.net.ConnectivityManager
-import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.arch.extension.network.SupportConnectivity
 import co.anitrend.arch.extension.systemServiceOf
 import co.anitrend.arch.extension.util.date.SupportDateHelper
@@ -16,17 +15,10 @@ import io.wax911.sample.data.repository.movie.MoviePagedRepository
 import io.wax911.sample.data.repository.show.ShowPagedRepository
 import io.wax911.sample.data.usecase.movie.MoviePagedListUseCase
 import io.wax911.sample.data.usecase.show.ShowPagedListUseCase
-import io.wax911.sample.data.util.Settings
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 private val dataModule = module {
-    factory {
-        Settings(
-            context = androidContext()
-        )
-    }
-
     single {
         TraktTrendDatabase.newInstance(
             context = androidContext()
