@@ -1,5 +1,6 @@
 package io.wax911.sample.data.mapper.show
 
+import com.uwetrottmann.trakt5.entities.Show
 import io.wax911.sample.data.arch.mapper.TraktTrendMapper
 import io.wax911.sample.data.datasource.local.query.ShowDao
 import io.wax911.sample.data.entitiy.show.ShowEntity
@@ -9,7 +10,7 @@ import timber.log.Timber
 
 class PopularShowMapper(
     private val showDao: ShowDao
-) : TraktTrendMapper<List<com.uwetrottmann.trakt5.entities.Show>, List<ShowEntity>>() {
+) : TraktTrendMapper<List<Show>, List<ShowEntity>>() {
 
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
@@ -19,7 +20,7 @@ class PopularShowMapper(
      * @param source the incoming data source type
      * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
      */
-    override suspend fun onResponseMapFrom(source: List<com.uwetrottmann.trakt5.entities.Show>): List<ShowEntity> {
+    override suspend fun onResponseMapFrom(source: List<Show>): List<ShowEntity> {
         return source.map { show ->
             ShowEntity(
                 ids = ShowEntityIds(

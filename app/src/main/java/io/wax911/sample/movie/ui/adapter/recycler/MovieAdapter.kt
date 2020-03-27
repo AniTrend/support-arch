@@ -8,13 +8,14 @@ import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
+import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import io.wax911.sample.data.entitiy.movie.MovieEntity
 import io.wax911.sample.databinding.AdapterMediaItemBinding
 
 class MovieAdapter(
-    presenter: SupportPresenter<*>,
-    private val clickListener: ItemClickListener<MovieEntity>
-) : SupportPagedListAdapter<MovieEntity>(presenter) {
+    private val clickListener: ItemClickListener<MovieEntity>,
+    override val stateConfiguration: SupportStateLayoutConfiguration
+) : SupportPagedListAdapter<MovieEntity>() {
 
     /**
      * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
@@ -36,10 +37,18 @@ class MovieAdapter(
         viewType: Int,
         layoutInflater: LayoutInflater
     ): SupportViewHolder<MovieEntity> {
-        return MovieViewHolder(AdapterMediaItemBinding.inflate(layoutInflater, parent, false))
+        val viewHolder = MovieViewHolder(
+            AdapterMediaItemBinding.inflate(layoutInflater, parent, false)
+        )
+
+        viewHolder.itemView.setOnClickListener {
+            viewHolder.onItemClick(it, clickListener)
+        }
+
+        return viewHolder
     }
 
-    inner class MovieViewHolder(
+    class MovieViewHolder(
         private val binding: AdapterMediaItemBinding
     ) : SupportViewHolder<MovieEntity>(binding.root) {
 
@@ -68,15 +77,9 @@ class MovieAdapter(
             }
         }
 
-        /**
-         * Handle any onclick events from our views, optionally you can call
-         * [performClick] to dispatch [Pair]<[Int], T> on the [ItemClickListener]
-         *
-         * @param view the view that has been clicked
-         */
-        override fun onItemClick(view: View) {
+        override fun onItemClick(view: View, itemClickListener: ItemClickListener<MovieEntity>) {
             performClick(
-                clickListener = clickListener,
+                clickListener = itemClickListener,
                 entity = binding.entity as MovieEntity?,
                 view = view
             )
