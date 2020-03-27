@@ -15,12 +15,12 @@ ext {
     constraintX = '1.1.3'
 
     lifecycleX = '2.2.0'
-    room = '2.2.4'
-    paging = '2.1.1'
-    pagingKtx = '2.1.1'
+    room = '2.2.5'
+    paging = '2.1.2'
+    pagingKtx = '2.1.2'
     ktx = '1.2.0'
-    fragmentKtx = '1.2.2'
-    workerKtx = '2.3.3'
+    fragmentKtx = '1.2.3'
+    workerKtx = '2.3.4'
     navigation = '2.2.1'
     firebase = '17.2.3'
 
