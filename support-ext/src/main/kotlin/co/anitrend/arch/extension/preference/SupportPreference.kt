@@ -18,18 +18,4 @@ abstract class SupportPreference(
     constructor(context: Context): this(
         context, PreferenceManager.getDefaultSharedPreferences(context)
     )
-
-    override var isNewInstallation = true
-        get() = sharedPreferences.getBoolean(ISupportPreference.IS_NEW_INSTALLATION, true)
-        set(value) {
-            field = value
-            sharedPreferences.edit().putBoolean(ISupportPreference.IS_NEW_INSTALLATION, value).apply()
-        }
-
-    override var versionCode = 1
-        get() = sharedPreferences.getInt(ISupportPreference.VERSION_CODE, 1)
-        set(value) {
-            field = value
-            sharedPreferences.edit().putInt(ISupportPreference.VERSION_CODE, value).apply()
-        }
 }
