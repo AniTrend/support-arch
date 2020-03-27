@@ -40,21 +40,16 @@ abstract class SupportFragmentPagedList<M, P : SupportPresenter<*>, VM> : Suppor
      */
     fun onPostModelChange(model: PagedList<M>?) {
         with (supportViewAdapter as SupportPagedListAdapter<M>) {
-            submitList(model) /*{
-                // Workaround for an issue where RecyclerView incorrectly uses the loading / spinner
-                // item added to the end of the list as an anchor during initial load.
-                val layoutManager = (supportRecyclerView?.layoutManager as StaggeredGridLayoutManager)
-                val position = layoutManager.findFirstCompletelyVisibleItemPositions(null)
-                if (position.first() != RecyclerView.NO_POSITION) {
-                    supportRecyclerView?.scrollToPosition(position.first())
-                }
-            }*/
+            submitList(model)
         }
 
         if (!model.isNullOrEmpty())
             supportStateLayout?.setNetworkState(NetworkState.Success)
-        else
-            supportStateLayout?.setNetworkState(NetworkState.Loading)
+        else if (supportViewAdapter.hasExtraRow()) {
+            supportStateLayout?.setNetworkState(NetworkState.Success)
+            supportViewAdapter.networkState = NetworkState.Loading
+        }
+
 
         onUpdateUserInterface()
         resetWidgetStates()

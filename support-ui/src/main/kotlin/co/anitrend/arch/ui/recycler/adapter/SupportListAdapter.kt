@@ -5,13 +5,12 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.*
-import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getLayoutInflater
+import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
-import co.anitrend.arch.ui.recycler.SupportAdapterObserverProxy
 import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.recycler.common.SupportFooterErrorViewHolder
 import co.anitrend.arch.ui.recycler.common.SupportFooterLoadingViewHolder
@@ -27,7 +26,6 @@ import timber.log.Timber
  * @see SupportViewHolder
  */
 abstract class SupportListAdapter<T>(
-    protected val presenter: SupportPresenter<*>,
     itemCallback: DiffUtil.ItemCallback<T> = ISupportViewAdapter.getDefaultDiffItemCallback()
 ) : ISupportViewAdapter<T>, RecyclerView.Adapter<SupportViewHolder<T>>() {
 
@@ -55,12 +53,6 @@ abstract class SupportListAdapter<T>(
      * Retry click interceptor for recycler footer error
      */
     override lateinit var retryFooterAction: View.OnClickListener
-
-    /**
-     * Configuration for the state based footer
-     */
-    override lateinit var stateConfiguration: SupportStateLayoutConfiguration
-
 
     /**
      * Assigned if the current adapter supports needs to support [ISupportActionMode]
@@ -169,29 +161,6 @@ abstract class SupportListAdapter<T>(
     }
 
     /**
-     * Register a new observer to listen for data changes.
-     *
-     * The adapter may publish a variety of events describing specific changes.
-     * Not all adapters may support all change types and some may fall back to a generic
-     * `something changed`
-     * [RecyclerView.AdapterDataObserver.onChanged] event if more specific data is not available.
-     *
-     * Components registering observers with an adapter are responsible for
-     * unregistering [unregisterAdapterDataObserver] those observers when finished.
-     *
-     * @param observer Observer to register
-     *
-     * @see unregisterAdapterDataObserver
-     */
-    override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
-        super.registerAdapterDataObserver(
-            SupportAdapterObserverProxy(
-                observer, 1
-            )
-        )
-    }
-
-    /**
      * Called by RecyclerView when it starts observing this Adapter.
      *
      * Keep in mind that same adapter may be observed by multiple RecyclerViews.
@@ -214,18 +183,7 @@ abstract class SupportListAdapter<T>(
      * @see [SupportViewHolder.invoke]
      */
     override fun onBindViewHolder(holder: SupportViewHolder<T>, position: Int) {
-        when (getItemViewType(position)) {
-            R.layout.support_layout_state_footer_loading ->
-                holder(null)
-            R.layout.support_layout_state_footer_error ->
-                holder(null)
-            else -> runCatching {
-                holder(getItem(position))
-            }.exceptionOrNull()?.also {
-                it.printStackTrace()
-                Timber.tag(moduleTag).e(it)
-            }
-        }
+        bindViewHolderByType(holder, position)
     }
 
     /**
@@ -262,20 +220,10 @@ abstract class SupportListAdapter<T>(
         position: Int,
         payloads: MutableList<Any>
     ) {
-        runCatching {
-            animateViewHolder(holder, position)
-            val model = getItem(position)
-            with(holder) {
-                supportActionMode = supportAction
-                invoke(model)
-                onBindSelectionState(model)
-            }
-            if (payloads.isEmpty())
-                onBindViewHolder(holder, position)
-        }.exceptionOrNull()?.also {
-            it.printStackTrace()
-            Timber.tag(moduleTag).e(it)
-        }
+        if (payloads.isEmpty())
+            onBindViewHolder(holder, position)
+        else
+            bindViewHolderByType(holder, position)
     }
 
     /**
@@ -356,6 +304,40 @@ abstract class SupportListAdapter<T>(
         notifyDataSetChanged()
     }
 
+    /**
+     * Binds content view holder
+     */
+    override fun bindContentViewHolder(holder: SupportViewHolder<T>, position: Int) {
+        runCatching {
+            animateViewHolder(holder, position)
+            val model = getItem(position)
+            with(holder) {
+                supportActionMode = supportAction
+                invoke(model)
+                onBindSelectionState(model)
+            }
+        }.exceptionOrNull()?.also {
+            it.printStackTrace()
+            Timber.tag(moduleTag).e(it)
+        }
+    }
+
+    /**
+     * Binds view holder by view type at [position]
+     */
+    override fun bindViewHolderByType(holder: SupportViewHolder<T>, position: Int) {
+        when (getItemViewType(position)) {
+            R.layout.support_layout_state_footer_loading ->
+                holder(null)
+            R.layout.support_layout_state_footer_error ->
+                holder(null)
+            else -> bindContentViewHolder(holder, position)
+        }
+    }
+
+    /**
+     * Returns a model at the given index
+     */
     fun getItem(position: Int): T? {
         val currentList = getCurrentList()
         if (position <= RecyclerView.NO_POSITION || position >= currentList.size) {
