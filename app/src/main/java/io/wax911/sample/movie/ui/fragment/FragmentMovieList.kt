@@ -32,7 +32,7 @@ class FragmentMovieList: SupportFragmentPagedList<MovieEntity, CorePresenter, Pa
     override val supportViewModel by viewModel<MovieViewModel>()
 
     override val supportViewAdapter =
-        MovieAdapter(supportPresenter, object : ItemClickListener<MovieEntity> {
+        MovieAdapter(object : ItemClickListener<MovieEntity> {
 
             override fun onItemClick(target: View, data: Pair<Int, MovieEntity?>) {
 
@@ -41,7 +41,7 @@ class FragmentMovieList: SupportFragmentPagedList<MovieEntity, CorePresenter, Pa
             override fun onItemLongClick(target: View, data: Pair<Int, MovieEntity?>) {
 
             }
-        })
+        }, supportStateConfiguration)
 
     override val columnSize: Int = R.integer.single_list_size
 

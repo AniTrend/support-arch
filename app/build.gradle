@@ -34,45 +34,45 @@ dependencies {
     implementation project(":core")
 
     /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-core:$koin"
-    implementation "org.koin:koin-core-ext:$koin"
-    implementation "org.koin:koin-androidx-scope:$koin"
-    implementation "org.koin:koin-androidx-viewmodel:$koin"
+    implementation("org.koin:koin-core:$koin")
+    implementation("org.koin:koin-core-ext:$koin")
+    implementation("org.koin:koin-androidx-scope:$koin")
+    implementation("org.koin:koin-androidx-viewmodel:$koin")
 
     /** Material Design */
-    implementation "com.google.android.material:material:$material"
+    implementation("com.google.android.material:material:$material")
 
     /** Architecture Components */
-    implementation "androidx.core:core-ktx:$ktx"
-    implementation "androidx.paging:paging-runtime:$paging"
-    implementation "androidx.preference:preference:$preferenceX"
-    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
-    implementation "androidx.fragment:fragment-ktx:$fragmentKtx"
-    implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintX"
-    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshX"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleX"
+    implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.paging:paging-runtime:$paging")
+    implementation("androidx.preference:preference:$preferenceX")
+    implementation("androidx.paging:paging-runtime-ktx:$pagingKtx")
+    implementation("androidx.fragment:fragment-ktx:$fragmentKtx")
+    implementation("androidx.work:work-runtime-ktx:$workerKtx")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.constraintlayout:constraintlayout:$constraintX")
+    implementation("androidx.navigation:navigation-ui-ktx:$navigation")
+    implementation("androidx.navigation:navigation-fragment-ktx:$navigation")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshX")
+    implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleX")
 
     /** Material Dialogs */
-    implementation "com.afollestad.material-dialogs:core:$materialDialogs"
-    implementation "com.afollestad.material-dialogs:input:$materialDialogs"
-    implementation "com.afollestad.material-dialogs:lifecycle:$materialDialogs"
-    implementation "com.afollestad.material-dialogs:bottomsheets:$materialDialogs"
+    implementation("com.afollestad.material-dialogs:core:$materialDialogs")
+    implementation("com.afollestad.material-dialogs:input:$materialDialogs")
+    implementation("com.afollestad.material-dialogs:lifecycle:$materialDialogs")
+    implementation("com.afollestad.material-dialogs:bottomsheets:$materialDialogs")
 
     /** Flex Box */
-    implementation "com.google.android:flexbox:$flexBox"
+    implementation("com.google.android:flexbox:$flexBox")
 
     /** Smart Tab Layout */
-    implementation "com.ogaclejapan.smarttablayout:library:$smartTab"
+    implementation("com.ogaclejapan.smarttablayout:library:$smartTab")
 
     /** Tap Target Prompt */
-    implementation "uk.co.samuelwall:material-tap-target-prompt:$tapTarget"
+    implementation("uk.co.samuelwall:material-tap-target-prompt:$tapTarget")
 
     /** Testing-only dependencies */
-    testImplementation "org.koin:koin-test:$koin"
+    testImplementation("org.koin:koin-test:$koin")
 }
 
 if (file("google-services.json").exists()) {

@@ -35,7 +35,6 @@ class FragmentShowList : SupportFragmentPagedList<ShowEntity, CorePresenter, Pag
 
     override val supportViewAdapter =
         ShowAdapter(
-            supportPresenter,
             object : ItemClickListener<ShowEntity> {
                 override fun onItemClick(target: View, data: Pair<Int, ShowEntity?>) {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -44,7 +43,7 @@ class FragmentShowList : SupportFragmentPagedList<ShowEntity, CorePresenter, Pag
                 override fun onItemLongClick(target: View, data: Pair<Int, ShowEntity?>) {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
-            })
+            }, supportStateConfiguration)
 
     override val columnSize: Int = R.integer.single_list_size
 

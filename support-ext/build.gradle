@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    id 'org.jetbrains.dokka' version '0.10.0'
+    id 'org.jetbrains.dokka' version '0.10.1'
 }
 
 android {
@@ -50,27 +50,28 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore")
 
     /** Material Design */
-    implementation "com.google.android.material:material:$material"
+    implementation("com.google.android.material:material:$material")
 
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
-    implementation "androidx.preference:preference:$preferenceX"
+    implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.preference:preference:$preferenceX")
 
     /** Timber */
-    implementation "com.jakewharton.timber:timber:$timber"
+    implementation("com.jakewharton.timber:timber:$timber")
 
     /** ThreeTen Android Backport */
-    implementation "com.jakewharton.threetenabp:threetenabp:$threetenabp"
+    implementation("com.jakewharton.threetenabp:threetenabp:$threetenabp")
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    testImplementation("junit:junit:$junit")
+    testImplementation("io.mockk:mockk:$mockk")
+    androidTestImplementation("androidx.test:runner:$runner")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espresso")
 }
 
 dokka {

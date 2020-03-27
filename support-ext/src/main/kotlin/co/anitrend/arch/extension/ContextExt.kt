@@ -3,10 +3,7 @@ package co.anitrend.arch.extension
 import android.app.ActivityManager
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.content.res.TypedArray
 import android.graphics.Point
 import android.graphics.drawable.Drawable
@@ -35,6 +32,8 @@ inline fun <reified T> Context.systemServiceOf(serviceName: String): T? =
 
 /**
  * Starts a foreground service using the specified type and action
+ *
+ * @see stopServiceMatching
  */
 inline fun <reified T> Context.startServiceInForeground(intentAction: String) {
     val intent = Intent(this, T::class.java).apply {
@@ -46,14 +45,34 @@ inline fun <reified T> Context.startServiceInForeground(intentAction: String) {
 
 /**
  * Starts a background service using the specified type and action
+ *
+ * @see stopServiceMatching
  */
-inline fun <reified T> Context.startServiceInBackground(intentAction: String) {
+inline fun <reified T> Context.startServiceInBackground(intentAction: String): ComponentName? {
     val intent = Intent(this, T::class.java).apply {
         action = intentAction
         setClass(this@startServiceInBackground, T::class.java)
     }
-    startService(intent)
+    return startService(intent)
 }
+
+/**
+ * Request that a given application service be stopped.  If the service is
+ * not running, nothing happens.
+ *
+ * @return If there is a service matching the given Intent that is already
+ * running, then it is stopped and `true` is returned; else `false` is returned.
+ *
+ * @see Context.stopService
+ */
+inline fun <reified T> Context.stopServiceMatching(intentAction: String): Boolean {
+    val intent = Intent(this, T::class.java).apply {
+        action = intentAction
+        setClass(this@stopServiceMatching, T::class.java)
+    }
+    return stopService(intent)
+}
+
 /**
  * Extension helper for context that helps us restart the application
  */
@@ -78,7 +97,7 @@ inline fun <reified T> Context.restartApplication() {
 }
 
 /**
- * Schedule a repeating alarm that has inexact trigger time requirements
+ * Schedule a repeating alarm that has inexact trigger time requirements.
  *
  * @param enabled schedules or cancels the scheduled task
  * @param interval duration between each alarm event
@@ -186,6 +205,7 @@ inline fun <reified T> Context?.startNewActivity(params: Bundle? = null) {
  * Creates a list of the array resource given
  *
  * @return The string list associated with the resource.
+ *
  * @throws Exception if the given ID does not exist.
  */
 fun Context.getStringList(@ArrayRes arrayRes : Int): List<String> {
@@ -204,6 +224,7 @@ fun Context.getLayoutInflater(): LayoutInflater =
  * not necessarily represent the actual raw size (native resolution) of the display.
  *
  * @return A Point object to with the size information.
+ *
  * @see Point
  */
 fun Context.getScreenDimens(): Point {
@@ -218,7 +239,9 @@ fun Context.getScreenDimens(): Point {
  * Creates a drawable from the given attribute resource which cannot be nullable type
  *
  * @param drawableAttr attribute resource for drawable
+ *
  * @return Drawable for the attribute, or null if not defined.
+ *
  * @throws UnsupportedOperationException if the attribute is defined but is
  *         not a color or drawable resource.
  */
@@ -234,7 +257,9 @@ fun Context.getDrawableAttr(@AttrRes drawableAttr : Int): Drawable? {
  * @link{android.content.res.ColorStateList}, then the default color from the set is returned.
  *
  * @param colorAttr attribute resource for color
+ *
  * @return Attribute color value, or defValue if not defined.
+ *
  * @throws UnsupportedOperationException if the attribute is defined but is
  *         not a color or drawable resource.
  */
@@ -249,8 +274,9 @@ fun Context.getColorFromAttr(@AttrRes colorAttr : Int, defaultColor : Int = 0): 
  * Starting in android Marshmallow, the returned
  * color will be styled for the specified Context's theme.
  *
- * @see android.os.Build.VERSION_CODES.M
  * @return A single color value in the form 0xAARRGGBB.
+ *
+ * @see android.os.Build.VERSION_CODES.M
  */
 fun Context.getCompatColor(@ColorRes colorRes: Int) =
     ContextCompat.getColor(this, colorRes)
@@ -265,6 +291,7 @@ fun Context.getCompatColor(@ColorRes colorRes: Int) =
  *                 @see DrawableRes
  *
  * @return Drawable An object that can be used to draw this resource.
+ *
  * @see Drawable
  */
 fun Context.getCompatDrawable(@DrawableRes resource : Int) =
@@ -277,6 +304,7 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int) =
  *
  * @param resource The resource id of the drawable or vector drawable
  * @param tintColor A specific color to tint the drawable
+ *
  * @return Drawable tinted with the tint color
  */
 fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor : Int): Drawable? {
@@ -296,11 +324,14 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor :
  * from this method apply the {@link Drawable#mutate()} to assure that the state
  * of each drawable is not shared.
  *
- * @return Drawable tinted with {@link R.attr.titleColor}
  * @param resource The resource id of the drawable or vector drawable
- * @return Drawable tinted with the tint color
+ *
+ * @return Drawable tinted with [colorAttr]
  */
-fun Context.getTintedDrawableWithAttribute(@DrawableRes resource : Int, @AttrRes colorAttr: Int): Drawable? {
+fun Context.getTintedDrawableWithAttribute(
+    @DrawableRes resource : Int,
+    @AttrRes colorAttr: Int
+): Drawable? {
     val originalDrawable = getCompatDrawable(resource)
     var drawable : Drawable? = null
     if (originalDrawable != null) {
@@ -318,6 +349,7 @@ fun Context.getTintedDrawableWithAttribute(@DrawableRes resource : Int, @AttrRes
  *
  * @param resource The resource id of the drawable or vector drawable
  * @param colorAttr A specific color to tint the drawable
+ *
  * @return Drawable tinted with the tint color
  */
 fun Context.getTintedDrawable(@DrawableRes resource : Int, @AttrRes colorAttr : Int): Drawable? {
@@ -337,10 +369,10 @@ inline fun TypedArray.use(block: (TypedArray) -> Unit) {
     try {
         block(this)
     } catch (e: Exception) {
-        e.printStackTrace()
+        Timber.e(e)
     } finally {
         runCatching {
             recycle()
-        }
+        }.exceptionOrNull()?.printStackTrace()
     }
 }

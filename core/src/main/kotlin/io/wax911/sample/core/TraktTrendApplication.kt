@@ -2,14 +2,17 @@ package io.wax911.sample.core
 
 import android.app.Application
 import androidx.work.Configuration
+import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import io.wax911.sample.core.analytics.AnalyticsLogger
-import io.wax911.sample.core.extension.analytics
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 
 /**
  * Core application
  */
 abstract class TraktTrendApplication : Application(), Configuration.Provider {
+
+    private val analytics by inject<ISupportAnalytics>()
 
     /** [Koin](https://insert-koin.io/docs/2.0/getting-started/)
      *

@@ -8,13 +8,14 @@ import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
+import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import io.wax911.sample.data.entitiy.show.ShowEntity
 import io.wax911.sample.databinding.AdapterMediaItemBinding
 
 class ShowAdapter(
-    presenter: SupportPresenter<*>,
-    private val clickListener: ItemClickListener<ShowEntity>
-) : SupportPagedListAdapter<ShowEntity>(presenter) {
+    private val clickListener: ItemClickListener<ShowEntity>,
+    override val stateConfiguration: SupportStateLayoutConfiguration
+) : SupportPagedListAdapter<ShowEntity>() {
 
     /**
      * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
@@ -36,11 +37,19 @@ class ShowAdapter(
         viewType: Int,
         layoutInflater: LayoutInflater
     ): SupportViewHolder<ShowEntity> {
-        return ShowViewHolder(AdapterMediaItemBinding.inflate(layoutInflater, parent, false))
+        val viewHolder = ShowViewHolder(
+            AdapterMediaItemBinding.inflate(layoutInflater, parent, false)
+        )
+
+        viewHolder.itemView.setOnClickListener {
+            viewHolder.onItemClick(it, clickListener)
+        }
+
+        return viewHolder
     }
 
 
-    inner class ShowViewHolder(
+    class ShowViewHolder(
         private val binding: AdapterMediaItemBinding
     ): SupportViewHolder<ShowEntity>(binding.root) {
 
@@ -69,15 +78,9 @@ class ShowAdapter(
             }
         }
 
-        /**
-         * Handle any onclick events from our views, optionally you can call
-         * [performClick] to dispatch [Pair]<[Int], T> on the [ItemClickListener]
-         *
-         * @param view the view that has been clicked
-         */
-        override fun onItemClick(view: View) {
+        override fun onItemClick(view: View, itemClickListener: ItemClickListener<ShowEntity>) {
             performClick(
-                clickListener = clickListener,
+                clickListener = itemClickListener,
                 entity = binding.entity as ShowEntity?,
                 view = view
             )

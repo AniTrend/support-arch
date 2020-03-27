@@ -4,7 +4,9 @@ import co.anitrend.arch.core.analytic.contract.ISupportAnalytics
 import co.anitrend.arch.extension.SupportDispatchers
 import io.wax911.sample.core.analytics.AnalyticsLogger
 import io.wax911.sample.core.presenter.CorePresenter
+import io.wax911.sample.core.settings.Settings
 import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 private val coreModule = module {
@@ -13,7 +15,11 @@ private val coreModule = module {
             context = androidContext()
         )
     }
-
+    factory {
+        Settings(
+            androidContext()
+        )
+    } binds(Settings.BINDINGS)
     single {
         SupportDispatchers()
     }

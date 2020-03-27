@@ -53,31 +53,31 @@ dependencies {
     implementation project(":domain")
 
     /** Koin AndroidX Dependency Injection */
-    implementation "org.koin:koin-core:$koin"
-    implementation "org.koin:koin-core-ext:$koin"
-    implementation "org.koin:koin-androidx-scope:$koin"
+    implementation("org.koin:koin-core:$koin")
+    implementation("org.koin:koin-core-ext:$koin")
+    implementation("org.koin:koin-androidx-scope:$koin")
 
     /** Architecture Components */
-    implementation "androidx.core:core-ktx:$ktx"
-    implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleX"
-    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
-    implementation "androidx.paging:paging-runtime:$paging"
-    implementation "androidx.room:room-runtime:$room"
-    implementation "androidx.room:room-ktx:$room"
-    kapt "androidx.room:room-compiler:$room"
+    implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.work:work-runtime-ktx:$workerKtx")
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleX")
+    implementation("androidx.paging:paging-runtime-ktx:$pagingKtx")
+    implementation("androidx.paging:paging-runtime:$paging")
+    implementation("androidx.room:room-runtime:$room")
+    implementation("androidx.room:room-ktx:$room")
+    kapt("androidx.room:room-compiler:$room")
 
     /** Tmdb & Trakt Wrappers */
-    implementation "com.uwetrottmann.tmdb2:tmdb-java:2.1.1"
-    implementation ('com.uwetrottmann.trakt5:trakt-java:6.4.0') {
+    implementation("com.uwetrottmann.tmdb2:tmdb-java:2.2.0")
+    implementation('com.uwetrottmann.trakt5:trakt-java:6.5.0') {
         exclude group: 'org.threeten', module: 'threetenbp'
     }
-    implementation "com.jakewharton.threetenabp:threetenabp:$threetenabp"
+    implementation("com.jakewharton.threetenabp:threetenabp:$threetenabp")
 
     /** Retrofit Libraries */
-    implementation "com.squareup.retrofit2:retrofit:$retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpLogger"
+    implementation("com.squareup.retrofit2:retrofit:$retrofit")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofit")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okHttpLogger")
 }
