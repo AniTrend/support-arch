@@ -103,9 +103,9 @@ dokka {
         }
 
         externalDocumentationLink {
-            url = new URL("https://javadoc.jitpack.io/com/github/anitrend/support-arch/support-ext/latest/javadoc/")
-            url = new URL("https://javadoc.jitpack.io/com/github/anitrend/support-arch/support-data/latest/javadoc/")
-            url = new URL("https://javadoc.jitpack.io/com/github/anitrend/support-arch/support-domain/latest/javadoc/")
+            url = new URL("https://javadoc.jitpack.io/com/github/anitrend/support-arch/support-ext/1.3.0-beta02/javadoc/")
+            url = new URL("https://javadoc.jitpack.io/com/github/anitrend/support-arch/support-data/1.3.0-beta02/javadoc/")
+            url = new URL("https://javadoc.jitpack.io/com/github/anitrend/support-arch/support-domain/1.3.0-beta02/javadoc/")
             url = new URL("https://developer.android.com/reference/kotlin/")
             packageListUrl = new URL("https://developer.android.com/reference/androidx/package-list")
         }
