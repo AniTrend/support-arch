@@ -33,7 +33,7 @@ open class SupportImageView : AppCompatImageView, CustomView {
      * additional attribute initialization
      */
     @SuppressLint("Recycle")
-    final override fun onInit(context: Context, attrs: AttributeSet?) {
+    final override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         if (attrs != null) {
             context.obtainStyledAttributes(attrs, R.styleable.SupportImageView).use {
                 aspectRatio = it.getFloat(

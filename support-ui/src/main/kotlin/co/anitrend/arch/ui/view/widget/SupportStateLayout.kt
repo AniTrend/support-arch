@@ -69,7 +69,7 @@ open class SupportStateLayout : ViewFlipper, CustomView {
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization
      */
-    final override fun onInit(context: Context, attrs: AttributeSet?) {
+    final override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         if (!isInEditMode)
             setupAdditionalViews()
 

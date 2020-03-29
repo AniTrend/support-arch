@@ -56,7 +56,7 @@ class SupportRecyclerView : RecyclerView, CustomView {
      * @param context view context
      * @param attrs view attributes if applicable
      */
-    override fun onInit(context: Context, attrs: AttributeSet?) {
+    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
 
     }
 }
