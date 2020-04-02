@@ -5,7 +5,7 @@ import android.content.res.Resources
 import androidx.annotation.StringRes
 import androidx.core.content.edit
 import co.anitrend.arch.extension.preference.delegate.ISupportPreferenceDelegate
-import co.anitrend.arch.extension.preference.delegate.ISupportPreferenceDelegate.Companion.string
+import co.anitrend.arch.extension.preference.delegate.ISupportPreferenceDelegate.Companion.stringOf
 import kotlin.reflect.KProperty
 
 /**
@@ -21,14 +21,14 @@ class EnumPreference<T : Enum<*>>(
 ) : ISupportPreferenceDelegate<T> {
 
     override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): T {
-        val name = thisRef.getString(key.string(resources), default.name)
+        val name = thisRef.getString(stringOf(key), default.name)
         val `class` = default::class.java
         return `class`.enumConstants?.firstOrNull { it.name == name } ?: default
     }
 
     override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: T) {
         thisRef.edit {
-            putString(key.string(resources), value.name)
+            putString(stringOf(key), value.name)
         }
     }
 }
@@ -45,12 +45,12 @@ class BooleanPreference(
 ) : ISupportPreferenceDelegate<Boolean> {
 
     override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): Boolean {
-        return thisRef.getBoolean(key.string(resources), default)
+        return thisRef.getBoolean(stringOf(key), default)
     }
 
     override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: Boolean) {
         thisRef.edit {
-            putBoolean(key.string(resources), value)
+            putBoolean(stringOf(key), value)
         }
     }
 }
@@ -67,12 +67,12 @@ class IntPreference(
 ) : ISupportPreferenceDelegate<Int> {
 
     override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): Int {
-        return thisRef.getInt(key.string(resources), default)
+        return thisRef.getInt(stringOf(key), default)
     }
 
     override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: Int) {
         thisRef.edit {
-            putInt(key.string(resources), value)
+            putInt(stringOf(key), value)
         }
     }
 }
@@ -89,12 +89,12 @@ class LongPreference(
 ) : ISupportPreferenceDelegate<Long> {
 
     override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): Long {
-        return thisRef.getLong(key.string(resources), default)
+        return thisRef.getLong(stringOf(key), default)
     }
 
     override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: Long) {
         thisRef.edit {
-            putLong(key.string(resources), value)
+            putLong(stringOf(key), value)
         }
     }
 }
@@ -111,12 +111,12 @@ class StringPreference(
 ) : ISupportPreferenceDelegate<String> {
 
     override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): String {
-        return thisRef.getString(key.string(resources), default) ?: default
+        return thisRef.getString(stringOf(key), default) ?: default
     }
 
     override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: String) {
         thisRef.edit {
-            putString(key.string(resources), value)
+            putString(stringOf(key), value)
         }
     }
 }

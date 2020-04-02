@@ -21,6 +21,7 @@ interface ISupportPreferenceDelegate<T> : ReadWriteProperty<SharedPreferences, T
     val resources: Resources
 
     companion object {
-        internal fun Int.string(resources: Resources) = resources.getString(this)
+        internal fun ISupportPreferenceDelegate<*>.stringOf(key: Int) =
+            resources.getString(key)
     }
 }
