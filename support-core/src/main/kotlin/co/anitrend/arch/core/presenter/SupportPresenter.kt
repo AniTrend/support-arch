@@ -48,15 +48,13 @@ abstract class SupportPresenter<S : SupportPreference>(
      * Unregister any listeners from fragments or activities
      */
     override fun onPause(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        supportPreference.sharedPreferences
-                .unregisterOnSharedPreferenceChangeListener(changeListener)
+        supportPreference.unregisterOnSharedPreferenceChangeListener(changeListener)
     }
 
     /**
      * Register any listeners from fragments or activities
      */
     override fun onResume(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        supportPreference.sharedPreferences
-                .registerOnSharedPreferenceChangeListener(changeListener)
+        supportPreference.registerOnSharedPreferenceChangeListener(changeListener)
     }
 }

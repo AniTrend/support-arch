@@ -5,19 +5,15 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import co.anitrend.arch.core.presenter.SupportPresenter
-import co.anitrend.arch.extension.getCompatColor
 import co.anitrend.arch.extension.coroutine.SupportCoroutine
 import co.anitrend.arch.ui.view.contract.ISupportFragmentActivity
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import timber.log.Timber
 
 /**
@@ -27,19 +23,14 @@ import timber.log.Timber
  * @see SupportCoroutine
  * @see ISupportFragmentActivity
  */
-abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(), ISupportFragmentActivity<M, P>,
-    SupportCoroutine {
+abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
+    ISupportFragmentActivity<M, P>, CoroutineScope by MainScope() {
 
     protected val moduleTag: String = javaClass.simpleName
 
     private var isClosing: Boolean = false
 
     protected var supportFragmentActivity : ISupportFragmentActivity<*, *>? = null
-
-    /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
-     */
-    override val supervisorJob = SupervisorJob()
 
     /**
      * Can be used to configure custom theme styling as desired
@@ -61,26 +52,9 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    fun disableToolbarTitle() = actionBar?.setDisplayShowTitleEnabled(false)
-
-    protected fun setTransparentStatusBar() {
-        if (Build.VERSION.SDK_INT >= 21) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            window.statusBarColor = getCompatColor(android.R.color.transparent)
-        }
-    }
-
-    protected fun setTransparentStatusBarWithColor(@ColorRes color: Int) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            val colorInt = getCompatColor(color)
-            window.statusBarColor = colorInt
-            window.navigationBarColor = colorInt
-        }
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home)
-            super.onBackPressed()
+            onBackPressed()
         return super.onOptionsItemSelected(item)
     }
 
@@ -99,11 +73,6 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         return false
     }
 
-    override fun onDestroy() {
-        cancelAllChildren()
-        super.onDestroy()
-    }
-
     /**
      * Take care of popping the fragment back stack or finishing the activity
      * as appropriate.
@@ -118,11 +87,4 @@ abstract class SupportActivity<M, P : SupportPresenter<*>>: AppCompatActivity(),
         if (!key.isNullOrEmpty())
             Timber.tag(moduleTag).d("onSharedPreferenceChanged -> $key | Changed value")
     }
-
-    /**
-     * Coroutine dispatcher specification
-     *
-     * @return [kotlinx.coroutines.Dispatchers.Default] by default
-     */
-    override val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Main
 }

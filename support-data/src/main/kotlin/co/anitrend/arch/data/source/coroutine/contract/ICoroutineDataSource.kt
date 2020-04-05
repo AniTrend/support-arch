@@ -2,6 +2,9 @@ package co.anitrend.arch.data.source.coroutine.contract
 
 import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.domain.entities.NetworkState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Contract for coroutine data source abstraction or implementation
@@ -19,7 +22,9 @@ interface ICoroutineDataSource<P, R> : IDataSource {
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
     suspend fun invalidateAndRefresh() {
-        clearDataSource()
+        withContext(Dispatchers.IO) {
+            clearDataSource()
+        }
     }
 
     /**

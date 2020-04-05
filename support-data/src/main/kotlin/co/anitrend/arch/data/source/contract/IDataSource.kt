@@ -18,12 +18,4 @@ interface IDataSource : SupportCoroutine {
      * act based on state changes
      */
     val networkState: MutableLiveData<NetworkState>
-
-    /**
-     * Coroutine dispatcher specification
-     *
-     * @return [kotlinx.coroutines.Dispatchers.Default] by default
-     */
-    override val coroutineDispatcher: CoroutineDispatcher
-        get() =  Dispatchers.IO
 }

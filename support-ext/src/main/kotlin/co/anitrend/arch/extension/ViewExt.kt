@@ -3,6 +3,7 @@ package co.anitrend.arch.extension
 import android.content.res.Resources
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.StringRes
 import co.anitrend.arch.extension.annotation.SupportExperimental
@@ -35,6 +36,15 @@ fun View.invisible() {
  */
 fun View.visible() {
     visibility = View.VISIBLE
+}
+
+/**
+ * set margin top for view
+ */
+fun View.setMarginTop(marginTop: Int) {
+    val menuLayoutParams = layoutParams as ViewGroup.MarginLayoutParams
+    menuLayoutParams.setMargins(0, marginTop, 0, 0)
+    layoutParams = menuLayoutParams
 }
 
 @JvmOverloads

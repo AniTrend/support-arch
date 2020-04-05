@@ -1,11 +1,12 @@
 package co.anitrend.arch.ui.view.image
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
+import co.anitrend.arch.extension.use
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.view.contract.CustomView
-import com.bumptech.glide.Glide
 
 /**
  *
@@ -31,11 +32,15 @@ open class SupportImageView : AppCompatImageView, CustomView {
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization
      */
-    final override fun onInit(context: Context, attrs: AttributeSet?) {
-        attrs?.apply {
-            val a = context.obtainStyledAttributes(this, R.styleable.SupportImageView)
-            aspectRatio = a.getFloat(R.styleable.SupportImageView_aspectRatio, DEFAULT_ASPECT_RATIO)
-            a.recycle()
+    @SuppressLint("Recycle")
+    final override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
+        if (attrs != null) {
+            context.obtainStyledAttributes(attrs, R.styleable.SupportImageView).use {
+                aspectRatio = it.getFloat(
+                    R.styleable.SupportImageView_aspectRatio,
+                    DEFAULT_ASPECT_RATIO
+                )
+            }
         }
     }
 
@@ -53,14 +58,6 @@ open class SupportImageView : AppCompatImageView, CustomView {
         }
 
         setMeasuredDimension(width, height)
-    }
-
-    /**
-     * Should be called on a view's detach from window to unbind or
-     * release object references and cancel all running coroutine jobs if the current view
-     */
-    override fun onViewRecycled() {
-        Glide.with(context).clear(this)
     }
 
     companion object {

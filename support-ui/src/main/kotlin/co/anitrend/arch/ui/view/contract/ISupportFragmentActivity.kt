@@ -10,9 +10,8 @@ import co.anitrend.arch.extension.coroutine.SupportCoroutine
  * Contract for implementing [androidx.fragment.app.FragmentActivity] based components
  *
  * @since v0.9.X
- * @see SupportCoroutine
  */
-interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCoroutine,
+interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> :
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
@@ -98,7 +97,7 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCorouti
      *
      * @param key preference key that has been changed
      */
-    fun isPreferenceKeyValid(key: String) = true
+    fun isPreferenceKeyValid(key: String) = false
 
     companion object {
 
@@ -108,5 +107,13 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCorouti
          * [NO_MENU_ITEM] has the default value of 0
          */
         const val NO_MENU_ITEM = 0
+
+        /**
+         * Constant value that indicates that no dynamic layout will be inflated for a
+         * [ISupportFragmentActivity] derivative
+         *
+         * [NO_LAYOUT_ITEM] has the default value of 0
+         */
+        const val NO_LAYOUT_ITEM = 0
     }
 }

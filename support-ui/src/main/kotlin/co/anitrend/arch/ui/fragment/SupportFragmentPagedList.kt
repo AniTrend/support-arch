@@ -1,6 +1,9 @@
 package co.anitrend.arch.ui.fragment
 
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.fragment.contract.ISupportFragmentList
@@ -42,6 +45,11 @@ abstract class SupportFragmentPagedList<M, P : SupportPresenter<*>, VM> : Suppor
 
         if (!model.isNullOrEmpty())
             supportStateLayout?.setNetworkState(NetworkState.Success)
+        else if (supportViewAdapter.hasExtraRow()) {
+            supportStateLayout?.setNetworkState(NetworkState.Success)
+            supportViewAdapter.networkState = NetworkState.Loading
+        }
+
 
         onUpdateUserInterface()
         resetWidgetStates()

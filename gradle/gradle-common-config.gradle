@@ -29,6 +29,9 @@
         jvmTarget = "1.8"
         freeCompilerArgs += [ "-Xuse-experimental=kotlin.Experimental" ]
     }
+    viewBinding {
+        enabled = true
+    }
 }
 
 androidExtensions {

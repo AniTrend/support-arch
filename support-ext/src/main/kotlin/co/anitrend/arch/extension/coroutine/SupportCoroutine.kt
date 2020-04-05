@@ -16,12 +16,19 @@ interface SupportCoroutine : CoroutineScope {
     val supervisorJob: Job
 
     /**
+     * Coroutine dispatcher specification
+     *
+     * @return one of the sub-types of [kotlinx.coroutines.Dispatchers]
+     */
+    val coroutineDispatcher: CoroutineDispatcher
+
+    /**
      * Persistent context for the coroutine
      *
-     * @return [kotlin.coroutines.CoroutineContext]
+     * @return [kotlin.coroutines.CoroutineContext] preferably built from
+     * [supervisorJob] + [coroutineDispatcher]
      */
     override val coroutineContext: CoroutineContext
-        get() = supervisorJob + coroutineDispatcher
 
     /**
      * A failure or cancellation of a child does not cause the supervisor job
@@ -30,15 +37,6 @@ interface SupportCoroutine : CoroutineScope {
      * @return [kotlinx.coroutines.CoroutineScope]
      */
     val scope: CoroutineScope
-        get() = CoroutineScope(coroutineContext)
-
-    /**
-     * Coroutine dispatcher specification
-     *
-     * @return [kotlinx.coroutines.Dispatchers.Default] by default
-     */
-    val coroutineDispatcher: CoroutineDispatcher
-        get() = Dispatchers.Default
 
     /**
      * For more details regarding how cancellation is handled

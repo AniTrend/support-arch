@@ -3,7 +3,9 @@ package co.anitrend.arch.data.source.coroutine
 import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.data.source.coroutine.contract.ICoroutineDataSource
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.arch.extension.network.SupportConnectivity
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import org.koin.core.KoinComponent
@@ -15,19 +17,16 @@ import org.koin.core.inject
  *
  * @since v1.1.0
  */
-abstract class SupportCoroutineDataSource<P, R> : ICoroutineDataSource<P, R>, KoinComponent {
+abstract class SupportCoroutineDataSource<P, R>(
+    protected val dispatchers: SupportDispatchers
+) : ICoroutineDataSource<P, R>, KoinComponent {
 
     protected val moduleTag: String = javaClass.simpleName
 
     /**
-     * Connectivity helper utility with live data observable capabilities
-     */
-    protected val connectivityHelper by inject<SupportConnectivity>()
-
-    /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */
-    override val supervisorJob: Job = SupervisorJob()
+    final override val supervisorJob: Job = SupervisorJob()
 
     override val networkState = MutableLiveData<NetworkState>()
 
@@ -56,4 +55,27 @@ abstract class SupportCoroutineDataSource<P, R> : ICoroutineDataSource<P, R>, Ko
         super.invalidateAndRefresh()
         retryPreviousRequest()
     }
+
+    /**
+     * Coroutine dispatcher specification
+     *
+     * @return one of the sub-types of [kotlinx.coroutines.Dispatchers]
+     */
+    final override val coroutineDispatcher = dispatchers.computation
+
+    /**
+     * Persistent context for the coroutine
+     *
+     * @return [kotlin.coroutines.CoroutineContext] preferably built from
+     * [supervisorJob] + [coroutineDispatcher]
+     */
+    final override val coroutineContext = supervisorJob + coroutineDispatcher
+
+    /**
+     * A failure or cancellation of a child does not cause the supervisor job
+     * to fail and does not affect its other children.
+     *
+     * @return [kotlinx.coroutines.CoroutineScope]
+     */
+    final override val scope = CoroutineScope(coroutineContext)
 }

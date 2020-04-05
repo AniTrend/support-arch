@@ -5,10 +5,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.*
 import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
@@ -31,7 +28,6 @@ import timber.log.Timber
  * @see SupportViewHolder
  */
 abstract class SupportPagedListAdapter<T>(
-    protected val presenter: SupportPresenter<*>,
     itemCallback: DiffUtil.ItemCallback<T> = getDefaultDiffItemCallback()
 ) : ISupportViewAdapter<T>, PagedListAdapter<T, SupportViewHolder<T>>(itemCallback) {
 
@@ -55,12 +51,6 @@ abstract class SupportPagedListAdapter<T>(
      * Retry click interceptor for recycler footer error
      */
     override lateinit var retryFooterAction: View.OnClickListener
-
-    /**
-     * Configuration for the state based footer
-     */
-    override lateinit var stateConfiguration: SupportStateLayoutConfiguration
-
 
     /**
      * Assigned if the current adapter supports needs to support [ISupportActionMode]
@@ -191,18 +181,7 @@ abstract class SupportPagedListAdapter<T>(
      * @see [SupportViewHolder.invoke]
      */
     override fun onBindViewHolder(holder: SupportViewHolder<T>, position: Int) {
-        when (getItemViewType(position)) {
-            R.layout.support_layout_state_footer_loading ->
-                holder(null)
-            R.layout.support_layout_state_footer_error ->
-                holder(null)
-            else -> runCatching {
-                holder(getItem(position))
-            }.exceptionOrNull()?.also {
-                it.printStackTrace()
-                Timber.tag(moduleTag).e(it)
-            }
-        }
+        bindViewHolderByType(holder, position)
     }
 
     /**
@@ -216,15 +195,10 @@ abstract class SupportPagedListAdapter<T>(
         position: Int, payloads:
         MutableList<Any>
     ) {
-        animateViewHolder(holder, position)
-        val model = getItem(position)
-        with(holder) {
-            supportActionMode = supportAction
-            invoke(model)
-            onBindSelectionState(model)
-        }
         if (payloads.isEmpty())
             onBindViewHolder(holder, position)
+        else
+            bindViewHolderByType(holder, position)
     }
 
     /**
@@ -278,6 +252,10 @@ abstract class SupportPagedListAdapter<T>(
         return itemCount < 1
     }
 
+    override fun getItemCount(): Int {
+        return super.getItemCount() + if (hasExtraRow()) 1 else 0
+    }
+
     /**
      * Returns a boolean to instruct the [GridLayoutManager] if an item at the position should
      * use a span size count of 1 otherwise defaults to the intended size
@@ -294,5 +272,36 @@ abstract class SupportPagedListAdapter<T>(
      */
     override fun updateSelection() {
         notifyDataSetChanged()
+    }
+
+    /**
+     * Binds content view holder
+     */
+    override fun bindContentViewHolder(holder: SupportViewHolder<T>, position: Int) {
+        runCatching {
+            animateViewHolder(holder, position)
+            val model = getItem(position)
+            with(holder) {
+                supportActionMode = supportAction
+                invoke(model)
+                onBindSelectionState(model)
+            }
+        }.exceptionOrNull()?.also {
+            it.printStackTrace()
+            Timber.tag(moduleTag).e(it)
+        }
+    }
+
+    /**
+     * Binds view holder by view type at [position]
+     */
+    override fun bindViewHolderByType(holder: SupportViewHolder<T>, position: Int) {
+        when (getItemViewType(position)) {
+            R.layout.support_layout_state_footer_loading ->
+                holder(null)
+            R.layout.support_layout_state_footer_error ->
+                holder(null)
+            else -> bindContentViewHolder(holder, position)
+        }
     }
 }
