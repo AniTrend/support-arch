@@ -1,11 +1,13 @@
 package co.anitrend.arch.ui.view.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ViewFlipper
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getCompatDrawable
 import co.anitrend.arch.extension.getLayoutInflater
+import co.anitrend.arch.extension.gone
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import co.anitrend.arch.ui.view.contract.CustomView
@@ -31,20 +33,7 @@ open class SupportStateLayout : ViewFlipper, CustomView {
     var stateConfiguration: SupportStateLayoutConfiguration? = null
         set(value) {
             field = value
-            field?.apply {
-                setInAnimation(context, inAnimation)
-                setOutAnimation(context, outAnimation)
-
-                stateLayoutErrorRetryAction.setText(retryAction)
-                stateLayoutErrorImage.setImageDrawable(
-                    context.getCompatDrawable(errorDrawable)
-                )
-
-                stateLayoutLoadingText.setText(loadingMessage)
-                stateLayoutLoadingImage.setImageDrawable(
-                    context.getCompatDrawable(loadingDrawable)
-                )
-            }
+            field?.also { updateUsing(it) }
         }
 
     /**
@@ -64,6 +53,34 @@ open class SupportStateLayout : ViewFlipper, CustomView {
             field = value
             stateLayoutErrorRetryAction.setOnClickListener(field)
         }
+
+    private fun updateUsing(config: SupportStateLayoutConfiguration) {
+        setInAnimation(context, config.inAnimation)
+        setOutAnimation(context, config.outAnimation)
+        if (config.errorDrawable != null)
+            stateLayoutErrorImage.setImageDrawable(
+                context.getCompatDrawable(config.errorDrawable)
+            )
+        else
+            stateLayoutErrorImage.gone()
+
+        if (config.loadingDrawable != null)
+            stateLayoutLoadingImage.setImageDrawable(
+                context.getCompatDrawable(config.loadingDrawable)
+            )
+        else
+            stateLayoutLoadingImage.gone()
+
+        if (config.retryAction != null)
+            stateLayoutErrorRetryAction.setText(config.retryAction)
+        else
+            stateLayoutErrorRetryAction.gone()
+
+        if (config.loadingMessage != null)
+            stateLayoutLoadingText.setText(config.loadingMessage)
+        else
+            stateLayoutLoadingText.gone()
+    }
 
     /**
      * Callable in view constructors to perform view inflation and
@@ -88,6 +105,7 @@ open class SupportStateLayout : ViewFlipper, CustomView {
         onWidgetInteraction = null
     }
 
+    @SuppressLint("InflateParams")
     protected open fun setupAdditionalViews() {
         val loadingView = getLayoutInflater().inflate(
             R.layout.support_state_layout_laoding, null

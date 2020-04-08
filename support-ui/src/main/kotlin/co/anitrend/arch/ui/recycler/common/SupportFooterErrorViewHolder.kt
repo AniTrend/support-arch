@@ -2,6 +2,7 @@ package co.anitrend.arch.ui.recycler.common
 
 import android.view.View
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.extension.gone
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
@@ -30,8 +31,13 @@ class SupportFooterErrorViewHolder<T>(
     override fun invoke(model: T?) {
         if (networkState is NetworkState.Error)
             view.stateFooterErrorText.text = networkState.message
-        view.stateFooterErrorAction.setText(configuration.retryAction)
-        view.stateFooterErrorAction.setOnClickListener(retryAction)
+
+        if (configuration.retryAction != null) {
+            view.stateFooterErrorAction.setOnClickListener(retryAction)
+            view.stateFooterErrorAction.setText(configuration.retryAction)
+        }
+        else
+            view.stateFooterErrorAction.gone()
     }
 
     /**

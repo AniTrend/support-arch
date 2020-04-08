@@ -1,6 +1,7 @@
 package co.anitrend.arch.ui.recycler.common
 
 import android.view.View
+import co.anitrend.arch.extension.gone
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
@@ -22,7 +23,10 @@ class SupportFooterLoadingViewHolder<T>(
      * @param model Is the liveData at the current adapter position
      */
     override fun invoke(model: T?) {
-        view.stateFooterLoadingText.setText(configuration.loadingMessage)
+        if (configuration.loadingMessage != null)
+            view.stateFooterLoadingText.setText(configuration.loadingMessage)
+        else
+            view.stateFooterLoadingText.gone()
     }
 
     /**
