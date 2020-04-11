@@ -59,6 +59,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
+        initializeComponents(savedInstanceState)
     }
 
     /**
