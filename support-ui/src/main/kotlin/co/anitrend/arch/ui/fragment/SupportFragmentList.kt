@@ -188,8 +188,8 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModelObserver()
-        supportViewModel?.networkState?.observe(this, onNetworkObserver)
-        supportViewModel?.refreshState?.observe(this, onRefreshObserver)
+        supportViewModel?.networkState?.observe(viewLifecycleOwner, onNetworkObserver)
+        supportViewModel?.refreshState?.observe(viewLifecycleOwner, onRefreshObserver)
     }
 
     /**
