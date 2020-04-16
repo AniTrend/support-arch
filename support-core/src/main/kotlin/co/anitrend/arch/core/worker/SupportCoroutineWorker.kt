@@ -14,6 +14,8 @@ import co.anitrend.arch.core.presenter.SupportPresenter
  *
  * A CoroutineWorker is given a maximum of ten minutes to finish its execution and return a
  * [androidx.work.ListenableWorker.Result].  After this time has expired, the worker will be signalled to stop.
+ *
+ * @since v0.9.X
  */
 abstract class SupportCoroutineWorker<P : SupportPresenter<*>>(
     context: Context,

@@ -1,11 +1,12 @@
 package co.anitrend.arch.ui.view.image
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import com.bumptech.glide.Glide
-import co.anitrend.arch.ui.view.contract.CustomView
+import co.anitrend.arch.extension.use
 import co.anitrend.arch.ui.R
+import co.anitrend.arch.ui.view.contract.CustomView
 
 /**
  *
@@ -14,11 +15,11 @@ import co.anitrend.arch.ui.R
  * This widget also support defined references like [R.integer.grid_list_x2]
  * instead of just raw values
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
-class SupportImageView : AppCompatImageView, CustomView {
+open class SupportImageView : AppCompatImageView, CustomView {
 
-    private var aspectRatio = DEFAULT_ASPECT_RATIO
+    protected open var aspectRatio = DEFAULT_ASPECT_RATIO
 
     constructor(context: Context) :
             super(context) { onInit(context) }
@@ -31,12 +32,15 @@ class SupportImageView : AppCompatImageView, CustomView {
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization
      */
-    override fun onInit(context: Context, attrs: AttributeSet?) {
-        attrs?.apply {
-            val a = context.obtainStyledAttributes(this, R.styleable.SupportImageView)
-            aspectRatio = a.getFloat(R.styleable.SupportImageView_aspectRatio, DEFAULT_ASPECT_RATIO)
-            a.recycle()
-
+    @SuppressLint("Recycle")
+    final override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
+        if (attrs != null) {
+            context.obtainStyledAttributes(attrs, R.styleable.SupportImageView).use {
+                aspectRatio = it.getFloat(
+                    R.styleable.SupportImageView_aspectRatio,
+                    DEFAULT_ASPECT_RATIO
+                )
+            }
         }
     }
 
@@ -54,14 +58,6 @@ class SupportImageView : AppCompatImageView, CustomView {
         }
 
         setMeasuredDimension(width, height)
-    }
-
-    /**
-     * Should be called on a view's detach from window to unbind or
-     * release object references and cancel all running coroutine jobs if the current view
-     */
-    override fun onViewRecycled() {
-        Glide.with(context).clear(this)
     }
 
     companion object {

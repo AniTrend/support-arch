@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    id 'org.jetbrains.dokka' version '0.9.18'
+    id 'org.jetbrains.dokka' version '0.10.1'
 }
 
 android {
@@ -24,6 +24,7 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -45,51 +46,69 @@ dependencies {
 
     implementation project(':support-ext')
     implementation project(':support-core')
+    implementation project(':support-theme')
     implementation project(':support-domain')
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid"
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid")
 
     /** Material Design */
-    implementation "com.google.android.material:material:$material"
+    implementation("com.google.android.material:material:$material")
 
     /** Architecture Components */
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
-    implementation "androidx.paging:paging-runtime-ktx:$pagingKtx"
-    implementation "androidx.work:work-runtime-ktx:$workerKtx"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshX"
-
-    /** Glide Libraries */
-    implementation "com.github.bumptech.glide:glide:$glide"
+    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.paging:paging-runtime-ktx:$pagingKtx")
+    implementation("androidx.work:work-runtime-ktx:$workerKtx")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshX")
 
     /** Timber */
-    implementation "com.jakewharton.timber:timber:$timber"
+    implementation("com.jakewharton.timber:timber:$timber")
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    testImplementation("junit:junit:$junit")
+    testImplementation("io.mockk:mockk:$mockk")
+    androidTestImplementation("androidx.test:runner:$runner")
 }
 
 dokka {
-    moduleName = 'ui'
-    outputFormat = 'kotlin-website'
-    outputDirectory = "$buildDir/javadoc"
-    reportUndocumented = true
+    outputFormat = 'javadoc'
+    outputDirectory = "$buildDir/docs/javadoc"
 
-    linkMapping {
-        dir = "src/main/java"
-        url = "https://github.com/anitrend/support-app/tree/develop/support-ui/src/main/java"
-        suffix = "#L"
+    configuration {
+        moduleName = 'ui'
+        reportUndocumented = true
+        platform = "JVM"
+        jdkVersion = 8
+
+        perPackageOption {
+            prefix = "kotlin"
+            skipDeprecated = false
+            reportUndocumented = true
+            includeNonPublic = false
+        }
+
+        sourceLink {
+            path = "src/main/kotlin"
+            url = "https://github.com/anitrend/support-arch/tree/develop/support-ui/src/main/kotlin"
+            lineSuffix = "#L"
+        }
+
+        externalDocumentationLink {
+            url = new URL("https://javadoc.jitpack.io/com/github/anitrend/support-arch/support-ext/1.3.0-beta02/javadoc/")
+            url = new URL("https://javadoc.jitpack.io/com/github/anitrend/support-arch/support-core/1.3.0-beta02/javadoc/")
+            url = new URL("https://javadoc.jitpack.io/com/github/anitrend/support-arch/support-theme/1.3.0-beta02/javadoc/")
+            url = new URL("https://javadoc.jitpack.io/com/github/anitrend/support-arch/support-domain/1.3.0-beta02/javadoc/")
+            url = new URL("https://developer.android.com/reference/kotlin/")
+            packageListUrl = new URL("https://developer.android.com/reference/androidx/package-list")
+        }
     }
 }
 
 task dokkaJar(type: Jar) {
     setArchiveClassifier('javadoc')
-    from dokka
+    from dokka.outputDirectory
 }
 
 task sourcesJar(type: Jar) {
@@ -112,7 +131,8 @@ task classesJar(type: Jar) {
 }
 
 artifacts {
+    archives dokkaJar
     archives classesJar
-    archives javadocJar
+    //archives javadocJar
     archives sourcesJar
 }

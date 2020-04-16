@@ -2,10 +2,10 @@ package co.anitrend.arch.core.presenter
 
 import android.content.Context
 import android.content.SharedPreferences
-import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import co.anitrend.arch.extension.preference.SupportPreference
 import co.anitrend.arch.extension.preference.event.OnSharedPreferenceBinder
 import co.anitrend.arch.extension.util.SupportExtKeyStore
+import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 
 /**
  * An abstract declaration of what responsibilities a presenter should undertake
@@ -14,19 +14,12 @@ import co.anitrend.arch.extension.util.SupportExtKeyStore
  * @param supportPreference implementation of application preferences
  *
  * @see SupportPreference
+ * @since v0.9.X
  */
 abstract class SupportPresenter<S : SupportPreference>(
     protected val context: Context,
     val supportPreference: S
 ): OnSharedPreferenceBinder {
-
-    val pagingHelper
-        get() = SupportPagingHelper(
-            pageSize = paginationSize(),
-            isPagingLimit = false
-        )
-
-    protected open fun paginationSize(): Int = SupportExtKeyStore.pagingLimit
 
     /**
      * Enables or disables action mode, behaviour should be implemented in your adapter, in ItemClickLister.
@@ -47,15 +40,13 @@ abstract class SupportPresenter<S : SupportPreference>(
      * Unregister any listeners from fragments or activities
      */
     override fun onPause(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        supportPreference.sharedPreferences
-                .unregisterOnSharedPreferenceChangeListener(changeListener)
+        supportPreference.unregisterOnSharedPreferenceChangeListener(changeListener)
     }
 
     /**
      * Register any listeners from fragments or activities
      */
     override fun onResume(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        supportPreference.sharedPreferences
-                .registerOnSharedPreferenceChangeListener(changeListener)
+        supportPreference.registerOnSharedPreferenceChangeListener(changeListener)
     }
 }

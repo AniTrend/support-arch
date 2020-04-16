@@ -5,22 +5,32 @@ import co.anitrend.arch.domain.entities.NetworkState
 
 /**
  * Contract for view models that aids relaying commands to an underlying repository
+ *
+ * @since v0.9.X
  */
+@Deprecated(
+    message = "Enforces implementation to follow an implementation style which might not be desirable",
+    replaceWith = ReplaceWith(
+        "ISupportViewState",
+        "co.anitrend.arch.core.model.ISupportViewState"
+    )
+)
 interface ISupportViewModel<P, R> {
 
+    /**
+     * Use case result model
+     */
     val model: LiveData<R?>
 
+    /**
+     * Network state for main requests
+     */
     val networkState: LiveData<NetworkState>?
 
-    val refreshState: LiveData<NetworkState>?
-
     /**
-     * Forwards queries for the repository to handle
-     *
-     * @see [co.anitrend.arch.data.repository.SupportRepository.invoke]
-     * @param parameter request data to be used by the repository
+     * Refreshing network state
      */
-    operator fun invoke(parameter: P)
+    val refreshState: LiveData<NetworkState>?
 
     /**
      * Checks if the live data stored in the repository has is not null
@@ -30,17 +40,19 @@ interface ISupportViewModel<P, R> {
     fun hasModelData(): Boolean = model.value != null
 
     /**
-     * Returns the current request bundle, this is nullable
+     * Starts view model operations
+     *
+     * @param parameter request payload
      */
-    fun currentRequestParameter(): P?
+    operator fun invoke(parameter: P)
 
     /**
-     * Requests the repository to perform a retry operation
+     * Requests the use case to perform a retry operation
      */
     fun retry()
 
     /**
-     * Requests the repository to perform a refresh operation on the underlying database
+     * Requests the use case to perform a refresh operation
      */
     fun refresh()
 }

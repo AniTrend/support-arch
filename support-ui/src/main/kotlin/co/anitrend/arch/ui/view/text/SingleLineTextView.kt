@@ -9,7 +9,7 @@ import co.anitrend.arch.ui.view.contract.CustomView
 /**
  * Single line text view that truncates at the end of the string
  *
- * @since 1.0.X
+ * @since v0.9.X
  */
 class SingleLineTextView : AppCompatTextView, CustomView {
 
@@ -28,7 +28,7 @@ class SingleLineTextView : AppCompatTextView, CustomView {
      * @param context view context
      * @param attrs view attributes if applicable
      */
-    override fun onInit(context: Context, attrs: AttributeSet?) {
+    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         isSingleLine = true
         ellipsize = TextUtils.TruncateAt.END
     }

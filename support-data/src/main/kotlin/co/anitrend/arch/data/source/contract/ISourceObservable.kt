@@ -3,11 +3,12 @@ package co.anitrend.arch.data.source.contract
 import androidx.lifecycle.LiveData
 
 /**
- *
+ * Observable data source result interface, used in concrete data sources for
+ * returning an observable live data persisted result
  *
  * @since v1.1.0
  */
-interface ISourceObservable<O, P> {
+interface ISourceObservable<P, R> {
 
     /**
      * Returns the appropriate observable which we will monitor for updates,
@@ -16,5 +17,5 @@ interface ISourceObservable<O, P> {
      *
      * @param parameter to use when executing
      */
-    operator fun invoke(parameter: P): LiveData<O>
+    operator fun invoke(parameter: P): LiveData<R>
 }

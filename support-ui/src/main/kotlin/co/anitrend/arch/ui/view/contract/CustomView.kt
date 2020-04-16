@@ -6,7 +6,7 @@ import android.util.AttributeSet
 /**
  * Designed to init constructors for custom views and provide coroutine contexts
  *
- * @since 1.0.X
+ * @since v1.0.X
  */
 interface CustomView {
 
@@ -15,8 +15,9 @@ interface CustomView {
      *
      * @param context view context
      * @param attrs view attributes if applicable
+     * @param styleAttr style attribute if applicable
      */
-    fun onInit(context: Context, attrs: AttributeSet? = null)
+    fun onInit(context: Context, attrs: AttributeSet? = null, styleAttr: Int? = null)
 
     /**
      * Should be called on a view's detach from window to unbind or release object references

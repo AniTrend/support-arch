@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material X Light Colors -->
+
+    <color name="primaryColor">#000000</color>
+    <color name="primaryLightColor">#2c2c2c</color>
+    <color name="primaryDarkColor">#000000</color>
+
+    <color name="secondaryColor">#000000</color>
+    <color name="secondaryLightColor">#2c2c2c</color>
+    <color name="secondaryDarkColor">#000000</color>
+
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#e4e4e4</color>
+
+    <color name="colorPrimary">@color/primaryColor</color>
+    <color name="colorPrimaryVariant">@color/primaryLightColor</color>
+    <color name="colorSecondary">@color/secondaryColor</color>
+    <color name="colorSecondaryVariant">@color/secondaryLightColor</color>
+
+    <color name="colorBackground">@color/primaryDarkColor</color>
+    <color name="colorSurface">@color/primaryLightColor</color>
+    <color name="colorError">@color/colorStateRed</color>
+
+    <color name="colorOnPrimary">@color/primaryLightColor</color>
+    <color name="colorOnSecondary">#ffffff</color>
+    <color name="colorOnBackground">#ffffff</color>
+    <color name="colorOnSurface">#ffffff</color>
+    <color name="colorOnError">@color/primaryLightColor</color>
+
+    <color name="colorTransparentImageBackground">#46000000</color>
+
+    <color name="colorScrim">#52000000</color>
+
+    <color name="colorAccent">@color/colorStateGreen</color>
+
+    <color name="colorPrimaryDark">@color/primaryDarkColor</color>
+
+</resources>

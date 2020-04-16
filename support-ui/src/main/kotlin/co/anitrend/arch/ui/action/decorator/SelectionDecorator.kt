@@ -3,7 +3,7 @@ package co.anitrend.arch.ui.action.decorator
 import android.widget.CheckBox
 import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
-import co.anitrend.arch.core.R
+import co.anitrend.arch.theme.R
 import co.anitrend.arch.extension.getColorFromAttr
 import co.anitrend.arch.extension.getCompatColor
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
@@ -11,7 +11,7 @@ import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 /**
  * A helper interface for applying decorations on sections for [co.anitrend.arch.ui.action.SupportActionMode]
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
 interface SelectionDecorator<T> {
 

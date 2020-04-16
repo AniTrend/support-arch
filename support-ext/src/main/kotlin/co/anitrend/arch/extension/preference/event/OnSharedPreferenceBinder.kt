@@ -3,7 +3,9 @@ package co.anitrend.arch.extension.preference.event
 import android.content.SharedPreferences
 
 /**
- * Created by max on 2017/06/14.
+ * Shared preference change listener binder
+ *
+ * @since v0.9.X
  */
 interface OnSharedPreferenceBinder {
 

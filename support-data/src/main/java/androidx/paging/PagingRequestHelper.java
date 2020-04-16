@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p>
  * It tracks a {@link Status} and an {@code error} for each {@link RequestType}.
  * <p>
- * A sample usage of this class to limit requests looks like this:
+ * A trakt usage of this class to limit requests looks like this:
  * <pre>
  * class PagingBoundaryCallback extends PagedList.BoundaryCallback&lt;MyItem> {
  *     // TODO replace with an executor from your application
@@ -104,7 +104,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * </pre>
  */
 // THIS class is likely to be moved into the library in a future release. Feel free to copy it
-// from this sample.
+// from this trakt.
 public class PagingRequestHelper {
     private final Object mLock = new Object();
     private final Executor mRetryService;

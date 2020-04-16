@@ -1,5 +1,9 @@
 package co.anitrend.arch.extension.util
 
+import co.anitrend.arch.extension.annotation.SupportExperimental
+import co.anitrend.arch.extension.util.time.SupportDateTimeUnit
+import co.anitrend.arch.extension.util.time.SupportTimeHelper
+import co.anitrend.arch.extension.util.time.SupportTimeInstance
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -9,6 +13,7 @@ import org.junit.Test
  *
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
+@SupportExperimental
 class SupportTimeHelperTest {
 
     @Test
@@ -25,7 +30,7 @@ class SupportTimeHelperTest {
         val result = SupportTimeHelper(
             supportCurrentUnixTime = currentTime,
             supportTargetTime = targetUnit,
-            supportTimeType = SupportTimeHelper.TIME_UNIT_SECONDS
+            supportTimeType = SupportDateTimeUnit.TIME_UNIT_SECONDS
         )
 
         // assert time period has elapsed
@@ -46,7 +51,7 @@ class SupportTimeHelperTest {
         val result = SupportTimeHelper(
             supportCurrentUnixTime = currentTime,
             supportTargetTime = targetUnit,
-            supportTimeType = SupportTimeHelper.TIME_UNIT_SECONDS
+            supportTimeType = SupportDateTimeUnit.TIME_UNIT_SECONDS
         )
 
         // assert time period has not elapsed
@@ -67,7 +72,7 @@ class SupportTimeHelperTest {
         val result = SupportTimeHelper(
             supportCurrentUnixTime = currentTime,
             supportTargetTime = targetUnit,
-            supportTimeType = SupportTimeHelper.TIME_UNIT_MINUTES
+            supportTimeType = SupportDateTimeUnit.TIME_UNIT_MINUTES
         )
 
         // assert time period has elapsed
@@ -88,7 +93,7 @@ class SupportTimeHelperTest {
         val result = SupportTimeHelper(
             supportCurrentUnixTime = currentTime,
             supportTargetTime = targetUnit,
-            supportTimeType = SupportTimeHelper.TIME_UNIT_MINUTES
+            supportTimeType = SupportDateTimeUnit.TIME_UNIT_MINUTES
         )
 
         // assert time period has not elapsed
@@ -109,7 +114,7 @@ class SupportTimeHelperTest {
         val result = SupportTimeHelper(
             supportCurrentUnixTime = currentTime,
             supportTargetTime = targetUnit,
-            supportTimeType = SupportTimeHelper.TIME_UNIT_HOURS
+            supportTimeType = SupportDateTimeUnit.TIME_UNIT_HOURS
         )
 
         // assert time period has elapsed
@@ -130,7 +135,7 @@ class SupportTimeHelperTest {
         val result = SupportTimeHelper(
             supportCurrentUnixTime = currentTime,
             supportTargetTime = targetUnit,
-            supportTimeType = SupportTimeHelper.TIME_UNIT_HOURS
+            supportTimeType = SupportDateTimeUnit.TIME_UNIT_HOURS
         )
 
         // assert time period has not elapsed
@@ -151,7 +156,7 @@ class SupportTimeHelperTest {
         val result = SupportTimeHelper(
             supportCurrentUnixTime = currentTime,
             supportTargetTime = targetUnit,
-            supportTimeType = SupportTimeHelper.TIME_UNIT_DAYS
+            supportTimeType = SupportDateTimeUnit.TIME_UNIT_DAYS
         )
 
         // assert time period has elapsed
@@ -172,7 +177,7 @@ class SupportTimeHelperTest {
         val result = SupportTimeHelper(
             supportCurrentUnixTime = currentTime,
             supportTargetTime = targetUnit,
-            supportTimeType = SupportTimeHelper.TIME_UNIT_DAYS
+            supportTimeType = SupportDateTimeUnit.TIME_UNIT_DAYS
         )
 
         // assert time period has not elapsed

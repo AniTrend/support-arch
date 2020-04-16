@@ -5,7 +5,6 @@ import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 
-
 /**
  * Core implementation for [androidx.recyclerview.widget.RecyclerView.ViewHolder] with additional
  * functionality for supporting [ISupportActionMode]
@@ -14,7 +13,7 @@ import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
  * @see ISupportActionMode
  */
 abstract class SupportViewHolder<T>(
-    view: View
+    protected val view: View
 ) : RecyclerView.ViewHolder(view) {
 
     var supportActionMode: ISupportActionMode<T>? = null
@@ -35,10 +34,8 @@ abstract class SupportViewHolder<T>(
     abstract operator fun invoke(model: T?)
 
     /**
-     * If any image views are used within the view holder, clear any pending async requests
-     * by using [com.bumptech.glide.RequestManager.clear]
-     *
-     * @see com.bumptech.glide.Glide
+     * Clear or unbind any references the views might be using, e.g. image loading
+     * libraries, data binding, callbacks e.t.c
      */
     abstract fun onViewRecycled()
 
@@ -47,8 +44,9 @@ abstract class SupportViewHolder<T>(
      * [performClick] to dispatch [Pair]<[Int], T> on the [ItemClickListener]
      *
      * @param view the view that has been clicked
+     * @param itemClickListener callback for handing clicks
      */
-    abstract fun onItemClick(view: View)
+    abstract fun onItemClick(view: View, itemClickListener: ItemClickListener<T>)
 
     /**
      * Called when a view has been clicked and held. Optionally you can call
@@ -57,9 +55,11 @@ abstract class SupportViewHolder<T>(
      * If [ISupportActionMode] is then long clicking an items will start the section action mode
      *
      * @param view The view that was clicked and held.
+     * @param itemClickListener callback for handing clicks
+     *
      * @return [Boolean] true if the callback consumed the long click, false otherwise.
      */
-    open fun onLongItemClick(view: View): Boolean = false
+    open fun onLongItemClick(view: View, itemClickListener: ItemClickListener<T>): Boolean = false
 
     /**
      * Applying selection styling on the desired item

@@ -2,10 +2,8 @@ package co.anitrend.arch.ui.fragment
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.ActionMode
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.*
+import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import co.anitrend.arch.core.presenter.SupportPresenter
@@ -14,27 +12,26 @@ import co.anitrend.arch.ui.action.SupportActionMode
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.action.event.ActionModeListener
 import co.anitrend.arch.ui.view.contract.ISupportFragmentActivity
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import timber.log.Timber
 
 /**
  * Core implementation contract for detailed fragment which may not complex or mixed UI elements.
  *
- * @since 0.9.X
+ * @since v0.9.X
  * @see ISupportFragmentActivity
  */
-abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), ActionModeListener, ISupportFragmentActivity<VM, P> {
+abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(),
+    ActionModeListener, ISupportFragmentActivity<VM, P>, CoroutineScope by MainScope() {
 
     protected val moduleTag: String = javaClass.simpleName
 
     @MenuRes
-    protected var inflateMenu: Int = ISupportFragmentActivity.NO_MENU_ITEM
+    protected open var inflateMenu: Int = ISupportFragmentActivity.NO_MENU_ITEM
 
-    /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob],
-     * preferably use [SupervisorJob](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-supervisor-job.html)
-     */
-    override val supervisorJob = SupervisorJob()
+    @LayoutRes
+    protected open val inflateLayout: Int = ISupportFragmentActivity.NO_LAYOUT_ITEM
 
     protected val supportAction: ISupportActionMode<M> by lazy(LAZY_MODE_UNSAFE) {
         SupportActionMode<M>(
@@ -62,6 +59,40 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
+        initializeComponents(savedInstanceState)
+    }
+
+    /**
+     * Called to have the fragment instantiate its user interface view. This is optional, and
+     * non-graphical fragments can return null. This will be called between
+     * [onCreate] & [onActivityCreated].
+     *
+     * A default View can be returned by calling [Fragment] in your
+     * constructor. Otherwise, this method returns null.
+     *
+     * It is recommended to __only__ inflate the layout in this method and move
+     * logic that operates on the returned View to [onViewCreated].
+     *
+     * If you return a View from here, you will later be called in [onDestroyView]
+     * when the view is being released.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
+     * @param container If non-null, this is the parent view that the fragment's UI should be
+     * attached to.  The fragment should not add the view itself, but this can be used to generate
+     * the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return Return the View for the fragment's UI, or null.
+     */
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return if (inflateLayout != ISupportFragmentActivity.NO_LAYOUT_ITEM) {
+            inflater.inflate(inflateLayout, container, false)
+        } else super.onCreateView(inflater, container, savedInstanceState)
     }
 
     /**
@@ -82,15 +113,6 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(), Act
     override fun onResume() {
         super.onResume()
         supportPresenter.onResume(this)
-    }
-
-    /**
-     * Called when the fragment is no longer in use.  This is called
-     * after [SupportFragment.onStop] and before [SupportFragment.onDetach].
-     */
-    override fun onDestroy() {
-        cancelAllChildren()
-        super.onDestroy()
     }
 
     /**

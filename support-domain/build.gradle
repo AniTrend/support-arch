@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-android-extensions")
-    id 'org.jetbrains.dokka' version '0.9.18'
+    id 'org.jetbrains.dokka' version '0.10.1'
 }
 
 android {
@@ -24,6 +24,7 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
     testOptions {
         unitTests.returnDefaultValues = true
@@ -48,25 +49,40 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     /** Kotlin Libraries */
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
 
     /** Testing-only dependencies */
-    testImplementation "junit:junit:$junit"
-    testImplementation "io.mockk:mockk:$mockk"
-    androidTestImplementation "androidx.test:runner:$runner"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    testImplementation("junit:junit:$junit")
+    testImplementation("io.mockk:mockk:$mockk")
 }
 
 dokka {
-    moduleName = 'domain'
-    outputFormat = 'kotlin-website'
-    outputDirectory = "$buildDir/javadoc"
-    reportUndocumented = true
+    outputFormat = 'javadoc'
+    outputDirectory = "$buildDir/docs/javadoc"
 
-    linkMapping {
-        dir = "src/main/java"
-        url = "https://github.com/anitrend/support-arch/tree/develop/support-domain/src/main/java"
-        suffix = "#L"
+    configuration {
+        moduleName = 'domain'
+        reportUndocumented = true
+        platform = "JVM"
+        jdkVersion = 8
+
+        perPackageOption {
+            prefix = "kotlin"
+            skipDeprecated = false
+            reportUndocumented = true
+            includeNonPublic = false
+        }
+
+        sourceLink {
+            path = "src/main/kotlin"
+            url = "https://github.com/anitrend/support-arch/tree/develop/support-domain/src/main/kotlin"
+            lineSuffix = "#L"
+        }
+
+        externalDocumentationLink {
+            url = new URL("https://developer.android.com/reference/kotlin/")
+            packageListUrl = new URL("https://developer.android.com/reference/androidx/package-list")
+        }
     }
 }
 
@@ -95,7 +111,8 @@ task classesJar(type: Jar) {
 }
 
 artifacts {
+    archives dokkaJar
     archives classesJar
-    archives javadocJar
+    //archives javadocJar
     archives sourcesJar
 }

@@ -5,7 +5,7 @@ import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.action.decorator.SelectionDecorator
 import co.anitrend.arch.ui.action.event.ActionModeListener
-import co.anitrend.arch.ui.recycler.adapter.SupportViewAdapter
+import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import java.util.*
 
@@ -13,7 +13,7 @@ import java.util.*
 /**
  * A helper class for triggering action mode from [SupportViewHolder]
  *
- * @since 0.9.X
+ * @since v0.9.X
  */
 class SupportActionMode<T>(
     private val actionModeListener: ActionModeListener?,
@@ -22,7 +22,7 @@ class SupportActionMode<T>(
 
     private var actionMode: ActionMode? = null
 
-    private var supportViewAdapter: SupportViewAdapter<*>? = null
+    private var supportViewAdapter: ISupportViewAdapter<*>? = null
 
     private val selectedItems: MutableList<T> = ArrayList()
 
@@ -62,7 +62,7 @@ class SupportActionMode<T>(
     override fun clearSelection() {
         actionMode?.finish()
         selectedItems.clear()
-        supportViewAdapter?.notifyDataSetChanged()
+        supportViewAdapter?.updateSelection()
     }
 
     /**
@@ -73,7 +73,7 @@ class SupportActionMode<T>(
     override fun selectAllItems(selection: List<T>) {
         selectedItems.clear()
         selectedItems.addAll(selection)
-        supportViewAdapter?.notifyDataSetChanged()
+        supportViewAdapter?.updateSelection()
         actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
     }
 
@@ -147,7 +147,7 @@ class SupportActionMode<T>(
      *
      * @param supportViewAdapter current recycler view adapter
      */
-    override fun setRecyclerViewAdapter(supportViewAdapter: SupportViewAdapter<*>) {
+    override fun setRecyclerViewAdapter(supportViewAdapter: ISupportViewAdapter<*>) {
         this.supportViewAdapter = supportViewAdapter
     }
 }

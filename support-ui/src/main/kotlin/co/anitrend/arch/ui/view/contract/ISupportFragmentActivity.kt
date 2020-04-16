@@ -3,16 +3,15 @@ package co.anitrend.arch.ui.view.contract
 import android.content.SharedPreferences
 import android.os.Bundle
 import co.anitrend.arch.core.presenter.SupportPresenter
-import co.anitrend.arch.core.viewmodel.SupportViewModel
-import co.anitrend.arch.extension.util.SupportCoroutineHelper
+import co.anitrend.arch.core.viewmodel.contract.ISupportViewModel
+import co.anitrend.arch.extension.coroutine.SupportCoroutine
 
 /**
  * Contract for implementing [androidx.fragment.app.FragmentActivity] based components
  *
- * @since 0.9.X
- * @see SupportCoroutineHelper
+ * @since v0.9.X
  */
-interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCoroutineHelper,
+interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> :
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     /**
@@ -37,7 +36,7 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCorouti
      *
      * @return view model of the given type
      */
-    val supportViewModel: SupportViewModel<*, VM>?
+    val supportViewModel: ISupportViewModel<*, VM>?
         get() = null
 
     /**
@@ -66,13 +65,13 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCorouti
     fun onUpdateUserInterface()
 
     /**
-     * Handles the complex logic required to dispatch network request to [SupportViewModel]
+     * Handles the complex logic required to dispatch network request to [ISupportViewModel]
      * to either request from the network or database cache.
      *
      * The results of the dispatched network or cache call will be published by the
-     * [androidx.lifecycle.LiveData] specifically [SupportViewModel.model]
+     * [androidx.lifecycle.LiveData] specifically [ISupportViewModel.model]
      *
-     * @see [SupportViewModel.requestBundleLiveData]
+     * @see [ISupportViewModel.invoke]
      */
     fun onFetchDataInitialize()
 
@@ -98,7 +97,7 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCorouti
      *
      * @param key preference key that has been changed
      */
-    fun isPreferenceKeyValid(key: String) = true
+    fun isPreferenceKeyValid(key: String) = false
 
     companion object {
 
@@ -108,5 +107,13 @@ interface ISupportFragmentActivity<VM, P : SupportPresenter<*>> : SupportCorouti
          * [NO_MENU_ITEM] has the default value of 0
          */
         const val NO_MENU_ITEM = 0
+
+        /**
+         * Constant value that indicates that no dynamic layout will be inflated for a
+         * [ISupportFragmentActivity] derivative
+         *
+         * [NO_LAYOUT_ITEM] has the default value of 0
+         */
+        const val NO_LAYOUT_ITEM = 0
     }
 }

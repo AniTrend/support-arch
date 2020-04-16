@@ -1,23 +1,27 @@
 package co.anitrend.arch.extension.util.contract
 
 import android.annotation.TargetApi
+import android.content.Context
 import android.os.Build
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
+ * Contract for date helper
  *
- *
- * @since v1.1.0
+ * @since v1.2.0
  */
 interface ISupportDateHelper {
 
     /**
      * [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) date format pattern, this default pattern
-     * targets API level 24+
+     * targets API level [Build.VERSION_CODES.N] and up
      *
      * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
-     * @since 1.2.0
      */
     val defaultInputDatePattern
         @TargetApi(Build.VERSION_CODES.N)
@@ -25,10 +29,17 @@ interface ISupportDateHelper {
 
     /**
      * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
-     * @since 1.2.0
      */
     val defaultOutputDatePattern
         get() =  "yyyy-MM-dd HH:mm:ss"
+
+    /** [Three Ten Android Backport](https://github.com/JakeWharton/ThreeTenABP)
+     * Should handle initialization of ThreeTenABP if you are overriding the interface
+     * and wish to make use of the default methods
+     *
+     * @param context application context
+     */
+    fun initializeThreeTenBackPort(context: Context)
 
     /**
      * Helper utility for converting unix timestamp to a date string format
@@ -42,27 +53,21 @@ interface ISupportDateHelper {
      *
      * @return date string following the output pattern of [outputDatePattern]
      *
-     * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
-     * @since 1.2.0
+     * @see [DateTimeFormatter](https://developer.android.com/reference/java/time/format/DateTimeFormatter)
      */
     fun convertFromUnixTimeStamp(
         unixTimeStamp: Long,
+        locale: Locale = Locale.getDefault(),
         outputDatePattern: String = defaultOutputDatePattern,
         targetTimeZone: TimeZone = TimeZone.getDefault()
     ): String {
+        val originDate = Instant.ofEpochMilli(unixTimeStamp)
 
-        val originDate = Date(unixTimeStamp)
+        val outputDateFormat = DateTimeFormatter.ofPattern(
+            outputDatePattern, locale
+        ).withZone(ZoneId.of(targetTimeZone.id))
 
-        val convertedDate = SimpleDateFormat(
-            outputDatePattern,
-            Locale.getDefault()
-        )
-
-        with (convertedDate) {
-            timeZone = targetTimeZone
-        }
-
-        return convertedDate.format(originDate)
+        return outputDateFormat.format(originDate)
     }
 
     /**
@@ -76,26 +81,48 @@ interface ISupportDateHelper {
      *
      * @return Unix based time stamp of type [Long] measured in milliseconds
      *
-     * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
-     * @since 1.2.0
+     * @see [DateTimeFormatter](https://developer.android.com/reference/java/time/format/DateTimeFormatter)
      */
     fun convertToUnixTimeStamp(
         originDate: String,
+        locale: Locale = Locale.getDefault(),
         inputPattern: String = defaultInputDatePattern,
         targetTimeZone: TimeZone = TimeZone.getDefault()
-    ): Long? {
-        val dateFormatter = SimpleDateFormat(
-            inputPattern,
-            Locale.getDefault()
-        )
+    ): Long {
+        val dateFormatter = DateTimeFormatter.ofPattern(
+            inputPattern, locale
+        ).withZone(ZoneId.of(targetTimeZone.id))
 
-        with (dateFormatter) {
-            timeZone = targetTimeZone
-        }
+        val parsedDate = dateFormatter.parse(originDate)
+        val zonedDateTime = ZonedDateTime.from(parsedDate).toOffsetDateTime()
 
-        val convertedDate = dateFormatter.parse(originDate)
+        return zonedDateTime.toInstant().toEpochMilli()
+    }
 
-        return convertedDate?.time
+    /**
+     * Helper utility for converting dates in string format to unix time stamp
+     *
+     * @param originDate input date which needs to be converted
+     * @param dateTimeFormatter date time format representing the [originDate]
+     * @param targetTimeZone  time zone that the output will be converted to,
+     * by default the timezone is set to whatever the current device is set to
+     *
+     * @return Unix based time stamp of type [Long] measured in milliseconds
+     *
+     * @see [DateTimeFormatter](https://developer.android.com/reference/java/time/format/DateTimeFormatter)
+     */
+    fun convertToUnixTimeStamp(
+        originDate: String,
+        locale: Locale = Locale.getDefault(),
+        dateTimeFormatter: DateTimeFormatter,
+        targetTimeZone: TimeZone = TimeZone.getDefault()
+    ): Long {
+        val parsedDate = dateTimeFormatter
+            .withZone(ZoneId.of(targetTimeZone.id))
+            .parse(originDate)
+        val zonedDateTime = ZonedDateTime.from(parsedDate).toOffsetDateTime()
+
+        return zonedDateTime.toInstant().toEpochMilli()
     }
 
     /**
@@ -111,29 +138,58 @@ interface ISupportDateHelper {
      *
      * @return date string following the output pattern of [outputDatePattern]
      *
-     * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
-     * @since 1.2.0
+     * @see [DateTimeFormatter](https://developer.android.com/reference/java/time/format/DateTimeFormatter)
      */
     fun convertToTimeStamp(
         originDate: String,
+        locale: Locale = Locale.getDefault(),
         inputPattern: String = defaultInputDatePattern,
         outputDatePattern: String = defaultOutputDatePattern,
         targetTimeZone: TimeZone = TimeZone.getDefault()
-    ): String? {
-        val dateFormatter = SimpleDateFormat(
-            inputPattern,
-            Locale.getDefault()
+    ): String {
+        val dateFormatter = DateTimeFormatter.ofPattern(
+            inputPattern, locale
+        ).withZone(ZoneId.of(targetTimeZone.id))
+
+        val parsedDate = dateFormatter.parse(originDate)
+        val zonedDateTime = ZonedDateTime.from(parsedDate).toOffsetDateTime()
+
+        val outputDateFormat = DateTimeFormatter.ofPattern(
+            outputDatePattern, locale
         )
+        return zonedDateTime.format(outputDateFormat)
+    }
 
-        with (dateFormatter) {
-            timeZone = targetTimeZone
-        }
+    /**
+     * Helper utility for converting dates in string format from one date type to the other
+     *
+     * @param originDate input date which needs to be converted
+     * @param dateTimeFormatter time format representing the [originDate]
+     * @param outputDatePattern pattern that will be used create the output,
+     * by default this is set to [defaultOutputDatePattern]
+     * @param targetTimeZone  time zone that the output will be converted to,
+     * by default the timezone is set to whatever the current device is set to
+     *
+     * @return date string following the output pattern of [outputDatePattern]
+     *
+     * @see [DateTimeFormatter](https://developer.android.com/reference/java/time/format/DateTimeFormatter)
+     */
+    fun convertToTimeStamp(
+        originDate: String,
+        locale: Locale = Locale.getDefault(),
+        dateTimeFormatter: DateTimeFormatter,
+        outputDatePattern: String = defaultOutputDatePattern,
+        targetTimeZone: TimeZone = TimeZone.getDefault()
+    ): String {
+        val parsedDate = dateTimeFormatter
+            .withZone(ZoneId.of(targetTimeZone.id))
+            .parse(originDate)
 
-        val convertedDate = dateFormatter.parse(originDate)
+        val zonedDateTime = ZonedDateTime.from(parsedDate).toOffsetDateTime()
 
-        return convertedDate?.let {
-            val outputSampleDateFormat = SimpleDateFormat(outputDatePattern, Locale.getDefault())
-            outputSampleDateFormat.format(it)
-        }
+        val outputDateFormat = DateTimeFormatter.ofPattern(
+            outputDatePattern, locale
+        )
+        return zonedDateTime.format(outputDateFormat)
     }
 }
