@@ -21,14 +21,6 @@ abstract class SupportPresenter<S : SupportPreference>(
     val supportPreference: S
 ): OnSharedPreferenceBinder {
 
-    val pagingHelper
-        get() = SupportPagingHelper(
-            pageSize = paginationSize(),
-            isPagingLimit = false
-        )
-
-    protected open fun paginationSize(): Int = SupportExtKeyStore.pagingLimit
-
     /**
      * Enables or disables action mode, behaviour should be implemented in your adapter, in ItemClickLister.
      * Default value for this property is false
@@ -48,15 +40,13 @@ abstract class SupportPresenter<S : SupportPreference>(
      * Unregister any listeners from fragments or activities
      */
     override fun onPause(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        supportPreference.sharedPreferences
-                .unregisterOnSharedPreferenceChangeListener(changeListener)
+        supportPreference.unregisterOnSharedPreferenceChangeListener(changeListener)
     }
 
     /**
      * Register any listeners from fragments or activities
      */
     override fun onResume(changeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
-        supportPreference.sharedPreferences
-                .registerOnSharedPreferenceChangeListener(changeListener)
+        supportPreference.registerOnSharedPreferenceChangeListener(changeListener)
     }
 }

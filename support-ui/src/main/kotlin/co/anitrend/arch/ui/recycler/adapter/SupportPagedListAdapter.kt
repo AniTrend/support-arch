@@ -28,8 +28,6 @@ import timber.log.Timber
  * @see SupportViewHolder
  */
 abstract class SupportPagedListAdapter<T>(
-    protected val presenter: SupportPresenter<*>,
-    override val stateConfiguration: SupportStateLayoutConfiguration,
     itemCallback: DiffUtil.ItemCallback<T> = getDefaultDiffItemCallback()
 ) : ISupportViewAdapter<T>, PagedListAdapter<T, SupportViewHolder<T>>(itemCallback) {
 

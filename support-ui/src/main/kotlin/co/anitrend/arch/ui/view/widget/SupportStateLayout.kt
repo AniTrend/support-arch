@@ -1,11 +1,15 @@
 package co.anitrend.arch.ui.view.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ViewFlipper
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getCompatDrawable
 import co.anitrend.arch.extension.getLayoutInflater
+import co.anitrend.arch.extension.gone
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import co.anitrend.arch.ui.view.contract.CustomView
@@ -30,26 +34,9 @@ open class SupportStateLayout : ViewFlipper, CustomView {
      */
     var stateConfiguration: SupportStateLayoutConfiguration? = null
         set(value) {
-            field = value
-            field?.apply {
-                setInAnimation(context, inAnimation)
-                setOutAnimation(context, outAnimation)
-
-                stateLayoutErrorRetryAction.setText(retryAction)
-                stateLayoutErrorImage.setImageDrawable(
-                    context.getCompatDrawable(errorDrawable)
-                )
-
-                stateLayoutLoadingText.setText(loadingMessage)
-                stateLayoutLoadingImage.setImageDrawable(
-                    context.getCompatDrawable(loadingDrawable)
-                )
-            }
+            field = value?.also { updateUsing(it) }
         }
 
-    /**
-     * Checks if the current view state is loading
-     */
     val isLoading
         get() = displayedChild == LOADING_VIEW
 
@@ -59,17 +46,46 @@ open class SupportStateLayout : ViewFlipper, CustomView {
     val isContent
         get() = displayedChild == CONTENT_VIEW
 
+    private val _interactionLiveData = MutableLiveData<Nothing?>()
+    val interactionLiveData: LiveData<Nothing?>
+        get() = _interactionLiveData
+
+    @Deprecated("Preferably use [SupportStateLayout.interactionLiveData]")
     var onWidgetInteraction: OnClickListener? = null
-        set(value) {
-            field = value
-            stateLayoutErrorRetryAction.setOnClickListener(field)
-        }
+
+    private fun updateUsing(config: SupportStateLayoutConfiguration) {
+        setInAnimation(context, config.inAnimation)
+        setOutAnimation(context, config.outAnimation)
+        if (config.errorDrawable != null)
+            stateLayoutErrorImage.setImageDrawable(
+                context.getCompatDrawable(config.errorDrawable)
+            )
+        else
+            stateLayoutErrorImage.gone()
+
+        if (config.loadingDrawable != null)
+            stateLayoutLoadingImage.setImageDrawable(
+                context.getCompatDrawable(config.loadingDrawable)
+            )
+        else
+            stateLayoutLoadingImage.gone()
+
+        if (config.retryAction != null)
+            stateLayoutErrorRetryAction.setText(config.retryAction)
+        else
+            stateLayoutErrorRetryAction.gone()
+
+        if (config.loadingMessage != null)
+            stateLayoutLoadingText.setText(config.loadingMessage)
+        else
+            stateLayoutLoadingText.gone()
+    }
 
     /**
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization
      */
-    final override fun onInit(context: Context, attrs: AttributeSet?) {
+    final override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         if (!isInEditMode)
             setupAdditionalViews()
 
@@ -77,6 +93,11 @@ open class SupportStateLayout : ViewFlipper, CustomView {
             val a = context.obtainStyledAttributes(this, R.styleable.SupportStateLayout)
             displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, CONTENT_VIEW)
             a.recycle()
+        }
+
+        stateLayoutErrorRetryAction.setOnClickListener {
+            _interactionLiveData.postValue(null)
+            onWidgetInteraction?.onClick(it)
         }
     }
 
@@ -88,6 +109,7 @@ open class SupportStateLayout : ViewFlipper, CustomView {
         onWidgetInteraction = null
     }
 
+    @SuppressLint("InflateParams")
     protected open fun setupAdditionalViews() {
         val loadingView = getLayoutInflater().inflate(
             R.layout.support_state_layout_laoding, null

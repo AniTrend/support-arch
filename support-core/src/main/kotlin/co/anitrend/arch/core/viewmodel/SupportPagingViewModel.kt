@@ -28,6 +28,7 @@ import co.anitrend.arch.domain.usecases.ISupportUseCase
  *
  * @since v0.9.X
  */
+@Deprecated(message = "Create your own view model")
 abstract class SupportPagingViewModel<P, R> : ViewModel(), ISupportViewModel<P, R> {
 
     protected abstract val useCase: ISupportUseCase<P, UserInterfaceState<R>>
