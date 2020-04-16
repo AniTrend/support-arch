@@ -211,46 +211,6 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
     }
 
     /**
-     * Called to ask the fragment to save its current dynamic state, so it
-     * can later be reconstructed in a new instance of its process is
-     * restarted.  If a new instance of the fragment later needs to be
-     * created, the data you place in the Bundle here will be available
-     * in the Bundle given to [.onCreate],
-     * [.onCreateView], and
-     * [.onActivityCreated].
-     *
-     *
-     * This corresponds to [ Activity.onSaveInstanceState(Bundle)][SupportFragment.onSaveInstanceState] and most of the discussion there
-     * applies here as well.  Note however: *this method may be called
-     * at any time before [.onDestroy]*.  There are many situations
-     * where a fragment may be mostly torn down (such as when placed on the
-     * back stack with no UI showing), but its state will not be saved until
-     * its owning activity actually needs to save its state.
-     *
-     * @param outState Bundle in which to place your saved state.
-     */
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable(SupportExtKeyStore.key_pagination, supportPresenter.pagingHelper)
-    }
-
-    /**
-     * Called when all saved state has been restored into the view hierarchy
-     * of the fragment.  This can be used to do initialization based on saved
-     * state that you are letting the view hierarchy track itself, such as
-     * whether check box widgets are currently checked.  This is called
-     * after [.onActivityCreated] and before
-     * [.onStart].
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     * a previous saved state, this is the state.
-     */
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        supportPresenter.pagingHelper.from(savedInstanceState)
-    }
-
-    /**
      * Informs the underlying [SupportStateLayout] of changes to the [NetworkState]
      *
      * @param networkState New state from the application
@@ -265,8 +225,6 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
                 networkState
             )
         }
-        if (networkState is NetworkState.Success)
-            supportPresenter.pagingHelper.onPageNext()
 
         resetWidgetStates()
     }
@@ -275,7 +233,6 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
      * Called when a swipe gesture triggers a refresh.
      */
     override fun onRefresh() {
-        supportPresenter.pagingHelper.onPageRefresh()
         supportViewModel?.refresh()
     }
 
