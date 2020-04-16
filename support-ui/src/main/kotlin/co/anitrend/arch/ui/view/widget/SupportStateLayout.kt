@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ViewFlipper
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getCompatDrawable
 import co.anitrend.arch.extension.getLayoutInflater
@@ -32,13 +34,9 @@ open class SupportStateLayout : ViewFlipper, CustomView {
      */
     var stateConfiguration: SupportStateLayoutConfiguration? = null
         set(value) {
-            field = value
-            field?.also { updateUsing(it) }
+            field = value?.also { updateUsing(it) }
         }
 
-    /**
-     * Checks if the current view state is loading
-     */
     val isLoading
         get() = displayedChild == LOADING_VIEW
 
@@ -48,11 +46,12 @@ open class SupportStateLayout : ViewFlipper, CustomView {
     val isContent
         get() = displayedChild == CONTENT_VIEW
 
+    private val _interactionLiveData = MutableLiveData<Nothing?>()
+    val interactionLiveData: LiveData<Nothing?>
+        get() = _interactionLiveData
+
+    @Deprecated("Preferably use [SupportStateLayout.interactionLiveData]")
     var onWidgetInteraction: OnClickListener? = null
-        set(value) {
-            field = value
-            stateLayoutErrorRetryAction.setOnClickListener(field)
-        }
 
     private fun updateUsing(config: SupportStateLayoutConfiguration) {
         setInAnimation(context, config.inAnimation)
@@ -94,6 +93,11 @@ open class SupportStateLayout : ViewFlipper, CustomView {
             val a = context.obtainStyledAttributes(this, R.styleable.SupportStateLayout)
             displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, CONTENT_VIEW)
             a.recycle()
+        }
+
+        stateLayoutErrorRetryAction.setOnClickListener {
+            _interactionLiveData.postValue(null)
+            onWidgetInteraction?.onClick(it)
         }
     }
 
