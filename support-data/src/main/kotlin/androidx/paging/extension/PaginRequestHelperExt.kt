@@ -20,7 +20,7 @@ fun PagingRequestHelper.createStatusLiveData(): MutableLiveData<NetworkState> {
             report.hasRunning() -> liveData.postValue(NetworkState.Loading)
             report.hasError() -> liveData.postValue(
                 NetworkState.Error(
-                    heading = "Internal Paging Error",
+                    heading = "Internal paging error",
                     message = report.getErrorMessage()
                 )
             )

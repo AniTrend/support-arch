@@ -21,14 +21,6 @@ abstract class SupportPresenter<S : SupportPreference>(
     val supportPreference: S
 ): OnSharedPreferenceBinder {
 
-    val pagingHelper
-        get() = SupportPagingHelper(
-            pageSize = paginationSize(),
-            isPagingLimit = false
-        )
-
-    protected open fun paginationSize(): Int = SupportExtKeyStore.pagingLimit
-
     /**
      * Enables or disables action mode, behaviour should be implemented in your adapter, in ItemClickLister.
      * Default value for this property is false

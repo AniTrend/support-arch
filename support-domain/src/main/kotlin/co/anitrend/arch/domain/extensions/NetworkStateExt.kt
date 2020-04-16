@@ -1,4 +1,6 @@
-package co.anitrend.arch.domain.entities
+package co.anitrend.arch.domain.extensions
+
+import co.anitrend.arch.domain.entities.NetworkState
 
 
 fun NetworkState.isLoading() = this is NetworkState.Loading

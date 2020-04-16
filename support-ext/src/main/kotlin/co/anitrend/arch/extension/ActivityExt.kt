@@ -1,6 +1,5 @@
 package co.anitrend.arch.extension
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -83,7 +82,6 @@ fun LifecycleOwner.isStateAtLeast(state: Lifecycle.State) =
  * events you intend on listening to, preferably [FragmentActivity.onCreate]
  *
  * @param supportLifecycle Observer notify of owner lifecycle state changes
- * @see [SupportLifecycle]
  */
 fun LifecycleOwner.attachComponent(supportLifecycle: SupportLifecycle) =
     lifecycle.addObserver(supportLifecycle)
