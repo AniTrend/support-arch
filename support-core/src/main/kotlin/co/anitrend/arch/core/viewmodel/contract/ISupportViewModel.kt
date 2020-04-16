@@ -8,6 +8,13 @@ import co.anitrend.arch.domain.entities.NetworkState
  *
  * @since v0.9.X
  */
+@Deprecated(
+    message = "Enforces implementation to follow an implementation style which might not be desirable",
+    replaceWith = ReplaceWith(
+        "ISupportViewState",
+        "co.anitrend.arch.core.model.ISupportViewState"
+    )
+)
 interface ISupportViewModel<P, R> {
 
     /**

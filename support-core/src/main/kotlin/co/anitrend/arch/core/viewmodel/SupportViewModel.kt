@@ -25,6 +25,8 @@ import co.anitrend.arch.data.model.UserInterfaceState
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.domain.usecases.ISupportUseCase
 
+
+@Deprecated(message = "Create your own view model")
 abstract class SupportViewModel<P, R> : ViewModel(), ISupportViewModel<P, R> {
 
     protected abstract val useCase: ISupportUseCase<P, UserInterfaceState<R>>
