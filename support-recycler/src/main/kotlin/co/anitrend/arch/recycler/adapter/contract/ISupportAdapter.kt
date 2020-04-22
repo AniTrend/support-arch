@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.theme.animator.contract.ISupportAnimator
@@ -16,9 +17,7 @@ import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 /**
  * Contract for recycler view adapters
  */
-interface ISupportAdapter<T, H: SupportViewHolder> {
-
-    val moduleTag: String
+interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
 
     var lastAnimatedPosition: Int
 
