@@ -14,7 +14,7 @@ import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.recycler.common.SupportFooterErrorViewHolder
 import co.anitrend.arch.ui.recycler.common.SupportFooterLoadingViewHolder
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
-import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
+import co.anitrend.arch.ui.util.StateLayoutConfig
 import java.util.*
 
 /**
@@ -46,7 +46,7 @@ interface ISupportViewAdapter<T> {
     /**
      * Configuration for the state based footer
      */
-    val stateConfiguration: SupportStateLayoutConfiguration
+    val stateConfig: StateLayoutConfig
 
     /**
      * Assigned if the current adapter supports needs to support [ISupportActionMode]

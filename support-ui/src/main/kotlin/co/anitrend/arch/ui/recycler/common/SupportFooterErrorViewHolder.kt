@@ -19,8 +19,7 @@ import kotlinx.android.synthetic.main.support_layout_state_footer_error.view.*
 class SupportFooterErrorViewHolder<T>(
     view: View,
     private val networkState: NetworkState?,
-    private val retryAction: View.OnClickListener,
-    private val configuration: SupportStateLayoutConfiguration
+    private val config: StateLayoutConfig
 ) : SupportViewHolder<T>(view.rootView) {
 
     /**

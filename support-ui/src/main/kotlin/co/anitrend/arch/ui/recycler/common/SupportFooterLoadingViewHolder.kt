@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.support_layout_state_footer_loading.view.*
  */
 class SupportFooterLoadingViewHolder<T>(
     view: View,
-    private val configuration: SupportStateLayoutConfiguration
+    private val config: StateLayoutConfig
 ) : SupportViewHolder<T>(view.rootView) {
 
     /**
