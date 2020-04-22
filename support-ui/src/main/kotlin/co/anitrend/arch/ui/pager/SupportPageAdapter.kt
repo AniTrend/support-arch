@@ -11,8 +11,6 @@ import timber.log.Timber
 import java.util.*
 
 /**
- * Constructor for {@link FragmentStatePagerAdapter}.
- *
  * If [FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT] is passed in, then only the current
  * Fragment is in the [androidx.lifecycle.Lifecycle.State.RESUMED] state, while all other fragments are
  * capped at [androidx.lifecycle.Lifecycle.State.STARTED].
@@ -70,7 +68,9 @@ abstract class SupportPageAdapter(
     override fun getPageTitle(position: Int): CharSequence {
         if (position <= titles.size)
             return titles[position].toUpperCase(Locale.getDefault())
-        Timber.tag(TAG).w("Page title at position: $position doesn't have a corresponding title, returning empty string")
+        Timber.tag(TAG).w(
+            "Page title at position: $position doesn't have a corresponding title, returning empty string"
+        )
         return String.empty()
     }
 

@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.*
-import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getLayoutInflater
 import co.anitrend.arch.theme.animator.contract.ISupportAnimator
@@ -15,15 +14,14 @@ import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.recycler.common.SupportFooterErrorViewHolder
 import co.anitrend.arch.ui.recycler.common.SupportFooterLoadingViewHolder
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
-import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import timber.log.Timber
 
 /**
  * Core implementation for handling complex logic for [List]s and
  * [androidx.recyclerview.widget.RecyclerView.ViewHolder] binding logic
  *
- * @since v1.2.0
  * @see SupportViewHolder
+ * @since v1.2.0
  */
 abstract class SupportListAdapter<T>(
     itemCallback: DiffUtil.ItemCallback<T> = ISupportViewAdapter.getDefaultDiffItemCallback()
@@ -52,7 +50,7 @@ abstract class SupportListAdapter<T>(
     /**
      * Retry click interceptor for recycler footer error
      */
-    override lateinit var retryFooterAction: View.OnClickListener
+    override var retryFooterAction: View.OnClickListener? = null
 
     /**
      * Assigned if the current adapter supports needs to support [ISupportActionMode]
@@ -114,14 +112,14 @@ abstract class SupportListAdapter<T>(
                 return SupportFooterLoadingViewHolder(
                     layoutInflater.inflate(
                         R.layout.support_layout_state_footer_loading, parent, false
-                    ), stateConfiguration
+                    ), stateConfig
                 )
             }
             R.layout.support_layout_state_footer_error -> {
                 return SupportFooterErrorViewHolder(
                     layoutInflater.inflate(
                         R.layout.support_layout_state_footer_error, parent, false
-                    ), networkState, retryFooterAction, stateConfiguration
+                    ), retryFooterAction, networkState, stateConfig
                 )
             }
             else -> createDefaultViewHolder(parent, viewType, layoutInflater)

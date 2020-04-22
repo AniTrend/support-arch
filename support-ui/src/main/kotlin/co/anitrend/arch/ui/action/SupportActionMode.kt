@@ -1,9 +1,10 @@
 package co.anitrend.arch.ui.action
 
 import android.view.ActionMode
-import co.anitrend.arch.core.presenter.SupportPresenter
+import android.view.View
+import co.anitrend.arch.core.presenter.contract.ISupportPresenter
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
-import co.anitrend.arch.ui.action.decorator.SelectionDecorator
+import co.anitrend.arch.ui.action.decorator.ISelectionDecorator
 import co.anitrend.arch.ui.action.event.ActionModeListener
 import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
@@ -17,7 +18,7 @@ import java.util.*
  */
 class SupportActionMode<T>(
     private val actionModeListener: ActionModeListener?,
-    private val presenter: SupportPresenter<*>?
+    private val presenter: ISupportPresenter?
 ): ISupportActionMode<T> {
 
     private var actionMode: ActionMode? = null
@@ -26,29 +27,24 @@ class SupportActionMode<T>(
 
     private val selectedItems: MutableList<T> = ArrayList()
 
-    private var selectionDecorator: SelectionDecorator<T> =
-        object: SelectionDecorator<T> {
-
-        }
-
-    private fun startActionMode(viewHolder: SupportViewHolder<T>) {
+    private fun startActionMode(view: View) {
         if (selectedItems.isEmpty())
-            actionMode = viewHolder.itemView.startActionMode(actionModeListener)
+            actionMode = view.startActionMode(actionModeListener)
     }
 
-    private fun selectItem(viewHolder: SupportViewHolder<T>, objectItem: T?) {
+    private fun selectItem(view: View, supportDecorator: ISelectionDecorator?, objectItem: T?) {
         if (objectItem != null) {
-            startActionMode(viewHolder)
+            startActionMode(view)
             selectedItems.add(objectItem)
-            selectionDecorator.setBackgroundColor(viewHolder, true)
+            supportDecorator?.setBackgroundColor(view, true)
             actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
         }
     }
 
-    private fun deselectItem(viewHolder: SupportViewHolder<T>, objectItem: T?) {
+    private fun deselectItem(view: View, supportDecorator: ISelectionDecorator?, objectItem: T?) {
         if (objectItem != null) {
             selectedItems.remove(objectItem)
-            selectionDecorator.setBackgroundColor(viewHolder, false)
+            supportDecorator?.setBackgroundColor(view, false)
             when (selectedItems.isEmpty()) {
                 true -> actionMode?.finish()
                 false -> actionModeListener?.onSelectionChanged(actionMode, selectedItems.size)
@@ -82,17 +78,21 @@ class SupportActionMode<T>(
      * or if in action mode should be selected or deselected.
      *
      * @param objectItem recycler view item that has been clicked
-     * @param viewHolder the view holder parent of the clicked item
+     * @param view the view holder parent of the clicked item
      *
      * @return true if not currently in action mode otherwise false
      *
-     *  @see SupportViewHolder.isClickable
+     *  @see [SupportViewHolder.isClickable]
      */
-    override fun isSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T?) = when {
+    override fun isSelectionClickable(
+        view: View,
+        decorator: ISelectionDecorator?,
+        objectItem: T?
+    ) = when {
         presenter?.isActionModeEnabled != true || selectedItems.isEmpty() -> true
         else -> when (selectedItems.contains(objectItem)) {
-            true -> { deselectItem(viewHolder, objectItem); false }
-            else -> { selectItem(viewHolder, objectItem); false }
+            true -> { deselectItem(view, decorator, objectItem); false }
+            else -> { selectItem(view, decorator, objectItem); false }
         }
     }
 
@@ -101,21 +101,24 @@ class SupportActionMode<T>(
      * or if in action mode should start the action mode and also select or deselect the item.
      *
      * @param objectItem recycler view item that has been clicked
-     * @param viewHolder the view holder parent of the clicked item
+     * @param view the view holder parent of the clicked item
      *
      * @return true if in action mode to inform long click listener that the
      * we have consumed the event, otherwise false
      *
-     * @see SupportViewHolder.isLongClickable
+     * @see [SupportViewHolder.isLongClickable]
      */
-    override fun isLongSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T?) = when {
+    override fun isLongSelectionClickable(
+        view: View,
+        decorator: ISelectionDecorator?,
+        objectItem: T?
+    ) = when {
         presenter?.isActionModeEnabled != true -> false
         else ->  when (selectedItems.contains(objectItem)) {
-            true -> { deselectItem(viewHolder, objectItem); true }
-            else -> { selectItem(viewHolder, objectItem); true }
+            true -> { deselectItem(view, decorator, objectItem); true }
+            else -> { selectItem(view, decorator, objectItem); true }
         }
     }
-
 
     /**
      * All selected items or an empty list if there are none. This list only holds data
@@ -126,20 +129,12 @@ class SupportActionMode<T>(
     override fun getAllSelectedItems(): List<T> = selectedItems
 
     /**
-     * @return selection mode decorator, if none was assigned the default implementation is used
-     *
-     * @see [SelectionDecorator.setBackgroundColor]
+     * Checks if item exists in the current selection
      */
-    override fun getSelectionDecorator() = selectionDecorator
-
-    /**
-     * Allows your to see your own implementation of how selected or unselected items
-     * should be decorated as they are selected and un-selected
-     *
-     * @param selectionDecorator implementation of a custom decorator
-     */
-    override fun setSelectionDecorator(selectionDecorator: SelectionDecorator<T>) {
-        this.selectionDecorator = selectionDecorator
+    override fun containsItem(item: T?): Boolean {
+        return if (item == null && selectedItems.isNotEmpty())
+            false
+        else selectedItems.contains(item)
     }
 
     /**

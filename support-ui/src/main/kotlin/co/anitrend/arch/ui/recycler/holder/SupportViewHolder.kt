@@ -3,6 +3,7 @@ package co.anitrend.arch.ui.recycler.holder
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
+import co.anitrend.arch.ui.action.decorator.ISelectionDecorator
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
 
 /**
@@ -12,11 +13,12 @@ import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
  * @since v1.1.0
  * @see ISupportActionMode
  */
-abstract class SupportViewHolder<T>(
-    protected val view: View
-) : RecyclerView.ViewHolder(view) {
+abstract class SupportViewHolder<T>(view: View) : RecyclerView.ViewHolder(view) {
 
     var supportActionMode: ISupportActionMode<T>? = null
+
+    var supportDecorator: ISelectionDecorator? =
+        object : ISelectionDecorator {}
 
     /**
      * Constructs an int pair container with a boolean representing a valid adapter position
@@ -37,7 +39,10 @@ abstract class SupportViewHolder<T>(
      * Clear or unbind any references the views might be using, e.g. image loading
      * libraries, data binding, callbacks e.t.c
      */
-    abstract fun onViewRecycled()
+    open fun onViewRecycled() {
+        supportActionMode = null
+        supportDecorator = null
+    }
 
     /**
      * Handle any onclick events from our views, optionally you can call
@@ -65,10 +70,11 @@ abstract class SupportViewHolder<T>(
      * Applying selection styling on the desired item
      * @param model the current liveData item
      */
-    fun onBindSelectionState(model: T?) = supportActionMode?.apply {
-        getSelectionDecorator().setBackgroundColor(this@SupportViewHolder,
-                getAllSelectedItems().contains(model))
-    }
+    @Deprecated("Use")
+    fun onBindSelectionState(model: T?) =
+        supportDecorator?.setBackgroundColor(
+            itemView, supportActionMode?.containsItem(model) ?: false
+        )
 
     /**
      * Handle any onclick events from our views
@@ -103,11 +109,15 @@ abstract class SupportViewHolder<T>(
         }
     }
 
-    private fun isClickable(clicked: T?): Boolean =
-            supportActionMode?.isSelectionClickable(this, clicked) ?: true
+    private fun isClickable(clicked: T?) =
+        supportActionMode?.isSelectionClickable(
+            itemView, supportDecorator, clicked
+        ) ?: true
 
 
 
-    private fun isLongClickable(clicked: T?): Boolean =
-            supportActionMode?.isLongSelectionClickable(this, clicked) ?: true
+    private fun isLongClickable(clicked: T?) =
+        supportActionMode?.isLongSelectionClickable(
+            itemView, supportDecorator, clicked
+        ) ?: true
 }

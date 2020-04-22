@@ -3,8 +3,6 @@ package co.anitrend.arch.ui.recycler.adapter.contract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.*
@@ -15,7 +13,6 @@ import co.anitrend.arch.ui.recycler.common.SupportFooterErrorViewHolder
 import co.anitrend.arch.ui.recycler.common.SupportFooterLoadingViewHolder
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.util.StateLayoutConfig
-import java.util.*
 
 /**
  * Contract for view adapters
@@ -41,7 +38,7 @@ interface ISupportViewAdapter<T> {
     /**
      * Retry click interceptor for recycler footer error
      */
-    var retryFooterAction: View.OnClickListener
+    var retryFooterAction: View.OnClickListener?
 
     /**
      * Configuration for the state based footer
