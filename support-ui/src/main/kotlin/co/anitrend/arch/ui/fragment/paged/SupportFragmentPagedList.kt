@@ -1,12 +1,10 @@
-package co.anitrend.arch.ui.fragment
+package co.anitrend.arch.ui.fragment.paged
 
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.fragment.contract.ISupportFragmentList
+import co.anitrend.arch.ui.fragment.list.SupportFragmentList
 import co.anitrend.arch.ui.recycler.SupportRecyclerView
 import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 
@@ -14,10 +12,10 @@ import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
  * Core implementation for fragments that rely on pagination data sets using [PagedList]
  *
  * @since v0.9.X
- * @see SupportFragment
+ *
  * @see ISupportFragmentList
  */
-abstract class SupportFragmentPagedList<M, P : SupportPresenter<*>, VM> : SupportFragmentList<M, P, VM>() {
+abstract class SupportFragmentPagedList<M, P : SupportPresenter<*>> : SupportFragmentList<M, P>() {
 
     /**
      * Sets the adapter for the recycler view

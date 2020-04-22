@@ -1,15 +1,13 @@
 package co.anitrend.arch.ui.fragment.contract
 
-import android.view.View
 import androidx.annotation.IntegerRes
-import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.recycler.SupportRecyclerView
 import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
-import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
+import co.anitrend.arch.ui.util.StateLayoutConfig
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
 
 /**
@@ -32,12 +30,8 @@ interface ISupportFragmentList<M> : SwipeRefreshLayout.OnRefreshListener {
     val columnSize: Int
         get() = R.integer.grid_list_x3
 
-    val stateLayoutOnClick: View.OnClickListener
-
-    val adapterFooterRetryAction: View.OnClickListener
-
+    val onStateLayoutObserver: Observer<Nothing?>
     val onRefreshObserver: Observer<NetworkState>
-
     val onNetworkObserver: Observer<NetworkState>
 
     /**
@@ -48,7 +42,7 @@ interface ISupportFragmentList<M> : SwipeRefreshLayout.OnRefreshListener {
     /**
      * State configuration for any underlying state representing widgets
      */
-    val supportStateConfiguration: SupportStateLayoutConfiguration
+    val stateConfig: StateLayoutConfig
 
     /**
      * Sets a layout manager to the recycler view
