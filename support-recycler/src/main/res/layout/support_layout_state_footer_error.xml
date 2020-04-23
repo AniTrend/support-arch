@@ -28,7 +28,6 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/lg_margin"
-        android:textColor="@color/primaryTextColor"
         app:backgroundTint="?colorAccent"
         tools:text="Retry" />
 
