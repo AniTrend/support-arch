@@ -85,9 +85,11 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
      * use a span size count of [FULL_SPAN_SIZE] otherwise defaults to the intended size
      *
      * @param position recycler position being rendered
+     * @param spanCount current size of the span count from the layout manager
+     *
      * @see setLayoutSpanSize
      */
-    fun isFullSpanItem(position: Int): Boolean
+    fun isFullSpanItem(position: Int, spanCount: Int): Boolean
 
     /**
      * Should return the span size for the item at [position]
@@ -107,7 +109,7 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
     fun setLayoutSpanSize(layoutManager: GridLayoutManager) {
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int = when {
-                isFullSpanItem(position) -> FULL_SPAN_SIZE
+                isFullSpanItem(position, layoutManager.spanCount) -> FULL_SPAN_SIZE
                 else -> getSpanSizeForItemAt(position) ?: layoutManager.spanCount
             }
         }
@@ -138,7 +140,7 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
      * @param layoutParams StaggeredGridLayoutManager.LayoutParams for your recycler
      */
     fun setLayoutSpanSize(layoutParams: StaggeredGridLayoutManager.LayoutParams, position: Int) {
-        if (isFullSpanItem(position))
+        if (isFullSpanItem(position, layoutParams.spanIndex))
             layoutParams.isFullSpan = true
     }
 

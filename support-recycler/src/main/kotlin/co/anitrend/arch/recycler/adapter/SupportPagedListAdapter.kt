@@ -1,5 +1,6 @@
 package co.anitrend.arch.recycler.adapter
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.paging.PagedListAdapter
@@ -28,7 +29,8 @@ import timber.log.Timber
  */
 abstract class SupportPagedListAdapter<H : SupportViewHolder>(
     itemCallback: DiffUtil.ItemCallback<RecyclerItem<H>> = getDefaultDiffItemCallback(),
-    protected val clickListener: ItemClickListener<RecyclerItem<*>>
+    protected val clickListener: ItemClickListener<RecyclerItem<*>>,
+    protected val context: Context
 ) : ISupportAdapter<RecyclerItem<H>, H>, PagedListAdapter<RecyclerItem<H>, H>(itemCallback) {
 
     override val moduleTag: String = javaClass.name
@@ -179,9 +181,7 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
     }
 
     /**
-     * Return the view type of the item at `position` for the purposes
-     * of view recycling.
-     *
+     * Return the view type of the item at [position] for the purposes of view recycling.
      *
      * The default implementation of this method returns 0, making the assumption of
      * a single view type for the adapter. Unlike ListView adapters, types need not
@@ -189,7 +189,7 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
      *
      * @param position position to query
      * @return integer value identifying the type of the view needed to represent the item at
-     * `position`. Type codes need not be contiguous.
+     * [position]. Type codes need not be contiguous.
      */
     @LayoutRes
     override fun getItemViewType(position: Int): Int {
@@ -226,11 +226,15 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
      * use a span size count of 1 otherwise defaults to the intended size
      *
      * @param position recycler position being rendered
+     * @param spanCount current size of the span count from the layout manager
+     *
      * @see setLayoutSpanSize
      */
-    override fun isFullSpanItem(position: Int): Boolean =
-        getItemViewType(position) == R.layout.support_layout_state_footer_loading ||
-                getItemViewType(position) == R.layout.support_layout_state_footer_error
+    override fun isFullSpanItem(position: Int, spanCount: Int): Boolean {
+        val item = getItem(position)
+        val spanSize = item?.getSpanSize(0, position, context.resources)
+        return spanSize == ISupportAdapter.FULL_SPAN_SIZE
+    }
 
     /**
      * Informs view adapter of changes related to it's view holder
