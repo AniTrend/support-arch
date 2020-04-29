@@ -5,6 +5,13 @@ package co.anitrend.arch.data.mapper.contract
  *
  * @since v1.1.0
  */
+@Deprecated(
+    "Consider using converter instead for better coverage",
+    ReplaceWith(
+        expression = "SupportConverter",
+        imports = arrayOf("co.anitrend.arch.data.converter.SupportConverter")
+    )
+)
 interface ISupportResponseMapper<in S, D> {
 
     /**
