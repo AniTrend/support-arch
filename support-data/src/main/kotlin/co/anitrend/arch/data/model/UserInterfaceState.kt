@@ -22,9 +22,8 @@ data class UserInterfaceState<T> internal constructor(
 ): IUserInterfaceState<LiveData<NetworkState>> {
 
     companion object {
-        fun <T> create(
-            model: LiveData<T>,
-            source: IPagingDataSource
+        fun <T> IPagingDataSource.create(
+            model: LiveData<T>
         ) : UserInterfaceState<T> {
             val refreshTrigger = MutableLiveData<NetworkState>()
             val refreshState = Transformations.switchMap(refreshTrigger) {
@@ -35,21 +34,20 @@ data class UserInterfaceState<T> internal constructor(
 
             return UserInterfaceState(
                 model = model,
-                networkState = source.networkState,
+                networkState = networkState,
                 refreshState = refreshState,
                 refresh = {
-                    source.invalidateAndRefresh()
+                    invalidateAndRefresh()
                     refreshTrigger.value = NetworkState.Loading
                 },
                 retry = {
-                    source.retryRequest()
+                    retryRequest()
                 }
             )
         }
 
-        fun <T> create(
-            model: LiveData<T>,
-            source: ICoreDataSource
+        fun <T> ICoreDataSource.create(
+            model: LiveData<T>
         ) : UserInterfaceState<T> {
             val refreshTrigger = MutableLiveData<NetworkState>()
             val refreshState = Transformations.switchMap(refreshTrigger) {
@@ -60,14 +58,14 @@ data class UserInterfaceState<T> internal constructor(
 
             return UserInterfaceState(
                 model = model,
-                networkState = source.networkState,
+                networkState = networkState,
                 refreshState = refreshState,
                 refresh = {
-                    source.invalidateAndRefresh()
+                    invalidateAndRefresh()
                     refreshTrigger.value = NetworkState.Loading
                 },
                 retry = {
-                    source.retryRequest()
+                    retryRequest()
                 }
             )
         }
