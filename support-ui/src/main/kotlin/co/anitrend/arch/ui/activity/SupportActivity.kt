@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.extension.coroutine.SupportCoroutine
 import co.anitrend.arch.ui.activity.contract.ISupportActivity
 import co.anitrend.arch.ui.common.ISupportActionUp
@@ -24,8 +23,8 @@ import kotlinx.coroutines.MainScope
  * @see SupportCoroutine
  * @see ISupportFragment
  */
-abstract class SupportActivity<P : SupportPresenter<*>> : AppCompatActivity(),
-    ISupportActivity<P>, CoroutineScope by MainScope() {
+abstract class SupportActivity : AppCompatActivity(),
+    ISupportActivity, CoroutineScope by MainScope() {
 
     protected val moduleTag = javaClass.simpleName
 

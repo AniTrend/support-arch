@@ -1,15 +1,13 @@
 package co.anitrend.arch.ui.activity.contract
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModel
-import co.anitrend.arch.core.presenter.SupportPresenter
 
 /**
  * Contract for implementing [androidx.appcompat.app.AppCompatActivity] components
  *
  * @since v1.3.0
  */
-interface ISupportActivity<P : SupportPresenter<*>> {
+interface ISupportActivity {
 
     /**
      * A simple value that can be used when making permission requests,
@@ -19,14 +17,6 @@ interface ISupportActivity<P : SupportPresenter<*>> {
      */
     val compatViewPermissionValue: Int
         get() = 110
-
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return view model of the given type
-     */
-    val viewModel: ViewModel?
-        get() = null
 
     /**
      * Additional initialization to be done in this method, this is called in during
