@@ -167,6 +167,17 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
         payloads: List<Any> = emptyList()
     )
 
+    /**
+     * Triggered when the lifecycleOwner reaches it's onDestroy state
+     *
+     * @see [androidx.lifecycle.LifecycleOwner]
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        retryFooterAction = null
+        supportAction = null
+    }
+
     companion object {
 
         const val FULL_SPAN_SIZE = 1
