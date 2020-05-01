@@ -2,7 +2,6 @@ package co.anitrend.arch.ui.fragment.contract
 
 import android.view.View
 import androidx.annotation.IntegerRes
-import androidx.annotation.LayoutRes
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.domain.entities.NetworkState

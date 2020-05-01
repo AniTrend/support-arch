@@ -16,8 +16,11 @@
 
 package co.anitrend.arch.core.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.Transformations.map
+import androidx.lifecycle.ViewModel
 import co.anitrend.arch.core.viewmodel.contract.ISupportViewModel
 import co.anitrend.arch.data.model.UserInterfaceState
 import co.anitrend.arch.domain.entities.NetworkState

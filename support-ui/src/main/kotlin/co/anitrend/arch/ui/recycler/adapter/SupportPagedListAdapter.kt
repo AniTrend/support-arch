@@ -5,11 +5,13 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.*
-import co.anitrend.arch.theme.animator.contract.ISupportAnimator
-import co.anitrend.arch.core.presenter.SupportPresenter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getLayoutInflater
+import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
@@ -17,7 +19,6 @@ import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter.Compani
 import co.anitrend.arch.ui.recycler.common.SupportFooterErrorViewHolder
 import co.anitrend.arch.ui.recycler.common.SupportFooterLoadingViewHolder
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
-import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
 import timber.log.Timber
 
 /**

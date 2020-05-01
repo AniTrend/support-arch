@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.core.viewmodel.contract.ISupportViewModel
-import co.anitrend.arch.extension.coroutine.SupportCoroutine
 
 /**
  * Contract for implementing [androidx.fragment.app.FragmentActivity] based components
