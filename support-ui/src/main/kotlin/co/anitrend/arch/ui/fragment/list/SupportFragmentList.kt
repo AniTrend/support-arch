@@ -1,6 +1,5 @@
-package co.anitrend.arch.ui.fragment
+package co.anitrend.arch.ui.fragment.list
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +7,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.extension.util.SupportExtKeyStore
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.extension.configureWidgetBehaviorWith
 import co.anitrend.arch.ui.extension.onResponseResetStates
+import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.arch.ui.fragment.contract.ISupportFragmentList
 import co.anitrend.arch.ui.recycler.SupportRecyclerView
 import co.anitrend.arch.ui.recycler.adapter.SupportListAdapter
@@ -29,30 +27,15 @@ import timber.log.Timber
  * @see SupportFragment
  * @see ISupportFragmentList
  */
-abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
-    SupportFragment<M, P, VM>(), ISupportFragmentList<M> {
-
+abstract class SupportFragmentList<M>(
     override val inflateLayout: Int = R.layout.support_list
+) : SupportFragment<M>(), ISupportFragmentList<M> {
 
-    override var supportStateLayout: SupportStateLayout? = null
-    override var supportRefreshLayout: SwipeRefreshLayout? = null
-    override var supportRecyclerView: SupportRecyclerView? = null
+    protected var supportStateLayout: SupportStateLayout? = null
+    protected var supportRefreshLayout: SwipeRefreshLayout? = null
+    protected var supportRecyclerView: SupportRecyclerView? = null
 
     abstract override val supportViewAdapter: ISupportViewAdapter<M>
-
-    override val stateLayoutOnClick = View.OnClickListener {
-        if (supportStateLayout?.isLoading != true) {
-            supportViewModel?.retry()
-        } else
-            Timber.tag(moduleTag).i("stateLayoutOnClick -> supportStateLayout is currently loading")
-    }
-
-    override val adapterFooterRetryAction = View.OnClickListener {
-        if (supportStateLayout?.isLoading != true)
-            supportViewModel?.retry()
-        else
-            Timber.tag(moduleTag).i("adapterFooterRetryAction -> supportStateLayout is currently loading")
-    }
 
     private fun onStateObserverChanged(networkState: NetworkState) {
         when (!supportViewAdapter.isEmpty()) {
@@ -65,6 +48,15 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
             }
             false -> changeLayoutState(networkState)
         }
+    }
+
+    override val onStateLayoutObserver = Observer<Nothing?> {
+        if (supportStateLayout?.isLoading != true)
+            viewModelState()?.retry()
+        else
+            Timber.tag(moduleTag).d(
+                "onStateLayoutObserver -> supportStateLayout is currently loading"
+            )
     }
 
     override val onRefreshObserver = Observer<NetworkState> {
@@ -107,31 +99,10 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
     }
 
     /**
-     * Called to do initial creation of a fragment. This is called after
-     * [onAttach] and before [onCreateView].
-     *
-     * Note that this can be called while the fragment's activity is
-     * still in the process of being created.  As such, you can not rely
-     * on things like the activity's content view hierarchy being initialized
-     * at this point. If you want to do work once the activity itself is
-     * created, see [onActivityCreated].
-     *
-     * Any restored child fragments will be created before the base [onCreate] method returns.
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     * a previous saved state, this is the state.
-     */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initializeComponents(savedInstanceState)
-    }
-
-    /**
      * Called to have the fragment instantiate its user interface view.
      * This is optional, and non-graphical fragments can return null (which
      * is the default implementation). This will be called between
      * [onCreate] and [onActivityCreated].
-     *
      *
      * If you return a View from here, you will later be called in
      * [onDestroyView] when the view is being released.
@@ -152,13 +123,16 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
             supportRefreshLayout = findViewById(R.id.supportRefreshLayout)
             supportRecyclerView = findViewById(R.id.supportRecyclerView)
         }
+        supportStateLayout?.stateConfig = stateConfig
 
-        supportStateLayout?.apply {
-            onWidgetInteraction = stateLayoutOnClick
-            stateConfiguration = supportStateConfiguration
-            // setNetworkState(NetworkState.Loading)
+        supportViewAdapter.retryFooterAction = View.OnClickListener {
+            if (supportStateLayout?.isLoading != true)
+                viewModelState()?.retry()
+            else
+                Timber.tag(moduleTag).d(
+                    "retryFooterAction -> supportStateLayout is currently loading"
+                )
         }
-        supportViewAdapter.retryFooterAction = adapterFooterRetryAction
 
         supportRefreshLayout?.apply {
             configureWidgetBehaviorWith(activity)
@@ -188,8 +162,9 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModelObserver()
-        supportViewModel?.networkState?.observe(viewLifecycleOwner, onNetworkObserver)
-        supportViewModel?.refreshState?.observe(viewLifecycleOwner, onRefreshObserver)
+        viewModelState()?.networkState?.observe(viewLifecycleOwner, onNetworkObserver)
+        viewModelState()?.refreshState?.observe(viewLifecycleOwner, onRefreshObserver)
+        supportStateLayout?.interactionLiveData?.observe(viewLifecycleOwner, onStateLayoutObserver)
     }
 
     /**
@@ -233,7 +208,7 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
      * Called when a swipe gesture triggers a refresh.
      */
     override fun onRefresh() {
-        supportViewModel?.refresh()
+        viewModelState()?.refresh()
     }
 
     /**
@@ -257,9 +232,13 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>, VM>  :
         resetWidgetStates()
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        super.onSharedPreferenceChanged(sharedPreferences, key)
-        if (isPreferenceKeyValid(key))
-            onRefresh()
+    /**
+     * Called when the fragment is no longer in use.  This is called
+     * after [onStop] and before [onDetach].
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        supportViewAdapter.supportAction = null
+        supportViewAdapter.retryFooterAction = null
     }
 }

@@ -1,6 +1,7 @@
 package co.anitrend.arch.ui.action.contract
 
-import co.anitrend.arch.ui.action.decorator.SelectionDecorator
+import android.view.View
+import co.anitrend.arch.ui.action.decorator.ISelectionDecorator
 import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 
@@ -28,13 +29,13 @@ interface ISupportActionMode<T> {
      * or if in action mode should be selected or deselected.
      *
      * @param objectItem recycler view item that has been clicked
-     * @param viewHolder the view holder parent of the clicked item
+     * @param view the view holder parent of the clicked item
      *
      * @return true if not currently in action mode otherwise false
      *
      *  @see [SupportViewHolder.isClickable]
      */
-    fun isSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T?): Boolean
+    fun isSelectionClickable(view: View, decorator: ISelectionDecorator?, objectItem: T?): Boolean
 
     /**
      * Defines whether or not this current object can be consumed as a primary long click,
@@ -48,7 +49,7 @@ interface ISupportActionMode<T> {
      *
      * @see [SupportViewHolder.isLongClickable]
      */
-    fun isLongSelectionClickable(viewHolder: SupportViewHolder<T>, objectItem: T?): Boolean
+    fun isLongSelectionClickable(view: View, decorator: ISelectionDecorator?, objectItem: T?): Boolean
 
     /**
      * All selected items or an empty list if there are none. This list only holds data
@@ -59,19 +60,9 @@ interface ISupportActionMode<T> {
     fun getAllSelectedItems(): List<T>
 
     /**
-     * @return selection mode decorator, if none was assigned the default implementation is used
-     *
-     * @see [SelectionDecorator.setBackgroundColor]
+     * Checks if item exists in the current selection
      */
-    fun getSelectionDecorator(): SelectionDecorator<T>
-
-    /**
-     * Allows your to see your own implementation of how selected or unselected items
-     * should be decorated as they are selected and un-selected
-     *
-     * @param selectionDecorator implementation of a custom decorator
-     */
-    fun setSelectionDecorator(selectionDecorator: SelectionDecorator<T>)
+    fun containsItem(item: T?): Boolean
 
     /**
      * Sets current view adapter that should be used for various events, triggers, e.t.c

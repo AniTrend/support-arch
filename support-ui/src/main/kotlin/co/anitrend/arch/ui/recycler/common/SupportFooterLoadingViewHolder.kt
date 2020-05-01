@@ -4,7 +4,7 @@ import android.view.View
 import co.anitrend.arch.extension.gone
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
-import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
+import co.anitrend.arch.ui.util.StateLayoutConfig
 import kotlinx.android.synthetic.main.support_layout_state_footer_loading.view.*
 
 /**
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.support_layout_state_footer_loading.view.*
  */
 class SupportFooterLoadingViewHolder<T>(
     view: View,
-    private val configuration: SupportStateLayoutConfiguration
+    private val config: StateLayoutConfig
 ) : SupportViewHolder<T>(view.rootView) {
 
     /**
@@ -23,10 +23,10 @@ class SupportFooterLoadingViewHolder<T>(
      * @param model Is the liveData at the current adapter position
      */
     override fun invoke(model: T?) {
-        if (configuration.loadingMessage != null)
-            view.stateFooterLoadingText.setText(configuration.loadingMessage)
+        if (config.loadingMessage != null)
+            itemView.stateFooterLoadingText.setText(config.loadingMessage)
         else
-            view.stateFooterLoadingText.gone()
+            itemView.stateFooterLoadingText.gone()
     }
 
     /**

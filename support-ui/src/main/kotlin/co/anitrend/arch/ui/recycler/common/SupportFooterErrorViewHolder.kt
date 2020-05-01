@@ -3,12 +3,9 @@ package co.anitrend.arch.ui.recycler.common
 import android.view.View
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.gone
-import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 import co.anitrend.arch.ui.recycler.holder.event.ItemClickListener
-import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
-import co.anitrend.arch.ui.view.text.SingleLineTextView
-import com.google.android.material.button.MaterialButton
+import co.anitrend.arch.ui.util.StateLayoutConfig
 import kotlinx.android.synthetic.main.support_layout_state_footer_error.view.*
 
 /**
@@ -18,10 +15,14 @@ import kotlinx.android.synthetic.main.support_layout_state_footer_error.view.*
  */
 class SupportFooterErrorViewHolder<T>(
     view: View,
+    retryAction: View.OnClickListener?,
     private val networkState: NetworkState?,
-    private val retryAction: View.OnClickListener,
-    private val configuration: SupportStateLayoutConfiguration
+    private val config: StateLayoutConfig
 ) : SupportViewHolder<T>(view.rootView) {
+
+    private val clickListener = View.OnClickListener {
+        retryAction?.onClick(it)
+    }
 
     /**
      * Load images, text, buttons, etc. in this method from the given parameter
@@ -30,14 +31,14 @@ class SupportFooterErrorViewHolder<T>(
      */
     override fun invoke(model: T?) {
         if (networkState is NetworkState.Error)
-            view.stateFooterErrorText.text = networkState.message
+            itemView.stateFooterErrorText.text = networkState.message
 
-        if (configuration.retryAction != null) {
-            view.stateFooterErrorAction.setOnClickListener(retryAction)
-            view.stateFooterErrorAction.setText(configuration.retryAction)
+        if (config.retryAction != null) {
+            itemView.stateFooterErrorAction.setOnClickListener(clickListener)
+            itemView.stateFooterErrorAction.setText(config.retryAction)
         }
         else
-            view.stateFooterErrorAction.gone()
+            itemView.stateFooterErrorAction.gone()
     }
 
     /**
