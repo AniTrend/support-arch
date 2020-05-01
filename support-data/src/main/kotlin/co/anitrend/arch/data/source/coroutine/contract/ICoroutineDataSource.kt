@@ -21,11 +21,7 @@ interface ICoroutineDataSource<P, R> : IDataSource {
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
-    suspend fun invalidateAndRefresh() {
-        withContext(Dispatchers.IO) {
-            clearDataSource()
-        }
-    }
+    suspend fun invalidateAndRefresh()
 
     /**
      * Performs the necessary operation to invoke a network retry request

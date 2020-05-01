@@ -8,6 +8,7 @@ import co.anitrend.arch.extension.network.SupportConnectivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.withContext
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -52,7 +53,9 @@ abstract class SupportCoroutineDataSource<P, R>(
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
     override suspend fun invalidateAndRefresh() {
-        super.invalidateAndRefresh()
+        withContext(dispatchers.io) {
+            clearDataSource()
+        }
         retryPreviousRequest()
     }
 
