@@ -1,9 +1,6 @@
 package co.anitrend.arch.data.source.paging.contract
 
 import co.anitrend.arch.data.source.contract.IDataSource
-import co.anitrend.arch.extension.SupportDispatchers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * Contract for abstract paging data source implementation

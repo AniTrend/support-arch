@@ -7,7 +7,10 @@ import co.anitrend.arch.data.source.paging.contract.IPagingDataSource
 import co.anitrend.arch.extension.SupportDispatchers
 import co.anitrend.arch.extension.util.SupportExtKeyStore
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.launch
 
 /**
  * A non-coroutine that depends on [androidx.lifecycle.LiveData] to publish results.

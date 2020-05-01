@@ -4,13 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.data.source.coroutine.contract.ICoroutineDataSource
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.arch.extension.network.SupportConnectivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.withContext
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 
 /**
  * A coroutine that returns [NetworkState] to inform the caller about it's progress.
@@ -20,7 +17,7 @@ import org.koin.core.inject
  */
 abstract class SupportCoroutineDataSource<P, R>(
     protected val dispatchers: SupportDispatchers
-) : ICoroutineDataSource<P, R>, KoinComponent {
+) : ICoroutineDataSource<P, R> {
 
     protected val moduleTag: String = javaClass.simpleName
 

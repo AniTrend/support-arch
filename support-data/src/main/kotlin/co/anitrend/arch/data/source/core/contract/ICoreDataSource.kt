@@ -1,8 +1,6 @@
 package co.anitrend.arch.data.source.core.contract
 
 import co.anitrend.arch.data.source.contract.IDataSource
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * Contract for core data source abstraction

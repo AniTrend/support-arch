@@ -1,10 +1,6 @@
 package co.anitrend.arch.data.source.coroutine.contract
 
 import co.anitrend.arch.data.source.contract.IDataSource
-import co.anitrend.arch.domain.entities.NetworkState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * Contract for coroutine data source abstraction or implementation
