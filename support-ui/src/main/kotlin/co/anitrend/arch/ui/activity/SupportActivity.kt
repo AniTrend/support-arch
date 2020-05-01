@@ -26,7 +26,7 @@ import kotlinx.coroutines.MainScope
 abstract class SupportActivity : AppCompatActivity(),
     ISupportActivity, CoroutineScope by MainScope() {
 
-    protected val moduleTag = javaClass.simpleName
+    override val moduleTag = javaClass.simpleName
 
     /**
      * Reference to anything that should support [onBackPressed] interception

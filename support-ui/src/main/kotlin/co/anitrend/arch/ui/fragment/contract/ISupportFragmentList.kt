@@ -17,15 +17,16 @@ import co.anitrend.arch.ui.view.widget.SupportStateLayout
  */
 interface ISupportFragmentList<M> : SwipeRefreshLayout.OnRefreshListener {
 
-    var supportStateLayout: SupportStateLayout?
-    var supportRefreshLayout: SwipeRefreshLayout?
-    var supportRecyclerView: SupportRecyclerView?
-
     /**
      * Default grid sized items for the built in layout manager
      *
      * @see R.integer.grid_list_x3
      */
+
+    @Deprecated(
+        "May be removed in 1.3.0-stable when support-recycler module reaches stable",
+        ReplaceWith("Nothing")
+    )
     @get:IntegerRes
     val columnSize: Int
         get() = R.integer.grid_list_x3

@@ -1,33 +1,16 @@
 package co.anitrend.arch.ui.fragment.contract
 
-import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.lifecycle.ViewModel
 import co.anitrend.arch.core.model.ISupportViewModelState
-import co.anitrend.arch.core.presenter.SupportPresenter
 
 /**
  * Contract for implementing [androidx.fragment.app.FragmentActivity] based components
  *
  * @since v0.9.X
  */
-interface ISupportFragment<P : SupportPresenter<*>> :
-    SharedPreferences.OnSharedPreferenceChangeListener {
+interface ISupportFragment {
 
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return supportPresenter of the generic type specified
-     */
-    val presenter: P
-
-    /**
-     * Should be created lazily through injection or lazy delegate
-     *
-     * @return view model of the given type
-     */
-    val viewModel: ViewModel?
-        get() = null
+    val moduleTag: String
 
     /**
      * Proxy for a view model state if one exists
@@ -56,14 +39,6 @@ interface ISupportFragment<P : SupportPresenter<*>> :
      * **N.B.** Where this is called is up to the developer
      */
     fun onFetchDataInitialize()
-
-    /**
-     * Returns a boolean that either allows or dis-allows this current fragment
-     * from refreshing when preferences have been changed.
-     *
-     * @param key preference key that has been changed
-     */
-    fun isPreferenceKeyValid(key: String) = false
 
     companion object {
 

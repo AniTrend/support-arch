@@ -9,6 +9,8 @@ import android.os.Bundle
  */
 interface ISupportActivity {
 
+    val moduleTag: String
+
     /**
      * A simple value that can be used when making permission requests,
      * the value can be overridden in the implementing class

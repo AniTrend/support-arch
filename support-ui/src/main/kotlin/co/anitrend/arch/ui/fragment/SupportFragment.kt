@@ -1,15 +1,10 @@
 package co.anitrend.arch.ui.fragment
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import co.anitrend.arch.core.presenter.SupportPresenter
-import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
-import co.anitrend.arch.ui.action.SupportActionMode
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.action.event.ActionModeListener
 import co.anitrend.arch.ui.common.ISupportActionUp
@@ -32,20 +27,15 @@ import timber.log.Timber
  *
  * @see ISupportFragment
  */
-abstract class SupportFragment<M, P : SupportPresenter<*>>(
+abstract class SupportFragment<M>(
     @MenuRes protected open val inflateMenu: Int = ISupportFragment.NO_MENU_ITEM,
     @LayoutRes protected open val inflateLayout: Int = ISupportFragment.NO_LAYOUT_ITEM
-) : Fragment(), ActionModeListener, ISupportFragment<P>, CoroutineScope by MainScope(),
-    ISupportActionUp {
+) : Fragment(), ActionModeListener, ISupportFragment, CoroutineScope by MainScope(), ISupportActionUp {
 
-    protected val moduleTag = javaClass.simpleName
+    override val moduleTag = javaClass.simpleName
 
-    protected val supportAction: ISupportActionMode<M> by lazy(LAZY_MODE_UNSAFE) {
-        SupportActionMode<M>(
-            actionModeListener = this,
-            presenter = presenter
-        )
-    }
+    @Deprecated("May be removed in 1.3.0-stable when support-recycler module reaches stable")
+    protected val supportAction: ISupportActionMode<M>? = null
 
     /**
      * Called to do initial creation of a fragment. This is called after
@@ -103,6 +93,22 @@ abstract class SupportFragment<M, P : SupportPresenter<*>>(
     }
 
     /**
+     * Called immediately after [onCreateView] has returned, but before any saved state has been
+     * restored in to the view. This gives subclasses a chance to initialize themselves once
+     * they know their view hierarchy has been completely created.
+     *
+     * The fragment's view hierarchy is not however attached to its parent at this point.
+     *
+     * @param view The View returned by [onCreateView].
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     * saved state as given here.
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpViewModelObserver()
+    }
+
+    /**
      * Initialize the contents of the Fragment host's standard options menu. You should place
      * your menu items in to [menu]. For this method to be called, you must have first
      * called [setHasOptionsMenu]. See [SupportFragment.onCreateOptionsMenu] for more information.
@@ -120,7 +126,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>>(
     }
 
     override fun hasBackPressableAction(): Boolean {
-        if (supportAction.getAllSelectedItems().isNotEmpty()) {
+        if (supportAction?.getAllSelectedItems()?.isNotEmpty() == true) {
             supportAction.clearSelection()
             return true
         }
@@ -172,15 +178,13 @@ abstract class SupportFragment<M, P : SupportPresenter<*>>(
      * @param mode The current ActionMode being destroyed
      */
     override fun onDestroyActionMode(mode: ActionMode) {
-        supportAction.clearSelection()
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        Timber.tag(moduleTag).d("onSharedPreferenceChanged -> $key | Changed value")
+        supportAction?.clearSelection()
     }
 
     /**
      * Invoke view model observer to watch for changes, this is called in [onViewCreated]
+     *
+     * @see onViewCreated
      */
     protected abstract fun setUpViewModelObserver()
 }

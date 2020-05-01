@@ -15,7 +15,7 @@ import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
  *
  * @see ISupportFragmentList
  */
-abstract class SupportFragmentPagedList<M, P : SupportPresenter<*>> : SupportFragmentList<M, P>() {
+abstract class SupportFragmentPagedList<M> : SupportFragmentList<M>() {
 
     /**
      * Sets the adapter for the recycler view

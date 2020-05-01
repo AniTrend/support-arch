@@ -16,6 +16,7 @@ import java.util.*
  *
  * @since v0.9.X
  */
+@Deprecated("May be removed in 1.3.0-stable when support-recycler module reaches stable")
 class SupportActionMode<T>(
     private val actionModeListener: ActionModeListener?,
     private val presenter: ISupportPresenter?

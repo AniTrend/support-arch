@@ -1,15 +1,12 @@
 package co.anitrend.arch.ui.fragment.list
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import co.anitrend.arch.core.presenter.SupportPresenter
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.extension.configureWidgetBehaviorWith
@@ -30,13 +27,13 @@ import timber.log.Timber
  * @see SupportFragment
  * @see ISupportFragmentList
  */
-abstract class SupportFragmentList<M, P : SupportPresenter<*>>(
+abstract class SupportFragmentList<M>(
     override val inflateLayout: Int = R.layout.support_list
-) : SupportFragment<M, P>(), ISupportFragmentList<M> {
+) : SupportFragment<M>(), ISupportFragmentList<M> {
 
-    override var supportStateLayout: SupportStateLayout? = null
-    override var supportRefreshLayout: SwipeRefreshLayout? = null
-    override var supportRecyclerView: SupportRecyclerView? = null
+    protected var supportStateLayout: SupportStateLayout? = null
+    protected var supportRefreshLayout: SwipeRefreshLayout? = null
+    protected var supportRecyclerView: SupportRecyclerView? = null
 
     abstract override val supportViewAdapter: ISupportViewAdapter<M>
 
@@ -233,12 +230,6 @@ abstract class SupportFragmentList<M, P : SupportPresenter<*>>(
 
         onUpdateUserInterface()
         resetWidgetStates()
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        super.onSharedPreferenceChanged(sharedPreferences, key)
-        if (isPreferenceKeyValid(key))
-            onRefresh()
     }
 
     /**
