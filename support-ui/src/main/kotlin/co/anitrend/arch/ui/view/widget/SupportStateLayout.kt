@@ -11,7 +11,7 @@ import co.anitrend.arch.extension.getCompatDrawable
 import co.anitrend.arch.extension.getLayoutInflater
 import co.anitrend.arch.extension.gone
 import co.anitrend.arch.ui.R
-import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
+import co.anitrend.arch.ui.util.StateLayoutConfig
 import co.anitrend.arch.ui.view.contract.CustomView
 import kotlinx.android.synthetic.main.support_state_layout_error.view.*
 import kotlinx.android.synthetic.main.support_state_layout_laoding.view.*
@@ -32,7 +32,7 @@ open class SupportStateLayout : ViewFlipper, CustomView {
     /**
      * Configuration for that should be used by the different view states
      */
-    var stateConfiguration: SupportStateLayoutConfiguration? = null
+    var stateConfig: StateLayoutConfig? = null
         set(value) {
             field = value?.also { updateUsing(it) }
         }
@@ -53,7 +53,7 @@ open class SupportStateLayout : ViewFlipper, CustomView {
     @Deprecated("Preferably use [SupportStateLayout.interactionLiveData]")
     var onWidgetInteraction: OnClickListener? = null
 
-    private fun updateUsing(config: SupportStateLayoutConfiguration) {
+    private fun updateUsing(config: StateLayoutConfig) {
         setInAnimation(context, config.inAnimation)
         setOutAnimation(context, config.outAnimation)
         if (config.errorDrawable != null)

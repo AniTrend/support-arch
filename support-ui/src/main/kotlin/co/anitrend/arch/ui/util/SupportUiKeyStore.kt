@@ -5,6 +5,7 @@ package co.anitrend.arch.ui.util
  *
  * @since v1.1.0
  */
+@Deprecated("Consider specify your own keys")
 object SupportUiKeyStore {
 
     const val key_navigation_selected = "key_navigation_selected"

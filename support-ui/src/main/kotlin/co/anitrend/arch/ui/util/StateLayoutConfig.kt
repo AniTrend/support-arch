@@ -3,6 +3,7 @@ package co.anitrend.arch.ui.util
 import androidx.annotation.AnimRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import co.anitrend.arch.core.model.IStateLayoutConfig
 
 /**
  * Configurable state layout params to be consumed by
@@ -17,11 +18,11 @@ import androidx.annotation.StringRes
  *
  * @since v1.2.0
  */
-data class SupportStateLayoutConfiguration(
-    @DrawableRes val loadingDrawable: Int? = null,
-    @DrawableRes val errorDrawable: Int? = null,
-    @StringRes val loadingMessage: Int? = null,
-    @StringRes val retryAction: Int? = null,
-    @AnimRes val inAnimation: Int = android.R.anim.fade_in,
-    @AnimRes val outAnimation: Int = android.R.anim.fade_out
-)
+data class StateLayoutConfig(
+    @DrawableRes override val loadingDrawable: Int? = null,
+    @DrawableRes override val errorDrawable: Int? = null,
+    @StringRes override val loadingMessage: Int? = null,
+    @StringRes override val retryAction: Int? = null,
+    @AnimRes override val inAnimation: Int = android.R.anim.fade_in,
+    @AnimRes override val outAnimation: Int = android.R.anim.fade_out
+) : IStateLayoutConfig

@@ -11,6 +11,7 @@ import co.anitrend.arch.ui.view.contract.CustomView
  *
  * @since v0.9.X
  */
+@Deprecated("Consider using attributes directly to achieve the same effect")
 class SingleLineTextView : AppCompatTextView, CustomView {
 
     constructor(context: Context) :
