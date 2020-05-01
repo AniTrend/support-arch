@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.*
 import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getLayoutInflater
-import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
