@@ -3,8 +3,6 @@ package co.anitrend.arch.data.source.contract
 import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.coroutine.SupportCoroutine
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 
 /**
  * Contract for data sources

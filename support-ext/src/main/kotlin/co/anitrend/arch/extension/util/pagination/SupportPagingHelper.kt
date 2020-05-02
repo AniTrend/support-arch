@@ -29,6 +29,14 @@ data class SupportPagingHelper(
     }
 
     /**
+     * Calculates the previous page offset and index
+     */
+    override fun onPagePrevious() {
+        page -= 1
+        pageOffset -= pageSize
+    }
+
+    /**
      * Calculates the next page offset and index
      */
     override fun onPageNext() {

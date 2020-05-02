@@ -4,12 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.data.source.core.contract.ICoreDataSource
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.arch.extension.network.SupportConnectivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import kotlinx.coroutines.launch
 
 /**
  * A non-coroutine that depends on [androidx.lifecycle.LiveData] to publish results.
@@ -20,7 +18,7 @@ import org.koin.core.inject
  */
 abstract class SupportCoreDataSource(
     protected val dispatchers: SupportDispatchers
-) : ICoreDataSource, KoinComponent {
+) : ICoreDataSource {
 
     protected val moduleTag: String = javaClass.simpleName
 
@@ -53,7 +51,9 @@ abstract class SupportCoreDataSource(
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
     override fun invalidateAndRefresh() {
-        super.invalidateAndRefresh()
+        launch(dispatchers.io) {
+            clearDataSource()
+        }
         retryPreviousRequest()
     }
 

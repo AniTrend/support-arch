@@ -4,8 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.domain.entities.NetworkState
 
 /**
- * Contract mapper for wrapping future requests, commonly in the form of a
- * [kotlinx.coroutines.Deferred] or [retrofit2.Call]
+ * Contract mapper for wrapping future requests
  *
  * @since v1.1.0
  */

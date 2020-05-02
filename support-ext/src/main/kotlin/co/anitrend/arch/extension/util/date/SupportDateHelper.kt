@@ -1,7 +1,6 @@
 package co.anitrend.arch.extension.util.date
 
 import android.content.Context
-import androidx.annotation.IntRange
 import co.anitrend.arch.extension.util.attribute.SeasonType
 import co.anitrend.arch.extension.util.contract.ISupportDateHelper
 import com.jakewharton.threetenabp.AndroidThreeTen

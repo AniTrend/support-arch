@@ -3,8 +3,7 @@ package co.anitrend.arch.data.common
 import androidx.paging.PagingRequestHelper
 
 /**
- * Contract response handler for wrapping future requests, commonly in the form of a
- * [kotlinx.coroutines.Deferred] or [retrofit2.Call]
+ * Contract response handler for wrapping future requests
  *
  * This focuses on handling paging requests using [androidx.paging.PagingRequestHelper]
  *

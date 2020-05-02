@@ -5,6 +5,7 @@ package co.anitrend.arch.data.factory.contract
  *
  * @since v1.1.0
  */
+@Deprecated("Consider constructing your own")
 interface ISupportEndpointFactory<S> {
 
     /**

@@ -8,6 +8,7 @@ import co.anitrend.arch.data.auth.contract.ISupportAuthentication
  *
  * @since v1.1.X
  */
+@Deprecated("Implement ISupportAuthentication directly")
 abstract class SupportAuthentication : ISupportAuthentication {
 
     override val moduleTag: String = javaClass.simpleName

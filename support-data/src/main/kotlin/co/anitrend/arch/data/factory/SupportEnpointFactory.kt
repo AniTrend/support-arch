@@ -12,6 +12,7 @@ import kotlin.reflect.KClass
  *
  * @since v1.1.0
  */
+@Deprecated("Consider constructing your own")
 abstract class SupportEndpointFactory<S: Any>(
     protected val url: String,
     protected val endpoint: KClass<S>

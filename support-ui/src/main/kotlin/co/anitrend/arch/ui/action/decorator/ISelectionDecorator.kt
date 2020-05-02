@@ -4,9 +4,9 @@ import android.view.View
 import android.widget.CheckBox
 import androidx.annotation.DrawableRes
 import androidx.cardview.widget.CardView
-import co.anitrend.arch.theme.R
 import co.anitrend.arch.extension.getColorFromAttr
 import co.anitrend.arch.extension.getCompatColor
+import co.anitrend.arch.theme.R
 import co.anitrend.arch.ui.recycler.holder.SupportViewHolder
 
 /**
