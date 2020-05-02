@@ -11,13 +11,12 @@ import kotlinx.coroutines.withContext
 
 /**
  * A coroutine that returns [NetworkState] to inform the caller about it's progress.
- * This data source is targeted for non-UI components
  *
  * @since v1.1.0
  */
-abstract class SupportCoroutineDataSource<P, R>(
+abstract class SupportCoroutineDataSource<R>(
     protected val dispatchers: SupportDispatchers
-) : ICoroutineDataSource<P, R> {
+) : ICoroutineDataSource<R> {
 
     protected val moduleTag: String = javaClass.simpleName
 
