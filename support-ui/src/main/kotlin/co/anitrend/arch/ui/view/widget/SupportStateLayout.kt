@@ -3,6 +3,7 @@ package co.anitrend.arch.ui.view.widget
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.ViewFlipper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -46,8 +47,8 @@ open class SupportStateLayout : ViewFlipper, CustomView {
     val isContent
         get() = displayedChild == CONTENT_VIEW
 
-    private val _interactionLiveData = MutableLiveData<Nothing?>()
-    val interactionLiveData: LiveData<Nothing?>
+    private val _interactionLiveData = MutableLiveData<View>()
+    val interactionLiveData: LiveData<View>
         get() = _interactionLiveData
 
     @Deprecated("Preferably use [SupportStateLayout.interactionLiveData]")
@@ -96,7 +97,7 @@ open class SupportStateLayout : ViewFlipper, CustomView {
         }
 
         stateLayoutErrorRetryAction.setOnClickListener {
-            _interactionLiveData.postValue(null)
+            _interactionLiveData.postValue(it)
             onWidgetInteraction?.onClick(it)
         }
     }
