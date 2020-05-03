@@ -1,5 +1,6 @@
 package co.anitrend.arch.ui.fragment.contract
 
+import android.view.View
 import androidx.annotation.IntegerRes
 import androidx.lifecycle.Observer
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -31,7 +32,7 @@ interface ISupportFragmentList<M> : SwipeRefreshLayout.OnRefreshListener {
     val columnSize: Int
         get() = R.integer.grid_list_x3
 
-    val onStateLayoutObserver: Observer<Nothing?>
+    val onStateLayoutObserver: Observer<View>
     val onRefreshObserver: Observer<NetworkState>
     val onNetworkObserver: Observer<NetworkState>
 
