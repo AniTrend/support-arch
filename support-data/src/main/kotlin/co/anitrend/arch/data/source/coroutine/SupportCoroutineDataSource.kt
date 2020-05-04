@@ -14,9 +14,9 @@ import kotlinx.coroutines.withContext
  *
  * @since v1.1.0
  */
-abstract class SupportCoroutineDataSource<R>(
+abstract class SupportCoroutineDataSource(
     protected val dispatchers: SupportDispatchers
-) : ICoroutineDataSource<R> {
+) : ICoroutineDataSource {
 
     protected val moduleTag: String = javaClass.simpleName
 
@@ -30,7 +30,7 @@ abstract class SupportCoroutineDataSource<R>(
     /**
      * Function reference for the retry event
      */
-    protected var retry: (suspend () -> R)? = null
+    protected var retry: (suspend () -> Unit)? = null
 
     private suspend fun retryPreviousRequest() {
         val prevRetry = retry

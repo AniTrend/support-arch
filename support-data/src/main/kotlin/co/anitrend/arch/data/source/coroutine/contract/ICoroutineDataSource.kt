@@ -7,7 +7,7 @@ import co.anitrend.arch.data.source.contract.IDataSource
  *
  * @since v1.1.0
  */
-interface ICoroutineDataSource<R> : IDataSource {
+interface ICoroutineDataSource : IDataSource {
 
     /**
      * Clears data sources (databases, preferences, e.t.c)

@@ -24,7 +24,7 @@ data class UserInterfaceState<T> internal constructor(
 ): IUserInterfaceState<LiveData<NetworkState>> {
 
     companion object {
-        fun <T> ICoroutineDataSource<T>.create(
+        fun <T> ICoroutineDataSource.create(
             model: LiveData<T>
         ) : UserInterfaceState<T> {
             val refreshTrigger = MutableLiveData<NetworkState>()
