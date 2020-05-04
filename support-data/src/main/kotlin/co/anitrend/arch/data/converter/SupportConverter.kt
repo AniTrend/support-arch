@@ -21,12 +21,15 @@ import co.anitrend.arch.data.converter.contract.ISupportConverter
 /**
  * Abstract implementation for a type converter
  *
- * @param fromType lambda for a type of mapper
- * @param toType lambda for a type of mapper
+ * @property fromType lambda for a type of mapper
+ * @property toType lambda for a type of mapper
  *
  * @since 1.3.0
  */
-abstract class SupportConverter<M, E>(
-    override val fromType: (M) -> E,
-    override val toType: (E) -> M
-) : ISupportConverter<M, E>
+abstract class SupportConverter<M, E> : ISupportConverter<M, E> {
+    protected abstract val fromType: (M) -> E
+    protected abstract val toType: (E) -> M
+
+    override fun convertFrom(item: M) = fromType(item)
+    override fun convertTo(item: E) = toType(item)
+}
