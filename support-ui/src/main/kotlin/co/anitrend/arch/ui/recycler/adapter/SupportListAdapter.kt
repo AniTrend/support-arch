@@ -95,7 +95,9 @@ abstract class SupportListAdapter<T>(
      */
     override fun getItemId(position: Int): Long {
         return when (hasStableIds()) {
-            true -> getStableIdFor(getItem(position))
+            true -> runCatching {
+                getStableIdFor(getItem(position))
+            }.getOrElse { it.printStackTrace(); RecyclerView.NO_ID }
             else -> super.getItemId(position)
         }
     }
