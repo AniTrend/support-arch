@@ -27,6 +27,10 @@ abstract class SupportListAdapter<T>(
     itemCallback: DiffUtil.ItemCallback<T> = ISupportViewAdapter.getDefaultDiffItemCallback()
 ) : ISupportViewAdapter<T>, RecyclerView.Adapter<SupportViewHolder<T>>() {
 
+    init {
+        this.setHasStableIds(true)
+    }
+
     private val mDiffer by lazy {
         AsyncListDiffer<T>(this, itemCallback)
     }

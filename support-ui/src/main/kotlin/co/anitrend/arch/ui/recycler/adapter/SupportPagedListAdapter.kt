@@ -29,6 +29,10 @@ abstract class SupportPagedListAdapter<T>(
     itemCallback: DiffUtil.ItemCallback<T> = getDefaultDiffItemCallback()
 ) : ISupportViewAdapter<T>, PagedListAdapter<T, SupportViewHolder<T>>(itemCallback) {
 
+    init {
+        this.setHasStableIds(true)
+    }
+
     override val moduleTag: String = javaClass.name
 
     /**
