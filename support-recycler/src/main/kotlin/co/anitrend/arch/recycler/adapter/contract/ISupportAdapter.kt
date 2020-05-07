@@ -1,23 +1,23 @@
 package co.anitrend.arch.recycler.adapter.contract
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
+import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.theme.animator.contract.ISupportAnimator
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Contract for recycler view adapters
  */
-interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
+interface ISupportAdapter<T> : SupportLifecycle {
 
     var lastAnimatedPosition: Int
 
@@ -29,9 +29,9 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
     var customSupportAnimator: ISupportAnimator?
 
     /**
-     * Retry click interceptor for recycler footer error
+     * An observer to listen for clicks on clickable items
      */
-    var retryFooterAction: View.OnClickListener?
+    val clickableFlow: Flow<ClickableItem>
 
     /**
      * Configuration for the state based footer
@@ -64,7 +64,7 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
      */
     fun createDefaultViewHolder(
         parent: ViewGroup, @LayoutRes viewType: Int, layoutInflater: LayoutInflater
-    ): H
+    ): SupportViewHolder
 
     /**
      * Returns a boolean indicating whether or not the adapter had data, and caters for [hasExtraRow]
@@ -116,7 +116,7 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
     }
 
 
-    fun animateViewHolder(holder: H?, position: Int) {
+    fun animateViewHolder(holder: SupportViewHolder?, position: Int) {
         holder?.apply {
             when (position > lastAnimatedPosition) {
                 true -> customSupportAnimator?.also { supportAnimator ->
@@ -150,19 +150,10 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
     fun updateSelection()
 
     /**
-     * Binds content view holder at [position]
-     */
-    fun bindContentViewHolder(
-        holder: H,
-        position: Int,
-        payloads: List<Any> = emptyList()
-    )
-
-    /**
      * Binds view holder by view type at [position]
      */
     fun bindViewHolderByType(
-        holder: H,
+        holder: SupportViewHolder,
         position: Int,
         payloads: List<Any> = emptyList()
     )
@@ -174,74 +165,10 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
      */
     override fun onDestroy() {
         super.onDestroy()
-        retryFooterAction = null
         supportAction = null
     }
 
     companion object {
-
         const val FULL_SPAN_SIZE = 1
-
-        /**
-         * Provides default behaviour for item callback to compare objects
-         */
-        fun <T> getDefaultDiffItemCallback(): DiffUtil.ItemCallback<T> {
-            return object : DiffUtil.ItemCallback<T>() {
-
-                /**
-                 * Called to check whether two objects represent the same item.
-                 *
-                 *
-                 * For example, if your items have unique ids, this method should check their id equality.
-                 *
-                 *
-                 * Note: `null` items in the list are assumed to be the same as another `null`
-                 * item and are assumed to not be the same as a non-`null` item. This callback will
-                 * not be invoked for either of those cases.
-                 *
-                 * @param oldItem The item in the old list.
-                 * @param newItem The item in the new list.
-                 * @return True if the two items represent the same object or false if they are different.
-                 *
-                 * @see Callback.areItemsTheSame
-                 */
-                override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
-                    return oldItem?.equals(newItem) ?: false
-                }
-
-                /**
-                 * Called to check whether two items have the same data.
-                 *
-                 *
-                 * This information is used to detect if the contents of an item have changed.
-                 *
-                 *
-                 * This method to check equality instead of [Object.equals] so that you can
-                 * change its behavior depending on your UI.
-                 *
-                 *
-                 * For example, if you are using DiffUtil with a
-                 * [RecyclerView.Adapter], you should
-                 * return whether the items' visual representations are the same.
-                 *
-                 *
-                 * This method is called only if [.areItemsTheSame] returns `true` for
-                 * these items.
-                 *
-                 *
-                 * Note: Two `null` items are assumed to represent the same contents. This callback
-                 * will not be invoked for this case.
-                 *
-                 * @param oldItem The item in the old list.
-                 * @param newItem The item in the new list.
-                 * @return True if the contents of the items are the same or false if they are different.
-                 *
-                 * @see Callback.areContentsTheSame
-                 */
-                override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
-                    return oldItem.hashCode() == newItem.hashCode()
-                }
-            }
-        }
     }
 }

@@ -41,6 +41,11 @@ android {
     }
 }
 
+ext {
+    // TODO: Remove when material integrates merge adapter and state restoration
+    recycler = '1.2.0-alpha03'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -58,9 +63,13 @@ dependencies {
     implementation("com.google.android.material:material:$material")
 
     /** Architecture Components */
-    implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
+    implementation("androidx.recyclerview:recyclerview:$recycler")
     implementation("androidx.paging:paging-runtime-ktx:$pagingKtx")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshX")
+
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleX"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleX"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX"
 
     /** Timber */
     implementation("com.jakewharton.timber:timber:$timber")

@@ -1,7 +1,5 @@
 package co.anitrend.arch.recycler.model.contract
 
-import android.content.res.Resources
-
 /**
  * Contract for recycler item with span query support
  *
@@ -14,14 +12,11 @@ interface IRecyclerItemSpan {
      *
      * @param spanCount current span count
      * @param position position of the current item
-     * @param resources potentially useful if you wish to use dynamic span
-     * sizes depending on configuration based resources
      *
      * @return span size to use
      */
     fun getSpanSize(
         spanCount: Int,
-        position: Int,
-        resources: Resources
+        position: Int
     ): Int
 }

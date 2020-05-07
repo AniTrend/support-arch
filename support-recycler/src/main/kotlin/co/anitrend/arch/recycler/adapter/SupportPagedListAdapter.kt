@@ -3,6 +3,8 @@ package co.anitrend.arch.recycler.adapter
 import android.content.Context
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -12,12 +14,12 @@ import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getLayoutInflater
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
-import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter.Companion.getDefaultDiffItemCallback
-import co.anitrend.arch.recycler.common.ItemClickListener
+import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import co.anitrend.arch.recycler.shared.SupportFooterErrorItem
 import co.anitrend.arch.recycler.shared.SupportFooterLoadingItem
+import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 
 /**
@@ -27,15 +29,20 @@ import timber.log.Timber
  * @see SupportViewHolder
  * @since v1.2.0
  */
-abstract class SupportPagedListAdapter<H : SupportViewHolder>(
-    itemCallback: DiffUtil.ItemCallback<RecyclerItem<H>> = getDefaultDiffItemCallback(),
-    protected val clickListener: ItemClickListener<RecyclerItem<*>>,
-    protected val context: Context
-) : ISupportAdapter<RecyclerItem<H>, H>, PagedListAdapter<RecyclerItem<H>, H>(itemCallback) {
+abstract class SupportPagedListAdapter(
+    differCallback: DiffUtil.ItemCallback<RecyclerItem>
+) : ISupportAdapter<RecyclerItem>, PagedListAdapter<RecyclerItem, SupportViewHolder>(differCallback) {
 
     override val moduleTag: String = javaClass.name
 
     override var lastAnimatedPosition: Int = 0
+
+    /**
+     * Dispatches clicks from parent views
+     */
+    protected val clickObservable = MutableLiveData<ClickableItem>()
+
+    override val clickableFlow: Flow<ClickableItem> = clickObservable.asFlow()
 
     /**
      * Network state which will be used by [SupportFooterErrorItem]
@@ -69,7 +76,9 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
      */
     override fun getItemId(position: Int): Long {
         return when (hasStableIds()) {
-            true -> getStableIdFor(getItem(position))
+            true -> runCatching {
+                getStableIdFor(getItem(position))
+            }.getOrDefault(RecyclerView.NO_ID)
             else -> super.getItemId(position)
         }
     }
@@ -79,18 +88,22 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
      * [R.layout.support_layout_state_footer_loading] or [R.layout.support_layout_state_footer_error]
      * otherwise [createDefaultViewHolder] is called to resolve the view holder type
      */
-    override fun onCreateViewHolder(parent: ViewGroup, @LayoutRes viewType: Int): H {
+    override fun onCreateViewHolder(parent: ViewGroup, @LayoutRes viewType: Int): SupportViewHolder {
         val layoutInflater = parent.context.getLayoutInflater()
         return when (viewType) {
             R.layout.support_layout_state_footer_loading -> {
-                val item = SupportFooterLoadingItem(viewType, stateConfiguration)
-                val view = layoutInflater.inflate(item.layout, parent, false)
-                return item.createViewHolder(view) as H
+                SupportFooterLoadingItem(
+                    viewType, stateConfiguration, parent.resources
+                ).run {
+                    createViewHolder(layoutInflater.inflate(layout, parent, false))
+                }
             }
             R.layout.support_layout_state_footer_error -> {
-                val item = SupportFooterErrorItem(viewType, retryFooterAction, networkState, stateConfiguration)
-                val view = layoutInflater.inflate(item.layout, parent, false)
-                return item.createViewHolder(view) as H
+                SupportFooterErrorItem(
+                    viewType, parent.resources, networkState, stateConfiguration
+                ).run {
+                    createViewHolder(layoutInflater.inflate(layout, parent, false))
+                }
             }
             else -> createDefaultViewHolder(parent, viewType, layoutInflater)
         }
@@ -105,7 +118,7 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
      *
      * @param holder Holder of the view being attached
      */
-    override fun onViewAttachedToWindow(holder: H) {
+    override fun onViewAttachedToWindow(holder: SupportViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.itemView.layoutParams?.also {
             when (it is StaggeredGridLayoutManager.LayoutParams) {
@@ -123,7 +136,7 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
      *
      * @param holder Holder of the view being detached
      */
-    override fun onViewDetachedFromWindow(holder: H) {
+    override fun onViewDetachedFromWindow(holder: SupportViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.itemView.clearAnimation()
     }
@@ -150,7 +163,7 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
      *
      * @see [SupportViewHolder.bind]
      */
-    override fun onBindViewHolder(holder: H, position: Int) {
+    override fun onBindViewHolder(holder: SupportViewHolder, position: Int) {
         bindViewHolderByType(holder, position)
     }
 
@@ -161,7 +174,7 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
      * @see [SupportViewHolder.bind]
      */
     override fun onBindViewHolder(
-        holder: H,
+        holder: SupportViewHolder,
         position: Int,
         payloads: MutableList<Any>
     ) {
@@ -176,7 +189,7 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
      *
      * @see [SupportViewHolder.onViewRecycled]
      */
-    override fun onViewRecycled(holder: H) {
+    override fun onViewRecycled(holder: SupportViewHolder) {
         holder.onViewRecycled()
     }
 
@@ -232,7 +245,7 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
      */
     override fun isFullSpanItem(position: Int, spanCount: Int): Boolean {
         val item = getItem(position)
-        val spanSize = item?.getSpanSize(0, position, context.resources)
+        val spanSize = item?.getSpanSize(0, position)
         return spanSize == ISupportAdapter.FULL_SPAN_SIZE
     }
 
@@ -244,42 +257,20 @@ abstract class SupportPagedListAdapter<H : SupportViewHolder>(
     }
 
     /**
-     * Binds content view holder
+     * Binds view holder by view type at [position]
      */
-    override fun bindContentViewHolder(
-        holder: H,
+    override fun bindViewHolderByType(
+        holder: SupportViewHolder,
         position: Int,
         payloads: List<Any>
     ) {
         runCatching {
+            val item = getItem(position)
+            holder.bind(position, payloads, item, clickObservable, supportAction)
             animateViewHolder(holder, position)
-            val model = getItem(position)
-            model?.bind(holder, position, payloads, clickListener)
-            model?.also { m ->
-                // TODO: trigger decoration based on the current item
-                if (m.id != RecyclerView.NO_ID)
-                    supportAction?.containsItem(m.id)
-            }
-        }.exceptionOrNull()?.also {
+        }.onFailure {
             it.printStackTrace()
             Timber.tag(moduleTag).e(it)
-        }
-    }
-
-    /**
-     * Binds view holder by view type at [position]
-     */
-    override fun bindViewHolderByType(
-        holder: H,
-        position: Int,
-        payloads: List<Any>
-    ) {
-        when (getItemViewType(position)) {
-            R.layout.support_layout_state_footer_loading ->
-                holder.bind(null, null)
-            R.layout.support_layout_state_footer_error ->
-                holder.bind(null, null)
-            else -> bindContentViewHolder(holder, position, payloads)
         }
     }
 }
