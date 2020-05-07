@@ -5,9 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.*
-import co.anitrend.arch.theme.animator.contract.ISupportAnimator
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import co.anitrend.arch.ui.action.contract.ISupportActionMode
 import co.anitrend.arch.ui.recycler.common.SupportFooterErrorViewHolder
 import co.anitrend.arch.ui.recycler.common.SupportFooterLoadingViewHolder

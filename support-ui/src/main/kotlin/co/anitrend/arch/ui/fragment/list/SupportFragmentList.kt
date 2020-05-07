@@ -50,7 +50,7 @@ abstract class SupportFragmentList<M>(
         }
     }
 
-    override val onStateLayoutObserver = Observer<Nothing?> {
+    override val onStateLayoutObserver = Observer<View> {
         if (supportStateLayout?.isLoading != true)
             viewModelState()?.retry()
         else

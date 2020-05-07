@@ -27,6 +27,10 @@ abstract class SupportListAdapter<T>(
     itemCallback: DiffUtil.ItemCallback<T> = ISupportViewAdapter.getDefaultDiffItemCallback()
 ) : ISupportViewAdapter<T>, RecyclerView.Adapter<SupportViewHolder<T>>() {
 
+    init {
+        this.setHasStableIds(true)
+    }
+
     private val mDiffer by lazy {
         AsyncListDiffer<T>(this, itemCallback)
     }
@@ -95,7 +99,9 @@ abstract class SupportListAdapter<T>(
      */
     override fun getItemId(position: Int): Long {
         return when (hasStableIds()) {
-            true -> getStableIdFor(getItem(position))
+            true -> runCatching {
+                getStableIdFor(getItem(position))
+            }.getOrElse { it.printStackTrace(); RecyclerView.NO_ID }
             else -> super.getItemId(position)
         }
     }

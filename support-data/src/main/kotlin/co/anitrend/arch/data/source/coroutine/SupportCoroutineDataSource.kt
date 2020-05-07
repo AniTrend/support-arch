@@ -4,22 +4,19 @@ import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.data.source.coroutine.contract.ICoroutineDataSource
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.arch.extension.network.SupportConnectivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import kotlinx.coroutines.withContext
 
 /**
  * A coroutine that returns [NetworkState] to inform the caller about it's progress.
- * This data source is targeted for non-UI components
  *
  * @since v1.1.0
  */
-abstract class SupportCoroutineDataSource<P, R>(
+abstract class SupportCoroutineDataSource(
     protected val dispatchers: SupportDispatchers
-) : ICoroutineDataSource<P, R>, KoinComponent {
+) : ICoroutineDataSource {
 
     protected val moduleTag: String = javaClass.simpleName
 
@@ -33,7 +30,7 @@ abstract class SupportCoroutineDataSource<P, R>(
     /**
      * Function reference for the retry event
      */
-    protected var retry: (suspend () -> R)? = null
+    protected var retry: (suspend () -> Unit)? = null
 
     private suspend fun retryPreviousRequest() {
         val prevRetry = retry
@@ -52,7 +49,9 @@ abstract class SupportCoroutineDataSource<P, R>(
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
     override suspend fun invalidateAndRefresh() {
-        super.invalidateAndRefresh()
+        withContext(dispatchers.io) {
+            clearDataSource()
+        }
         retryPreviousRequest()
     }
 

@@ -1,9 +1,6 @@
 package co.anitrend.arch.data.source.paging.contract
 
 import co.anitrend.arch.data.source.contract.IDataSource
-import co.anitrend.arch.extension.SupportDispatchers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * Contract for abstract paging data source implementation
@@ -20,11 +17,7 @@ interface IPagingDataSource : IDataSource {
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
-    fun invalidateAndRefresh() {
-        launch(Dispatchers.IO) {
-            clearDataSource()
-        }
-    }
+    fun invalidateAndRefresh()
 
     /**
      * Performs the necessary operation to invoke a network retry request

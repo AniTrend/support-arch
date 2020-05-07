@@ -29,6 +29,10 @@ abstract class SupportPagedListAdapter<T>(
     itemCallback: DiffUtil.ItemCallback<T> = getDefaultDiffItemCallback()
 ) : ISupportViewAdapter<T>, PagedListAdapter<T, SupportViewHolder<T>>(itemCallback) {
 
+    init {
+        this.setHasStableIds(true)
+    }
+
     override val moduleTag: String = javaClass.name
 
     /**
@@ -93,7 +97,9 @@ abstract class SupportPagedListAdapter<T>(
      */
     override fun getItemId(position: Int): Long {
         return when (hasStableIds()) {
-            true -> getStableIdFor(getItem(position))
+            true -> runCatching {
+                getStableIdFor(getItem(position))
+            }.getOrElse { it.printStackTrace(); RecyclerView.NO_ID }
             else -> super.getItemId(position)
         }
     }

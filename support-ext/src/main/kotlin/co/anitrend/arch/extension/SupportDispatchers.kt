@@ -1,11 +1,11 @@
 package co.anitrend.arch.extension
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainCoroutineDispatcher
+import kotlinx.coroutines.*
 
-data class SupportDispatchers(
+data class SupportDispatchers constructor(
     val main: MainCoroutineDispatcher = Dispatchers.Main,
     val computation: CoroutineDispatcher = Dispatchers.Default,
-    val io: CoroutineDispatcher = Dispatchers.IO
+    val io: CoroutineDispatcher = Dispatchers.IO,
+    @OptIn(ObsoleteCoroutinesApi::class)
+    val confined: ExecutorCoroutineDispatcher = newSingleThreadContext("ConfinedContext")
 )

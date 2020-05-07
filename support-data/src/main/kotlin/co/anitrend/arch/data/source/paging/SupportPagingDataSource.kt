@@ -10,6 +10,7 @@ import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.launch
 
 /**
  * A non-coroutine that depends on [androidx.lifecycle.LiveData] to publish results.
@@ -47,7 +48,9 @@ abstract class SupportPagingDataSource<T>(
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
     override fun invalidateAndRefresh() {
-        super.invalidateAndRefresh()
+        launch (dispatchers.io) {
+            clearDataSource()
+        }
         supportPagingHelper.onPageRefresh()
     }
 

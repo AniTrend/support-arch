@@ -46,7 +46,7 @@ class SupportFooterErrorViewHolder<T>(
      * libraries, data binding, callbacks e.t.c
      */
     override fun onViewRecycled() {
-
+        itemView.stateFooterErrorAction.setOnClickListener(null)
     }
 
     /**

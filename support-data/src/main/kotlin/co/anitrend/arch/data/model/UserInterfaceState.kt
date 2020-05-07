@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import co.anitrend.arch.data.source.core.contract.ICoreDataSource
+import co.anitrend.arch.data.source.coroutine.contract.ICoroutineDataSource
 import co.anitrend.arch.data.source.paging.contract.IPagingDataSource
 import co.anitrend.arch.domain.common.IUserInterfaceState
 import co.anitrend.arch.domain.entities.NetworkState
+import kotlinx.coroutines.launch
 
 /**
  * Model that view models create for UI components to observe on
@@ -22,9 +24,8 @@ data class UserInterfaceState<T> internal constructor(
 ): IUserInterfaceState<LiveData<NetworkState>> {
 
     companion object {
-        fun <T> create(
-            model: LiveData<T>,
-            source: IPagingDataSource
+        fun <T> ICoroutineDataSource.create(
+            model: LiveData<T>
         ) : UserInterfaceState<T> {
             val refreshTrigger = MutableLiveData<NetworkState>()
             val refreshState = Transformations.switchMap(refreshTrigger) {
@@ -35,21 +36,26 @@ data class UserInterfaceState<T> internal constructor(
 
             return UserInterfaceState(
                 model = model,
-                networkState = source.networkState,
+                networkState = networkState,
                 refreshState = refreshState,
                 refresh = {
-                    source.invalidateAndRefresh()
-                    refreshTrigger.value = NetworkState.Loading
+                    launch {
+                        invalidateAndRefresh()
+                        refreshTrigger.postValue(
+                            NetworkState.Loading
+                        )
+                    }
                 },
                 retry = {
-                    source.retryRequest()
+                    launch {
+                        retryRequest()
+                    }
                 }
             )
         }
 
-        fun <T> create(
-            model: LiveData<T>,
-            source: ICoreDataSource
+        fun <T> IPagingDataSource.create(
+            model: LiveData<T>
         ) : UserInterfaceState<T> {
             val refreshTrigger = MutableLiveData<NetworkState>()
             val refreshState = Transformations.switchMap(refreshTrigger) {
@@ -60,14 +66,38 @@ data class UserInterfaceState<T> internal constructor(
 
             return UserInterfaceState(
                 model = model,
-                networkState = source.networkState,
+                networkState = networkState,
                 refreshState = refreshState,
                 refresh = {
-                    source.invalidateAndRefresh()
+                    invalidateAndRefresh()
                     refreshTrigger.value = NetworkState.Loading
                 },
                 retry = {
-                    source.retryRequest()
+                    retryRequest()
+                }
+            )
+        }
+
+        fun <T> ICoreDataSource.create(
+            model: LiveData<T>
+        ) : UserInterfaceState<T> {
+            val refreshTrigger = MutableLiveData<NetworkState>()
+            val refreshState = Transformations.switchMap(refreshTrigger) {
+                val state = MutableLiveData<NetworkState>()
+                state.postValue(it)
+                state
+            }
+
+            return UserInterfaceState(
+                model = model,
+                networkState = networkState,
+                refreshState = refreshState,
+                refresh = {
+                    invalidateAndRefresh()
+                    refreshTrigger.value = NetworkState.Loading
+                },
+                retry = {
+                    retryRequest()
                 }
             )
         }

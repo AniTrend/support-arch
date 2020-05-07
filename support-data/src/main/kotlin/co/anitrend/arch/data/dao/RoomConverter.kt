@@ -5,6 +5,7 @@ package co.anitrend.arch.data.dao
  *
  * @since v0.9.X
  */
+@Deprecated("Consider building your own converter with your own type support")
 interface RoomConverter<T> {
 
     /**
