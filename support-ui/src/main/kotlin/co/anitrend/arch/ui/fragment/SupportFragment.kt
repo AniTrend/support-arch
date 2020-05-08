@@ -5,13 +5,10 @@ import android.view.*
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
-import co.anitrend.arch.ui.action.contract.ISupportActionMode
-import co.anitrend.arch.ui.action.event.ActionModeListener
 import co.anitrend.arch.ui.common.ISupportActionUp
 import co.anitrend.arch.ui.fragment.contract.ISupportFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import timber.log.Timber
 
 /**
  * Core implementation contract for fragments, which automatically retains instance,
@@ -27,15 +24,18 @@ import timber.log.Timber
  *
  * @see ISupportFragment
  */
-abstract class SupportFragment<M>(
+abstract class SupportFragment(
     @MenuRes protected open val inflateMenu: Int = ISupportFragment.NO_MENU_ITEM,
     @LayoutRes protected open val inflateLayout: Int = ISupportFragment.NO_LAYOUT_ITEM
-) : Fragment(), ActionModeListener, ISupportFragment, CoroutineScope by MainScope(), ISupportActionUp {
+) : Fragment(), ISupportFragment, CoroutineScope by MainScope(), ISupportActionUp {
 
     override val moduleTag = javaClass.simpleName
 
-    @Deprecated("May be removed in 1.3.0-stable when support-recycler module reaches stable")
-    protected val supportAction: ISupportActionMode<M>? = null
+    /**
+     * Invoke view model observer to watch for changes, this will be called
+     * called in [onViewCreated]
+     */
+    protected abstract fun setUpViewModelObserver()
 
     /**
      * Called to do initial creation of a fragment. This is called after
@@ -124,67 +124,4 @@ abstract class SupportFragment<M>(
         if (inflateMenu != ISupportFragment.NO_MENU_ITEM)
             inflater.inflate(inflateMenu, menu)
     }
-
-    override fun hasBackPressableAction(): Boolean {
-        if (supportAction?.getAllSelectedItems()?.isNotEmpty() == true) {
-            supportAction.clearSelection()
-            return true
-        }
-        return super.hasBackPressableAction()
-    }
-
-    /**
-     * Called when an item is selected or deselected.
-     *
-     * @param mode The current ActionMode being used
-     */
-    override fun onSelectionChanged(mode: ActionMode?, count: Int) {
-        Timber.tag(moduleTag).d("onSelectionChanged(mode: ActionMode?, count: Int) -> count = $count")
-    }
-
-    /**
-     * Called when action mode is first created. The menu supplied will be used to
-     * generate action buttons for the action mode.
-     *
-     * @param mode ActionMode being created
-     * @param menu Menu used to populate action buttons
-     * @return true if the action mode should be created, false if entering this
-     * mode should be aborted.
-     */
-    override fun onCreateActionMode(mode: ActionMode, menu: Menu)= false
-
-    /**
-     * Called to refresh an action mode's action menu whenever it is invalidated.
-     *
-     * @param mode ActionMode being prepared
-     * @param menu Menu used to populate action buttons
-     * @return true if the menu or action mode was updated, false otherwise.
-     */
-    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
-
-    /**
-     * Called to report a user click on an action button.
-     *
-     * @param mode The current ActionMode
-     * @param item The item that was clicked
-     * @return true if this supportActionMode handled the event, false if the standard MenuItem
-     * invocation should continue.
-     */
-    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = false
-
-    /**
-     * Called when an action mode is about to be exited and destroyed.
-     *
-     * @param mode The current ActionMode being destroyed
-     */
-    override fun onDestroyActionMode(mode: ActionMode) {
-        supportAction?.clearSelection()
-    }
-
-    /**
-     * Invoke view model observer to watch for changes, this is called in [onViewCreated]
-     *
-     * @see onViewCreated
-     */
-    protected abstract fun setUpViewModelObserver()
 }

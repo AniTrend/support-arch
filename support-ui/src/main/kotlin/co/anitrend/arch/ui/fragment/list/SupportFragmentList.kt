@@ -5,18 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.recycler.SupportRecyclerView
+import co.anitrend.arch.recycler.adapter.SupportListAdapter
+import co.anitrend.arch.recycler.common.FooterClickableItem
+import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.extension.configureWidgetBehaviorWith
 import co.anitrend.arch.ui.extension.onResponseResetStates
 import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.arch.ui.fragment.contract.ISupportFragmentList
-import co.anitrend.arch.ui.recycler.SupportRecyclerView
-import co.anitrend.arch.ui.recycler.adapter.SupportListAdapter
-import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.onStart
 import timber.log.Timber
 
 /**
@@ -27,15 +36,23 @@ import timber.log.Timber
  * @see SupportFragment
  * @see ISupportFragmentList
  */
-abstract class SupportFragmentList<M>(
+abstract class SupportFragmentList<M: IRecyclerItem>(
     override val inflateLayout: Int = R.layout.support_list
-) : SupportFragment<M>(), ISupportFragmentList<M> {
+) : SupportFragment(), ISupportFragmentList<M> {
 
     protected var supportStateLayout: SupportStateLayout? = null
     protected var supportRefreshLayout: SwipeRefreshLayout? = null
     protected var supportRecyclerView: SupportRecyclerView? = null
 
-    abstract override val supportViewAdapter: ISupportViewAdapter<M>
+    /**
+     * Stub to trigger the loading of data, by default this is only called
+     * when [supportViewAdapter] has no data in its underlying source.
+     *
+     * This is called when the fragment reaches it's [onStart] state
+     *
+     * @see initializeComponents
+     */
+    abstract fun onFetchDataInitialize()
 
     private fun onStateObserverChanged(networkState: NetworkState) {
         when (!supportViewAdapter.isEmpty()) {
@@ -48,15 +65,6 @@ abstract class SupportFragmentList<M>(
             }
             false -> changeLayoutState(networkState)
         }
-    }
-
-    override val onStateLayoutObserver = Observer<View> {
-        if (supportStateLayout?.isLoading != true)
-            viewModelState()?.retry()
-        else
-            Timber.tag(moduleTag).d(
-                "onStateLayoutObserver -> supportStateLayout is currently loading"
-            )
     }
 
     override val onRefreshObserver = Observer<NetworkState> {
@@ -79,7 +87,7 @@ abstract class SupportFragmentList<M>(
     override fun setRecyclerLayoutManager(recyclerView: SupportRecyclerView) {
         if (recyclerView.layoutManager == null)
             recyclerView.layoutManager = StaggeredGridLayoutManager(
-                resources.getInteger(columnSize),
+                resources.getInteger(R.integer.single_list_size),
                 StaggeredGridLayoutManager.VERTICAL
             )
     }
@@ -90,11 +98,48 @@ abstract class SupportFragmentList<M>(
     override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
         if (recyclerView.adapter == null) {
             recyclerView.adapter = supportViewAdapter.let {
-                if (it.supportAction == null)
-                    it.supportAction = supportAction
-
-                it as SupportListAdapter<M>
+                it as RecyclerView.Adapter<*>
+                it.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                it
             }
+        }
+    }
+
+    /**
+     * Additional initialization to be done in this method, this method will be called in
+     * [androidx.fragment.app.FragmentActivity.onCreate].
+     *
+     * @param savedInstanceState
+     */
+    @FlowPreview
+    override fun initializeComponents(savedInstanceState: Bundle?) {
+        lifecycleScope.launchWhenResumed {
+            supportViewAdapter.clickableFlow
+                .debounce(16)
+                .filterIsInstance<FooterClickableItem>()
+                .collect {
+                    if (supportStateLayout?.isLoading != true)
+                        viewModelState()?.retry()
+                    else
+                        Timber.tag(moduleTag).d(
+                            "retryFooterAction -> supportStateLayout is currently loading"
+                        )
+                }
+
+            supportStateLayout?.interactionFlow
+                ?.debounce(16)
+                ?.collect {
+                    if (supportStateLayout?.isLoading != true)
+                        viewModelState()?.retry()
+                    else
+                        Timber.tag(moduleTag).d(
+                            "onStateLayoutObserver -> supportStateLayout is currently loading"
+                        )
+                }
+        }
+        lifecycleScope.launchWhenStarted {
+            if (supportViewAdapter.isEmpty())
+                onFetchDataInitialize()
         }
     }
 
@@ -125,17 +170,8 @@ abstract class SupportFragmentList<M>(
         }
         supportStateLayout?.stateConfig = stateConfig
 
-        supportViewAdapter.retryFooterAction = View.OnClickListener {
-            if (supportStateLayout?.isLoading != true)
-                viewModelState()?.retry()
-            else
-                Timber.tag(moduleTag).d(
-                    "retryFooterAction -> supportStateLayout is currently loading"
-                )
-        }
-
         supportRefreshLayout?.apply {
-            configureWidgetBehaviorWith(activity)
+            configureWidgetBehaviorWith()
             setOnRefreshListener(this@SupportFragmentList)
         }
 
@@ -150,11 +186,11 @@ abstract class SupportFragmentList<M>(
     }
 
     /**
-     * Called immediately after [.onCreateView]
-     * has returned, but before any saved state has been restored in to the view.
-     * This gives subclasses a chance to initialize themselves once
-     * they know their view hierarchy has been completely created.  The fragment's
-     * view hierarchy is not however attached to its parent at this point.
+     * Called immediately after [onCreateView] has returned, but before any saved state has been
+     * restored in to the view. This gives subclasses a chance to initialize themselves once
+     * they know their view hierarchy has been completely created. The fragment's view hierarchy
+     * is not however attached to its parent at this point.
+     *
      * @param view The View returned by [.onCreateView].
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
@@ -164,25 +200,6 @@ abstract class SupportFragmentList<M>(
         setUpViewModelObserver()
         viewModelState()?.networkState?.observe(viewLifecycleOwner, onNetworkObserver)
         viewModelState()?.refreshState?.observe(viewLifecycleOwner, onRefreshObserver)
-        supportStateLayout?.interactionLiveData?.observe(viewLifecycleOwner, onStateLayoutObserver)
-    }
-
-    /**
-     * Called when the Fragment is visible to the user.  This is generally
-     * tied to [SupportFragment.onStart] of the containing
-     * Activity's lifecycle.
-     */
-    override fun onStart() {
-        super.onStart()
-        when (supportViewAdapter.isEmpty()) {
-            true -> onFetchDataInitialize()
-            else -> onUpdateUserInterface()
-        }
-    }
-
-    override fun onPause() {
-        supportStateLayout?.onViewRecycled()
-        super.onPause()
     }
 
     /**
@@ -211,34 +228,35 @@ abstract class SupportFragmentList<M>(
         viewModelState()?.refresh()
     }
 
-    /**
-     * Handles post view model result after extraction or processing
-     *
-     * @param model paged list holding data
-     */
-    fun onPostModelChange(model: List<M>?) {
-        with (supportViewAdapter as SupportListAdapter) {
-            submitList(model)
-        }
-
-        if (!model.isNullOrEmpty())
+    protected fun afterPostModelChange(data: Collection<*>?) {
+        /**
+         * TODO: We may need to re-work this segment
+         *
+         * We are assuming that if no data exists in the first pass we might have more data
+         * coming through from a network source for example. As such we react by setting our
+         * adapters network state to loading
+         */
+        if (!data.isNullOrEmpty())
             supportStateLayout?.setNetworkState(NetworkState.Success)
         else if (supportViewAdapter.hasExtraRow()) {
             supportStateLayout?.setNetworkState(NetworkState.Success)
             supportViewAdapter.networkState = NetworkState.Loading
         }
 
-        onUpdateUserInterface()
         resetWidgetStates()
     }
 
     /**
-     * Called when the fragment is no longer in use.  This is called
-     * after [onStop] and before [onDetach].
+     * Handles post view model result after extraction or processing
+     *
+     * @param model list holding data
      */
-    override fun onDestroy() {
-        super.onDestroy()
-        supportViewAdapter.supportAction = null
-        supportViewAdapter.retryFooterAction = null
+    open fun onPostModelChange(model: Collection<IRecyclerItem>?) {
+        with (supportViewAdapter as SupportListAdapter) {
+            model as List<IRecyclerItem>?
+            submitList(model)
+        }
+
+        afterPostModelChange(model)
     }
 }

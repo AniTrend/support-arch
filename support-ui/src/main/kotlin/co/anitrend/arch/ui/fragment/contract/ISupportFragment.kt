@@ -25,21 +25,6 @@ interface ISupportFragment {
      */
     fun initializeComponents(savedInstanceState: Bundle?)
 
-    /**
-     * Handles the updating, binding, creation or state change, depending on the context of views.
-     *
-     * **N.B.** Where this is called is up to the developer
-     */
-    fun onUpdateUserInterface()
-
-    /**
-     * Handles the complex logic required to dispatch network request to a view model, presenter or
-     * worker to either request from the network or database cache.
-     *
-     * **N.B.** Where this is called is up to the developer
-     */
-    fun onFetchDataInitialize()
-
     companion object {
 
         /**

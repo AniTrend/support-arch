@@ -1,14 +1,13 @@
 package co.anitrend.arch.ui.extension
 
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.extension.getColorFromAttr
+import co.anitrend.arch.recycler.SupportRecyclerView
+import co.anitrend.arch.recycler.adapter.SupportListAdapter
+import co.anitrend.arch.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.ui.R
-import co.anitrend.arch.ui.recycler.SupportRecyclerView
-import co.anitrend.arch.ui.recycler.adapter.SupportListAdapter
-import co.anitrend.arch.ui.recycler.adapter.SupportPagedListAdapter
 
 private fun setUpRecyclerConfiguration(
     vertical: Boolean,
@@ -44,8 +43,9 @@ private fun setUpRecyclerConfiguration(
  *
  * @since v0.9.X
  */
+@Deprecated("Consider migrating to the new support-recycler module for more control")
 fun SupportRecyclerView.setUpWith(
-    supportAdapter: SupportPagedListAdapter<*>,
+    supportAdapter: SupportPagedListAdapter,
     vertical: Boolean = true,
     recyclerLayoutManager: RecyclerView.LayoutManager? = null
 ) {
@@ -63,8 +63,9 @@ fun SupportRecyclerView.setUpWith(
  *
  * @since v1.3.X
  */
+@Deprecated("Consider migrating to the new support-recycler module for more control")
 fun SupportRecyclerView.setUpWith(
-    supportAdapter: SupportListAdapter<*>,
+    supportAdapter: SupportListAdapter,
     vertical: Boolean = true,
     recyclerLayoutManager: RecyclerView.LayoutManager? = null
 ) {
@@ -73,15 +74,17 @@ fun SupportRecyclerView.setUpWith(
 }
 
 /**
- * This method applies the most common stateConfiguration for the widget, things like direction, colors, behavior etc.
+ * This method applies the most common stateConfiguration for the widget,
+ * things like direction, colors, behavior etc.
  */
-fun SwipeRefreshLayout.configureWidgetBehaviorWith(context: FragmentActivity?) = context?.also {
-    setProgressBackgroundColorSchemeColor(it.getColorFromAttr(R.attr.rootColor))
-    setColorSchemeColors(it.getColorFromAttr(R.attr.contentColor))
+fun SwipeRefreshLayout.configureWidgetBehaviorWith() {
+    setProgressBackgroundColorSchemeColor(context.getColorFromAttr(R.attr.rootColor))
+    setColorSchemeColors(context.getColorFromAttr(R.attr.contentColor))
 }
 
 /**
- * Resets the refreshing or loading states when called, common use case would be after a network response
+ * Resets the refreshing or loading states when called,
+ * common use case would be after a network response
  */
 fun SwipeRefreshLayout.onResponseResetStates() {
     if (isRefreshing) isRefreshing = false
