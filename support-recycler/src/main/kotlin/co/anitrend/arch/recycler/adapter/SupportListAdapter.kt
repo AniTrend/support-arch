@@ -4,32 +4,38 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.*
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
 import co.anitrend.arch.extension.getLayoutInflater
 import co.anitrend.arch.recycler.R
-import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.recycler.model.RecyclerItem
+import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.recycler.shared.SupportFooterErrorItem
 import co.anitrend.arch.recycler.shared.SupportFooterLoadingItem
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
+import kotlin.properties.Delegates
 
 /**
  * Core implementation for handling complex logic for [List]s and
- * [androidx.recyclerview.widget.RecyclerView.ViewHolder] binding logic
+ * [androidx.recyclerview.widget.RecyclerView.ViewHolder] binding logic, By default
+ * [PagedListAdapter.setHasStableIds] is set to true
  *
  * @since v1.2.0
  */
 abstract class SupportListAdapter(
-    differCallback: DiffUtil.ItemCallback<RecyclerItem>
-) : ISupportAdapter<RecyclerItem>, RecyclerView.Adapter<SupportViewHolder>() {
+    differCallback: DiffUtil.ItemCallback<IRecyclerItem>
+) : ISupportAdapter<IRecyclerItem>, RecyclerView.Adapter<SupportViewHolder>() {
 
-    private val mDiffer: AsyncListDiffer<RecyclerItem> by lazy(LAZY_MODE_UNSAFE) {
+    init {
+        this.setHasStableIds(true)
+    }
+
+    private val mDiffer: AsyncListDiffer<IRecyclerItem> by lazy(LAZY_MODE_UNSAFE) {
         AsyncListDiffer(this, differCallback)
     }
 
@@ -68,7 +74,7 @@ abstract class SupportListAdapter(
     /**
      * Returns a model at the given index
      */
-    fun getItem(position: Int): RecyclerItem? {
+    fun getItem(position: Int): IRecyclerItem? {
         val currentList = getCurrentList()
         if (position <= RecyclerView.NO_POSITION || position >= currentList.size) {
             return null
@@ -91,7 +97,7 @@ abstract class SupportListAdapter(
      *
      * @return The list currently being displayed.
      */
-    fun getCurrentList(): List<RecyclerItem> {
+    fun getCurrentList(): List<IRecyclerItem> {
         return mDiffer.currentList
     }
 
@@ -103,7 +109,7 @@ abstract class SupportListAdapter(
      *
      * @param list The new list to be displayed.
      */
-    fun submitList(list: List<RecyclerItem>?, commitCallback: Runnable? = null) {
+    fun submitList(list: List<IRecyclerItem>?, commitCallback: Runnable? = null) {
         mDiffer.submitList(list, commitCallback)
     }
 
