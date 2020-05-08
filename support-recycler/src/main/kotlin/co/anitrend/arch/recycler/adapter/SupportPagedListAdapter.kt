@@ -1,6 +1,5 @@
 package co.anitrend.arch.recycler.adapter
 
-import android.content.Context
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
@@ -16,7 +15,7 @@ import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.recycler.model.RecyclerItem
+import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.recycler.shared.SupportFooterErrorItem
 import co.anitrend.arch.recycler.shared.SupportFooterLoadingItem
 import kotlinx.coroutines.flow.Flow
@@ -24,14 +23,19 @@ import timber.log.Timber
 
 /**
  * Core implementation for handling complex logic for [androidx.paging.PagedListAdapter] and
- * [androidx.recyclerview.widget.RecyclerView.ViewHolder] binding logic
+ * [androidx.recyclerview.widget.RecyclerView.ViewHolder] binding logic, By default
+ * [PagedListAdapter.setHasStableIds] is set to true
  *
  * @see SupportViewHolder
  * @since v1.2.0
  */
 abstract class SupportPagedListAdapter(
-    differCallback: DiffUtil.ItemCallback<RecyclerItem>
-) : ISupportAdapter<RecyclerItem>, PagedListAdapter<RecyclerItem, SupportViewHolder>(differCallback) {
+    differCallback: DiffUtil.ItemCallback<IRecyclerItem>
+) : ISupportAdapter<IRecyclerItem>, PagedListAdapter<IRecyclerItem, SupportViewHolder>(differCallback) {
+
+    init {
+        this.setHasStableIds(true)
+    }
 
     override val moduleTag: String = javaClass.name
 
