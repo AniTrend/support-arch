@@ -5,17 +5,18 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ViewFlipper
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getCompatDrawable
 import co.anitrend.arch.extension.getLayoutInflater
 import co.anitrend.arch.extension.gone
 import co.anitrend.arch.ui.R
-import co.anitrend.arch.ui.util.StateLayoutConfig
 import co.anitrend.arch.ui.view.contract.CustomView
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import kotlinx.android.synthetic.main.support_state_layout_error.view.*
 import kotlinx.android.synthetic.main.support_state_layout_laoding.view.*
+import kotlinx.coroutines.flow.Flow
 
 /**
  * A state layout that supports [NetworkState.Loading] and [NetworkState.Error] states
@@ -47,12 +48,8 @@ open class SupportStateLayout : ViewFlipper, CustomView {
     val isContent
         get() = displayedChild == CONTENT_VIEW
 
-    private val _interactionLiveData = MutableLiveData<View>()
-    val interactionLiveData: LiveData<View>
-        get() = _interactionLiveData
-
-    @Deprecated("Preferably use [SupportStateLayout.interactionLiveData]")
-    var onWidgetInteraction: OnClickListener? = null
+    private val interactionLiveData = MutableLiveData<View>()
+    val interactionFlow: Flow<View> = interactionLiveData.asFlow()
 
     private fun updateUsing(config: StateLayoutConfig) {
         setInAnimation(context, config.inAnimation)
@@ -97,8 +94,7 @@ open class SupportStateLayout : ViewFlipper, CustomView {
         }
 
         stateLayoutErrorRetryAction.setOnClickListener {
-            _interactionLiveData.postValue(it)
-            onWidgetInteraction?.onClick(it)
+            interactionLiveData.postValue(it)
         }
     }
 
@@ -107,7 +103,7 @@ open class SupportStateLayout : ViewFlipper, CustomView {
      * release object references and cancel all running coroutine jobs if the current view
      */
     override fun onViewRecycled() {
-        onWidgetInteraction = null
+        stateLayoutErrorRetryAction.setOnClickListener(null)
     }
 
     @SuppressLint("InflateParams")
@@ -147,6 +143,11 @@ open class SupportStateLayout : ViewFlipper, CustomView {
         }
         if (!isInLayout)
             requestLayout()
+    }
+
+    override fun onDetachedFromWindow() {
+        onViewRecycled()
+        super.onDetachedFromWindow()
     }
 
     companion object {

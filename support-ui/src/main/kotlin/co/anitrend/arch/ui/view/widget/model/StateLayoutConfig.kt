@@ -1,4 +1,4 @@
-package co.anitrend.arch.ui.util
+package co.anitrend.arch.ui.view.widget.model
 
 import androidx.annotation.AnimRes
 import androidx.annotation.DrawableRes
