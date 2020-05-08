@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IntegerRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -43,6 +44,14 @@ abstract class SupportFragmentList<M: IRecyclerItem>(
     protected var supportStateLayout: SupportStateLayout? = null
     protected var supportRefreshLayout: SwipeRefreshLayout? = null
     protected var supportRecyclerView: SupportRecyclerView? = null
+
+    /**
+     * Default span size of [IntegerRes] the layout manager will use.
+     *
+     * @see setRecyclerLayoutManager
+     */
+    @get:IntegerRes
+    protected abstract val defaultSpanSize: Int
 
     /**
      * Stub to trigger the loading of data, by default this is only called
@@ -87,7 +96,7 @@ abstract class SupportFragmentList<M: IRecyclerItem>(
     override fun setRecyclerLayoutManager(recyclerView: SupportRecyclerView) {
         if (recyclerView.layoutManager == null)
             recyclerView.layoutManager = StaggeredGridLayoutManager(
-                resources.getInteger(R.integer.single_list_size),
+                resources.getInteger(defaultSpanSize),
                 StaggeredGridLayoutManager.VERTICAL
             )
     }
