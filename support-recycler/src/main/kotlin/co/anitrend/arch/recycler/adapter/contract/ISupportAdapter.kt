@@ -81,24 +81,16 @@ interface ISupportAdapter<T> : SupportLifecycle {
             (networkState is NetworkState.Loading || networkState is NetworkState.Error)
 
     /**
-     * Returns a boolean to instruct the [GridLayoutManager] if an item at the position should
-     * use a span size count of [FULL_SPAN_SIZE] otherwise defaults to the intended size
+     * Should return the span size for the item at [position], when called from [GridLayoutManager]
+     * [spanCount] will be the span size for the item at the [position]. Otherwise if called
+     * from [StaggeredGridLayoutManager] then [spanCount] may be null
      *
-     * @param position recycler position being rendered
-     * @param spanCount current size of the span count from the layout manager
-     *
-     * @see setLayoutSpanSize
-     */
-    fun isFullSpanItem(position: Int, spanCount: Int): Boolean
-
-    /**
-     * Should return the span size for the item at [position]
-     *
-     * @return span size or null if you want to use the layout manager span count
+     * @param position item position in the adapter
+     * @param spanCount current span count for the layout manager
      *
      * @see co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
      */
-    fun getSpanSizeForItemAt(position: Int): Int?
+    fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int?
 
     /**
      * Initial implementation is only specific for group types of recyclers,
@@ -108,10 +100,10 @@ interface ISupportAdapter<T> : SupportLifecycle {
      */
     fun setLayoutSpanSize(layoutManager: GridLayoutManager) {
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int = when {
-                isFullSpanItem(position, layoutManager.spanCount) -> FULL_SPAN_SIZE
-                else -> getSpanSizeForItemAt(position) ?: layoutManager.spanCount
-            }
+            override fun getSpanSize(position: Int): Int =
+                getSpanSizeForItemAt(
+                    position, layoutManager.spanCount
+                ) ?: layoutManager.spanCount
         }
     }
 
@@ -140,8 +132,10 @@ interface ISupportAdapter<T> : SupportLifecycle {
      * @param layoutParams StaggeredGridLayoutManager.LayoutParams for your recycler
      */
     fun setLayoutSpanSize(layoutParams: StaggeredGridLayoutManager.LayoutParams, position: Int) {
-        if (isFullSpanItem(position, layoutParams.spanIndex))
-            layoutParams.isFullSpan = true
+        val spanCount = getSpanSizeForItemAt(
+            position, layoutParams.spanIndex
+        ) ?: 0
+        layoutParams.isFullSpan = spanCount == FULL_SPAN_SIZE
     }
 
     /**

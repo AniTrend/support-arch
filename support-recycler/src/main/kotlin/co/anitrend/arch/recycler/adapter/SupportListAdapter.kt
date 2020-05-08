@@ -140,17 +140,15 @@ abstract class SupportListAdapter(
         val layoutInflater = parent.context.getLayoutInflater()
         return when (viewType) {
             R.layout.support_layout_state_footer_loading -> {
-                SupportFooterLoadingItem(
-                    viewType, stateConfiguration, parent.resources
-                ).run {
-                    createViewHolder(layoutInflater.inflate(layout, parent, false))
+                SupportFooterLoadingItem.createViewHolder(parent, layoutInflater).also {
+                    val model = SupportFooterLoadingItem(stateConfiguration)
+                    it.bind(0, emptyList(), model, clickObservable,null)
                 }
             }
             R.layout.support_layout_state_footer_error -> {
-                SupportFooterErrorItem(
-                    viewType, parent.resources, networkState, stateConfiguration
-                ).run {
-                    createViewHolder(layoutInflater.inflate(layout, parent, false))
+                SupportFooterErrorItem.createViewHolder(parent, layoutInflater).also {
+                    val model = SupportFooterErrorItem(networkState, stateConfiguration)
+                    it.bind(0, emptyList(), model, clickObservable,null)
                 }
             }
             else -> createDefaultViewHolder(parent, viewType, layoutInflater)
@@ -283,21 +281,6 @@ abstract class SupportListAdapter(
     }
 
     /**
-     * Returns a boolean to instruct the [GridLayoutManager] if an item at the position should
-     * use a span size count of 1 otherwise defaults to the intended size
-     *
-     * @param position recycler position being rendered
-     * @param spanCount current size of the span count from the layout manager
-     *
-     * @see setLayoutSpanSize
-     */
-    override fun isFullSpanItem(position: Int, spanCount: Int): Boolean {
-        val item = getItem(position)
-        val spanSize = item?.getSpanSize(spanCount, position)
-        return spanSize == ISupportAdapter.FULL_SPAN_SIZE
-    }
-
-    /**
      * Informs view adapter of changes related to it's view holder
      */
     override fun updateSelection() {
@@ -313,8 +296,14 @@ abstract class SupportListAdapter(
         payloads: List<Any>
     ) {
         runCatching {
-            val item = getItem(position)
-            holder.bind(position, payloads, item, clickObservable, supportAction)
+            val viewType = getItemViewType(position)
+            if (
+                viewType != R.layout.support_layout_state_footer_loading ||
+                viewType != R.layout.support_layout_state_footer_error
+            ) {
+                val item = getItem(position)
+                holder.bind(position, payloads, item, clickObservable, supportAction)
+            }
             animateViewHolder(holder, position)
         }.onFailure {
             it.printStackTrace()

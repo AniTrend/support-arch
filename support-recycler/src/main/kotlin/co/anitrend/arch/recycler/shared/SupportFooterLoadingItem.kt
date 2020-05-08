@@ -1,8 +1,9 @@
 package co.anitrend.arch.recycler.shared
 
 import android.content.res.Resources
+import android.view.LayoutInflater
 import android.view.View
-import androidx.annotation.LayoutRes
+import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
@@ -19,10 +20,8 @@ import kotlinx.android.synthetic.main.support_layout_state_footer_loading.view.*
  * @since v0.9.X
  */
 open class SupportFooterLoadingItem(
-    @LayoutRes layout: Int,
-    private val configuration: IStateLayoutConfig,
-    private val resources: Resources
-) : RecyclerItem(RecyclerView.NO_ID, layout) {
+    private val configuration: IStateLayoutConfig
+) : RecyclerItem(RecyclerView.NO_ID) {
 
     override fun bind(
         view: View,
@@ -42,6 +41,27 @@ open class SupportFooterLoadingItem(
 
     override fun getSpanSize(
         spanCount: Int,
-        position: Int
+        position: Int,
+        resources: Resources
     ) = resources.getInteger(R.integer.single_list_size)
+
+    companion object {
+        /**
+         * Inflates a layout and returns it's root view wrapped in [SupportViewHolder]
+         *
+         * @param viewGroup parent view requesting the layout
+         * @param layoutInflater inflater to use, this is derived from the [viewGroup]
+         */
+        internal fun createViewHolder(
+            viewGroup: ViewGroup,
+            layoutInflater: LayoutInflater
+        ): SupportViewHolder {
+            val view = layoutInflater.inflate(
+                R.layout.support_layout_state_footer_loading,
+                viewGroup,
+                false
+            )
+            return SupportViewHolder(view)
+        }
+    }
 }

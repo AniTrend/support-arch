@@ -1,8 +1,6 @@
 package co.anitrend.arch.recycler.model
 
-import android.view.View
 import co.anitrend.arch.recycler.action.decorator.ISelectionDecorator
-import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 
 /**
@@ -13,14 +11,14 @@ import co.anitrend.arch.recycler.model.contract.IRecyclerItem
  * @see IRecyclerItem
  */
 abstract class RecyclerItem(
-    override val id: Long,
-    override val layout: Int,
-    override val supportsSelectionMode: Boolean = false
+    override val id: Long
 ) : IRecyclerItem {
 
-    open fun createViewHolder(view: View) =
-        SupportViewHolder(view)
+    override val supportsSelectionMode: Boolean = false
 
+    /**
+     * Decorator that can be used to style this item when it is selected or unselected
+     */
     override val decorator =
         object : ISelectionDecorator { }
 }

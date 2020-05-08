@@ -9,7 +9,6 @@ import co.anitrend.arch.recycler.common.ClickableItem
  * Contract for recycler item
  *
  * @property id id of the item view
- * @property layout layout to inflate
  * @property decorator provides styling information
  * @property supportsSelectionMode whether or not the element can trigger action mode
  *
@@ -20,12 +19,14 @@ import co.anitrend.arch.recycler.common.ClickableItem
 interface IRecyclerItem : IRecyclerItemSpan {
     val id: Long
 
-    val layout: Int
-
     val supportsSelectionMode: Boolean
 
     val decorator: ISelectionDecorator
 
+    /**
+     * Called when the [view] needs to be setup, this could be to set click listeners,
+     * assign text, load images, e.t.c
+     */
     fun bind(
         view: View,
         position: Int,
@@ -33,5 +34,9 @@ interface IRecyclerItem : IRecyclerItemSpan {
         clickObservable: MutableLiveData<ClickableItem>
     )
 
+    /**
+     * Called when the view needs to be recycled for reuse, clear any held references
+     * to objects, stop any asynchronous work, e.t.c
+     */
     fun unbind(view: View)
 }
