@@ -1,25 +1,31 @@
 package co.anitrend.arch.recycler.adapter.contract
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
+import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
+import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.contract.ISupportAnimator
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Contract for recycler view adapters
  */
-interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
+interface ISupportAdapter<T> : SupportLifecycle {
 
     var lastAnimatedPosition: Int
+
+    /**
+     * Mapper for adapters to converting models to recycler items
+     */
+    val mapper: (T?) -> IRecyclerItem
 
     /**
      * Get currently set animation type for recycler view holder items
@@ -29,9 +35,9 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
     var customSupportAnimator: ISupportAnimator?
 
     /**
-     * Retry click interceptor for recycler footer error
+     * An observer to listen for clicks on clickable items
      */
-    var retryFooterAction: View.OnClickListener?
+    val clickableFlow: Flow<ClickableItem>
 
     /**
      * Configuration for the state based footer
@@ -64,7 +70,7 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
      */
     fun createDefaultViewHolder(
         parent: ViewGroup, @LayoutRes viewType: Int, layoutInflater: LayoutInflater
-    ): H
+    ): SupportViewHolder
 
     /**
      * Returns a boolean indicating whether or not the adapter had data, and caters for [hasExtraRow]
@@ -75,30 +81,30 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
     fun isEmpty(): Boolean
 
     /**
+     * Informs us if the given [position] is within bounds of our underlying collection
+     */
+    fun isWithinIndexBounds(position: Int): Boolean
+
+    /**
      * Checks if current network state represents an additional row of data
      */
     fun hasExtraRow() = networkState != null &&
             (networkState is NetworkState.Loading || networkState is NetworkState.Error)
 
     /**
-     * Returns a boolean to instruct the [GridLayoutManager] if an item at the position should
-     * use a span size count of [FULL_SPAN_SIZE] otherwise defaults to the intended size
+     * Should return the span size for the item at [position], when called from
+     * [androidx.recyclerview.widget.GridLayoutManager] [spanCount] will be the span
+     * size for the item at the [position].
      *
-     * @param position recycler position being rendered
-     * @param spanCount current size of the span count from the layout manager
+     * Otherwise if called from [androidx.recyclerview.widget.StaggeredGridLayoutManager]
+     * then [spanCount] may be null
      *
-     * @see setLayoutSpanSize
-     */
-    fun isFullSpanItem(position: Int, spanCount: Int): Boolean
-
-    /**
-     * Should return the span size for the item at [position]
-     *
-     * @return span size or null if you want to use the layout manager span count
+     * @param position item position in the adapter
+     * @param spanCount current span count for the layout manager
      *
      * @see co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
      */
-    fun getSpanSizeForItemAt(position: Int): Int?
+    fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int?
 
     /**
      * Initial implementation is only specific for group types of recyclers,
@@ -108,15 +114,15 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
      */
     fun setLayoutSpanSize(layoutManager: GridLayoutManager) {
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int = when {
-                isFullSpanItem(position, layoutManager.spanCount) -> FULL_SPAN_SIZE
-                else -> getSpanSizeForItemAt(position) ?: layoutManager.spanCount
-            }
+            override fun getSpanSize(position: Int): Int =
+                getSpanSizeForItemAt(
+                    position, layoutManager.spanCount
+                ) ?: layoutManager.spanCount
         }
     }
 
 
-    fun animateViewHolder(holder: H?, position: Int) {
+    fun animateViewHolder(holder: SupportViewHolder?, position: Int) {
         holder?.apply {
             when (position > lastAnimatedPosition) {
                 true -> customSupportAnimator?.also { supportAnimator ->
@@ -140,8 +146,10 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
      * @param layoutParams StaggeredGridLayoutManager.LayoutParams for your recycler
      */
     fun setLayoutSpanSize(layoutParams: StaggeredGridLayoutManager.LayoutParams, position: Int) {
-        if (isFullSpanItem(position, layoutParams.spanIndex))
-            layoutParams.isFullSpan = true
+        val spanCount = getSpanSizeForItemAt(
+            position, layoutParams.spanIndex
+        ) ?: 0
+        layoutParams.isFullSpan = spanCount == FULL_SPAN_SIZE
     }
 
     /**
@@ -150,19 +158,10 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
     fun updateSelection()
 
     /**
-     * Binds content view holder at [position]
-     */
-    fun bindContentViewHolder(
-        holder: H,
-        position: Int,
-        payloads: List<Any> = emptyList()
-    )
-
-    /**
      * Binds view holder by view type at [position]
      */
     fun bindViewHolderByType(
-        holder: H,
+        holder: SupportViewHolder,
         position: Int,
         payloads: List<Any> = emptyList()
     )
@@ -174,74 +173,10 @@ interface ISupportAdapter<T, H: SupportViewHolder> : SupportLifecycle {
      */
     override fun onDestroy() {
         super.onDestroy()
-        retryFooterAction = null
         supportAction = null
     }
 
     companion object {
-
         const val FULL_SPAN_SIZE = 1
-
-        /**
-         * Provides default behaviour for item callback to compare objects
-         */
-        fun <T> getDefaultDiffItemCallback(): DiffUtil.ItemCallback<T> {
-            return object : DiffUtil.ItemCallback<T>() {
-
-                /**
-                 * Called to check whether two objects represent the same item.
-                 *
-                 *
-                 * For example, if your items have unique ids, this method should check their id equality.
-                 *
-                 *
-                 * Note: `null` items in the list are assumed to be the same as another `null`
-                 * item and are assumed to not be the same as a non-`null` item. This callback will
-                 * not be invoked for either of those cases.
-                 *
-                 * @param oldItem The item in the old list.
-                 * @param newItem The item in the new list.
-                 * @return True if the two items represent the same object or false if they are different.
-                 *
-                 * @see Callback.areItemsTheSame
-                 */
-                override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
-                    return oldItem?.equals(newItem) ?: false
-                }
-
-                /**
-                 * Called to check whether two items have the same data.
-                 *
-                 *
-                 * This information is used to detect if the contents of an item have changed.
-                 *
-                 *
-                 * This method to check equality instead of [Object.equals] so that you can
-                 * change its behavior depending on your UI.
-                 *
-                 *
-                 * For example, if you are using DiffUtil with a
-                 * [RecyclerView.Adapter], you should
-                 * return whether the items' visual representations are the same.
-                 *
-                 *
-                 * This method is called only if [.areItemsTheSame] returns `true` for
-                 * these items.
-                 *
-                 *
-                 * Note: Two `null` items are assumed to represent the same contents. This callback
-                 * will not be invoked for this case.
-                 *
-                 * @param oldItem The item in the old list.
-                 * @param newItem The item in the new list.
-                 * @return True if the contents of the items are the same or false if they are different.
-                 *
-                 * @see Callback.areContentsTheSame
-                 */
-                override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
-                    return oldItem.hashCode() == newItem.hashCode()
-                }
-            }
-        }
     }
 }

@@ -60,6 +60,22 @@ open class SupportImageView : AppCompatImageView, CustomView {
         setMeasuredDimension(width, height)
     }
 
+    /**
+     * Should be called on a view's detach from window to unbind or release object references
+     * and cancel all running coroutine jobs if the current view
+     *
+     * Consider calling this in [android.view.View.onDetachedFromWindow]
+     */
+    override fun onViewRecycled() {
+        if (hasOnClickListeners())
+            setOnClickListener(null)
+    }
+
+    override fun onDetachedFromWindow() {
+        onViewRecycled()
+        super.onDetachedFromWindow()
+    }
+
     companion object {
         const val DEFAULT_ASPECT_RATIO = 1f
     }

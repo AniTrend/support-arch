@@ -12,16 +12,17 @@ interface IRecyclerItemSpan {
     /**
      * Provides a preferred span size for the item
      *
-     * @param spanCount current span count
+     * @param spanCount current span count which may also be [INVALID_SPAN_COUNT]
      * @param position position of the current item
-     * @param resources potentially useful if you wish to use dynamic span
-     * sizes depending on configuration based resources
-     *
-     * @return span size to use
+     * @param resources optionally useful for dynamic size check with different configurations
      */
     fun getSpanSize(
         spanCount: Int,
         position: Int,
         resources: Resources
     ): Int
+
+    companion object {
+        const val INVALID_SPAN_COUNT = -1
+    }
 }

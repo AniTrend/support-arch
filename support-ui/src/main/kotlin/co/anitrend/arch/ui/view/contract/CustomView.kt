@@ -23,7 +23,7 @@ interface CustomView {
      * Should be called on a view's detach from window to unbind or release object references
      * and cancel all running coroutine jobs if the current view
      *
-     * Consider called this in [android.view.View.onDetachedFromWindow]
+     * Consider calling this in [android.view.View.onDetachedFromWindow]
      */
     fun onViewRecycled() {
         // optional implementation

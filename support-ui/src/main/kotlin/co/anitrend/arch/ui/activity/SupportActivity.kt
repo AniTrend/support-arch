@@ -14,7 +14,6 @@ import co.anitrend.arch.ui.common.ISupportActionUp
 import co.anitrend.arch.ui.fragment.contract.ISupportFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlin.properties.Delegates.notNull
 
 /**
  * Core implementation for [androidx.appcompat.app.AppCompatActivity] components
@@ -29,7 +28,7 @@ abstract class SupportActivity : AppCompatActivity(),
 
     override val moduleTag = javaClass.simpleName
 
-    /** Current fragment in view tag */
+    /** Current fragment in view tag which will be used by [getSupportFragmentManager] */
     protected var currentFragmentTag: String? = null
 
     /**
@@ -43,11 +42,9 @@ abstract class SupportActivity : AppCompatActivity(),
      * @see ISupportActionUp
      */
     protected open fun currentFragmentInterceptsActionUp(): Boolean {
-        return when (
-            val fragment = supportFragmentManager.findFragmentByTag(
-                currentFragmentTag
-            )
-        ) {
+        val fragment = supportFragmentManager
+                .findFragmentByTag(currentFragmentTag)
+        return when (fragment) {
             is ISupportActionUp -> fragment.hasBackPressableAction()
             else -> false
         }

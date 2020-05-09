@@ -1,11 +1,15 @@
 package co.anitrend.arch.recycler.shared
 
 import android.content.res.Resources
-import androidx.annotation.LayoutRes
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.extension.gone
 import co.anitrend.arch.recycler.R
+import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import kotlinx.android.synthetic.main.support_layout_state_footer_loading.view.*
@@ -16,19 +20,23 @@ import kotlinx.android.synthetic.main.support_layout_state_footer_loading.view.*
  * @since v0.9.X
  */
 open class SupportFooterLoadingItem(
-    @LayoutRes layout: Int,
     private val configuration: IStateLayoutConfig
-) : RecyclerItem<SupportViewHolder>(RecyclerView.NO_ID, layout) {
+) : RecyclerItem(RecyclerView.NO_ID) {
 
-    override fun bind(holder: SupportViewHolder, position: Int, payloads: List<Any>) {
+    override fun bind(
+        view: View,
+        position: Int,
+        payloads: List<Any>,
+        clickObservable: MutableLiveData<ClickableItem>
+    ) {
         if (configuration.loadingMessage != null)
-            holder.itemView.stateFooterLoadingText.setText(configuration.loadingMessage!!)
+            view.stateFooterLoadingText.setText(configuration.loadingMessage!!)
         else
-            holder.itemView.stateFooterLoadingText.gone()
+            view.stateFooterLoadingText.gone()
     }
 
-    override fun unbind(holder: SupportViewHolder) {
-
+    override fun unbind(view: View) {
+        view.stateFooterLoadingText.text = null
     }
 
     override fun getSpanSize(
@@ -36,4 +44,24 @@ open class SupportFooterLoadingItem(
         position: Int,
         resources: Resources
     ) = resources.getInteger(R.integer.single_list_size)
+
+    companion object {
+        /**
+         * Inflates a layout and returns it's root view wrapped in [SupportViewHolder]
+         *
+         * @param viewGroup parent view requesting the layout
+         * @param layoutInflater inflater to use, this is derived from the [viewGroup]
+         */
+        internal fun createViewHolder(
+            viewGroup: ViewGroup,
+            layoutInflater: LayoutInflater
+        ): SupportViewHolder {
+            val view = layoutInflater.inflate(
+                R.layout.support_layout_state_footer_loading,
+                viewGroup,
+                false
+            )
+            return SupportViewHolder(view)
+        }
+    }
 }

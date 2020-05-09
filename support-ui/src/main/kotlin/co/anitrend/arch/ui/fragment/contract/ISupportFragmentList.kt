@@ -1,45 +1,29 @@
 package co.anitrend.arch.ui.fragment.contract
 
-import android.view.View
-import androidx.annotation.IntegerRes
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.ui.R
-import co.anitrend.arch.ui.recycler.SupportRecyclerView
-import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
-import co.anitrend.arch.ui.util.StateLayoutConfig
+import co.anitrend.arch.recycler.SupportRecyclerView
+import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 
 /**
  * Fragment list contract
  *
  * @since v0.9.X
  */
-interface ISupportFragmentList<M> : SwipeRefreshLayout.OnRefreshListener {
+interface ISupportFragmentList<T> : SwipeRefreshLayout.OnRefreshListener {
 
-    /**
-     * Default grid sized items for the built in layout manager
-     *
-     * @see R.integer.grid_list_x3
-     */
-
-    @Deprecated(
-        "May be removed in 1.3.0-stable when support-recycler module reaches stable",
-        ReplaceWith("Nothing")
-    )
-    @get:IntegerRes
-    val columnSize: Int
-        get() = R.integer.grid_list_x3
-
-    val onStateLayoutObserver: Observer<View>
     val onRefreshObserver: Observer<NetworkState>
     val onNetworkObserver: Observer<NetworkState>
 
     /**
-     * Adapter that should be used for the recycler view
+     * Adapter that should be used for the recycler view, by default [StateRestorationPolicy]
+     * is set to [StateRestorationPolicy.PREVENT_WHEN_EMPTY]
      */
-    val supportViewAdapter: ISupportViewAdapter<M>
+    val supportViewAdapter: ISupportAdapter<T>
 
     /**
      * State configuration for any underlying state representing widgets
