@@ -41,32 +41,12 @@ private fun setUpRecyclerConfiguration(
  * @param vertical if the layout adapter should be vertical or horizontal
  * @param recyclerLayoutManager optional layout manager if you do not wish to use the default
  *
- * @since v0.9.X
- */
-@Deprecated("Consider migrating to the new support-recycler module for more control")
-fun SupportRecyclerView.setUpWith(
-    supportAdapter: SupportPagedListAdapter,
-    vertical: Boolean = true,
-    recyclerLayoutManager: RecyclerView.LayoutManager? = null
-) {
-    setUpRecyclerConfiguration(vertical, this, recyclerLayoutManager)
-    adapter = supportAdapter
-}
-
-/**
- * Sets up a recycler view by handling all the boilerplate code associated with it using
- * the given layout manager or the default.
- *
- * @param supportAdapter recycler view adapter which will be used
- * @param vertical if the layout adapter should be vertical or horizontal
- * @param recyclerLayoutManager optional layout manager if you do not wish to use the default
- *
  * @since v1.3.X
  */
 @Deprecated("Consider migrating to the new support-recycler module for more control")
 fun SupportRecyclerView.setUpWith(
-    supportAdapter: SupportListAdapter,
     vertical: Boolean = true,
+    supportAdapter: RecyclerView.Adapter<*>,
     recyclerLayoutManager: RecyclerView.LayoutManager? = null
 ) {
     setUpRecyclerConfiguration(vertical, this, recyclerLayoutManager)
