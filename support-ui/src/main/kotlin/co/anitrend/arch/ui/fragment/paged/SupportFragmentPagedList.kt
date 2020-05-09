@@ -13,16 +13,16 @@ import co.anitrend.arch.ui.fragment.list.SupportFragmentList
  *
  * @see ISupportFragmentList
  */
-abstract class SupportFragmentPagedList<M : IRecyclerItem> : SupportFragmentList<M>() {
+abstract class SupportFragmentPagedList<M> : SupportFragmentList<M>() {
 
     /**
      * Handles post view model result after extraction or processing
      *
      * @param model paged list holding data
      */
-    override fun onPostModelChange(model: Collection<IRecyclerItem>?) {
-        with (supportViewAdapter as SupportPagedListAdapter){
-            model as PagedList<IRecyclerItem>?
+    override fun onPostModelChange(model: Collection<M>?) {
+        with (supportViewAdapter as SupportPagedListAdapter) {
+            model as PagedList
             submitList(model)
         }
 

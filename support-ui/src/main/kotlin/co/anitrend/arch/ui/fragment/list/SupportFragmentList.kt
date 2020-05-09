@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.extension.attachComponent
+import co.anitrend.arch.extension.detachComponent
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.common.FooterClickableItem
-import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.extension.configureWidgetBehaviorWith
 import co.anitrend.arch.ui.extension.onResponseResetStates
@@ -37,7 +38,7 @@ import timber.log.Timber
  * @see SupportFragment
  * @see ISupportFragmentList
  */
-abstract class SupportFragmentList<M: IRecyclerItem>(
+abstract class SupportFragmentList<M>(
     override val inflateLayout: Int = R.layout.support_list
 ) : SupportFragment(), ISupportFragmentList<M> {
 
@@ -67,7 +68,7 @@ abstract class SupportFragmentList<M: IRecyclerItem>(
         when (!supportViewAdapter.isEmpty()) {
             true -> {
                 // to assure that the state layout is not blocking the current view
-                supportStateLayout?.setNetworkState(
+                supportStateLayout?.networkStateLiveData?.postValue(
                     NetworkState.Success
                 )
                 supportViewAdapter.networkState = networkState
@@ -127,22 +128,23 @@ abstract class SupportFragmentList<M: IRecyclerItem>(
                 .debounce(16)
                 .filterIsInstance<FooterClickableItem>()
                 .collect {
-                    if (supportStateLayout?.isLoading != true)
+                    if (it.state !is NetworkState.Loading)
                         viewModelState()?.retry()
                     else
                         Timber.tag(moduleTag).d(
-                            "retryFooterAction -> supportStateLayout is currently loading"
+                            "retryFooterAction -> state is loading? current state: ${it.state}"
                         )
                 }
-
+        }
+        lifecycleScope.launchWhenResumed {
             supportStateLayout?.interactionFlow
                 ?.debounce(16)
                 ?.collect {
-                    if (supportStateLayout?.isLoading != true)
+                    if (it.data !is NetworkState.Loading)
                         viewModelState()?.retry()
                     else
                         Timber.tag(moduleTag).d(
-                            "onStateLayoutObserver -> supportStateLayout is currently loading"
+                            "onStateLayoutObserver -> state is loading? current state: ${it.data}"
                         )
                 }
         }
@@ -206,6 +208,7 @@ abstract class SupportFragmentList<M: IRecyclerItem>(
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        supportRecyclerView?.also { attachComponent(it) }
         setUpViewModelObserver()
         viewModelState()?.networkState?.observe(viewLifecycleOwner, onNetworkObserver)
         viewModelState()?.refreshState?.observe(viewLifecycleOwner, onRefreshObserver)
@@ -218,11 +221,11 @@ abstract class SupportFragmentList<M: IRecyclerItem>(
      */
     override fun changeLayoutState(networkState: NetworkState?) {
         if (supportViewAdapter.hasExtraRow() || networkState !is NetworkState.Error) {
-            supportStateLayout?.setNetworkState(NetworkState.Success)
+            supportStateLayout?.networkStateLiveData?.postValue(NetworkState.Success)
             supportViewAdapter.networkState = networkState
         }
         else {
-            supportStateLayout?.setNetworkState(
+            supportStateLayout?.networkStateLiveData?.postValue(
                 networkState
             )
         }
@@ -237,6 +240,31 @@ abstract class SupportFragmentList<M: IRecyclerItem>(
         viewModelState()?.refresh()
     }
 
+    /**
+     * Called when the fragment is no longer in use. This is called
+     * after [onStop] and before [onDetach].
+     */
+    override fun onDestroy() {
+        supportRefreshLayout?.setOnRefreshListener(null)
+        super.onDestroy()
+    }
+
+    /**
+     * Called when the view previously created by [onCreateView] has
+     * been detached from the fragment. The next time the fragment needs
+     * to be displayed, a new view will be created.
+     *
+     * This is called after [onStop] and before [onDestroy]. It is called *regardless* of
+     * whether [onCreateView] returned a non-null view. Internally it is called after the
+     * view's state has been saved but before it has been removed from its parent.
+     */
+    override fun onDestroyView() {
+        supportRecyclerView?.also {
+            detachComponent(it)
+        }
+        super.onDestroyView()
+    }
+
     protected fun afterPostModelChange(data: Collection<*>?) {
         /**
          * TODO: We may need to re-work this segment
@@ -246,10 +274,10 @@ abstract class SupportFragmentList<M: IRecyclerItem>(
          * adapters network state to loading
          */
         if (!data.isNullOrEmpty())
-            supportStateLayout?.setNetworkState(NetworkState.Success)
+            supportStateLayout?.networkStateLiveData?.postValue(NetworkState.Success)
         else if (supportViewAdapter.hasExtraRow()) {
-            supportStateLayout?.setNetworkState(NetworkState.Success)
-            supportViewAdapter.networkState = NetworkState.Loading
+            supportStateLayout?.networkStateLiveData?.postValue(NetworkState.Success)
+            //supportViewAdapter.networkState = NetworkState.Loading
         }
 
         resetWidgetStates()
@@ -260,9 +288,9 @@ abstract class SupportFragmentList<M: IRecyclerItem>(
      *
      * @param model list holding data
      */
-    open fun onPostModelChange(model: Collection<IRecyclerItem>?) {
+    open fun onPostModelChange(model: Collection<M>?) {
         with (supportViewAdapter as SupportListAdapter) {
-            model as List<IRecyclerItem>?
+            model as List
             submitList(model)
         }
 
