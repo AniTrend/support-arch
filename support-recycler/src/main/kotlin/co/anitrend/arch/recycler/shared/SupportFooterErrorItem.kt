@@ -38,7 +38,7 @@ class SupportFooterErrorItem(
         if (configuration.retryAction != null) {
             view.stateFooterErrorAction.setOnClickListener {
                 clickObservable.postValue(
-                    FooterClickableItem(it)
+                    FooterClickableItem(networkState, it)
                 )
             }
             view.stateFooterErrorAction.setText(configuration.retryAction!!)

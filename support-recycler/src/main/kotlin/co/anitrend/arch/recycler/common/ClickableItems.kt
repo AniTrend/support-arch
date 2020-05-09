@@ -1,7 +1,7 @@
 package co.anitrend.arch.recycler.common
 
 import android.view.View
-import co.anitrend.arch.recycler.common.DefaultClickableItem.ClickType
+import co.anitrend.arch.domain.entities.NetworkState
 
 /**
  * Clickable item base class
@@ -14,6 +14,7 @@ sealed class ClickableItem(
  * Clickable item for footer views
  */
 class FooterClickableItem(
+    val state: NetworkState?,
     view: View
 ) : ClickableItem(view)
 
@@ -24,8 +25,8 @@ class DefaultClickableItem<T>(
     val clickType: ClickType = ClickType.SHORT,
     val data: T?,
     view: View
-) : ClickableItem(view) {
-    enum class ClickType {
-        SHORT, LONG
-    }
+) : ClickableItem(view)
+
+enum class ClickType {
+    SHORT, LONG
 }
