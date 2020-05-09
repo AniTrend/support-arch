@@ -11,6 +11,7 @@ import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
+import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 import kotlinx.coroutines.flow.Flow
 
@@ -20,6 +21,11 @@ import kotlinx.coroutines.flow.Flow
 interface ISupportAdapter<T> : SupportLifecycle {
 
     var lastAnimatedPosition: Int
+
+    /**
+     * Mapper for adapters to converting models to recycler items
+     */
+    val mapper: (T?) -> IRecyclerItem
 
     /**
      * Get currently set animation type for recycler view holder items
@@ -75,15 +81,23 @@ interface ISupportAdapter<T> : SupportLifecycle {
     fun isEmpty(): Boolean
 
     /**
+     * Informs us if the given [position] is within bounds of our underlying collection
+     */
+    fun isWithinIndexBounds(position: Int): Boolean
+
+    /**
      * Checks if current network state represents an additional row of data
      */
     fun hasExtraRow() = networkState != null &&
             (networkState is NetworkState.Loading || networkState is NetworkState.Error)
 
     /**
-     * Should return the span size for the item at [position], when called from [GridLayoutManager]
-     * [spanCount] will be the span size for the item at the [position]. Otherwise if called
-     * from [StaggeredGridLayoutManager] then [spanCount] may be null
+     * Should return the span size for the item at [position], when called from
+     * [androidx.recyclerview.widget.GridLayoutManager] [spanCount] will be the span
+     * size for the item at the [position].
+     *
+     * Otherwise if called from [androidx.recyclerview.widget.StaggeredGridLayoutManager]
+     * then [spanCount] may be null
      *
      * @param position item position in the adapter
      * @param spanCount current span count for the layout manager

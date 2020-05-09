@@ -17,7 +17,7 @@ import co.anitrend.arch.recycler.common.ClickableItem
  * @since v1.3.0
  */
 interface IRecyclerItem : IRecyclerItemSpan {
-    val id: Long
+    val id: Long?
 
     val supportsSelectionMode: Boolean
 
@@ -26,6 +26,11 @@ interface IRecyclerItem : IRecyclerItemSpan {
     /**
      * Called when the [view] needs to be setup, this could be to set click listeners,
      * assign text, load images, e.t.c
+     *
+     * @param view view that was inflated
+     * @param position current position
+     * @param payloads optional payloads which maybe empty
+     * @param clickObservable observable to broadcast click events
      */
     fun bind(
         view: View,

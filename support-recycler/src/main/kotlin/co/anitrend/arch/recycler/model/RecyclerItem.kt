@@ -11,7 +11,7 @@ import co.anitrend.arch.recycler.model.contract.IRecyclerItem
  * @see IRecyclerItem
  */
 abstract class RecyclerItem(
-    override val id: Long
+    override val id: Long?
 ) : IRecyclerItem {
 
     override val supportsSelectionMode: Boolean = false
