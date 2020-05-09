@@ -1,5 +1,6 @@
 package co.anitrend.arch.recycler.adapter
 
+import android.content.res.Resources
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +16,7 @@ import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.recycler.model.contract.IRecyclerItem
+import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import co.anitrend.arch.recycler.shared.SupportFooterErrorItem
 import co.anitrend.arch.recycler.shared.SupportFooterLoadingItem
 import kotlinx.coroutines.flow.Flow
@@ -29,13 +30,15 @@ import timber.log.Timber
  * @see SupportViewHolder
  * @since v1.2.0
  */
-abstract class SupportPagedListAdapter(
-    differCallback: DiffUtil.ItemCallback<IRecyclerItem>
-) : ISupportAdapter<IRecyclerItem>, PagedListAdapter<IRecyclerItem, SupportViewHolder>(differCallback) {
+abstract class SupportPagedListAdapter<T>(
+    differCallback: DiffUtil.ItemCallback<T>
+) : ISupportAdapter<T>, PagedListAdapter<T, SupportViewHolder>(differCallback) {
 
     init {
         this.setHasStableIds(true)
     }
+
+    protected abstract val resources: Resources
 
     override val moduleTag: String = javaClass.name
 
@@ -80,9 +83,11 @@ abstract class SupportPagedListAdapter(
      */
     override fun getItemId(position: Int): Long {
         return when (hasStableIds()) {
-            true -> runCatching {
-                getStableIdFor(getItem(position))
-            }.getOrDefault(RecyclerView.NO_ID)
+            true -> if (isWithinIndexBounds(position)) {
+                runCatching{
+                    getStableIdFor(getItem(position))
+                }.getOrDefault(RecyclerView.NO_ID)
+            } else RecyclerView.NO_ID
             else -> super.getItemId(position)
         }
     }
@@ -98,13 +103,13 @@ abstract class SupportPagedListAdapter(
             R.layout.support_layout_state_footer_loading -> {
                 SupportFooterLoadingItem.createViewHolder(parent, layoutInflater).also {
                     val model = SupportFooterLoadingItem(stateConfiguration)
-                    it.bind(0, emptyList(), model, clickObservable,null)
+                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickObservable)
                 }
             }
             R.layout.support_layout_state_footer_error -> {
                 SupportFooterErrorItem.createViewHolder(parent, layoutInflater).also {
                     val model = SupportFooterErrorItem(networkState, stateConfiguration)
-                    it.bind(0, emptyList(), model, clickObservable,null)
+                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickObservable)
                 }
             }
             else -> createDefaultViewHolder(parent, viewType, layoutInflater)
@@ -232,6 +237,46 @@ abstract class SupportPagedListAdapter(
         return itemCount < 1
     }
 
+    /**
+     * Informs us if the given [position] is within bounds of our underlying collection
+     */
+    override fun isWithinIndexBounds(position: Int): Boolean {
+        val trueItemCount = itemCount.let { if (hasExtraRow()) it - 1 else it  }
+        if (position <= RecyclerView.NO_POSITION || position >= trueItemCount) {
+            Timber.tag(moduleTag).w("Invalid selected position: $position")
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * Should return the span size for the item at [position], when called from
+     * [androidx.recyclerview.widget.GridLayoutManager] [spanCount] will be the span
+     * size for the item at the [position].
+     *
+     * Otherwise if called from [androidx.recyclerview.widget.StaggeredGridLayoutManager]
+     * then [spanCount] may be null
+     *
+     * @param position item position in the adapter
+     * @param spanCount current span count for the layout manager
+     *
+     * @see co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
+     */
+    override fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int? {
+        return runCatching {
+            val item = mapper(getItem(position))
+            val spanSize = spanCount ?: IRecyclerItemSpan.INVALID_SPAN_COUNT
+            item.getSpanSize(spanSize, position, resources)
+        }.getOrElse {
+            if (!hasExtraRow())
+                Timber.tag(moduleTag).w(it)
+            Timber.tag(moduleTag).v("Span size: $spanCount")
+            // we don't know which span size to use so we use the supplied or default full size
+            spanCount ?: ISupportAdapter.FULL_SPAN_SIZE
+        }
+    }
+
     override fun getItemCount(): Int {
         return super.getItemCount() + if (hasExtraRow()) 1 else 0
     }
@@ -252,17 +297,18 @@ abstract class SupportPagedListAdapter(
         payloads: List<Any>
     ) {
         runCatching {
-            val viewType = getItemViewType(position)
-            if (
-                viewType != R.layout.support_layout_state_footer_loading ||
-                viewType != R.layout.support_layout_state_footer_error
-            ) {
+            if (isWithinIndexBounds(position)) {
                 val item = getItem(position)
-                holder.bind(position, payloads, item, clickObservable, supportAction)
+                holder.bind(
+                    position,
+                    payloads,
+                    mapper(item),
+                    clickObservable,
+                    supportAction
+                )
             }
             animateViewHolder(holder, position)
         }.onFailure {
-            it.printStackTrace()
             Timber.tag(moduleTag).e(it)
         }
     }

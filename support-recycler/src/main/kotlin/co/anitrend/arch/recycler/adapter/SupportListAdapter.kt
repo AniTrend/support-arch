@@ -1,5 +1,6 @@
 package co.anitrend.arch.recycler.adapter
 
+import android.content.res.Resources
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
@@ -13,12 +14,11 @@ import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.recycler.model.contract.IRecyclerItem
+import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import co.anitrend.arch.recycler.shared.SupportFooterErrorItem
 import co.anitrend.arch.recycler.shared.SupportFooterLoadingItem
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
-import kotlin.properties.Delegates
 
 /**
  * Core implementation for handling complex logic for [List]s and
@@ -27,15 +27,17 @@ import kotlin.properties.Delegates
  *
  * @since v1.2.0
  */
-abstract class SupportListAdapter(
-    differCallback: DiffUtil.ItemCallback<IRecyclerItem>
-) : ISupportAdapter<IRecyclerItem>, RecyclerView.Adapter<SupportViewHolder>() {
+abstract class SupportListAdapter<T>(
+    differCallback: DiffUtil.ItemCallback<T>
+) : ISupportAdapter<T>, RecyclerView.Adapter<SupportViewHolder>() {
 
     init {
         this.setHasStableIds(true)
     }
 
-    private val mDiffer: AsyncListDiffer<IRecyclerItem> by lazy(LAZY_MODE_UNSAFE) {
+    protected abstract val resources: Resources
+
+    private val mDiffer: AsyncListDiffer<T> by lazy(LAZY_MODE_UNSAFE) {
         AsyncListDiffer(this, differCallback)
     }
 
@@ -74,16 +76,10 @@ abstract class SupportListAdapter(
     /**
      * Returns a model at the given index
      */
-    fun getItem(position: Int): IRecyclerItem? {
+    fun getItem(position: Int): T? {
         val currentList = getCurrentList()
-        if (position <= RecyclerView.NO_POSITION || position >= currentList.size) {
+        if (!isWithinIndexBounds(position))
             return null
-        }
-
-        if (position >= itemCount) {
-            Timber.tag(moduleTag).w("Requesting out of bounds index at position: $position")
-            return null
-        }
 
         return currentList[position]
     }
@@ -97,7 +93,7 @@ abstract class SupportListAdapter(
      *
      * @return The list currently being displayed.
      */
-    fun getCurrentList(): List<IRecyclerItem> {
+    fun getCurrentList(): List<T> {
         return mDiffer.currentList
     }
 
@@ -109,7 +105,7 @@ abstract class SupportListAdapter(
      *
      * @param list The new list to be displayed.
      */
-    fun submitList(list: List<IRecyclerItem>?, commitCallback: Runnable? = null) {
+    fun submitList(list: List<T>?, commitCallback: Runnable? = null) {
         mDiffer.submitList(list, commitCallback)
     }
 
@@ -124,9 +120,11 @@ abstract class SupportListAdapter(
      */
     override fun getItemId(position: Int): Long {
         return when (hasStableIds()) {
-            true -> runCatching {
-                getStableIdFor(getItem(position))
-            }.getOrDefault(RecyclerView.NO_ID)
+            true -> if (isWithinIndexBounds(position)) {
+                runCatching{
+                    getStableIdFor(getItem(position))
+                }.getOrDefault(RecyclerView.NO_ID)
+            } else RecyclerView.NO_ID
             else -> super.getItemId(position)
         }
     }
@@ -142,13 +140,13 @@ abstract class SupportListAdapter(
             R.layout.support_layout_state_footer_loading -> {
                 SupportFooterLoadingItem.createViewHolder(parent, layoutInflater).also {
                     val model = SupportFooterLoadingItem(stateConfiguration)
-                    it.bind(0, emptyList(), model, clickObservable,null)
+                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickObservable)
                 }
             }
             R.layout.support_layout_state_footer_error -> {
                 SupportFooterErrorItem.createViewHolder(parent, layoutInflater).also {
                     val model = SupportFooterErrorItem(networkState, stateConfiguration)
-                    it.bind(0, emptyList(), model, clickObservable,null)
+                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickObservable)
                 }
             }
             else -> createDefaultViewHolder(parent, viewType, layoutInflater)
@@ -276,6 +274,46 @@ abstract class SupportListAdapter(
         return itemCount < 1
     }
 
+    /**
+     * Informs us if the given [position] is within bounds of our underlying collection
+     */
+    override fun isWithinIndexBounds(position: Int): Boolean {
+        val trueItemCount = itemCount.let { if (hasExtraRow()) it - 1 else it  }
+        if (position <= RecyclerView.NO_POSITION || position >= trueItemCount) {
+            Timber.tag(moduleTag).w("Invalid selected position: $position")
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * Should return the span size for the item at [position], when called from
+     * [androidx.recyclerview.widget.GridLayoutManager] [spanCount] will be the span
+     * size for the item at the [position].
+     *
+     * Otherwise if called from [androidx.recyclerview.widget.StaggeredGridLayoutManager]
+     * then [spanCount] may be null
+     *
+     * @param position item position in the adapter
+     * @param spanCount current span count for the layout manager
+     *
+     * @see co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
+     */
+    override fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int? {
+        return runCatching {
+            val item = mapper(getItem(position))
+            val spanSize = spanCount ?: IRecyclerItemSpan.INVALID_SPAN_COUNT
+            item.getSpanSize(spanSize, position, resources)
+        }.getOrElse {
+            if (!hasExtraRow())
+                Timber.tag(moduleTag).w(it)
+            Timber.tag(moduleTag).v("Span size: $spanCount")
+            // we don't know which span size to use so we use the supplied or default full size
+            spanCount ?: ISupportAdapter.FULL_SPAN_SIZE
+        }
+    }
+
     override fun getItemCount(): Int {
         return getCurrentList().size + if (hasExtraRow()) 1 else 0
     }
@@ -296,17 +334,18 @@ abstract class SupportListAdapter(
         payloads: List<Any>
     ) {
         runCatching {
-            val viewType = getItemViewType(position)
-            if (
-                viewType != R.layout.support_layout_state_footer_loading ||
-                viewType != R.layout.support_layout_state_footer_error
-            ) {
+            if (isWithinIndexBounds(position)) {
                 val item = getItem(position)
-                holder.bind(position, payloads, item, clickObservable, supportAction)
+                holder.bind(
+                    position,
+                    payloads,
+                    mapper(item),
+                    clickObservable,
+                    supportAction
+                )
             }
             animateViewHolder(holder, position)
         }.onFailure {
-            it.printStackTrace()
             Timber.tag(moduleTag).e(it)
         }
     }
