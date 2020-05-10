@@ -32,7 +32,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
      *
      * @see [ISupportAnimator]
      */
-    var customSupportAnimator: ISupportAnimator?
+    val customSupportAnimator: ISupportAnimator?
 
     /**
      * An observer to listen for clicks on clickable items
