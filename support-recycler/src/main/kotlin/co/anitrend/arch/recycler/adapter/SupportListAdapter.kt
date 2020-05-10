@@ -123,7 +123,10 @@ abstract class SupportListAdapter<T>(
             true -> if (isWithinIndexBounds(position)) {
                 runCatching{
                     getStableIdFor(getItem(position))
-                }.getOrDefault(RecyclerView.NO_ID)
+                }.getOrElse {
+                    Timber.tag(moduleTag).v(it)
+                    RecyclerView.NO_ID
+                }
             } else RecyclerView.NO_ID
             else -> super.getItemId(position)
         }

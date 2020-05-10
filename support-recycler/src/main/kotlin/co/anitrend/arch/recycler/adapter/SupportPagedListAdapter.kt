@@ -6,10 +6,7 @@ import androidx.annotation.LayoutRes
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.*
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.getLayoutInflater
 import co.anitrend.arch.recycler.R
@@ -86,7 +83,10 @@ abstract class SupportPagedListAdapter<T>(
             true -> if (isWithinIndexBounds(position)) {
                 runCatching{
                     getStableIdFor(getItem(position))
-                }.getOrDefault(RecyclerView.NO_ID)
+                }.getOrElse {
+                    Timber.tag(moduleTag).v(it)
+                    RecyclerView.NO_ID
+                }
             } else RecyclerView.NO_ID
             else -> super.getItemId(position)
         }
