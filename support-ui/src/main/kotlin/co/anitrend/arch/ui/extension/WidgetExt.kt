@@ -5,8 +5,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.extension.getColorFromAttr
 import co.anitrend.arch.recycler.SupportRecyclerView
-import co.anitrend.arch.recycler.adapter.SupportListAdapter
-import co.anitrend.arch.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.ui.R
 
 private fun setUpRecyclerConfiguration(
@@ -43,7 +41,6 @@ private fun setUpRecyclerConfiguration(
  *
  * @since v1.3.X
  */
-@Deprecated("Consider migrating to the new support-recycler module for more control")
 fun SupportRecyclerView.setUpWith(
     vertical: Boolean = true,
     supportAdapter: RecyclerView.Adapter<*>,
