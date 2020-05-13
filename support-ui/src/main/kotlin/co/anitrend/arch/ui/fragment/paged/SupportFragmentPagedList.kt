@@ -13,6 +13,7 @@ import co.anitrend.arch.ui.fragment.list.SupportFragmentList
  *
  * @see ISupportFragmentList
  */
+@Deprecated("Use SupportFragmentList directly")
 abstract class SupportFragmentPagedList<M> : SupportFragmentList<M>() {
 
     /**
