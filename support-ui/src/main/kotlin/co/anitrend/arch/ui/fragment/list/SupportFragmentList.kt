@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.IntegerRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -16,6 +17,7 @@ import co.anitrend.arch.extension.attachComponent
 import co.anitrend.arch.extension.detachComponent
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
+import co.anitrend.arch.recycler.adapter.SupportPagedListAdapter
 import co.anitrend.arch.recycler.common.FooterClickableItem
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.extension.configureWidgetBehaviorWith
@@ -289,9 +291,18 @@ abstract class SupportFragmentList<M>(
      * @param model list holding data
      */
     open fun onPostModelChange(model: Collection<M>?) {
-        with (supportViewAdapter as SupportListAdapter) {
-            model as List
-            submitList(model)
+        when (model) {
+            is List -> {
+                with (supportViewAdapter as SupportListAdapter) {
+                    submitList(model)
+                }
+            }
+            is PagedList -> {
+                with (supportViewAdapter as SupportPagedListAdapter) {
+                    submitList(model)
+                }
+            }
+            else -> {}
         }
 
         afterPostModelChange(model)
