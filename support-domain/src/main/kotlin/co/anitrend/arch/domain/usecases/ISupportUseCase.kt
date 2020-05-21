@@ -5,6 +5,9 @@ import co.anitrend.arch.domain.common.IUseCase
 /**
  * Use case representative for non coroutine related context
  */
+@Deprecated(
+    message = "Use IUseCase contract directly instead for better simplicity"
+)
 interface ISupportUseCase<P, R> : IUseCase {
 
     /**
