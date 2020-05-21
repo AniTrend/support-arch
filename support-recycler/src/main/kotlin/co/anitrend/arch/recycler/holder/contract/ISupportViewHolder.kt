@@ -1,9 +1,10 @@
 package co.anitrend.arch.recycler.holder.contract
 
-import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * General purpose recycler view holder to simplify construction of views
@@ -15,11 +16,12 @@ interface ISupportViewHolder {
     /**
      * Load images, text, buttons, etc. in this method from the given parameter
      */
+    @ExperimentalCoroutinesApi
     fun bind(
         position: Int,
         payloads: List<Any>,
         model: IRecyclerItem,
-        clickObservable: MutableLiveData<ClickableItem>,
+        stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>? = null
     )
 

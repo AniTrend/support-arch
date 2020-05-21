@@ -17,12 +17,10 @@ import co.anitrend.arch.core.presenter.SupportPresenter
  *
  * @since v0.9.X
  */
-abstract class SupportCoroutineWorker<P : SupportPresenter<*>>(
+abstract class SupportCoroutineWorker(
     context: Context,
     workerParameters: WorkerParameters
 ): CoroutineWorker(context, workerParameters) {
-
-    protected open val presenter: P? = null
 
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified

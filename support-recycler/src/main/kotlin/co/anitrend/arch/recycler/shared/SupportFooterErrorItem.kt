@@ -4,17 +4,18 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.gone
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.common.ClickableItem
-import co.anitrend.arch.recycler.common.FooterClickableItem
+import co.anitrend.arch.recycler.common.StateClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import kotlinx.android.synthetic.main.support_layout_state_footer_error.view.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * Footer view holder for representing loading errors
@@ -26,20 +27,19 @@ class SupportFooterErrorItem(
     private val configuration: IStateLayoutConfig
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
+    @ExperimentalCoroutinesApi
     override fun bind(
         view: View,
         position: Int,
         payloads: List<Any>,
-        clickObservable: MutableLiveData<ClickableItem>
+        stateFlow: MutableStateFlow<ClickableItem?>
     ) {
         if (networkState is NetworkState.Error)
             view.stateFooterErrorText.text = networkState.message
 
         if (configuration.retryAction != null) {
             view.stateFooterErrorAction.setOnClickListener {
-                clickObservable.postValue(
-                    FooterClickableItem(networkState, it)
-                )
+                stateFlow.value = StateClickableItem(networkState, it)
             }
             view.stateFooterErrorAction.setText(configuration.retryAction!!)
         }

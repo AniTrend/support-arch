@@ -3,28 +3,19 @@ package co.anitrend.arch.ui.view.widget
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import android.widget.ViewFlipper
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.extension.coroutine.SupportCoroutine
 import co.anitrend.arch.extension.getCompatDrawable
 import co.anitrend.arch.extension.getLayoutInflater
 import co.anitrend.arch.extension.gone
-import co.anitrend.arch.recycler.common.ClickableItem
-import co.anitrend.arch.recycler.common.DefaultClickableItem
+import co.anitrend.arch.recycler.common.StateClickableItem
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import kotlinx.android.synthetic.main.support_state_layout_error.view.*
 import kotlinx.android.synthetic.main.support_state_layout_laoding.view.*
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.flow.*
 
 /**
  * A state layout that supports [NetworkState.Loading] and [NetworkState.Error] states
@@ -32,41 +23,50 @@ import kotlin.coroutines.CoroutineContext
  *
  * @since v1.1.0
  */
-open class SupportStateLayout : ViewFlipper, CustomView, SupportCoroutine {
+open class SupportStateLayout(
+    context: Context,
+    attrs: AttributeSet?
+) : ViewFlipper(context, attrs), CustomView, CoroutineScope by MainScope() {
 
-    constructor(context: Context) :
-            super(context) { onInit(context) }
-    constructor(context: Context, attrs: AttributeSet?) :
-            super(context, attrs) { onInit(context, attrs) }
+    init {
+        onInit(context, attrs)
+    }
 
-    private val interactionLiveData = MutableLiveData<DefaultClickableItem<NetworkState>>()
+    @ExperimentalCoroutinesApi
+    private val interactionMutableStateFlow =
+        MutableStateFlow<StateClickableItem?>(null)
 
     /**
      * Observable for click interactions, which returns the current network state
      */
-    val interactionFlow: Flow<DefaultClickableItem<NetworkState>> = interactionLiveData.asFlow()
+    @ExperimentalCoroutinesApi
+    val interactionStateFlow: StateFlow<StateClickableItem?> =
+        interactionMutableStateFlow
 
     /**
      * Observable for publishing states to this widget
      */
-    val networkStateLiveData = MutableLiveData<NetworkState>()
-    private val networkStateFlow: Flow<NetworkState> = networkStateLiveData.asFlow()
+    @ExperimentalCoroutinesApi
+    val networkMutableStateFlow =
+        MutableStateFlow<NetworkState>(NetworkState.Success)
+
+    @ExperimentalCoroutinesApi
+    private val networkStateFlow: StateFlow<NetworkState> = networkMutableStateFlow
 
     /**
      * Configuration for that should be used by the different view states
      */
-    var stateConfig: StateLayoutConfig? = null
-        set(value) {
-            field = value?.also { updateUsing(it) }
-        }
+    @ExperimentalCoroutinesApi
+    val stateConfigFlow =
+        MutableStateFlow<StateLayoutConfig?>(null)
 
-    val isLoading
+    open val isLoading
         get() = displayedChild == LOADING_VIEW
 
-    val isError
+    open val isError
         get() = displayedChild == ERROR_VIEW
 
-    val isContent
+    open val isContent
         get() = displayedChild == CONTENT_VIEW
 
     private fun updateUsing(config: StateLayoutConfig) {
@@ -101,6 +101,7 @@ open class SupportStateLayout : ViewFlipper, CustomView, SupportCoroutine {
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization
      */
+    @Suppress("EXPERIMENTAL_API_USAGE")
     final override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         if (!isInEditMode)
             setupAdditionalViews()
@@ -112,12 +113,11 @@ open class SupportStateLayout : ViewFlipper, CustomView, SupportCoroutine {
         }
 
         stateLayoutErrorRetryAction.setOnClickListener {
-            interactionLiveData.postValue(
-                DefaultClickableItem(
-                    data = networkStateLiveData.value,
+            interactionMutableStateFlow.value =
+                StateClickableItem(
+                    state = networkMutableStateFlow.value,
                     view = it
                 )
-            )
         }
     }
 
@@ -125,9 +125,10 @@ open class SupportStateLayout : ViewFlipper, CustomView, SupportCoroutine {
      * Should be called on a view's detach from window to unbind or
      * release object references and cancel all running coroutine jobs if the current view
      */
+    @ExperimentalCoroutinesApi
     override fun onViewRecycled() {
         stateLayoutErrorRetryAction.setOnClickListener(null)
-        cancelAllChildren()
+        interactionMutableStateFlow.value = null
     }
 
     @SuppressLint("InflateParams")
@@ -150,16 +151,17 @@ open class SupportStateLayout : ViewFlipper, CustomView, SupportCoroutine {
      */
     @Deprecated(
         "Use networkStateLiveData directly to inform this control about changes",
-        ReplaceWith("networkStateLiveData")
+        ReplaceWith("networkMutableStateFlow")
     )
+    @ExperimentalCoroutinesApi
     open fun setNetworkState(networkState: NetworkState) {
-        networkStateLiveData.postValue(networkState)
+        networkMutableStateFlow.value = networkState
     }
 
     /**
      * Updates the UI using the supplied [networkState]
      */
-    protected fun updateUsingNetworkState(networkState: NetworkState) {
+    protected open fun updateUsingNetworkState(networkState: NetworkState) {
         when (networkState) {
             is NetworkState.Loading -> {
                 if (!isLoading)
@@ -190,40 +192,20 @@ open class SupportStateLayout : ViewFlipper, CustomView, SupportCoroutine {
                     updateUsingNetworkState(it)
                 }
         }
+        launch {
+            stateConfigFlow.filterNotNull()
+                .collect {
+                    updateUsing(it)
+                }
+        }
     }
 
+    @ExperimentalCoroutinesApi
     override fun onDetachedFromWindow() {
+        cancel()
         onViewRecycled()
         super.onDetachedFromWindow()
     }
-
-    /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
-     */
-    final override val supervisorJob= SupervisorJob()
-
-    /**
-     * Coroutine dispatcher specification
-     *
-     * @return one of the sub-types of [kotlinx.coroutines.Dispatchers]
-     */
-    final override val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Main
-
-    /**
-     * Persistent context for the coroutine
-     *
-     * @return [kotlin.coroutines.CoroutineContext] preferably built from
-     * [supervisorJob] + [coroutineDispatcher]
-     */
-    final override val coroutineContext: CoroutineContext = supervisorJob + coroutineDispatcher
-
-    /**
-     * A failure or cancellation of a child does not cause the supervisor job
-     * to fail and does not affect its other children.
-     *
-     * @return [kotlinx.coroutines.CoroutineScope]
-     */
-    final override val scope: CoroutineScope = CoroutineScope(coroutineContext)
 
     companion object {
         /** First view inflated index which is loading view */

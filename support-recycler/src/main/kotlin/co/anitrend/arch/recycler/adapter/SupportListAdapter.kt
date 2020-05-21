@@ -3,8 +3,6 @@ package co.anitrend.arch.recycler.adapter
 import android.content.res.Resources
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.*
 import co.anitrend.arch.domain.entities.NetworkState
@@ -17,7 +15,9 @@ import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import co.anitrend.arch.recycler.shared.SupportFooterErrorItem
 import co.anitrend.arch.recycler.shared.SupportFooterLoadingItem
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
 
 /**
@@ -48,9 +48,11 @@ abstract class SupportListAdapter<T>(
     /**
      * Dispatches clicks from parent views
      */
-    protected val clickObservable = MutableLiveData<ClickableItem>()
+    @ExperimentalCoroutinesApi
+    protected val stateFlow = MutableStateFlow<ClickableItem?>(null)
 
-    override val clickableFlow: Flow<ClickableItem> = clickObservable.asFlow()
+    @ExperimentalCoroutinesApi
+    override val clickableStateFlow: StateFlow<ClickableItem?> = stateFlow
 
     /**
      * Network state which will be used by [SupportFooterErrorItem]
@@ -76,7 +78,7 @@ abstract class SupportListAdapter<T>(
     /**
      * Returns a model at the given index
      */
-    fun getItem(position: Int): T? {
+    open fun getItem(position: Int): T? {
         val currentList = getCurrentList()
         if (!isWithinIndexBounds(position))
             return null
@@ -93,7 +95,7 @@ abstract class SupportListAdapter<T>(
      *
      * @return The list currently being displayed.
      */
-    fun getCurrentList(): List<T> {
+    open fun getCurrentList(): List<T> {
         return mDiffer.currentList
     }
 
@@ -105,7 +107,7 @@ abstract class SupportListAdapter<T>(
      *
      * @param list The new list to be displayed.
      */
-    fun submitList(list: List<T>?, commitCallback: Runnable? = null) {
+    open fun submitList(list: List<T>?, commitCallback: Runnable? = null) {
         mDiffer.submitList(list, commitCallback)
     }
 
@@ -137,19 +139,20 @@ abstract class SupportListAdapter<T>(
      * [R.layout.support_layout_state_footer_loading] or [R.layout.support_layout_state_footer_error]
      * otherwise [createDefaultViewHolder] is called to resolve the view holder type
      */
+    @ExperimentalCoroutinesApi
     override fun onCreateViewHolder(parent: ViewGroup, @LayoutRes viewType: Int): SupportViewHolder {
         val layoutInflater = parent.context.getLayoutInflater()
         return when (viewType) {
             R.layout.support_layout_state_footer_loading -> {
                 SupportFooterLoadingItem.createViewHolder(parent, layoutInflater).also {
                     val model = SupportFooterLoadingItem(stateConfiguration)
-                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickObservable)
+                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, stateFlow)
                 }
             }
             R.layout.support_layout_state_footer_error -> {
                 SupportFooterErrorItem.createViewHolder(parent, layoutInflater).also {
                     val model = SupportFooterErrorItem(networkState, stateConfiguration)
-                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickObservable)
+                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, stateFlow)
                 }
             }
             else -> createDefaultViewHolder(parent, viewType, layoutInflater)
@@ -210,6 +213,7 @@ abstract class SupportListAdapter<T>(
      *
      * @see [SupportViewHolder.bind]
      */
+    @ExperimentalCoroutinesApi
     override fun onBindViewHolder(holder: SupportViewHolder, position: Int) {
         bindViewHolderByType(holder, position)
     }
@@ -220,6 +224,7 @@ abstract class SupportListAdapter<T>(
      *
      * @see [SupportViewHolder.bind]
      */
+    @ExperimentalCoroutinesApi
     override fun onBindViewHolder(
         holder: SupportViewHolder,
         position: Int,
@@ -331,6 +336,7 @@ abstract class SupportListAdapter<T>(
     /**
      * Binds view holder by view type at [position]
      */
+    @ExperimentalCoroutinesApi
     override fun bindViewHolderByType(
         holder: SupportViewHolder,
         position: Int,
@@ -343,7 +349,7 @@ abstract class SupportListAdapter<T>(
                     position,
                     payloads,
                     mapper(item),
-                    clickObservable,
+                    stateFlow,
                     supportAction
                 )
             }
@@ -351,5 +357,17 @@ abstract class SupportListAdapter<T>(
         }.onFailure {
             Timber.tag(moduleTag).e(it)
         }
+    }
+
+    /**
+     * Triggered when the lifecycleOwner reaches it's onDestroy state
+     *
+     * @see [androidx.lifecycle.LifecycleOwner]
+     */
+    @ExperimentalCoroutinesApi
+    override fun onDestroy() {
+        super.onDestroy()
+        // clear our state flow
+        stateFlow.value = null
     }
 }

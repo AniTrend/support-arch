@@ -1,9 +1,10 @@
 package co.anitrend.arch.recycler.model.contract
 
 import android.view.View
-import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.recycler.action.decorator.ISelectionDecorator
 import co.anitrend.arch.recycler.common.ClickableItem
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * Contract for recycler item
@@ -30,13 +31,14 @@ interface IRecyclerItem : IRecyclerItemSpan {
      * @param view view that was inflated
      * @param position current position
      * @param payloads optional payloads which maybe empty
-     * @param clickObservable observable to broadcast click events
+     * @param stateFlow observable to broadcast click events
      */
+    @ExperimentalCoroutinesApi
     fun bind(
         view: View,
         position: Int,
         payloads: List<Any>,
-        clickObservable: MutableLiveData<ClickableItem>
+        stateFlow: MutableStateFlow<ClickableItem?>
     )
 
     /**

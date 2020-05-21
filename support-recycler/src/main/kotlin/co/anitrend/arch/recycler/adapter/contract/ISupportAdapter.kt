@@ -13,7 +13,9 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.contract.ISupportAnimator
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Contract for recycler view adapters
@@ -37,7 +39,8 @@ interface ISupportAdapter<T> : SupportLifecycle {
     /**
      * An observer to listen for clicks on clickable items
      */
-    val clickableFlow: Flow<ClickableItem>
+    @ExperimentalCoroutinesApi
+    val clickableStateFlow: StateFlow<ClickableItem?>
 
     /**
      * Configuration for the state based footer

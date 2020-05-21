@@ -7,6 +7,8 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.contract.ISupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
  * General purpose recycler view holder to simplify construction of views
@@ -21,15 +23,16 @@ open class SupportViewHolder(view: View) : ISupportViewHolder, RecyclerView.View
     /**
      * Load images, text, buttons, etc. in this method from the given parameter
      */
+    @ExperimentalCoroutinesApi
     override fun bind(
         position: Int,
         payloads: List<Any>,
         model: IRecyclerItem,
-        clickObservable: MutableLiveData<ClickableItem>,
+        stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         recyclerItem = model
-        model.bind(itemView, position, payloads, clickObservable)
+        model.bind(itemView, position, payloads, stateFlow)
         if (model.supportsSelectionMode && model.id != RecyclerView.NO_ID) {
             selectionMode?.apply {
                 model.decorator.decorateUsing(
