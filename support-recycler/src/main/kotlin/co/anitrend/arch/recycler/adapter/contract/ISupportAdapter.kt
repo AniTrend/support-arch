@@ -181,5 +181,6 @@ interface ISupportAdapter<T> : SupportLifecycle {
 
     companion object {
         const val FULL_SPAN_SIZE = 1
+        const val DEFAULT_VIEW_TYPE = 0
     }
 }
