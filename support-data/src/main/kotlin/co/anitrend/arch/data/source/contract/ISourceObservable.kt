@@ -8,6 +8,9 @@ import androidx.lifecycle.LiveData
  *
  * @since v1.1.0
  */
+@Deprecated(
+    message = "Consider using live data or flow builder instead"
+)
 interface ISourceObservable<P, R> {
 
     /**
