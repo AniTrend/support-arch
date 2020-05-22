@@ -46,6 +46,10 @@ androidExtensions {
     experimental = true
 }
 
+ext {
+    threetenabp = '1.2.4'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -58,6 +62,8 @@ dependencies {
 
     /** Architecture Components */
     implementation("androidx.core:core-ktx:$ktx")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleX")
+    implementation("androidx.lifecycle:lifecycle-livedata-core-ktx:$lifecycleX")
     implementation("androidx.lifecycle:lifecycle-extensions:$lifecycleX")
     implementation("androidx.preference:preference:$preferenceX")
 
