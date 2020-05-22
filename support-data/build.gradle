@@ -68,9 +68,6 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:$pagingKtx")
     implementation("androidx.paging:paging-runtime:$paging")
 
-    /** Retrofit Libraries */
-    implementation("com.squareup.retrofit2:retrofit:$retrofit")
-
     /** Timber */
     implementation("com.jakewharton.timber:timber:$timber")
 
