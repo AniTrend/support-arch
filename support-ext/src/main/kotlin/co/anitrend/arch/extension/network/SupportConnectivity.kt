@@ -7,6 +7,9 @@ import android.net.NetworkRequest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Lifecycle aware connectivity checker that exposes the network connected status via a LiveData.
@@ -17,9 +20,7 @@ import co.anitrend.arch.extension.lifecycle.SupportLifecycle
  * The loss of connectivity when the activity is resumed should be a blocker for the user
  * (since we can't get feed items) - in onResume, we should get the connectivity status. If we
  * are NOT connected then we register a listener and wait to be notified. Only once we are
- * connected, we stop listening to connectivity.¬
- *
- * **Credits**: [ConnectivityChecker](https://github.com/android/plaid/blob/master/core/src/main/java/io/plaidapp/core/ui/ConnectivityChecker.kt)
+ * connected, we stop listening to connectivity. Inspired by [ConnectivityChecker](https://github.com/android/plaid/blob/master/core/src/main/java/io/plaidapp/core/ui/ConnectivityChecker.kt)
  *
  * @since v1.2.0
  */
@@ -42,28 +43,34 @@ class SupportConnectivity(
 
     private var monitoringConnectivity = false
 
-    private val _connectedStatus = MutableLiveData<Boolean>()
-    val connectedStatus: LiveData<Boolean>
-        get() = _connectedStatus
+    @ExperimentalCoroutinesApi
+    private val connectedMutableStateFlow =
+        MutableStateFlow<Boolean?>(null)
 
-    private val connectivityCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            _connectedStatus.postValue(true)
-            // we are connected, so we can stop listening
-            connectivityManager?.unregisterNetworkCallback(this)
-            monitoringConnectivity = false
-        }
+    @ExperimentalCoroutinesApi
+    val connectedStatusFlow: StateFlow<Boolean?> = connectedMutableStateFlow
 
-        override fun onLost(network: Network) {
-            _connectedStatus.postValue(false)
+    @ExperimentalCoroutinesApi
+    private val connectivityCallback =
+        object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                connectedMutableStateFlow.value = true
+                // we are connected, so we can stop listening
+                connectivityManager?.unregisterNetworkCallback(this)
+                monitoringConnectivity = false
+            }
+
+            override fun onLost(network: Network) {
+                connectedMutableStateFlow.value = false
+            }
         }
-    }
 
     /**
      * Triggered when the lifecycleOwner reaches it's onPause state
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
+    @ExperimentalCoroutinesApi
     override fun onPause() {
         super.onPause()
         if (monitoringConnectivity) {
@@ -77,6 +84,7 @@ class SupportConnectivity(
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
+    @ExperimentalCoroutinesApi
     override fun onResume() {
         super.onResume()
         connectivityManager?.registerNetworkCallback(
