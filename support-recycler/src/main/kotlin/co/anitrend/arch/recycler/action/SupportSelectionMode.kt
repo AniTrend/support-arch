@@ -4,8 +4,6 @@ import android.view.View
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionListener
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.action.decorator.ISelectionDecorator
-import co.anitrend.arch.recycler.model.RecyclerItem
-import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 
 /**
  * A helper class for triggering action mode for

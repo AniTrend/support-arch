@@ -1,7 +1,6 @@
 package co.anitrend.arch.recycler.holder
 
 import android.view.View
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem

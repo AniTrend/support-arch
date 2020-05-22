@@ -1,11 +1,7 @@
 package co.anitrend.arch.recycler
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.StateListDrawable
 import android.util.AttributeSet
-import android.util.Log
-
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import timber.log.Timber

@@ -3,7 +3,6 @@ package co.anitrend.arch.core.worker
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import co.anitrend.arch.core.presenter.SupportPresenter
 
 /**
  * A [androidx.work.ListenableWorker] implementation that provides interop with Kotlin Coroutines.  Override
