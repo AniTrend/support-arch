@@ -187,15 +187,18 @@ fun Context?.isLowRamDevice(): Boolean {
 
 /**
  * Start a new activity from context and avoid potential crashes from early API levels
+ *
+ * @param params Bundle of extras to add to the target activity
+ * @param options Additional options for how the Activity should be started from
  */
-inline fun <reified T> Context?.startNewActivity(params: Bundle? = null) {
+inline fun <reified T> Context?.startNewActivity(params: Bundle? = null, options: Bundle? = null) {
     try {
         val intent = Intent(this, T::class.java)
         with (intent) {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
             params?.also { putExtras(it) }
         }
-        this?.startActivity(intent)
+        this?.startActivity(intent, options)
     } catch (e: Exception) {
         Timber.e(e)
     }
