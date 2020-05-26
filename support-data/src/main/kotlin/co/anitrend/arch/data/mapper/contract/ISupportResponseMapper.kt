@@ -11,7 +11,7 @@ interface ISupportResponseMapper<in S, D> {
      * Creates mapped objects and handles the database operations which may be required to map various objects,
      *
      * @param source the incoming data source type
-     * @return Mapped object that will be consumed by [onResponseDatabaseInsert]
+     * @return mapped object that will be consumed by [onResponseDatabaseInsert]
      */
     suspend fun onResponseMapFrom(source: S): D
 
