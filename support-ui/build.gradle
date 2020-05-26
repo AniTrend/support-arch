@@ -41,11 +41,6 @@ android {
     }
 }
 
-ext {
-    // TODO: Remove when material integrates merge adapter and state restoration
-    recycler = '1.2.0-alpha03'
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -57,8 +52,8 @@ dependencies {
 
     /** Kotlin Libraries */
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesCore")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesAndroid")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines")
 
     /** Material Design */
     implementation("com.google.android.material:material:$material")

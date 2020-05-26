@@ -1,16 +1,14 @@
 package co.anitrend.arch.data.dao
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Update
-
 /**
  * A generalized building block for [androidx.room.Dao] that provides basic
  * read, write and update functionality
  *
  * @since v0.9.X
  */
+@Deprecated(
+    "Enforces the room persistence layer to be used, consider using your own impl"
+)
 interface ISupportQuery<T> {
 
     /**
@@ -19,7 +17,7 @@ interface ISupportQuery<T> {
      *
      * @param attribute item/s to insert
      */
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    //@Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(attribute: T)
 
     /**
@@ -28,7 +26,7 @@ interface ISupportQuery<T> {
      * 
      * @param attribute item/s to insert
      */
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    //@Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(attribute: List<T>)
 
     /**
@@ -36,7 +34,7 @@ interface ISupportQuery<T> {
      *
      * @param attribute item/s to update
      */
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    //@Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(attribute: T)
 
     /**
@@ -44,7 +42,7 @@ interface ISupportQuery<T> {
      *
      * @param attribute item/s to update
      */
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    //@Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(attribute: List<T>)
 
     /**
@@ -52,7 +50,7 @@ interface ISupportQuery<T> {
      *
      * @param attribute item/s to delete
      */
-    @Delete
+    //@Delete
     suspend fun delete(attribute: T)
 
     /**
@@ -60,7 +58,7 @@ interface ISupportQuery<T> {
      *
      * @param attribute item/s to delete
      */
-    @Delete
+    //@Delete
     suspend fun delete(attribute: List<T>)
 
     /**
@@ -68,7 +66,7 @@ interface ISupportQuery<T> {
      *
      * @param attribute item/s to insert
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    //@Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(attribute: T)
 
     /**
@@ -76,6 +74,6 @@ interface ISupportQuery<T> {
      *
      * @param attribute item/s to insert
      */
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    //@Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(attribute: List<T>)
 }
