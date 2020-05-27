@@ -24,6 +24,11 @@ interface ISupportSelectionMode<ID> {
     fun selectAllItems(selection: List<ID>)
 
     /**
+     * @return list of selected items
+     */
+    fun selectedItems(): List<ID>
+
+    /**
      * Defines whether or not this current object can be consumed as a primary click action,
      * or if in action mode should be selected or deselected.
      *
