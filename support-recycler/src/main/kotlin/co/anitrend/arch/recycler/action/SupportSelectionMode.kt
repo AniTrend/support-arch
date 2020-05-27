@@ -72,4 +72,11 @@ class SupportSelectionMode<ID>(
         TODO("Not yet implemented")
     }
 
+    /**
+     * @return list of selected items
+     */
+    override fun selectedItems(): List<ID> {
+        TODO("Not yet implemented")
+    }
+
 }
