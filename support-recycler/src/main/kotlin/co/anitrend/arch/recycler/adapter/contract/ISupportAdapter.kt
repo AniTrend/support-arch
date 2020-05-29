@@ -49,7 +49,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
     /**
      * Assigned if the current adapter supports needs to supports action mode
      */
-    var supportAction: ISupportSelectionMode<Long>?
+    val supportAction: ISupportSelectionMode<Long>?
 
     /**
      * Network state which will be used by [co.anitrend.arch.recycler.shared.SupportFooterErrorItem]
@@ -167,16 +167,6 @@ interface ISupportAdapter<T> : SupportLifecycle {
         position: Int,
         payloads: List<Any> = emptyList()
     )
-
-    /**
-     * Triggered when the lifecycleOwner reaches it's onDestroy state
-     *
-     * @see [androidx.lifecycle.LifecycleOwner]
-     */
-    override fun onDestroy() {
-        super.onDestroy()
-        supportAction = null
-    }
 
     companion object {
         const val FULL_SPAN_SIZE = 1
