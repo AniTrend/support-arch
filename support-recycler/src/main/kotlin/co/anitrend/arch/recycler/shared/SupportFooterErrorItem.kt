@@ -9,6 +9,7 @@ import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.gone
 import co.anitrend.arch.recycler.R
+import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.common.StateClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
@@ -32,7 +33,8 @@ class SupportFooterErrorItem(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>
+        stateFlow: MutableStateFlow<ClickableItem?>,
+        selectionMode: ISupportSelectionMode<Long>?
     ) {
         if (networkState is NetworkState.Error)
             view.stateFooterErrorText.text = networkState.message

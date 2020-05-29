@@ -291,7 +291,6 @@ abstract class SupportListAdapter<T>(
             Timber.tag(moduleTag).w("Invalid selected position: $position")
             return false
         }
-
         return true
     }
 

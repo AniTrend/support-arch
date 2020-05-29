@@ -16,9 +16,6 @@ abstract class RecyclerItem(
 
     override val supportsSelectionMode: Boolean = false
 
-    /**
-     * Decorator that can be used to style this item when it is selected or unselected
-     */
     override val decorator =
         object : ISelectionDecorator { }
 }
