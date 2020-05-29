@@ -31,13 +31,12 @@ open class SupportViewHolder(view: View) : ISupportViewHolder, RecyclerView.View
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         recyclerItem = model
-        model.bind(itemView, position, payloads, stateFlow)
+        model.bind(itemView, position, payloads, stateFlow, selectionMode)
         if (model.supportsSelectionMode && model.id != RecyclerView.NO_ID) {
-            selectionMode?.apply {
-                model.decorator.decorateUsing(
-                    itemView, containsItem(model.id!!)
-                )
-            }
+            val isSelected = selectionMode?.containsItem(model.id!!)
+            model.decorator.decorateUsing(
+                itemView, isSelected ?: false
+            )
         }
     }
 
