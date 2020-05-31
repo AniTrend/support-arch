@@ -126,6 +126,7 @@ abstract class SupportFragmentList<M>(
     @FlowPreview
     @ExperimentalCoroutinesApi
     override fun initializeComponents(savedInstanceState: Bundle?) {
+        attachComponent(supportViewAdapter)
         lifecycleScope.launchWhenResumed {
             supportViewAdapter.clickableStateFlow.debounce(16)
                 .filterIsInstance<StateClickableItem>()
@@ -249,6 +250,7 @@ abstract class SupportFragmentList<M>(
      * after [onStop] and before [onDetach].
      */
     override fun onDestroy() {
+        detachComponent(supportViewAdapter)
         supportRefreshLayout?.setOnRefreshListener(null)
         super.onDestroy()
     }
