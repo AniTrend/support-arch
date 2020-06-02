@@ -47,19 +47,14 @@ fun View.setMarginTop(marginTop: Int) {
     layoutParams = menuLayoutParams
 }
 
-@JvmOverloads
-fun View.snackBar(
-    @StringRes
-    stringRes: Int,
+inline fun View.snackBar(
+    text: String,
     duration: Int,
-    @StringRes
-    actionRes: Int,
-    action: ((Snackbar) -> Unit)? = null
+    actionText: String,
+    crossinline action: (Snackbar) -> Unit
 ): Snackbar {
-    val snackBar = Snackbar.make(this, stringRes, duration)
-    action?.run {
-        snackBar.setAction(actionRes) { action.invoke(snackBar) }
-    }
+    val snackBar = Snackbar.make(this, text, duration)
+    snackBar.setAction(actionText) { action(snackBar) }
     snackBar.view.setBackgroundColor(context.getColorFromAttr(R.attr.colorPrimaryDark))
     val mainTextView = snackBar.view.findViewById<TextView>(R.id.snackbar_text)
     val actionTextView = snackBar.view.findViewById<TextView>(R.id.snackbar_action)
@@ -69,8 +64,19 @@ fun View.snackBar(
     return snackBar
 }
 
-fun View.snackBar(@StringRes stringRes: Int, duration: Int): Snackbar =
-    snackBar(stringRes, duration, 0)
+fun View.snackBar(
+    @StringRes stringRes: Int,
+    duration: Int,
+    @StringRes actionRes: Int,
+    action: (Snackbar) -> Unit
+) =
+    snackBar(
+        resources.getString(stringRes),
+        duration,
+        resources.getString(actionRes),
+        action
+    )
+
 
 fun Float.dipToPx() : Int {
     val scale = Resources.getSystem().displayMetrics.density
