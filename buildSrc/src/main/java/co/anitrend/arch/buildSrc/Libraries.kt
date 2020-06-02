@@ -6,6 +6,8 @@ import co.anitrend.arch.buildSrc.common.Versions
 object Libraries {
 
     const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.gradle}"
+    const val dokkaGradlePlugin = "org.jetbrains.dokka:dokka-gradle-plugin:${Versions.dokka}"
+
     const val threeTenBp = "com.jakewharton.threetenabp:threetenabp:${Versions.threeTenBp}"
 
     const val junit = "junit:junit:${Versions.junit}"
