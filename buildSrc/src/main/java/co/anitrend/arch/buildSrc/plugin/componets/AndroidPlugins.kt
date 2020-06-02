@@ -7,4 +7,5 @@ internal fun Project.configurePlugins() {
     plugins.apply("kotlin-android")
     plugins.apply("kotlin-android-extensions")
     plugins.apply("org.jetbrains.dokka")
+    plugins.apply("maven-publish")
 }

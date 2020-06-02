@@ -8,6 +8,7 @@ import org.gradle.api.internal.plugins.DefaultArtifactPublicationSet
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.getByType
@@ -47,6 +48,9 @@ internal fun Project.kotlinTestsRegistry() =
 
 internal fun Project.androidExtensionsExtension() =
     extensions.getByType<AndroidExtensionsExtension>()
+
+internal fun Project.publishingExtension() =
+    extensions.getByType<PublishingExtension>()
 
 internal fun Project.containsAndroidPlugin(): Boolean {
     return project.plugins.toList().any { plugin ->
