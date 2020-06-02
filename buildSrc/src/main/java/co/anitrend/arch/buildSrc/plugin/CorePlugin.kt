@@ -16,7 +16,18 @@ open class CorePlugin : Plugin<Project> {
     internal fun Project.availableExtensions() {
         val extensionSchema = project.extensions.extensionsSchema
         extensionSchema.forEach {
-            println("Available extension: ${it.name} -> ${it.publicType}")
+            println("Available extension for module ${project.path}: ${it.name} -> ${it.publicType}")
+        }
+    }
+
+    /**
+     * Inspecting available components
+     */
+    @Suppress("UnstableApiUsage")
+    internal fun Project.availableComponents() {
+        val collectionSchema = project.components.asMap
+        collectionSchema.forEach {
+            println("Available component for module ${project.path}: ${it.key} -> ${it.value}")
         }
     }
 
@@ -25,5 +36,8 @@ open class CorePlugin : Plugin<Project> {
         project.configureAndroid()
         project.configureOptions()
         project.configureDependencies()
+
+        //project.availableExtensions()
+        project.availableComponents()
     }
 }
