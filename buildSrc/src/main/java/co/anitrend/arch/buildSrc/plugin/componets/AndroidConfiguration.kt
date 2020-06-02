@@ -8,7 +8,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import java.io.File
 
 
-internal fun Project.configureAndroid() = baseExtension().run {
+internal fun Project.configureAndroid(): Unit = baseExtension().run {
     compileSdkVersion(Versions.compileSdk)
     defaultConfig {
         minSdkVersion(Versions.minSdk)
@@ -39,7 +39,11 @@ internal fun Project.configureAndroid() = baseExtension().run {
     }
 
     sourceSets {
-        map { it.java.srcDir("src/${it.name}/kotlin") }
+        map { androidSourceSet ->
+            androidSourceSet.java.srcDir(
+                "src/${androidSourceSet.name}/kotlin"
+            )
+        }
     }
 
     testOptions {
