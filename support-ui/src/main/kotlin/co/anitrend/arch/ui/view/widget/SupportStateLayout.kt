@@ -5,9 +5,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.ViewFlipper
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.extension.getCompatDrawable
-import co.anitrend.arch.extension.getLayoutInflater
-import co.anitrend.arch.extension.gone
+import co.anitrend.arch.extension.ext.getCompatDrawable
+import co.anitrend.arch.extension.ext.getLayoutInflater
+import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.recycler.common.StateClickableItem
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.view.contract.CustomView

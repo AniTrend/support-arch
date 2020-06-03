@@ -3,7 +3,7 @@ package co.anitrend.arch.ui.extension
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import co.anitrend.arch.extension.getColorFromAttr
+import co.anitrend.arch.extension.ext.getColorFromAttr
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.ui.R
 

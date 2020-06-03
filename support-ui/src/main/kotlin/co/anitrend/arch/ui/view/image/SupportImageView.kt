@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import co.anitrend.arch.extension.use
+import co.anitrend.arch.extension.ext.use
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.view.contract.CustomView
 

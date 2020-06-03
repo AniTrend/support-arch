@@ -5,8 +5,8 @@ import androidx.annotation.ArrayRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentStatePagerAdapter
-import co.anitrend.arch.extension.empty
-import co.anitrend.arch.extension.getStringList
+import co.anitrend.arch.extension.ext.empty
+import co.anitrend.arch.extension.ext.getStringList
 import timber.log.Timber
 import java.util.*
 
