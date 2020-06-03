@@ -15,7 +15,6 @@ object Versions {
     const val dokka = "0.10.1"
     const val mockk = "1.10.0"
     const val junit = "4.13"
-    const val runner = "1.2.0"
 
     const val timber = "4.7.1"
     const val threeTenBp = "1.2.4"
