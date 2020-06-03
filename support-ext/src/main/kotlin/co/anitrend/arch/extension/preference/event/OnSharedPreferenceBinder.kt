@@ -7,6 +7,12 @@ import android.content.SharedPreferences
  *
  * @since v0.9.X
  */
+@Deprecated(
+    "Consider using flow to observe changes instead",
+    replaceWith = ReplaceWith(
+        "preferenceChangeFlow.collect",
+        "co.anitrend.arch.extension.preference.SupportSettings.preferenceChangeFlow")
+)
 interface OnSharedPreferenceBinder {
 
     /**
