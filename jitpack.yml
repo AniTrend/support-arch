@@ -1,4 +1,9 @@
 jdk:
   - openjdk8
+#before_install:
+#   - ./custom_setup.sh
+install:
+   - echo "Running clean, build and install commands"
+   - ./gradlew clean build install
 env:
   CI: "true"
