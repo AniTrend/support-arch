@@ -1,6 +1,8 @@
 package co.anitrend.arch.buildSrc.plugin.componets
 
 import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
+import co.anitrend.arch.buildSrc.plugin.theme
+import co.anitrend.arch.buildSrc.plugin.domain
 import co.anitrend.arch.buildSrc.common.Versions
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -66,13 +68,19 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         kotlinOptions {
             allWarningsAsErrors = false
 
-            // Enable experimental coroutines APIs, including Flow
-            freeCompilerArgs = listOf(
-                "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-Xopt-in=kotlinx.coroutines.FlowPreview",
-                "-Xopt-in=kotlinx.coroutines.FlowPreview",
-                "-Xopt-in=kotlin.Experimental"
-            )
+            // Filter out modules that won't be using coroutines
+            freeCompilerArgs = if (project.name != theme || project.name != domain) {
+                listOf(
+                    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "-Xopt-in=kotlinx.coroutines.FlowPreview",
+                    "-Xopt-in=kotlinx.coroutines.FlowPreview",
+                    "-Xopt-in=kotlin.Experimental"
+                )
+            } else {
+                listOf(
+                    "-Xopt-in=kotlin.Experimental"
+                )
+            }
         }
     }
 }
