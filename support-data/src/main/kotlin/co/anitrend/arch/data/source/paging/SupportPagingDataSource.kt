@@ -16,12 +16,17 @@ import kotlinx.coroutines.launch
  * A non-coroutine that depends on [androidx.lifecycle.LiveData] to publish results.
  * This data source is targeted for UI components that depend on [androidx.paging.PagedList]
  *
+ * @param dispatchers Dispatchers that are currently available
+ *
  * @since v1.1.0
  */
 abstract class SupportPagingDataSource<T>(
     protected val dispatchers: SupportDispatchers
 ) : PagedList.BoundaryCallback<T>(), IPagingDataSource {
 
+    /**
+     * Module tag for the current context
+     */
     protected val moduleTag: String = javaClass.simpleName
 
     /**
@@ -29,14 +34,27 @@ abstract class SupportPagingDataSource<T>(
      */
     final override val supervisorJob = SupervisorJob()
 
+    /**
+     * Paging request helper that controls the flow of paging request to the implementing
+     * data source to avoid multiple requests before others are completed for this instance
+     *
+     * @see PagingRequestHelper
+     */
     protected val pagingRequestHelper by lazy {
         PagingRequestHelper(coroutineDispatcher.asExecutor())
     }
 
+    /**
+     * Observable for network state during requests that the UI can monitor and
+     * act based on state changes
+     */
     override val networkState by lazy {
         pagingRequestHelper.createStatusLiveData()
     }
 
+    /**
+     * Represents paging information
+     */
     protected val supportPagingHelper by lazy {
         SupportPagingHelper(
             isPagingLimit = false,

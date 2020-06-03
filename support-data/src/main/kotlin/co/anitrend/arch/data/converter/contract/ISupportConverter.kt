@@ -26,11 +26,25 @@ package co.anitrend.arch.data.converter.contract
  * @since 1.3.0
  */
 interface ISupportConverter<M, E> {
+    /**
+     * Convert from a single type [M] to [E]
+     */
     fun convertFrom(item: M): E
+
+    /**
+     * Convert from [Collection] types of [M] to [E]
+     */
     fun convertFrom(items: Collection<M>) =
         items.map { convertFrom(it) }
 
+    /**
+     * Convert from a single type [E] to [M]
+     */
     fun convertTo(item: E): M
+
+    /**
+     * Convert to [Collection] types of [E] to [M]
+     */
     fun convertTo(items: Collection<E>) =
         items.map { convertTo(it) }
 }

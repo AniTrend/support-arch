@@ -12,12 +12,17 @@ import kotlinx.coroutines.withContext
 /**
  * A coroutine that returns [NetworkState] to inform the caller about it's progress.
  *
+ * @param dispatchers Dispatchers that are currently available
+ *
  * @since v1.1.0
  */
 abstract class SupportCoroutineDataSource(
     protected val dispatchers: SupportDispatchers
 ) : ICoroutineDataSource {
 
+    /**
+     * Module tag for the current context
+     */
     protected val moduleTag: String = javaClass.simpleName
 
     /**
@@ -25,6 +30,10 @@ abstract class SupportCoroutineDataSource(
      */
     final override val supervisorJob: Job = SupervisorJob()
 
+    /**
+     * Observable for network state during requests that the UI can monitor and
+     * act based on state changes
+     */
     override val networkState = MutableLiveData<NetworkState>()
 
     /**

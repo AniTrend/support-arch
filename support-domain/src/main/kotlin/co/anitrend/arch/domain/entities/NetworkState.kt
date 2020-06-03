@@ -5,8 +5,14 @@ package co.anitrend.arch.domain.entities
  */
 sealed class NetworkState {
 
+    /**
+     * Represents a network state of loading
+     */
     object Loading : NetworkState()
 
+    /**
+     * Represents a network state that has succeeded
+     */
     object Success : NetworkState()
 
     /**

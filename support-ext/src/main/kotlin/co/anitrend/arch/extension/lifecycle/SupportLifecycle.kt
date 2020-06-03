@@ -15,6 +15,9 @@ import timber.log.Timber
  */
 interface SupportLifecycle : LifecycleObserver {
 
+    /**
+     * Tag descriptor of the current module
+     */
     val moduleTag: String
 
     /**

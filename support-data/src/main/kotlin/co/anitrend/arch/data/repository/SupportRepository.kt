@@ -13,6 +13,9 @@ abstract class SupportRepository(
     private val coroutine: SupportCoroutine? = null
 ) : ISupportRepository {
 
+    /**
+     * Module tag for the current context
+     */
     protected val moduleTag: String = javaClass.simpleName
 
     /**

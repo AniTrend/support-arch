@@ -14,6 +14,11 @@ import kotlinx.coroutines.launch
  * Model that view models create for UI components to observe on
  *
  * @param model LiveData for the UI to observe
+ * @param networkState Network request status to show to the user
+ * @param refreshState Refresh status to show to the user. Separate from [networkState],
+ * this value is importantly only when refresh is requested
+ * @param refresh Refreshes & invalidates underlying data source fetches it from scratch.
+ * @param retry Retries any failed requests.
  */
 data class UserInterfaceState<T> internal constructor(
     val model: LiveData<T>,
@@ -24,6 +29,14 @@ data class UserInterfaceState<T> internal constructor(
 ): IUserInterfaceState<LiveData<NetworkState>> {
 
     companion object {
+
+        /**
+         * Helper for creating a user interface state using a coroutine driven data source
+         *
+         * @param model The requested result as an observable
+         *
+         * @see ICoroutineDataSource
+         */
         fun <T> ICoroutineDataSource.create(
             model: LiveData<T>
         ) : UserInterfaceState<T> {
@@ -54,6 +67,13 @@ data class UserInterfaceState<T> internal constructor(
             )
         }
 
+        /**
+         * Helper for creating a user interface state using a paging driven data source
+         *
+         * @param model The requested result as an observable
+         *
+         * @see IPagingDataSource
+         */
         fun <T> IPagingDataSource.create(
             model: LiveData<T>
         ) : UserInterfaceState<T> {
@@ -78,6 +98,13 @@ data class UserInterfaceState<T> internal constructor(
             )
         }
 
+        /**
+         * Helper for creating a user interface state using a data source
+         *
+         * @param model The requested result as an observable
+         *
+         * @see ICoreDataSource
+         */
         fun <T> ICoreDataSource.create(
             model: LiveData<T>
         ) : UserInterfaceState<T> {

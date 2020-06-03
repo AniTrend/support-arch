@@ -27,9 +27,24 @@ import co.anitrend.arch.data.converter.contract.ISupportConverter
  * @since 1.3.0
  */
 abstract class SupportConverter<M, E> : ISupportConverter<M, E> {
+    /**
+     * Function reference from converting from [M] to [E] which will
+     * be called by [convertFrom]
+     */
     protected abstract val fromType: (M) -> E
+    /**
+     * Function reference from converting from [E] to [M] which will
+     * be called by [convertTo]
+     */
     protected abstract val toType: (E) -> M
 
+    /**
+     * Convert from a single type [M] to [E]
+     */
     override fun convertFrom(item: M) = fromType(item)
+
+    /**
+     * Convert from a single type [E] to [M]
+     */
     override fun convertTo(item: E) = toType(item)
 }

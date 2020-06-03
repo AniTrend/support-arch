@@ -14,12 +14,17 @@ import kotlinx.coroutines.launch
  * This data source is targeted for UI components, but not for [androidx.paging.PagedList]
  * dependant resources that may require boundary callbacks.
  *
+ * @param dispatchers Dispatchers that are currently available
+ *
  * @since v1.1.0
  */
 abstract class SupportCoreDataSource(
     protected val dispatchers: SupportDispatchers
 ) : ICoreDataSource {
 
+    /**
+     * Module tag for the current context
+     */
     protected val moduleTag: String = javaClass.simpleName
 
     /**
@@ -27,6 +32,10 @@ abstract class SupportCoreDataSource(
      */
     final override val supervisorJob: Job = SupervisorJob()
 
+    /**
+     * Observable for network state during requests that the UI can monitor and
+     * act based on state changes
+     */
     override val networkState = MutableLiveData<NetworkState>()
 
     /**

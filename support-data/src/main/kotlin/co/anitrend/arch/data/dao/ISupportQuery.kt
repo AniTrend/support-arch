@@ -1,7 +1,7 @@
 package co.anitrend.arch.data.dao
 
 /**
- * A generalized building block for [androidx.room.Dao] that provides basic
+ * A generalized building block for a dao that provides basic
  * read, write and update functionality
  *
  * @since v0.9.X

@@ -10,6 +10,9 @@ import co.anitrend.arch.extension.util.SupportExtKeyStore.pagingLimit
  */
 object SupportDataKeyStore {
 
+    /**
+     * Default paging configuration
+     */
     val PAGING_CONFIGURATION = PagedList.Config.Builder()
         .setEnablePlaceholders(true)
         .setPageSize(pagingLimit)
