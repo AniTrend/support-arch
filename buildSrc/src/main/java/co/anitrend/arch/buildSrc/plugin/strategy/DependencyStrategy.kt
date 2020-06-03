@@ -1,6 +1,11 @@
 package co.anitrend.arch.buildSrc.plugin.strategy
 
 import co.anitrend.arch.buildSrc.Libraries
+import co.anitrend.arch.buildSrc.plugin.core
+import co.anitrend.arch.buildSrc.plugin.data
+import co.anitrend.arch.buildSrc.plugin.ext
+import co.anitrend.arch.buildSrc.plugin.ui
+import co.anitrend.arch.buildSrc.plugin.recycler
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 internal class DependencyStrategy(
@@ -49,15 +54,5 @@ internal class DependencyStrategy(
                 handler.applyCoroutinesDependencies()
             }
         }
-    }
-
-    companion object {
-        private const val core = "support-core"
-        private const val data = "support-data"
-        private const val domain = "support-domain"
-        private const val ext = "support-ext"
-        private const val recycler = "support-recycler"
-        private const val theme = "support-theme"
-        private const val ui = "support-ui"
     }
 }
