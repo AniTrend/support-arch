@@ -118,38 +118,36 @@ internal fun Project.configureOptions() {
             add("archives", sourcesJar)
         }
 
-        afterEvaluate {
-            publishingExtension().publications {
-                val component = components.findByName("android")
+        publishingExtension().publications {
+            val component = components.findByName("android")
 
-                println("Configuring maven publication options for ${project.path}:maven with component-> ${component?.name}")
-                create("maven", MavenPublication::class.java) {
-                    groupId = "co.anitrend.arch"
-                    artifactId = project.name
-                    version = Versions.versionName
+            println("Configuring maven publication options for ${project.path}:maven with component-> ${component?.name}")
+            create("maven", MavenPublication::class.java) {
+                groupId = "co.anitrend.arch"
+                artifactId = project.name
+                version = Versions.versionName
 
-                    artifact(javadocJar)
-                    artifact(sourcesJar)
-                    artifact("${project.buildDir}/outputs/aar/${project.name}-release.aar")
-                    from(component)
+                artifact(javadocJar)
+                artifact(sourcesJar)
+                artifact("${project.buildDir}/outputs/aar/${project.name}-release.aar")
+                from(component)
 
-                    pom {
-                        name.set("Support Arch Library")
-                        description.set("A multi-module template library that attempts to make clean arch apps easier to build")
-                        url.set("https://github.com/anitrend/support-arch")
-                        licenses {
-                            license {
-                                name.set("Apache License, Version 2.0")
-                                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                            }
+                pom {
+                    name.set("Support Arch Library")
+                    description.set("A multi-module template library that attempts to make clean arch apps easier to build")
+                    url.set("https://github.com/anitrend/support-arch")
+                    licenses {
+                        license {
+                            name.set("Apache License, Version 2.0")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
                         }
-                        developers {
-                            developer {
-                                id.set("wax911")
-                                name.set("Maxwell Mapako")
-                                email.set("mxt.developer@gmail.com")
-                                organizationUrl.set("https://github.com/anitrend")
-                            }
+                    }
+                    developers {
+                        developer {
+                            id.set("wax911")
+                            name.set("Maxwell Mapako")
+                            email.set("mxt.developer@gmail.com")
+                            organizationUrl.set("https://github.com/anitrend")
                         }
                     }
                 }
