@@ -1,4 +1,4 @@
-package co.anitrend.arch.extension
+package co.anitrend.arch.extension.ext
 
 import android.app.ActivityManager
 import android.app.AlarmManager

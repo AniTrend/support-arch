@@ -1,4 +1,4 @@
-package co.anitrend.arch.extension
+package co.anitrend.arch.extension.ext
 
 import android.content.Intent
 import android.graphics.Color

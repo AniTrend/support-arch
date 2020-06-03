@@ -1,4 +1,4 @@
-package co.anitrend.arch.extension
+package co.anitrend.arch.extension.ext
 
 import android.content.res.Resources
 import android.util.TypedValue
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.StringRes
+import co.anitrend.arch.extension.R
 import co.anitrend.arch.extension.annotation.SupportExperimental
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt

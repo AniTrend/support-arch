@@ -1,5 +1,6 @@
 package co.anitrend.arch.extension
 
+import co.anitrend.arch.extension.ext.capitalizeWords
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

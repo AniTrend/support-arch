@@ -1,4 +1,4 @@
-package co.anitrend.arch.extension
+package co.anitrend.arch.extension.dispatchers
 
 import kotlinx.coroutines.*
 
