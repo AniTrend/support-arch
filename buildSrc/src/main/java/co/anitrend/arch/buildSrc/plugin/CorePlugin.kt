@@ -38,6 +38,6 @@ open class CorePlugin : Plugin<Project> {
         project.configureDependencies()
 
         //project.availableExtensions()
-        project.availableComponents()
+        //project.availableComponents()
     }
 }
