@@ -36,10 +36,8 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
 
     packagingOptions {
         exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/DEPENDENCIES.txt")
         exclude("META-INF/LICENSE")
         exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/*.kotlin_module")
     }
 
     sourceSets {
