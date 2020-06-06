@@ -1,9 +1,9 @@
 package co.anitrend.arch.buildSrc.plugin
 
-import co.anitrend.arch.buildSrc.plugin.componets.configureAndroid
-import co.anitrend.arch.buildSrc.plugin.componets.configureDependencies
-import co.anitrend.arch.buildSrc.plugin.componets.configureOptions
-import co.anitrend.arch.buildSrc.plugin.componets.configurePlugins
+import co.anitrend.arch.buildSrc.plugin.components.configureAndroid
+import co.anitrend.arch.buildSrc.plugin.components.configureDependencies
+import co.anitrend.arch.buildSrc.plugin.components.configureOptions
+import co.anitrend.arch.buildSrc.plugin.components.configurePlugins
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 

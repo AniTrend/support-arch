@@ -1,4 +1,4 @@
-package co.anitrend.arch.buildSrc.plugin.componets
+package co.anitrend.arch.buildSrc.plugin.components
 
 import org.gradle.api.Project
 import org.gradle.api.tasks.bundling.Jar

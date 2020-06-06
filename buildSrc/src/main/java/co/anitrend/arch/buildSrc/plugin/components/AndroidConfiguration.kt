@@ -1,4 +1,4 @@
-package co.anitrend.arch.buildSrc.plugin.componets
+package co.anitrend.arch.buildSrc.plugin.components
 
 import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
 import co.anitrend.arch.buildSrc.plugin.theme

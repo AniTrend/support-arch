@@ -1,4 +1,4 @@
-package co.anitrend.arch.buildSrc.plugin.componets
+package co.anitrend.arch.buildSrc.plugin.components
 
 import co.anitrend.arch.buildSrc.plugin.strategy.DependencyStrategy
 import co.anitrend.arch.buildSrc.plugin.extensions.containsAndroidPlugin
