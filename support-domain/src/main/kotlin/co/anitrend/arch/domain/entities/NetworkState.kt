@@ -6,6 +6,11 @@ package co.anitrend.arch.domain.entities
 sealed class NetworkState {
 
     /**
+     * Represents a state of idle
+     */
+    object Idle : NetworkState()
+
+    /**
      * Represents a network state of loading
      */
     object Loading : NetworkState()
