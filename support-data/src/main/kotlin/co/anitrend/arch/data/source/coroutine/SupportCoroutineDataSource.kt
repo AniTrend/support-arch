@@ -7,6 +7,7 @@ import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 
 /**
@@ -34,7 +35,8 @@ abstract class SupportCoroutineDataSource(
      * Observable for network state during requests that the UI can monitor and
      * act based on state changes
      */
-    override val networkState = MutableLiveData<NetworkState>()
+    override val networkState =
+        MutableStateFlow<NetworkState>(NetworkState.Idle)
 
     /**
      * Function reference for the retry event

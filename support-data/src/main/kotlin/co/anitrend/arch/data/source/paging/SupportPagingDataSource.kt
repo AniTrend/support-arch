@@ -4,12 +4,14 @@ import androidx.paging.PagedList
 import androidx.paging.PagingRequestHelper
 import androidx.paging.extension.createStatusLiveData
 import co.anitrend.arch.data.source.paging.contract.IPagingDataSource
+import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.arch.extension.util.SupportExtKeyStore
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
@@ -41,7 +43,7 @@ abstract class SupportPagingDataSource<T>(
      * @see PagingRequestHelper
      */
     protected val pagingRequestHelper by lazy {
-        PagingRequestHelper(coroutineDispatcher.asExecutor())
+        PagingRequestHelper(dispatchers.io.asExecutor())
     }
 
     /**
@@ -49,7 +51,7 @@ abstract class SupportPagingDataSource<T>(
      * act based on state changes
      */
     override val networkState by lazy {
-        pagingRequestHelper.createStatusLiveData()
+        pagingRequestHelper.createStatusLiveData() as StateFlow<NetworkState>
     }
 
     /**

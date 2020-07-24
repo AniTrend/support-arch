@@ -1,8 +1,8 @@
 package androidx.paging.extension
 
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingRequestHelper
 import co.anitrend.arch.domain.entities.NetworkState
+import kotlinx.coroutines.flow.callbackFlow
 
 private fun PagingRequestHelper.StatusReport.getErrorMessage(): String {
     return PagingRequestHelper.RequestType.values().mapNotNull {
@@ -13,19 +13,21 @@ private fun PagingRequestHelper.StatusReport.getErrorMessage(): String {
 /**
  * Creates a live data observable on the paging request helper
  */
-fun PagingRequestHelper.createStatusLiveData(): MutableLiveData<NetworkState> {
-    val liveData = MutableLiveData<NetworkState>()
-    addListener { report ->
+fun PagingRequestHelper.createStatusLiveData() = callbackFlow {
+    val pagingListener = PagingRequestHelper.Listener { report ->
         when {
-            report.hasRunning() -> liveData.postValue(NetworkState.Loading)
-            report.hasError() -> liveData.postValue(
+            report.hasRunning() -> offer(NetworkState.Loading)
+            report.hasError() -> offer(
                 NetworkState.Error(
                     heading = "Internal paging error",
                     message = report.getErrorMessage()
                 )
             )
-            else -> liveData.postValue(NetworkState.Success)
+            else -> offer(NetworkState.Success)
         }
     }
-    return liveData
+    addListener(pagingListener)
+    invokeOnClose {
+        removeListener(pagingListener)
+    }
 }
