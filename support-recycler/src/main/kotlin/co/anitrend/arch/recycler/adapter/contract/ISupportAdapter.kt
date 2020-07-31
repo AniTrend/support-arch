@@ -130,7 +130,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
                 true -> customSupportAnimator?.also { supportAnimator ->
                     supportAnimator.getAnimators(itemView).forEach { animator ->
                         with(animator) {
-                            duration = supportAnimator.getAnimationDuration().duration
+                            duration = supportAnimator.animationDuration.runtime
                             interpolator = supportAnimator.interpolator
                             start()
                         }
