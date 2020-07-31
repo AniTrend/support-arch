@@ -150,8 +150,8 @@ open class SupportStateLayout(
      * @param networkState state to use
      */
     @Deprecated(
-        "Use networkStateLiveData directly to inform this control about changes",
-        ReplaceWith("networkMutableStateFlow")
+        "Use networkMutableStateFlow directly to inform this control about changes",
+        ReplaceWith("networkMutableStateFlow.value = ")
     )
     @ExperimentalCoroutinesApi
     open fun setNetworkState(networkState: NetworkState) {
@@ -173,7 +173,7 @@ open class SupportStateLayout(
                 if (!isError)
                     displayedChild = ERROR_VIEW
             }
-            is NetworkState.Success -> {
+            is NetworkState.Success, NetworkState.Idle -> {
                 if (!isContent)
                     displayedChild = CONTENT_VIEW
             }
