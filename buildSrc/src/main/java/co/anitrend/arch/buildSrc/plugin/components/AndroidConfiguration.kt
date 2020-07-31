@@ -7,6 +7,7 @@ import co.anitrend.arch.buildSrc.common.Versions
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.io.File
 
 
@@ -81,6 +82,12 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                     "-Xopt-in=kotlin.Experimental"
                 )
             }
+        }
+    }
+
+    tasks.withType(KotlinJvmCompile::class.java) {
+        kotlinOptions {
+            jvmTarget = "1.8"
         }
     }
 }
