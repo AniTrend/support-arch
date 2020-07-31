@@ -1,6 +1,3 @@
-import co.anitrend.arch.buildSrc.Libraries
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
@@ -10,8 +7,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath Libraries.androidGradlePlugin
-        classpath Libraries.Kotlin.gradlePlugin
+        classpath(co.anitrend.arch.buildSrc.Libraries.androidGradlePlugin)
+        classpath(co.anitrend.arch.buildSrc.Libraries.Kotlin.gradlePlugin)
     }
 }
 
@@ -23,10 +20,8 @@ allprojects {
     }
 }
 
-subprojects {
-    tasks.withType(KotlinCompile).all {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
+tasks {
+    val clean by registering(Delete::class) {
+        delete(rootProject.buildDir)
     }
 }
