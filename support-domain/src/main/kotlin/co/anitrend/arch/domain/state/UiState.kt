@@ -1,4 +1,4 @@
-package co.anitrend.arch.domain.common
+package co.anitrend.arch.domain.state
 
 /**
  * Contract for user interface state which UI components can use to interact with state
@@ -9,9 +9,9 @@ package co.anitrend.arch.domain.common
  * @property refresh Refreshes & invalidates underlying data source fetches it from scratch.
  * @property retry Retries any failed requests.
  */
-interface IUserInterfaceState<out T> {
-    val networkState: T
-    val refreshState: T
-    val refresh: () -> Unit
-    val retry: () -> Unit
+abstract class UiState<out T> {
+    abstract val networkState: T
+    abstract val refreshState: T
+    abstract val refresh: suspend () -> Unit
+    abstract val retry: suspend () -> Unit
 }
