@@ -12,7 +12,7 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
-import co.anitrend.arch.theme.animator.contract.ISupportAnimator
+import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 
@@ -31,9 +31,9 @@ interface ISupportAdapter<T> : SupportLifecycle {
     /**
      * Get currently set animation type for recycler view holder items
      *
-     * @see [ISupportAnimator]
+     * @see [AbstractAnimator]
      */
-    val customSupportAnimator: ISupportAnimator?
+    val customSupportAnimator: AbstractAnimator?
 
     /**
      * An observer to listen for clicks on clickable items
