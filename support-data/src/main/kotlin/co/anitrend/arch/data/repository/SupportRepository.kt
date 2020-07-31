@@ -7,10 +7,11 @@ import co.anitrend.arch.extension.coroutine.SupportCoroutine
  * Core repository implementation with data source cancellation support
  *
  * @param coroutine coroutine for the supplied data source
+ *
  * @since v1.1.0
  */
 abstract class SupportRepository(
-    private val coroutine: SupportCoroutine? = null
+    private val coroutine: SupportCoroutine?
 ) : ISupportRepository {
 
     /**

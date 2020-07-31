@@ -1,106 +1,68 @@
 package co.anitrend.arch.data.source.paging
 
-import androidx.paging.PagedList
-import androidx.paging.PagingRequestHelper
-import androidx.paging.extension.createStatusLiveData
-import co.anitrend.arch.data.source.paging.contract.IPagingDataSource
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.data.request.AbstractRequestHelper
+import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.extension.createStatusFlow
+import co.anitrend.arch.data.request.helper.RequestHelper
+import co.anitrend.arch.data.source.paging.contract.AbstractPagingDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import co.anitrend.arch.extension.util.SupportExtKeyStore
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.asExecutor
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 /**
- * A non-coroutine that depends on [androidx.lifecycle.LiveData] to publish results.
- * This data source is targeted for UI components that depend on [androidx.paging.PagedList]
+ * A data source that is targeted for [androidx.paging.PagedList]
  *
  * @param dispatchers Dispatchers that are currently available
  *
  * @since v1.1.0
  */
 abstract class SupportPagingDataSource<T>(
-    protected val dispatchers: SupportDispatchers
-) : PagedList.BoundaryCallback<T>(), IPagingDataSource {
+    dispatchers: SupportDispatchers
+) : AbstractPagingDataSource<T>(dispatchers) {
 
     /**
-     * Module tag for the current context
-     */
-    protected val moduleTag: String = javaClass.simpleName
-
-    /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
-     */
-    final override val supervisorJob = SupervisorJob()
-
-    /**
-     * Paging request helper that controls the flow of paging request to the implementing
-     * data source to avoid multiple requests before others are completed for this instance
+     * Request helper that controls the flow of requests to the implementing data source to avoid
+     * multiple requests of the same type before others are completed for this instance
      *
-     * @see PagingRequestHelper
+     * @see AbstractRequestHelper
      */
-    protected val pagingRequestHelper by lazy {
-        PagingRequestHelper(dispatchers.io.asExecutor())
-    }
+    override val requestHelper = RequestHelper(dispatchers.io)
 
     /**
      * Observable for network state during requests that the UI can monitor and
      * act based on state changes
      */
     override val networkState by lazy {
-        pagingRequestHelper.createStatusLiveData() as StateFlow<NetworkState>
+        requestHelper.createStatusFlow()
     }
 
     /**
-     * Represents paging information
+     * Representation of the paging state
      */
-    protected val supportPagingHelper by lazy {
-        SupportPagingHelper(
-            isPagingLimit = false,
-            pageSize = SupportExtKeyStore.pagingLimit
-        )
-    }
+    protected open val supportPagingHelper = SupportPagingHelper(
+        isPagingLimit = false,
+        pageSize = SupportExtKeyStore.pagingLimit
+    )
 
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
-    override fun invalidateAndRefresh() {
-        launch (dispatchers.io) {
-            clearDataSource()
-        }
+    override suspend fun invalidate() {
+        clearDataSource(dispatchers.io)
         supportPagingHelper.onPageRefresh()
     }
 
     /**
      * Performs the necessary operation to invoke a network retry request
      */
-    override fun retryRequest() {
-        pagingRequestHelper.retryAllFailed()
+    override suspend fun retryFailed() {
+        requestHelper.retryWithStatus()
     }
 
     /**
-     * Coroutine dispatcher specification
-     *
-     * @return one of the sub-types of [kotlinx.coroutines.Dispatchers]
+     * Re-run the last successful request if applicable
      */
-    final override val coroutineDispatcher = dispatchers.computation
-
-    /**
-     * Persistent context for the coroutine
-     *
-     * @return [kotlin.coroutines.CoroutineContext] preferably built from
-     * [supervisorJob] + [coroutineDispatcher]
-     */
-    final override val coroutineContext = supervisorJob + coroutineDispatcher
-
-    /**
-     * A failure or cancellation of a child does not cause the supervisor job
-     * to fail and does not affect its other children.
-     *
-     * @return [kotlinx.coroutines.CoroutineScope]
-     */
-    final override val scope = CoroutineScope(coroutineContext)
+    override suspend fun retry() {
+        requestHelper.retryWithStatus(IRequestHelper.Status.SUCCESS)
+    }
 }
