@@ -323,14 +323,13 @@ abstract class SupportPagedListAdapter<T>(
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onDestroy state
+     * Triggered when the lifecycleOwner reaches it's onPause state
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
-    @ExperimentalCoroutinesApi
-    override fun onDestroy() {
-        super.onDestroy()
-        // clear our state flow
+    override fun onPause() {
+        super.onPause()
+        // clear our state flow, when the parent activity is paused
         stateFlow.value = null
     }
 }

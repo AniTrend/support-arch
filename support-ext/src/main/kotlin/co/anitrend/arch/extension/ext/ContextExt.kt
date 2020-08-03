@@ -57,7 +57,7 @@ inline fun <reified T> Context.startServiceInBackground(intentAction: String): C
 }
 
 /**
- * Request that a given application service be stopped.  If the service is
+ * Request that a given application service be stopped. If the service is
  * not running, nothing happens.
  *
  * @return If there is a service matching the given Intent that is already
@@ -91,8 +91,8 @@ inline fun <reified T> Context.restartApplication() {
             pendingIntent
         )
         exitProcess(0)
-    }.exceptionOrNull()?.run {
-        Timber.tag("restartApplication").e(this)
+    }.onFailure {
+        Timber.tag("restartApplication").e(it)
     }
 }
 
@@ -163,8 +163,8 @@ fun Context.toggleKeyboard(show: Boolean) {
                 inputMethodManager.hideSoftInputFromWindow(
                     windowToken, 0
                 )
-    }.exceptionOrNull()?.run {
-        Timber.tag("toggleKeyboard").e(this)
+    }.onFailure {
+        Timber.tag("toggleKeyboard").e(it)
     }
 }
 
@@ -192,15 +192,15 @@ fun Context?.isLowRamDevice(): Boolean {
  * @param options Additional options for how the Activity should be started from
  */
 inline fun <reified T> Context?.startNewActivity(params: Bundle? = null, options: Bundle? = null) {
-    try {
+    runCatching {
         val intent = Intent(this, T::class.java)
         with (intent) {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
             params?.also { putExtras(it) }
         }
         this?.startActivity(intent, options)
-    } catch (e: Exception) {
-        Timber.e(e)
+    }.onFailure {
+        Timber.tag("startNewActivity").e(it)
     }
 }
 
@@ -257,7 +257,7 @@ fun Context.getDrawableAttr(@AttrRes drawableAttr : Int): Drawable? {
 
 /**
  * Creates a color from the given attribute, If the attribute references a color resource holding a complex
- * @link{android.content.res.ColorStateList}, then the default color from the set is returned.
+ * [android.content.res.ColorStateList], then the default color from the set is returned.
  *
  * @param colorAttr attribute resource for color
  *
@@ -287,28 +287,31 @@ fun Context.getCompatColor(@ColorRes colorRes: Int) =
 /**
  * Avoids resource not found when using vector drawables in API levels < Lollipop
  *
- * This method supports inflation of {@code <vector>}, {@code <animated-vector>} and
- * {@code <animated-selector>} resources on devices where platform support is not available.
+ * This method supports inflation of `<vector>`, `<animated-vector>` and
+ * `<animated-selector>` resources on devices where platform support is not available.
  *
  * @param resource The resource id of the drawable or vector drawable
- *                 @see DrawableRes
  *
- * @return Drawable An object that can be used to draw this resource.
+ * @return [Drawable] object that can be used to draw this resource.
  *
  * @see Drawable
+ * @see DrawableRes
  */
 fun Context.getCompatDrawable(@DrawableRes resource : Int) =
     AppCompatResources.getDrawable(this, resource)
 
 /**
  * Avoids resource not found when using vector drawables in API levels < Lollipop
- * Also images loaded from this method apply the {@link Drawable#mutate()} to assure
+ * Also images loaded from this method apply the [Drawable.mutate] to assure
  * that the state of each drawable is not shared
  *
  * @param resource The resource id of the drawable or vector drawable
  * @param tintColor A specific color to tint the drawable
  *
- * @return Drawable tinted with the tint color
+ * @return [Drawable] tinted with the tint color
+ *
+ * @see Drawable
+ * @see DrawableRes
  */
 fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor : Int): Drawable? {
     val drawableResource = AppCompatResources.getDrawable(this, resource)
@@ -324,12 +327,16 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor :
 /**
  * Avoids resource not found when using vector drawables in API levels < Lollipop
  * and tints the drawable depending on the current selected theme, images loaded
- * from this method apply the {@link Drawable#mutate()} to assure that the state
+ * from this method apply the [Drawable.mutate] to assure that the state
  * of each drawable is not shared.
  *
  * @param resource The resource id of the drawable or vector drawable
  *
- * @return Drawable tinted with [colorAttr]
+ * @return [Drawable] tinted with [colorAttr]
+ *
+ * @see AttrRes
+ * @see Drawable
+ * @see DrawableRes
  */
 fun Context.getTintedDrawableWithAttribute(
     @DrawableRes resource : Int,
@@ -347,13 +354,17 @@ fun Context.getTintedDrawableWithAttribute(
 /**
  * Avoids resource not found when using vector drawables in API levels < Lollipop
  * and tints the drawable depending on the current selected theme, images loaded
- * from this method apply the {@link Drawable#mutate()} to assure that the state
+ * from this method apply the [Drawable.mutate] to assure that the state
  * of each drawable is not shared
  *
  * @param resource The resource id of the drawable or vector drawable
  * @param colorAttr A specific color to tint the drawable
  *
- * @return Drawable tinted with the tint color
+ * @return [Drawable] tinted with the tint color
+ *
+ * @see AttrRes
+ * @see Drawable
+ * @see DrawableRes
  */
 fun Context.getTintedDrawable(@DrawableRes resource : Int, @AttrRes colorAttr : Int): Drawable? {
     val originalDrawable = getCompatDrawable(resource)
@@ -369,13 +380,10 @@ fun Context.getTintedDrawable(@DrawableRes resource : Int, @AttrRes colorAttr : 
  * Auto disposable extension for recycling and catching exceptions for typed arrays
  */
 inline fun TypedArray.use(block: (TypedArray) -> Unit) {
-    try {
+    runCatching {
         block(this)
-    } catch (e: Exception) {
-        Timber.e(e)
-    } finally {
-        runCatching {
-            recycle()
-        }.exceptionOrNull()?.printStackTrace()
+        recycle()
+    }.onFailure {
+        Timber.tag("TypedArray.use").e(it)
     }
 }

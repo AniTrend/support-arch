@@ -23,9 +23,9 @@ import kotlinx.coroutines.flow.*
  *
  * @since v1.1.0
  */
-open class SupportStateLayout(
+open class SupportStateLayout @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet?
+    attrs: AttributeSet? = null
 ) : ViewFlipper(context, attrs), CustomView, CoroutineScope by MainScope() {
 
     init {

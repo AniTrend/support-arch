@@ -6,7 +6,7 @@ import co.anitrend.arch.data.request.extension.createStatusFlow
 import co.anitrend.arch.data.request.helper.RequestHelper
 import co.anitrend.arch.data.source.paging.contract.AbstractPagingDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
-import co.anitrend.arch.extension.util.SupportExtKeyStore
+import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 
 /**
@@ -41,7 +41,7 @@ abstract class SupportPagingDataSource<T>(
      */
     protected open val supportPagingHelper = SupportPagingHelper(
         isPagingLimit = false,
-        pageSize = SupportExtKeyStore.pagingLimit
+        pageSize = DEFAULT_PAGE_SIZE
     )
 
     /**

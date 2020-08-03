@@ -8,18 +8,18 @@ package co.anitrend.arch.extension.ext
  *
  * This mode should not be used unless the [Lazy] instance is guaranteed never to be initialized from more than one thread.
  */
-val LAZY_MODE_UNSAFE = LazyThreadSafetyMode.NONE
+val UNSAFE = LazyThreadSafetyMode.NONE
 
 /**
  * Initializer function can be called several times on concurrent access to uninitialized [Lazy] instance value,
  * but only the first returned value will be used as the value of [Lazy] instance.
  */
-val LAZY_MODE_PUBLICATION = LazyThreadSafetyMode.PUBLICATION
+val PUBLICATION = LazyThreadSafetyMode.PUBLICATION
 
 /**
  * Locks are used to ensure that only a single thread can initialize the [Lazy] instance.
  */
-val LAZY_MODE_SYNCHRONIZED = LazyThreadSafetyMode.SYNCHRONIZED
+val SYNCHRONIZED = LazyThreadSafetyMode.SYNCHRONIZED
 
 /**
  * Potentially useless but returns an empty string, the signature may change in future

@@ -109,29 +109,39 @@ fun Float.isWideScreen() : Boolean {
 }
 
 /**
- * Credits
+ * Gets status bar height, [credits](https://gist.github.com/hamakn/8939eb68a920a6d7a498)
+ *
+ * @return Height in pixels otherwise null if it cannot resolve
+ *
  * @author hamakn
- * https://gist.github.com/hamakn/8939eb68a920a6d7a498
  */
 @SupportExperimental
-fun Resources.getStatusBarHeight() : Int {
-    var statusBarHeight = 0
-    val resourceId = getIdentifier("status_bar_height", "dimen", "android")
+fun Resources.getStatusBarHeight() : Int? {
+    val resourceId = getIdentifier(
+        "status_bar_height",
+        "dimen",
+        "android"
+    )
     if (resourceId > 0)
-        statusBarHeight = getDimensionPixelSize(resourceId)
-    return statusBarHeight
+        return getDimensionPixelSize(resourceId)
+    return null
 }
 
 /**
- * Credits
+ * Gets status navigation bar height, [credits](https://gist.github.com/hamakn/8939eb68a920a6d7a498)
+ *
+ * @return Height in pixels otherwise null if it cannot resolve
+ *
  * @author hamakn
- * https://gist.github.com/hamakn/8939eb68a920a6d7a498
  */
 @SupportExperimental
-fun Resources.getNavigationBarHeight() : Int {
-    var navigationBarHeight = 0
-    val resourceId = getIdentifier("navigation_bar_height", "dimen", "android")
+fun Resources.getNavigationBarHeight() : Int? {
+    val resourceId = getIdentifier(
+        "navigation_bar_height",
+        "dimen",
+        "android"
+    )
     if (resourceId > 0)
-        navigationBarHeight = getDimensionPixelSize(resourceId)
-    return navigationBarHeight
+        return getDimensionPixelSize(resourceId)
+    return null
 }

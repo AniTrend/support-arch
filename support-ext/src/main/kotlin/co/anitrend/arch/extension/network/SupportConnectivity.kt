@@ -8,58 +8,57 @@ import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.properties.ReadOnlyProperty
 
 /**
- * Lifecycle aware connectivity checker that exposes the network connected status via a LiveData.
+ * Inspired by [ConnectivityChecker](https://github.com/android/plaid/blob/master/core/src/main/java/io/plaidapp/core/ui/ConnectivityChecker.kt)
  *
- * The loss of connectivity while the user scrolls through the feed should NOT be a blocker for the
- * user.
+ * Lifecycle aware connectivity checker that exposes the network connected status via a [StateFlow].
  *
  * The loss of connectivity when the activity is resumed should be a blocker for the user
- * (since we can't get feed items) - in onResume, we should get the connectivity status. If we
- * are NOT connected then we register a listener and wait to be notified. Only once we are
- * connected, we stop listening to connectivity. Inspired by [ConnectivityChecker](https://github.com/android/plaid/blob/master/core/src/main/java/io/plaidapp/core/ui/ConnectivityChecker.kt)
+ * in [onResume], we should get the connectivity status.
  *
  * @since v1.2.0
  */
-class SupportConnectivity(
+open class SupportConnectivity(
     private val connectivityManager: ConnectivityManager?
 ): SupportLifecycle {
 
     override val moduleTag: String = SupportConnectivity::class.java.simpleName
 
     /**
-     * Check if the device is connected to any network with internet capabilities
+     * Check if the device is connected to any network with internet capabilities, this is only
+     * a snapshot of the state at the time of request
      *
      * @return true if a internet activity is present otherwise false
      */
-    val isConnected
+    open val isConnected
         get() = (connectivityManager?.allNetworks?.filter {
             val network = connectivityManager.getNetworkCapabilities(it)
             network?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
         }?.size ?: 0) > 0
 
-    private var monitoringConnectivity = false
-
     @ExperimentalCoroutinesApi
     private val connectedMutableStateFlow =
-        MutableStateFlow<Boolean?>(null)
+        MutableStateFlow<ConnectivityState>(ConnectivityState.Unknown)
 
+    /**
+     * Connection state flow, allows us to monitor changes on the network connectivity
+     *
+     * @see ConnectivityState
+     */
     @ExperimentalCoroutinesApi
-    val connectedStatusFlow: StateFlow<Boolean?> = connectedMutableStateFlow
+    val connectivityState: StateFlow<ConnectivityState> = connectedMutableStateFlow
 
     @ExperimentalCoroutinesApi
     private val connectivityCallback =
         object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
-                connectedMutableStateFlow.value = true
-                // we are connected, so we can stop listening
-                connectivityManager?.unregisterNetworkCallback(this)
-                monitoringConnectivity = false
+                connectedMutableStateFlow.value = ConnectivityState.Connected
             }
 
             override fun onLost(network: Network) {
-                connectedMutableStateFlow.value = false
+                connectedMutableStateFlow.value = ConnectivityState.Disconnected
             }
         }
 
@@ -71,10 +70,7 @@ class SupportConnectivity(
     @ExperimentalCoroutinesApi
     override fun onPause() {
         super.onPause()
-        if (monitoringConnectivity) {
-            connectivityManager?.unregisterNetworkCallback(connectivityCallback)
-            monitoringConnectivity = false
-        }
+        connectivityManager?.unregisterNetworkCallback(connectivityCallback)
     }
 
     /**
@@ -92,6 +88,5 @@ class SupportConnectivity(
                 ).build(),
             connectivityCallback
         )
-        monitoringConnectivity = true
     }
 }

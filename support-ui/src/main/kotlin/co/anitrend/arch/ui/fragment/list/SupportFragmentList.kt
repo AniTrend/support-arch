@@ -28,6 +28,7 @@ import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -242,7 +243,9 @@ abstract class SupportFragmentList<M>(
      * Called when a swipe gesture triggers a refresh.
      */
     override fun onRefresh() {
-        viewModelState()?.refresh()
+        lifecycleScope.launch {
+            viewModelState()?.refresh()
+        }
     }
 
     /**

@@ -120,3 +120,25 @@ class StringPreference(
         }
     }
 }
+
+/**
+ * Null string preference delegate
+ *
+ * @see ISupportPreferenceDelegate
+ */
+class NullableStringPreference(
+    override val key: Int,
+    override val default: String? = null,
+    override val resources: Resources
+) : ISupportPreferenceDelegate<String?> {
+
+    override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): String? {
+        return thisRef.getString(stringOf(key), default)
+    }
+
+    override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: String?) {
+        thisRef.edit {
+            putString(stringOf(key), value)
+        }
+    }
+}

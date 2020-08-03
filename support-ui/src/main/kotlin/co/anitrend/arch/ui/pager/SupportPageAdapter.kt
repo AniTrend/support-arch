@@ -1,9 +1,11 @@
 package co.anitrend.arch.ui.pager
 
+import android.content.Context
 import android.os.Bundle
 import androidx.annotation.ArrayRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import co.anitrend.arch.extension.ext.empty
 import co.anitrend.arch.extension.ext.getStringList
@@ -19,26 +21,24 @@ import java.util.*
  * [androidx.lifecycle.Lifecycle.State.RESUMED] state and there will be callbacks to
  * [androidx.fragment.app.Fragment.setUserVisibleHint].
  *
- * @param context fragment activity used to create fragment manager that will interact with this adapter
- * @param defaultBehavior defaulted to [FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT]
+ * @param fragmentManager Fragment manager that will interact with this adapter
+ * @param defaultBehavior Defaulted to [FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT]
  *
  * @since v0.9.X
  */
 abstract class SupportPageAdapter(
-    protected val context: FragmentActivity,
+    fragmentManager: FragmentManager,
     defaultBehavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-): FragmentStatePagerAdapter(context.supportFragmentManager, defaultBehavior) {
+): FragmentStatePagerAdapter(fragmentManager, defaultBehavior) {
 
     val titles = ArrayList<String>()
-
-    val bundle = Bundle()
 
     /**
      * Sets the given array resources as standard strings titles
      *
      * @param titleRes array resource of which titles to use
      */
-    fun setPagerTitles(@ArrayRes titleRes: Int) {
+    open fun setPagerTitles(context: Context, @ArrayRes titleRes: Int) {
         if (titles.isNotEmpty())
             titles.clear()
         titles.addAll(context.getStringList(titleRes))

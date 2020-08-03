@@ -17,16 +17,17 @@ import co.anitrend.arch.ui.view.contract.CustomView
  *
  * @since v0.9.X
  */
-open class SupportImageView : AppCompatImageView, CustomView {
+open class SupportImageView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : AppCompatImageView(context, attrs, defStyleAttr), CustomView {
 
     protected open var aspectRatio = DEFAULT_ASPECT_RATIO
 
-    constructor(context: Context) :
-            super(context) { onInit(context) }
-    constructor(context: Context, attrs: AttributeSet?) :
-            super(context, attrs) { onInit(context, attrs) }
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) { onInit(context, attrs) }
+    init {
+        onInit(context, attrs, defStyleAttr)
+    }
 
     /**
      * Callable in view constructors to perform view inflation and

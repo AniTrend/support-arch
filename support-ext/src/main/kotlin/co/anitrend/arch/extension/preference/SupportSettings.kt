@@ -16,14 +16,10 @@ import kotlinx.coroutines.flow.callbackFlow
  *
  * @since v0.9.X
  */
-abstract class SupportSettings(
+abstract class SupportSettings @JvmOverloads constructor(
     protected val context: Context,
-    private val sharedPreferences: SharedPreferences
+    sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 ) : ISupportSettings, SharedPreferences by sharedPreferences {
-
-    constructor(context: Context): this(
-        context, PreferenceManager.getDefaultSharedPreferences(context)
-    )
 
     /**
      * A flow that can be observed to provide changes on preferences as they happen

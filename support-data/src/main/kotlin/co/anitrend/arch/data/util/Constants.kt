@@ -1,7 +1,7 @@
 package co.anitrend.arch.data.util
 
 import androidx.paging.PagedList
-import co.anitrend.arch.extension.util.SupportExtKeyStore.pagingLimit
+import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 
 
 /**
@@ -9,7 +9,7 @@ import co.anitrend.arch.extension.util.SupportExtKeyStore.pagingLimit
  */
 val PAGING_CONFIGURATION = PagedList.Config.Builder()
     .setEnablePlaceholders(true)
-    .setPageSize(pagingLimit)
+    .setPageSize(DEFAULT_PAGE_SIZE)
     .setPrefetchDistance(15)
     .setMaxSize(75)
     .build()

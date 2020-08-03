@@ -10,33 +10,29 @@ import timber.log.Timber
  * Extends [RecyclerView] and adds position management on stateConfiguration changes, and
  * lifecycle aware callbacks
  *
- * @see co.anitrend.arch.extension.attachComponent
- * @see co.anitrend.arch.extension.detachComponent
+ * @see co.anitrend.arch.extension.ext.attachComponent
+ * @see co.anitrend.arch.extension.ext.detachComponent
  *
  * @since v0.9.X
  */
-open class SupportRecyclerView : RecyclerView, SupportLifecycle {
+open class SupportRecyclerView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : RecyclerView(context, attrs, defStyle), SupportLifecycle {
 
     override val moduleTag = SupportRecyclerView::class.java.simpleName
 
     /**
      * Tells this recycler to set it's adapters instance to false when [SupportLifecycle.onDestroy]
-     * is triggered, assuming you've called [co.anitrend.arch.extension.attachComponent] on this
+     * is triggered, assuming you've called [co.anitrend.arch.extension.ext.attachComponent] on this
      */
-    var autoClearAdapter: Boolean = true
+    open var autoClearAdapter: Boolean = true
 
     /**
      * Indicates whether or not a scroll listener has already been added to this recycler
      */
-    protected var hasScrollListener: Boolean = false
-        private set
-
-    constructor(context: Context) :
-            super(context)
-    constructor(context: Context, attrs: AttributeSet?) :
-            super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) :
-            super(context, attrs, defStyle)
+    protected open var hasScrollListener: Boolean = false
 
     /**
      * Add a listener that will be notified of any changes in scroll state or position.

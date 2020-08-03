@@ -8,8 +8,8 @@ import timber.log.Timber
 /**
  * Contract for life cycle aware components, with all lifecycle events optional
  *
- * @see [co.anitrend.arch.extension.attachComponent]
- * @see [co.anitrend.arch.extension.detachComponent]
+ * @see [co.anitrend.arch.extension.ext.attachComponent]
+ * @see [co.anitrend.arch.extension.ext.detachComponent]
  *
  * @since v1.2.0
  */

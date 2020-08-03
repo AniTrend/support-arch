@@ -6,7 +6,7 @@ import androidx.annotation.LayoutRes
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.*
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.extension.ext.LAZY_MODE_UNSAFE
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getLayoutInflater
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
@@ -37,7 +37,7 @@ abstract class SupportListAdapter<T>(
 
     protected abstract val resources: Resources
 
-    private val mDiffer: AsyncListDiffer<T> by lazy(LAZY_MODE_UNSAFE) {
+    private val mDiffer: AsyncListDiffer<T> by lazy(UNSAFE) {
         AsyncListDiffer(this, differCallback)
     }
 
@@ -359,14 +359,13 @@ abstract class SupportListAdapter<T>(
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onDestroy state
+     * Triggered when the lifecycleOwner reaches it's onPause state
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
-    @ExperimentalCoroutinesApi
-    override fun onDestroy() {
-        super.onDestroy()
-        // clear our state flow
+    override fun onPause() {
+        super.onPause()
+        // clear our state flow, when the parent activity is paused
         stateFlow.value = null
     }
 }
