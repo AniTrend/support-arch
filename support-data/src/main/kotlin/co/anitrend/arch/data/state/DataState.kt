@@ -41,8 +41,7 @@ data class DataState<T> internal constructor(
         ) : DataState<T> {
             val refreshTrigger = MutableStateFlow<NetworkState>(NetworkState.Idle)
             val refreshState: Flow<NetworkState> = refreshTrigger.flatMapLatest {
-                val state = MutableStateFlow<NetworkState>(NetworkState.Loading)
-                state.value = it
+                val state = MutableStateFlow(it)
                 state
             }
 
@@ -51,7 +50,7 @@ data class DataState<T> internal constructor(
                 networkState = networkState,
                 refreshState = refreshState,
                 refresh = {
-                    invalidate()
+                    refreshTrigger.value = NetworkState.Loading
                     refresh()
                     refreshTrigger.value = NetworkState.Success
                 },
