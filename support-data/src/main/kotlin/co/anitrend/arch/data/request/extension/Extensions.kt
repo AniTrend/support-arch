@@ -44,4 +44,4 @@ internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow {
     invokeOnClose {
         removeListener(requestListener)
     }
-} as StateFlow
+}
