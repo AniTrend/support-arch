@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.extensions.isLoading
 import co.anitrend.arch.extension.ext.attachComponent
 import co.anitrend.arch.extension.ext.detachComponent
 import co.anitrend.arch.recycler.SupportRecyclerView
@@ -80,7 +81,7 @@ abstract class SupportFragmentList<M>(
 
     @ExperimentalCoroutinesApi
     override val onRefreshObserver = Observer<NetworkState> {
-        onStateObserverChanged(it)
+        supportRefreshLayout?.isRefreshing = it.isLoading()
     }
 
     @ExperimentalCoroutinesApi
