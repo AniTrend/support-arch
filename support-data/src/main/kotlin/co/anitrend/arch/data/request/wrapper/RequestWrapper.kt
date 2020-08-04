@@ -15,7 +15,7 @@ import kotlin.coroutines.CoroutineContext
  * @since v1.3.0
  */
 class RequestWrapper internal constructor(
-    val handleCallback: (RequestCallback) -> Unit,
+    val handleCallback: suspend (RequestCallback) -> Unit,
     val helper: IRequestHelper,
     val type: IRequestHelper.RequestType
 ) {

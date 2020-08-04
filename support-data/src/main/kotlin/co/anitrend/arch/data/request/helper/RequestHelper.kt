@@ -33,7 +33,7 @@ class RequestHelper(
      */
     override suspend fun runIfNotRunning(
         requestType: IRequestHelper.RequestType,
-        handleCallback: (RequestCallback) -> Unit
+        handleCallback: suspend (RequestCallback) -> Unit
     ): Boolean {
         val hasListeners = !listeners.isEmpty()
         val report = AtomicReference<RequestStatusReport?>(null)

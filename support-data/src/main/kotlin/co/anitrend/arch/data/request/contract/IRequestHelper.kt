@@ -39,7 +39,7 @@ interface IRequestHelper {
      */
     suspend fun runIfNotRunning(
         requestType: RequestType,
-        handleCallback: (RequestCallback) -> Unit
+        handleCallback: suspend (RequestCallback) -> Unit
     ): Boolean
 
     /**
