@@ -35,7 +35,7 @@ interface IDataSource : SupportCoroutine {
     /**
      * Re-run the last successful request if applicable
      */
-    suspend fun retry()
+    suspend fun refresh()
 
     /**
      * Clears data sources (databases, preferences, e.t.c)

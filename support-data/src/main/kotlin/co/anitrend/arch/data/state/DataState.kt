@@ -52,7 +52,7 @@ data class DataState<T> internal constructor(
                 refreshState = refreshState,
                 refresh = {
                     invalidate()
-                    retry()
+                    refresh()
                     refreshTrigger.value = NetworkState.Success
                 },
                 retry = {
