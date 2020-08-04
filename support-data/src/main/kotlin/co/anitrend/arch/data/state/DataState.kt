@@ -39,16 +39,12 @@ data class DataState<T> internal constructor(
         fun <T> IDataSource.create(
             model: LiveData<T>
         ) : DataState<T> {
-            val refreshTrigger = MutableStateFlow<NetworkState>(NetworkState.Idle)
-            val refreshState: Flow<NetworkState> = refreshTrigger.flatMapLatest {
-                val state = MutableStateFlow(it)
-                state
-            }
+            val refreshTrigger: MutableStateFlow<NetworkState> = MutableStateFlow(NetworkState.Idle)
 
             return DataState(
                 model = model,
                 networkState = networkState,
-                refreshState = refreshState,
+                refreshState = refreshTrigger,
                 refresh = {
                     refreshTrigger.value = NetworkState.Loading
                     refresh()
