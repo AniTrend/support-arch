@@ -51,7 +51,8 @@ abstract class SupportCoreDataSource(
     /**
      * Re-run the last successful request
      */
-    override suspend fun retry() {
+    override suspend fun refresh() {
+        invalidate()
         requestHelper.retryWithStatus(IRequestHelper.Status.SUCCESS)
     }
 }
