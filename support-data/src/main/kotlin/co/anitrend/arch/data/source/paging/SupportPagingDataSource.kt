@@ -1,7 +1,6 @@
 package co.anitrend.arch.data.source.paging
 
 import co.anitrend.arch.data.request.AbstractRequestHelper
-import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.extension.createStatusFlow
 import co.anitrend.arch.data.request.helper.RequestHelper
 import co.anitrend.arch.data.source.paging.contract.AbstractPagingDataSource
@@ -62,7 +61,7 @@ abstract class SupportPagingDataSource<T>(
     /**
      * Re-run the last successful request if applicable
      */
-    override suspend fun retry() {
-        requestHelper.retryWithStatus(IRequestHelper.Status.SUCCESS)
+    override suspend fun refresh() {
+        invalidate()
     }
 }
