@@ -5,6 +5,7 @@ import co.anitrend.arch.data.request.report.RequestStatusReport
 import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.domain.entities.NetworkState
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
 
@@ -41,7 +42,7 @@ internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow {
         }
     }
     addListener(requestListener)
-    invokeOnClose {
+    awaitClose {
         removeListener(requestListener)
     }
 }
