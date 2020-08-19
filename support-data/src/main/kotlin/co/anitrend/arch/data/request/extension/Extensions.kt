@@ -18,7 +18,7 @@ private fun RequestStatusReport.getRequestError(): RequestError {
 /**
  * Creates a live data observable on the paging request helper
  */
-internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow {
+internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<NetworkState> {
     val requestListener = object : IRequestHelper.Listener {
         /**
          * Called when the status for any of the requests has changed.
