@@ -13,4 +13,7 @@ data class RequestError(
     val topic: String?,
     val description: String?,
     val throwable: Throwable?
-) : Throwable(description, throwable)
+) : Throwable(description, throwable) {
+    constructor(cause: Throwable?) : this(null, cause?.toString(), cause)
+    constructor() : this(null, null, null)
+}
