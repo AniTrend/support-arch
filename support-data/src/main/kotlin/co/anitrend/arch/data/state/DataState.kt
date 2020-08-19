@@ -7,7 +7,6 @@ import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.domain.state.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
 
 /**
  * Model that view models create for UI components to observe on
