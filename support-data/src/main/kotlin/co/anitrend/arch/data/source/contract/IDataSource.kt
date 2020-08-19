@@ -23,11 +23,6 @@ interface IDataSource : SupportCoroutine {
     val networkState: Flow<NetworkState>
 
     /**
-     * Invokes [clearDataSource] and should invoke network refresh or reload
-     */
-    suspend fun invalidate()
-
-    /**
      * Performs the necessary operation to invoke a network retry request
      */
     suspend fun retryFailed()

@@ -1,16 +1,15 @@
-package co.anitrend.arch.data.source.paging.contract
+package co.anitrend.arch.data.source.live.contract
 
-import androidx.paging.PagedList
+import androidx.paging.ItemKeyedDataSource
 import co.anitrend.arch.data.source.contract.IDataSource
-import co.anitrend.arch.data.source.contract.ISource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 
-abstract class AbstractPagingDataSource<T>(
+abstract class AbstractPagingLiveDataSource<K, V>(
     protected val dispatchers: SupportDispatchers
-) : PagedList.BoundaryCallback<T>(), IDataSource, ISource {
+) : ItemKeyedDataSource<K, V>(), IDataSource {
 
     /**
      * Module tag for the current context
