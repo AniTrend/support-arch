@@ -12,7 +12,7 @@ dependencies {
 
     implementation(Libraries.Google.material)
 
-    implementation(Libraries.AndroidX.swiperefresh)
-    implementation(Libraries.AndroidX.recyclerview)
+    implementation(Libraries.AndroidX.SwipeRefresh.swipeRefreshLayout)
+    implementation(Libraries.AndroidX.Recycler.recyclerView)
     implementation(Libraries.AndroidX.Paging.runtimeKtx)
 }

@@ -7,8 +7,8 @@ plugins {
 dependencies {
     implementation(Libraries.Google.material)
 
-    implementation(Libraries.AndroidX.coreKtx)
-    implementation(Libraries.AndroidX.preference)
+    implementation(Libraries.AndroidX.Core.coreKtx)
+    implementation(Libraries.AndroidX.Preference.preferenceKtx)
 
     implementation(Libraries.threeTenBp)
 }

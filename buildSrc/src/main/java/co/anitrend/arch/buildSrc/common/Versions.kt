@@ -9,10 +9,6 @@ object Versions {
     const val versionCode = 140
     const val versionName = "1.3.0-beta18"
 
-    const val gradle = "4.0.0"
-    const val kotlin = "1.3.72"
-
-    const val dokka = "0.10.1"
     const val mockk = "1.10.0"
     const val junit = "4.13"
 
