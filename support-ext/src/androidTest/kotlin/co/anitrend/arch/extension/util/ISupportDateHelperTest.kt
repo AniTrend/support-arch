@@ -4,7 +4,7 @@ import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
 import co.anitrend.arch.extension.util.contract.ISupportDateHelper
 import co.anitrend.arch.extension.util.date.SupportDateHelper
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.threeten.bp.format.DateTimeFormatter
@@ -22,7 +22,7 @@ class ISupportDateHelperTest {
     private val appContext by lazy { InstrumentationRegistry.getInstrumentation().context }
 
     private val supportDateHelper : ISupportDateHelper by lazy {
-        SupportDateHelper(appContext)
+        SupportDateHelper()
     }
 
     @Test
