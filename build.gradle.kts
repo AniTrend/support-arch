@@ -10,8 +10,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath(co.anitrend.arch.buildSrc.Libraries.androidGradlePlugin)
-        classpath(co.anitrend.arch.buildSrc.Libraries.Kotlin.gradlePlugin)
+        classpath(co.anitrend.arch.buildSrc.Libraries.Android.Tools.buildGradle)
+        classpath(co.anitrend.arch.buildSrc.Libraries.JetBrains.Kotlin.Gradle.plugin)
     }
 }
 

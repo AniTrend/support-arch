@@ -17,7 +17,7 @@ internal class DependencyStrategy(
     }
 
     private fun DependencyHandler.applyDefaultDependencies() {
-        add("implementation", Libraries.Kotlin.stdlib)
+        add("implementation", Libraries.JetBrains.Kotlin.stdlib)
 
         // Testing libraries
         add("testImplementation", Libraries.junit)
@@ -39,9 +39,9 @@ internal class DependencyStrategy(
 
     private fun DependencyHandler.applyCoroutinesDependencies() {
         if (module == ui)
-            add("implementation", Libraries.Coroutines.android)
-        add("implementation", Libraries.Coroutines.core)
-        add("testImplementation", Libraries.Coroutines.test)
+            add("implementation", Libraries.JetBrains.KotlinX.Coroutines.android)
+        add("implementation", Libraries.JetBrains.KotlinX.Coroutines.core)
+        add("testImplementation", Libraries.JetBrains.KotlinX.Coroutines.test)
     }
 
     fun applyDependenciesOn(handler: DependencyHandler) {

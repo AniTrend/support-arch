@@ -13,6 +13,6 @@ dependencies {
 
     implementation(Libraries.Google.material)
 
-    implementation(Libraries.AndroidX.swiperefresh)
+    implementation(Libraries.AndroidX.SwipeRefresh.swipeRefreshLayout)
     implementation(Libraries.AndroidX.Paging.runtimeKtx)
 }
