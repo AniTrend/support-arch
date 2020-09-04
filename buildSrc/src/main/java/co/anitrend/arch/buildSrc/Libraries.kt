@@ -93,7 +93,7 @@ object Libraries {
         }
 
         object StartUp {
-            private const val version = "1.0.0-alpha02"
+            private const val version = "1.0.0-alpha03"
             const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
