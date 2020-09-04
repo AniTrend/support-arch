@@ -46,7 +46,7 @@ object Libraries {
         }
 
         object Core {
-            private const val version = "1.5.0-alpha01"
+            private const val version = "1.5.0-alpha02"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
 
@@ -93,7 +93,7 @@ object Libraries {
         }
 
         object StartUp {
-            private const val version = "1.0.0-alpha02"
+            private const val version = "1.0.0-alpha03"
             const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
@@ -103,7 +103,7 @@ object Libraries {
         }
 
         object Test {
-            private const val version = "1.3.0-rc03"
+            private const val version = "1.3.0"
             const val core = "androidx.test:core:$version"
             const val coreKtx = "androidx.test:core-ktx:$version"
             const val runner = "androidx.test:runner:$version"
