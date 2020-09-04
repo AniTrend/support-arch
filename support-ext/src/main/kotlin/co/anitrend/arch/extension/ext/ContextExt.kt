@@ -27,8 +27,8 @@ const val delayDuration = 100
 /**
  * Extension for getting system services
  */
-inline fun <reified T> Context.systemServiceOf(serviceName: String): T? =
-    getSystemService(serviceName) as T?
+inline fun <reified T> Context.systemServiceOf(): T? =
+    ContextCompat.getSystemService(this, T::class.java)
 
 /**
  * Starts a foreground service using the specified type and action
@@ -84,7 +84,7 @@ inline fun <reified T> Context.restartApplication() {
             this, startTargetIntentId, startTargetIntent,
             PendingIntent.FLAG_CANCEL_CURRENT
         )
-        val alarmManager = systemServiceOf<AlarmManager>(Context.ALARM_SERVICE)
+        val alarmManager = systemServiceOf<AlarmManager>()
         alarmManager?.set(
             AlarmManager.RTC,
             System.currentTimeMillis() + delayDuration,
@@ -110,7 +110,7 @@ inline fun <reified T> Context.scheduleWithAlarm(enabled: Boolean, interval: Lon
         intent,
         PendingIntent.FLAG_UPDATE_CURRENT
     )
-    val alarmManager = systemServiceOf<AlarmManager>(Context.ALARM_SERVICE)
+    val alarmManager = systemServiceOf<AlarmManager>()
     alarmManager?.run {
         if (!enabled) {
             cancel(pendingIntent)
@@ -131,9 +131,7 @@ inline fun <reified T> Context.scheduleWithAlarm(enabled: Boolean, interval: Lon
  * Sets the given [content] into clipboard.
  */
 fun Context.copyToClipboard(label: String, content: String) {
-    val clipboardManager = systemServiceOf<ClipboardManager>(
-        Context.CLIPBOARD_SERVICE
-    )
+    val clipboardManager = systemServiceOf<ClipboardManager>()
     val clip = ClipData.newPlainText(label, content)
     clipboardManager?.setPrimaryClip(clip)
 }
@@ -150,9 +148,7 @@ fun Context.copyToClipboard(label: String, content: String) {
 fun Context.toggleKeyboard(show: Boolean) {
     runCatching {
         val windowToken = (this as FragmentActivity).window.decorView.windowToken
-        val inputMethodManager = systemServiceOf<InputMethodManager>(
-            Context.INPUT_METHOD_SERVICE
-        )
+        val inputMethodManager = systemServiceOf<InputMethodManager>()
         if (inputMethodManager != null && windowToken != null)
             if (show)
                 inputMethodManager.toggleSoftInput(
@@ -177,9 +173,7 @@ fun Context.toggleKeyboard(show: Boolean) {
  * @return true if this is a low-RAM device.
  */
 fun Context?.isLowRamDevice(): Boolean {
-    val activityManager = this?.systemServiceOf<ActivityManager>(
-        Context.ACTIVITY_SERVICE
-    )
+    val activityManager = this?.systemServiceOf<ActivityManager>()
     return if (activityManager != null)
          ActivityManagerCompat.isLowRamDevice(activityManager)
     else false
@@ -220,7 +214,7 @@ fun View.getLayoutInflater(): LayoutInflater =
     context.getLayoutInflater()
 
 fun Context.getLayoutInflater(): LayoutInflater =
-    systemServiceOf<LayoutInflater>(Context.LAYOUT_INFLATER_SERVICE)!!
+    systemServiceOf<LayoutInflater>()!!
 
 /**
  * Gets the size of the display, in pixels. Value returned by this method does
@@ -232,7 +226,7 @@ fun Context.getLayoutInflater(): LayoutInflater =
  */
 fun Context.getScreenDimens(): Point {
     val deviceDimens = Point()
-    systemServiceOf<WindowManager>(Context.WINDOW_SERVICE)?.apply {
+    systemServiceOf<WindowManager>()?.apply {
         defaultDisplay?.getSize(deviceDimens)
     }
     return deviceDimens
