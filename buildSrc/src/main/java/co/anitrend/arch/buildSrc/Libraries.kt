@@ -27,41 +27,10 @@ object Libraries {
 
     object AndroidX {
 
-        object Activity {
-            private const val version = "1.2.0-alpha07"
-            const val activity = "androidx.activity:activity:$version"
-            const val activityKtx = "androidx.activity:activity-ktx:$version"
-        }
-
-        object AppCompat {
-            private const val version = "1.3.0-alpha01"
-            const val appcompat = "androidx.appcompat:appcompat:$version"
-            const val appcompatResources = "androidx.appcompat:appcompat-resources:$version"
-        }
-
-        object Collection {
-            private const val version = "1.1.0"
-            const val collection = "androidx.collection:collection:$version"
-            const val collectionKtx = "androidx.collection:collection-ktx:$version"
-        }
-
         object Core {
             private const val version = "1.5.0-alpha02"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
-
-            object Animation {
-                private const val version = "1.0.0-alpha01"
-                const val animation = "androidx.core:core-animation:${version}"
-                const val animationTest = "androidx.core:core-animation-testing:${version}"
-            }
-        }
-
-        object Fragment {
-            private const val version = "1.3.0-alpha07"
-            const val fragment = "androidx.fragment:fragment:$version"
-            const val fragmentKtx = "androidx.fragment:fragment-ktx:$version"
-            const val test = "androidx.fragment:fragment-ktx:fragment-testing$version"
         }
 
         object Lifecycle {
@@ -109,13 +78,8 @@ object Libraries {
             const val runner = "androidx.test:runner:$version"
             const val rules = "androidx.test:rules:$version"
 
-            object Espresso {
-                private const val version = "3.3.0-rc01"
-                const val core = "androidx.test.espresso:espresso-core:$version"
-            }
-
             object Extension {
-                private const val version = "1.1.2-rc03"
+                private const val version = "1.1.2"
                 const val junit = "androidx.test.ext:junit:$version"
                 const val junitKtx = "androidx.test.ext:junit-ktx:$version"
             }
@@ -136,7 +100,7 @@ object Libraries {
         }
 
         object Kotlin {
-            private const val version = "1.4.0"
+            private const val version = "1.4.10"
             const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
             const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -147,10 +111,6 @@ object Libraries {
             object Android {
                 const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
             }
-
-            object Serialization {
-                const val serialization = "org.jetbrains.kotlin:kotlin-serialization:$version"
-            }
         }
 
         object KotlinX {
@@ -159,11 +119,6 @@ object Libraries {
                 const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
-            }
-
-            object Serialization {
-                private const val version = "0.20.0"
-                const val runtime = "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$version"
             }
         }
     }
