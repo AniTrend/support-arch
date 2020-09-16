@@ -290,7 +290,7 @@ abstract class SupportFragmentList<M>(
         if (!data.isNullOrEmpty())
             supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
         else if (supportViewAdapter.hasExtraRow()) {
-            supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
+            //supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
             //supportViewAdapter.networkState = NetworkState.Loading
         }
 
