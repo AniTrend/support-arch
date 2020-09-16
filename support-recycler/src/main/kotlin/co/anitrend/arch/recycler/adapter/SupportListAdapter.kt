@@ -49,10 +49,11 @@ abstract class SupportListAdapter<T>(
      * Dispatches clicks from parent views
      */
     @ExperimentalCoroutinesApi
-    protected val stateFlow = MutableStateFlow<ClickableItem?>(null)
+    protected val clickableItemMutableStateFlow =
+        MutableStateFlow<ClickableItem?>(null)
 
     @ExperimentalCoroutinesApi
-    override val clickableStateFlow: StateFlow<ClickableItem?> = stateFlow
+    override val clickableStateFlow: StateFlow<ClickableItem?> = clickableItemMutableStateFlow
 
     /**
      * Network state which will be used by [SupportFooterErrorItem]
