@@ -123,7 +123,9 @@ interface ISupportAdapter<T> : SupportLifecycle {
         }
     }
 
-
+    /**
+     * Applies an animation on a [SupportViewHolder] when it is seen for the first time
+     */
     fun animateViewHolder(holder: SupportViewHolder?, position: Int) {
         holder?.apply {
             when (position > lastAnimatedPosition) {
