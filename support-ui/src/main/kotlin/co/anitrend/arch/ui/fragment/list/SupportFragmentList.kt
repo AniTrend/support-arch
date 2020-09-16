@@ -304,10 +304,7 @@ abstract class SupportFragmentList<M>(
      */
     @ExperimentalCoroutinesApi
     open fun onPostModelChange(model: Collection<M>?) {
-        /**
-         * TODO: Perhaps it would be better to check the adapter type and cast model after
-         * Since pagedList is a type of list we check it first
-         */
+        /** Since pagedList is a type of list we check it first */
         when (model) {
             is PagedList -> {
                 with (supportViewAdapter as SupportPagedListAdapter) {
