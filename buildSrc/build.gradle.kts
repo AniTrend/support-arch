@@ -9,7 +9,7 @@ repositories {
     mavenCentral()
 }
 
-val kotlinVersion = "1.4.0"
+val kotlinVersion = "1.4.10"
 val buildToolsVersion = "4.0.1"
 val dokkaVersion = "0.10.1"
 
