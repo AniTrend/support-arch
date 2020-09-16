@@ -273,6 +273,9 @@ abstract class SupportFragmentList<M>(
             detachComponent(it)
         }
         super.onDestroyView()
+        supportStateLayout = null
+        supportRefreshLayout = null
+        supportRecyclerView = null
     }
 
     @ExperimentalCoroutinesApi
