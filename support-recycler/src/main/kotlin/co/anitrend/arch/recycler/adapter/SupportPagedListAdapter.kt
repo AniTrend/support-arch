@@ -70,7 +70,7 @@ abstract class SupportPagedListAdapter<T>(
                     else
                         notifyItemInserted(itemCount)
                 }
-                hasExtraRow && previousState != field ->
+                hasExtraRow && previousState != value ->
                     notifyItemChanged(itemCount - 1)
             }
         }
@@ -110,13 +110,13 @@ abstract class SupportPagedListAdapter<T>(
             R.layout.support_layout_state_footer_loading -> {
                 SupportFooterLoadingItem.createViewHolder(parent, layoutInflater).also {
                     val model = SupportFooterLoadingItem(stateConfiguration)
-                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, stateFlow)
+                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickableItemMutableStateFlow)
                 }
             }
             R.layout.support_layout_state_footer_error -> {
                 SupportFooterErrorItem.createViewHolder(parent, layoutInflater).also {
                     val model = SupportFooterErrorItem(networkState, stateConfiguration)
-                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, stateFlow)
+                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickableItemMutableStateFlow)
                 }
             }
             else -> createDefaultViewHolder(parent, viewType, layoutInflater)
@@ -313,7 +313,7 @@ abstract class SupportPagedListAdapter<T>(
                     position,
                     payloads,
                     mapper(item),
-                    stateFlow,
+                    clickableItemMutableStateFlow,
                     supportAction
                 )
             }
@@ -331,6 +331,6 @@ abstract class SupportPagedListAdapter<T>(
     override fun onPause() {
         super.onPause()
         // clear our state flow, when the parent activity is paused
-        stateFlow.value = null
+        clickableItemMutableStateFlow.value = null
     }
 }
