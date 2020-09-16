@@ -37,12 +37,8 @@ class RequestWrapper internal constructor(
 
     /**
      * Retries a request if it is not already running
-     *
-     * @param context coroutine context to run in
      */
-    suspend fun retry(context: CoroutineContext) {
-        withContext(context) {
-            helper.runIfNotRunning(type, handleCallback)
-        }
+    suspend fun retry() {
+        helper.runIfNotRunning(type, handleCallback)
     }
 }

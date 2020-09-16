@@ -117,7 +117,7 @@ class RequestHelper(
         }
         pendingRetries.forEach {
             it?.also {
-                it.retry(context)
+                it.retry()
                 retried.set(true)
             }
         }
