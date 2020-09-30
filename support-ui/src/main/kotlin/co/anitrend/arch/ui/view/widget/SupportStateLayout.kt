@@ -32,31 +32,26 @@ open class SupportStateLayout @JvmOverloads constructor(
         onInit(context, attrs)
     }
 
-    @ExperimentalCoroutinesApi
     private val interactionMutableStateFlow =
         MutableStateFlow<StateClickableItem?>(null)
 
     /**
      * Observable for click interactions, which returns the current network state
      */
-    @ExperimentalCoroutinesApi
     val interactionStateFlow: StateFlow<StateClickableItem?> =
         interactionMutableStateFlow
 
     /**
      * Observable for publishing states to this widget
      */
-    @ExperimentalCoroutinesApi
     val networkMutableStateFlow =
         MutableStateFlow<NetworkState>(NetworkState.Success)
 
-    @ExperimentalCoroutinesApi
     private val networkStateFlow: StateFlow<NetworkState> = networkMutableStateFlow
 
     /**
      * Configuration for that should be used by the different view states
      */
-    @ExperimentalCoroutinesApi
     val stateConfigFlow =
         MutableStateFlow<StateLayoutConfig?>(null)
 
@@ -125,7 +120,6 @@ open class SupportStateLayout @JvmOverloads constructor(
      * Should be called on a view's detach from window to unbind or
      * release object references and cancel all running coroutine jobs if the current view
      */
-    @ExperimentalCoroutinesApi
     override fun onViewRecycled() {
         stateLayoutErrorRetryAction.setOnClickListener(null)
         interactionMutableStateFlow.value = null
@@ -153,7 +147,7 @@ open class SupportStateLayout @JvmOverloads constructor(
         "Use networkMutableStateFlow directly to inform this control about changes",
         ReplaceWith("networkMutableStateFlow.value = ")
     )
-    @ExperimentalCoroutinesApi
+    
     open fun setNetworkState(networkState: NetworkState) {
         networkMutableStateFlow.value = networkState
     }
@@ -182,8 +176,6 @@ open class SupportStateLayout @JvmOverloads constructor(
             requestLayout()
     }
 
-    @FlowPreview
-    @ExperimentalCoroutinesApi
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         launch {
@@ -199,8 +191,7 @@ open class SupportStateLayout @JvmOverloads constructor(
                 }
         }
     }
-
-    @ExperimentalCoroutinesApi
+    
     override fun onDetachedFromWindow() {
         cancel()
         onViewRecycled()

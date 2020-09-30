@@ -26,8 +26,6 @@ import co.anitrend.arch.ui.extension.onResponseResetStates
 import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.arch.ui.fragment.contract.ISupportFragmentList
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -66,7 +64,6 @@ abstract class SupportFragmentList<M>(
      */
     abstract fun onFetchDataInitialize()
 
-    @ExperimentalCoroutinesApi
     private fun onStateObserverChanged(networkState: NetworkState) {
         when (!supportViewAdapter.isEmpty()) {
             true -> {
@@ -79,12 +76,10 @@ abstract class SupportFragmentList<M>(
         }
     }
 
-    @ExperimentalCoroutinesApi
     override val onRefreshObserver = Observer<NetworkState> {
         supportRefreshLayout?.isRefreshing = it.isLoading()
     }
 
-    @ExperimentalCoroutinesApi
     override val onNetworkObserver = Observer<NetworkState> {
         onStateObserverChanged(it)
     }
@@ -125,8 +120,6 @@ abstract class SupportFragmentList<M>(
      *
      * @param savedInstanceState
      */
-    @FlowPreview
-    @ExperimentalCoroutinesApi
     override fun initializeComponents(savedInstanceState: Bundle?) {
         attachComponent(supportViewAdapter)
         lifecycleScope.launchWhenResumed {
@@ -179,7 +172,6 @@ abstract class SupportFragmentList<M>(
      *
      * @return Return the [View] for the fragment's UI, or null.
      */
-    @ExperimentalCoroutinesApi
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)?.apply {
             supportStateLayout = findViewById(R.id.supportStateLayout)
@@ -213,7 +205,6 @@ abstract class SupportFragmentList<M>(
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         supportRecyclerView?.also { attachComponent(it) }
@@ -227,7 +218,6 @@ abstract class SupportFragmentList<M>(
      *
      * @param networkState New state from the application
      */
-    @ExperimentalCoroutinesApi
     override fun changeLayoutState(networkState: NetworkState?) {
         if (supportViewAdapter.hasExtraRow() || networkState !is NetworkState.Error) {
             supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
@@ -278,7 +268,6 @@ abstract class SupportFragmentList<M>(
         supportRecyclerView = null
     }
 
-    @ExperimentalCoroutinesApi
     protected fun afterPostModelChange(data: Collection<*>?) {
         /**
          * TODO: We may need to re-work this segment
@@ -302,7 +291,6 @@ abstract class SupportFragmentList<M>(
      *
      * @param model list holding data
      */
-    @ExperimentalCoroutinesApi
     open fun onPostModelChange(model: Collection<M>?) {
         /** Since pagedList is a type of list we check it first */
         when (model) {

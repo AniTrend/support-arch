@@ -15,7 +15,6 @@ import co.anitrend.arch.recycler.common.StateClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import kotlinx.android.synthetic.main.support_layout_state_footer_error.view.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -28,7 +27,6 @@ class SupportFooterErrorItem(
     private val configuration: IStateLayoutConfig
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
-    @ExperimentalCoroutinesApi
     override fun bind(
         view: View,
         position: Int,

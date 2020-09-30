@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import co.anitrend.arch.extension.preference.contract.ISupportSettings
 import co.anitrend.arch.extension.preference.model.PreferenceItem
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +26,6 @@ abstract class SupportSettings @JvmOverloads constructor(
      * @see kotlinx.coroutines.flow.callbackFlow
      * @see kotlinx.coroutines.flow.collect
      */
-    @ExperimentalCoroutinesApi
     val preferenceChangeFlow: Flow<PreferenceItem> =
         callbackFlow {
             val listener = SharedPreferences.OnSharedPreferenceChangeListener {
