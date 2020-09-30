@@ -61,6 +61,13 @@ interface IRequestHelper {
     suspend fun retryWithStatus(status: Status = Status.FAILED): Boolean
 
     /**
+     * Check if request handler has any finished request with [status]
+     *
+     * @return True if a match is found, false otherwise.
+     */
+    suspend fun hasAnyWithStatus(status: Status): Boolean
+
+    /**
      * Listener interface to get notified by request status changes.
      */
     interface Listener {

@@ -28,7 +28,7 @@ interface IDataSource : SupportCoroutine {
     suspend fun retryFailed()
 
     /**
-     * Re-run the last successful request if applicable
+     * Invalidate data source and, re-run the last successful or last failed request if applicable
      */
     suspend fun refresh()
 

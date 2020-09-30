@@ -10,10 +10,9 @@ package co.anitrend.arch.data.request.error
  * @since v1.3.0
  */
 data class RequestError(
-    val topic: String?,
-    val description: String?,
-    val throwable: Throwable?
+    val topic: String? = null,
+    val description: String? = null,
+    val throwable: Throwable? = null
 ) : Throwable(description, throwable) {
     constructor(cause: Throwable?) : this(null, cause?.toString(), cause)
-    constructor() : this(null, null, null)
 }

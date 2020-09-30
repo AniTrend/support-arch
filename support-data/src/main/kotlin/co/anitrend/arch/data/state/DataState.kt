@@ -35,7 +35,7 @@ data class DataState<T> internal constructor(
          *
          * @see AbstractDataSource
          */
-        fun <T> IDataSource.create(
+        infix fun <T> IDataSource.create(
             model: LiveData<T>
         ) : DataState<T> {
             val refreshTrigger: MutableStateFlow<NetworkState> = MutableStateFlow(NetworkState.Idle)
