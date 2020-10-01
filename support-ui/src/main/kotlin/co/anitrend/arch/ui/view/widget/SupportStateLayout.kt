@@ -145,9 +145,9 @@ open class SupportStateLayout @JvmOverloads constructor(
      */
     @Deprecated(
         "Use networkMutableStateFlow directly to inform this control about changes",
-        ReplaceWith("networkMutableStateFlow.value = ")
+        ReplaceWith("networkMutableStateFlow.value = "),
+        DeprecationLevel.ERROR
     )
-    
     open fun setNetworkState(networkState: NetworkState) {
         networkMutableStateFlow.value = networkState
     }
