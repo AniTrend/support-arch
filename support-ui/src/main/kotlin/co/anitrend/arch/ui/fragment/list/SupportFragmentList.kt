@@ -91,14 +91,21 @@ abstract class SupportFragmentList<M>(
         supportRefreshLayout?.onResponseResetStates()
 
     /**
+     * Provides a layout manager that should be used by [setRecyclerLayoutManager]
+     */
+    override fun provideLayoutManager(): RecyclerView.LayoutManager {
+        return StaggeredGridLayoutManager(
+            resources.getInteger(defaultSpanSize),
+            StaggeredGridLayoutManager.VERTICAL
+        )
+    }
+
+    /**
      * Sets a layout manager to the recycler view
      */
     override fun setRecyclerLayoutManager(recyclerView: SupportRecyclerView) {
         if (recyclerView.layoutManager == null)
-            recyclerView.layoutManager = StaggeredGridLayoutManager(
-                resources.getInteger(defaultSpanSize),
-                StaggeredGridLayoutManager.VERTICAL
-            )
+            recyclerView.layoutManager = provideLayoutManager()
     }
 
     /**
@@ -106,10 +113,10 @@ abstract class SupportFragmentList<M>(
      */
     override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
         if (recyclerView.adapter == null) {
-            recyclerView.adapter = supportViewAdapter.let {
-                it as RecyclerView.Adapter<*>
-                it.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-                it
+            recyclerView.adapter = supportViewAdapter.let { adapter ->
+                adapter as RecyclerView.Adapter<*>
+                adapter.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                adapter
             }
         }
     }
@@ -123,7 +130,8 @@ abstract class SupportFragmentList<M>(
     override fun initializeComponents(savedInstanceState: Bundle?) {
         attachComponent(supportViewAdapter)
         lifecycleScope.launchWhenResumed {
-            supportViewAdapter.clickableStateFlow.debounce(16)
+            supportViewAdapter.clickableStateFlow
+                .debounce(16)
                 .filterIsInstance<StateClickableItem>()
                 .collect {
                     if (it.state !is NetworkState.Loading)
