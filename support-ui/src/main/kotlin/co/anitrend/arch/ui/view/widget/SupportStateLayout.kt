@@ -179,13 +179,14 @@ open class SupportStateLayout @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         launch {
-            networkStateFlow.debounce(16)
+            networkStateFlow
                 .collect {
                     updateUsingNetworkState(it)
                 }
         }
         launch {
-            stateConfigFlow.filterNotNull()
+            stateConfigFlow
+                .filterNotNull()
                 .collect {
                     updateUsing(it)
                 }
