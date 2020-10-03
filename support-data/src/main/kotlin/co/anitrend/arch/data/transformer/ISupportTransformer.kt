@@ -1,11 +1,11 @@
-package co.anitrend.arch.data.mapper.contract
+package co.anitrend.arch.data.transformer
 
 /**
  * Mapper contract for transform one type to the other
  *
  * @since v1.2.0
  */
-interface ISupportMapperHelper<in S, out D> {
+interface ISupportTransformer<in S, out D> {
 
     /**
      * Transforms the the [source] to the target type
