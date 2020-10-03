@@ -55,10 +55,10 @@ abstract class SupportCoreDataSource(
      */
     override suspend fun refresh() {
         invalidate()
-        val target = IRequestHelper.Status.SUCCESS
-        if (requestHelper.hasAnyWithStatus(target))
-            requestHelper.retryWithStatus(target)
-        else
+        val ran = requestHelper.retryWithStatus(
+            IRequestHelper.Status.SUCCESS
+        )
+        if (!ran)
             retryFailed()
     }
 }
