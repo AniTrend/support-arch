@@ -58,7 +58,7 @@ abstract class SupportFragmentList<M>(
      * Stub to trigger the loading of data, by default this is only called
      * when [supportViewAdapter] has no data in its underlying source.
      *
-     * This is called when the fragment reaches it's [onStart] state
+     * This is called when the fragment reaches it's [onResume] state
      *
      * @see initializeComponents
      */
@@ -155,7 +155,7 @@ abstract class SupportFragmentList<M>(
                         )
                 }
         }
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenResumed {
             if (supportViewAdapter.isEmpty())
                 onFetchDataInitialize()
         }
