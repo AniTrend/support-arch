@@ -116,10 +116,12 @@ class RequestHelper(
                 }
             }
         }
-        pendingRetries.filterNotNull().forEach { wrapper ->
-            wrapper.retry()
-            retried.set(true)
-        }
+        pendingRetries
+            .filterNotNull()
+            .forEach { wrapper ->
+                wrapper.retry()
+                retried.set(true)
+            }
         return retried.get()
     }
 
