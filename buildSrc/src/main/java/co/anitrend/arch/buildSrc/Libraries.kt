@@ -15,7 +15,7 @@ object Libraries {
     object Android {
 
         object Tools {
-            private const val version = "4.0.1"
+            private const val version = "4.1.0"
             const val buildGradle = "com.android.tools.build:gradle:${version}"
         }
     }
@@ -28,14 +28,14 @@ object Libraries {
     object AndroidX {
 
         object Core {
-            private const val version = "1.5.0-alpha02"
+            private const val version = "1.5.0-alpha04"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
         }
 
         object Lifecycle {
-            private const val version = "2.2.0"
-            const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
+            private const val version = "2.3.0-beta01"
+            const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
             const val runTimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
@@ -56,18 +56,18 @@ object Libraries {
         }
 
         object Recycler {
-            private const val version = "1.2.0-alpha05"
+            private const val version = "1.2.0-alpha06"
             const val recyclerView = "androidx.recyclerview:recyclerview:$version"
             const val recyclerViewSelection = "androidx.recyclerview:recyclerview-selection:$version"
         }
 
         object StartUp {
-            private const val version = "1.0.0-alpha03"
+            private const val version = "1.0.0-rc01"
             const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
         object SwipeRefresh {
-            private const val version = "1.1.0"
+            private const val version = "1.2.0-alpha01"
             const val swipeRefreshLayout = "androidx.swiperefreshlayout:swiperefreshlayout:$version"
         }
 
@@ -86,7 +86,7 @@ object Libraries {
         }
 
         object Work {
-            private const val version = "2.4.0"
+            private const val version = "2.5.0-alpha03"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val runtime = "androidx.work:work-runtime:$version"
             const val test = "androidx.work:work-test:$version"
