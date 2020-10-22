@@ -13,7 +13,6 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -38,7 +37,6 @@ interface ISupportAdapter<T> : SupportLifecycle {
     /**
      * An observer to listen for clicks on clickable items
      */
-    @ExperimentalCoroutinesApi
     val clickableStateFlow: StateFlow<ClickableItem?>
 
     /**
@@ -123,7 +121,9 @@ interface ISupportAdapter<T> : SupportLifecycle {
         }
     }
 
-
+    /**
+     * Applies an animation on a [SupportViewHolder] when it is seen for the first time
+     */
     fun animateViewHolder(holder: SupportViewHolder?, position: Int) {
         holder?.apply {
             when (position > lastAnimatedPosition) {

@@ -59,7 +59,7 @@ abstract class SupportPagingDataSource<T>(
     }
 
     /**
-     * Re-run the last successful request if applicable
+     * Invalidate data source and, re-run the last successful or last failed request if applicable
      */
     override suspend fun refresh() {
         invalidate()

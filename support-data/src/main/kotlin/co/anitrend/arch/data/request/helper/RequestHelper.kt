@@ -70,12 +70,12 @@ class RequestHelper(
     ) {
         val report = AtomicReference<RequestStatusReport?>(null)
         val hasListeners = !listeners.isEmpty()
-        val success = throwable == null
+        val isSuccessful = throwable == null
         mutex.withLock {
             val queue = requestQueues[wrapper.type.ordinal]
             queue.running = null
             queue.lastError = throwable
-            if (success) {
+            if (isSuccessful) {
                 queue.failed = null
                 queue.passed = wrapper
                 queue.status = IRequestHelper.Status.SUCCESS
@@ -102,25 +102,41 @@ class RequestHelper(
         mutex.withLock {
             requestTypes.forEach {
                 val index = it.ordinal
+                val requestQueue = requestQueues[index]
                 when (status) {
                     IRequestHelper.Status.FAILED -> {
-                        pendingRetries[index] = requestQueues[index].failed
+                        pendingRetries[index] = requestQueue.failed
                         requestQueues[index].failed = null
                     }
                     IRequestHelper.Status.SUCCESS -> {
-                        pendingRetries[index] = requestQueues[index].passed
+                        pendingRetries[index] = requestQueue.passed
                         requestQueues[index].passed = null
                     }
                     else -> {}
                 }
             }
         }
-        pendingRetries.forEach {
-            it?.also {
-                it.retry(context)
+        pendingRetries
+            .filterNotNull()
+            .forEach { wrapper ->
+                wrapper.retry()
                 retried.set(true)
             }
-        }
         return retried.get()
+    }
+
+    /**
+     * Check if request handler has any finished request with [status]
+     *
+     * @return True if a match is found, false otherwise.
+     */
+    override suspend fun hasAnyWithStatus(status: IRequestHelper.Status): Boolean {
+        val requestQueue = requestQueues[status.ordinal]
+        val requestWrapper = when (status) {
+            IRequestHelper.Status.SUCCESS -> requestQueue.passed
+            IRequestHelper.Status.FAILED -> requestQueue.failed
+            else -> null
+        }
+        return requestWrapper != null
     }
 }

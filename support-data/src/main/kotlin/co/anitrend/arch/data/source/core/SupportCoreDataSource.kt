@@ -42,17 +42,23 @@ abstract class SupportCoreDataSource(
     }
 
     /**
-     * Retries the last executed request
+     * Retries the last executed request, may also be called in [refresh]
+     *
+     * @see refresh
      */
     override suspend fun retryFailed() {
         requestHelper.retryWithStatus()
     }
 
     /**
-     * Re-run the last successful request
+     * Invalidate data source and, re-run the last successful or last failed request if applicable
      */
     override suspend fun refresh() {
         invalidate()
-        requestHelper.retryWithStatus(IRequestHelper.Status.SUCCESS)
+        val ran = requestHelper.retryWithStatus(
+            IRequestHelper.Status.SUCCESS
+        )
+        if (!ran)
+            retryFailed()
     }
 }

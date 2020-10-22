@@ -1,6 +1,6 @@
 package co.anitrend.arch.data.source.live.contract
 
-import androidx.paging.ItemKeyedDataSource
+import androidx.paging.PageKeyedDataSource
 import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.extension.dispatchers.SupportDispatchers
 import kotlinx.coroutines.CoroutineScope
@@ -9,7 +9,7 @@ import kotlinx.coroutines.SupervisorJob
 
 abstract class AbstractPagingLiveDataSource<K, V>(
     protected val dispatchers: SupportDispatchers
-) : ItemKeyedDataSource<K, V>(), IDataSource {
+) : PageKeyedDataSource<K, V>(), IDataSource {
 
     /**
      * Module tag for the current context

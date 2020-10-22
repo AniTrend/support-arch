@@ -1,6 +1,7 @@
 package co.anitrend.arch.ui.fragment.contract
 
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.domain.entities.NetworkState
@@ -31,7 +32,14 @@ interface ISupportFragmentList<T> : SwipeRefreshLayout.OnRefreshListener {
     val stateConfig: StateLayoutConfig
 
     /**
+     * Provides a layout manager that should be used by [setRecyclerLayoutManager]
+     */
+    fun provideLayoutManager(): RecyclerView.LayoutManager
+
+    /**
      * Sets a layout manager to the recycler view
+     *
+     * @see provideLayoutManager
      */
     fun setRecyclerLayoutManager(recyclerView: SupportRecyclerView)
 

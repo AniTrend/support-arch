@@ -6,7 +6,6 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.contract.ISupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -22,7 +21,6 @@ open class SupportViewHolder(view: View) : ISupportViewHolder, RecyclerView.View
     /**
      * Load images, text, buttons, etc. in this method from the given parameter
      */
-    @ExperimentalCoroutinesApi
     override fun bind(
         position: Int,
         payloads: List<Any>,

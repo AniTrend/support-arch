@@ -4,7 +4,6 @@ import android.view.View
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.action.decorator.ISelectionDecorator
 import co.anitrend.arch.recycler.common.ClickableItem
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -42,7 +41,6 @@ interface IRecyclerItem : IRecyclerItemSpan {
      * @param stateFlow observable to broadcast click events
      * @param selectionMode action mode helper or null if none was provided
      */
-    @ExperimentalCoroutinesApi
     fun bind(
         view: View,
         position: Int,

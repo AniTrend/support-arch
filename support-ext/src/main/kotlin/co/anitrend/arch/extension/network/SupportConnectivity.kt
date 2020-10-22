@@ -5,10 +5,8 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlin.properties.ReadOnlyProperty
 
 /**
  * Inspired by [ConnectivityChecker](https://github.com/android/plaid/blob/master/core/src/main/java/io/plaidapp/core/ui/ConnectivityChecker.kt)
@@ -38,7 +36,6 @@ open class SupportConnectivity(
             network?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
         }?.size ?: 0) > 0
 
-    @ExperimentalCoroutinesApi
     private val connectedMutableStateFlow =
         MutableStateFlow<ConnectivityState>(ConnectivityState.Unknown)
 
@@ -47,10 +44,8 @@ open class SupportConnectivity(
      *
      * @see ConnectivityState
      */
-    @ExperimentalCoroutinesApi
     val connectivityState: StateFlow<ConnectivityState> = connectedMutableStateFlow
 
-    @ExperimentalCoroutinesApi
     private val connectivityCallback =
         object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
@@ -67,7 +62,6 @@ open class SupportConnectivity(
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
-    @ExperimentalCoroutinesApi
     override fun onPause() {
         super.onPause()
         connectivityManager?.unregisterNetworkCallback(connectivityCallback)
@@ -78,7 +72,6 @@ open class SupportConnectivity(
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
-    @ExperimentalCoroutinesApi
     override fun onResume() {
         super.onResume()
         connectivityManager?.registerNetworkCallback(

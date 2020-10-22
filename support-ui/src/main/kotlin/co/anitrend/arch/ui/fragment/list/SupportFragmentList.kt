@@ -26,8 +26,6 @@ import co.anitrend.arch.ui.extension.onResponseResetStates
 import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.arch.ui.fragment.contract.ISupportFragmentList
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -60,13 +58,12 @@ abstract class SupportFragmentList<M>(
      * Stub to trigger the loading of data, by default this is only called
      * when [supportViewAdapter] has no data in its underlying source.
      *
-     * This is called when the fragment reaches it's [onStart] state
+     * This is called when the fragment reaches it's [onResume] state
      *
      * @see initializeComponents
      */
     abstract fun onFetchDataInitialize()
 
-    @ExperimentalCoroutinesApi
     private fun onStateObserverChanged(networkState: NetworkState) {
         when (!supportViewAdapter.isEmpty()) {
             true -> {
@@ -79,12 +76,10 @@ abstract class SupportFragmentList<M>(
         }
     }
 
-    @ExperimentalCoroutinesApi
     override val onRefreshObserver = Observer<NetworkState> {
         supportRefreshLayout?.isRefreshing = it.isLoading()
     }
 
-    @ExperimentalCoroutinesApi
     override val onNetworkObserver = Observer<NetworkState> {
         onStateObserverChanged(it)
     }
@@ -96,14 +91,21 @@ abstract class SupportFragmentList<M>(
         supportRefreshLayout?.onResponseResetStates()
 
     /**
+     * Provides a layout manager that should be used by [setRecyclerLayoutManager]
+     */
+    override fun provideLayoutManager(): RecyclerView.LayoutManager {
+        return StaggeredGridLayoutManager(
+            resources.getInteger(defaultSpanSize),
+            StaggeredGridLayoutManager.VERTICAL
+        )
+    }
+
+    /**
      * Sets a layout manager to the recycler view
      */
     override fun setRecyclerLayoutManager(recyclerView: SupportRecyclerView) {
         if (recyclerView.layoutManager == null)
-            recyclerView.layoutManager = StaggeredGridLayoutManager(
-                resources.getInteger(defaultSpanSize),
-                StaggeredGridLayoutManager.VERTICAL
-            )
+            recyclerView.layoutManager = provideLayoutManager()
     }
 
     /**
@@ -111,10 +113,10 @@ abstract class SupportFragmentList<M>(
      */
     override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
         if (recyclerView.adapter == null) {
-            recyclerView.adapter = supportViewAdapter.let {
-                it as RecyclerView.Adapter<*>
-                it.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-                it
+            recyclerView.adapter = supportViewAdapter.let { adapter ->
+                adapter as RecyclerView.Adapter<*>
+                adapter.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                adapter
             }
         }
     }
@@ -125,12 +127,11 @@ abstract class SupportFragmentList<M>(
      *
      * @param savedInstanceState
      */
-    @FlowPreview
-    @ExperimentalCoroutinesApi
     override fun initializeComponents(savedInstanceState: Bundle?) {
         attachComponent(supportViewAdapter)
         lifecycleScope.launchWhenResumed {
-            supportViewAdapter.clickableStateFlow.debounce(16)
+            supportViewAdapter.clickableStateFlow
+                .debounce(16)
                 .filterIsInstance<StateClickableItem>()
                 .collect {
                     if (it.state !is NetworkState.Loading)
@@ -154,7 +155,7 @@ abstract class SupportFragmentList<M>(
                         )
                 }
         }
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenResumed {
             if (supportViewAdapter.isEmpty())
                 onFetchDataInitialize()
         }
@@ -179,7 +180,6 @@ abstract class SupportFragmentList<M>(
      *
      * @return Return the [View] for the fragment's UI, or null.
      */
-    @ExperimentalCoroutinesApi
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)?.apply {
             supportStateLayout = findViewById(R.id.supportStateLayout)
@@ -213,7 +213,6 @@ abstract class SupportFragmentList<M>(
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         supportRecyclerView?.also { attachComponent(it) }
@@ -227,7 +226,6 @@ abstract class SupportFragmentList<M>(
      *
      * @param networkState New state from the application
      */
-    @ExperimentalCoroutinesApi
     override fun changeLayoutState(networkState: NetworkState?) {
         if (supportViewAdapter.hasExtraRow() || networkState !is NetworkState.Error) {
             supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
@@ -273,9 +271,11 @@ abstract class SupportFragmentList<M>(
             detachComponent(it)
         }
         super.onDestroyView()
+        supportStateLayout = null
+        supportRefreshLayout = null
+        supportRecyclerView = null
     }
 
-    @ExperimentalCoroutinesApi
     protected fun afterPostModelChange(data: Collection<*>?) {
         /**
          * TODO: We may need to re-work this segment
@@ -287,7 +287,7 @@ abstract class SupportFragmentList<M>(
         if (!data.isNullOrEmpty())
             supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
         else if (supportViewAdapter.hasExtraRow()) {
-            supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
+            //supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
             //supportViewAdapter.networkState = NetworkState.Loading
         }
 
@@ -299,12 +299,8 @@ abstract class SupportFragmentList<M>(
      *
      * @param model list holding data
      */
-    @ExperimentalCoroutinesApi
     open fun onPostModelChange(model: Collection<M>?) {
-        /**
-         * TODO: Perhaps it would be better to check the adapter type and cast model after
-         * Since pagedList is a type of list we check it first
-         */
+        /** Since pagedList is a type of list we check it first */
         when (model) {
             is PagedList -> {
                 with (supportViewAdapter as SupportPagedListAdapter) {

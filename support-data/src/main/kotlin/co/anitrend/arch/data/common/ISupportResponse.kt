@@ -1,6 +1,5 @@
 package co.anitrend.arch.data.common
 
-import androidx.lifecycle.MutableLiveData
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.domain.entities.NetworkState
 

@@ -15,7 +15,6 @@ import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import co.anitrend.arch.recycler.shared.SupportFooterErrorItem
 import co.anitrend.arch.recycler.shared.SupportFooterLoadingItem
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
@@ -48,11 +47,10 @@ abstract class SupportListAdapter<T>(
     /**
      * Dispatches clicks from parent views
      */
-    @ExperimentalCoroutinesApi
-    protected val stateFlow = MutableStateFlow<ClickableItem?>(null)
+    protected val clickableItemMutableStateFlow =
+        MutableStateFlow<ClickableItem?>(null)
 
-    @ExperimentalCoroutinesApi
-    override val clickableStateFlow: StateFlow<ClickableItem?> = stateFlow
+    override val clickableStateFlow: StateFlow<ClickableItem?> = clickableItemMutableStateFlow
 
     /**
      * Network state which will be used by [SupportFooterErrorItem]
@@ -70,7 +68,7 @@ abstract class SupportListAdapter<T>(
                     else
                         notifyItemInserted(itemCount)
                 }
-                hasExtraRow && previousState != field ->
+                hasExtraRow && previousState != value ->
                     notifyItemChanged(itemCount - 1)
             }
         }
@@ -139,20 +137,19 @@ abstract class SupportListAdapter<T>(
      * [R.layout.support_layout_state_footer_loading] or [R.layout.support_layout_state_footer_error]
      * otherwise [createDefaultViewHolder] is called to resolve the view holder type
      */
-    @ExperimentalCoroutinesApi
     override fun onCreateViewHolder(parent: ViewGroup, @LayoutRes viewType: Int): SupportViewHolder {
         val layoutInflater = parent.context.getLayoutInflater()
         return when (viewType) {
             R.layout.support_layout_state_footer_loading -> {
                 SupportFooterLoadingItem.createViewHolder(parent, layoutInflater).also {
                     val model = SupportFooterLoadingItem(stateConfiguration)
-                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, stateFlow)
+                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickableItemMutableStateFlow)
                 }
             }
             R.layout.support_layout_state_footer_error -> {
                 SupportFooterErrorItem.createViewHolder(parent, layoutInflater).also {
                     val model = SupportFooterErrorItem(networkState, stateConfiguration)
-                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, stateFlow)
+                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickableItemMutableStateFlow)
                 }
             }
             else -> createDefaultViewHolder(parent, viewType, layoutInflater)
@@ -213,7 +210,6 @@ abstract class SupportListAdapter<T>(
      *
      * @see [SupportViewHolder.bind]
      */
-    @ExperimentalCoroutinesApi
     override fun onBindViewHolder(holder: SupportViewHolder, position: Int) {
         bindViewHolderByType(holder, position)
     }
@@ -224,7 +220,6 @@ abstract class SupportListAdapter<T>(
      *
      * @see [SupportViewHolder.bind]
      */
-    @ExperimentalCoroutinesApi
     override fun onBindViewHolder(
         holder: SupportViewHolder,
         position: Int,
@@ -335,7 +330,6 @@ abstract class SupportListAdapter<T>(
     /**
      * Binds view holder by view type at [position]
      */
-    @ExperimentalCoroutinesApi
     override fun bindViewHolderByType(
         holder: SupportViewHolder,
         position: Int,
@@ -348,7 +342,7 @@ abstract class SupportListAdapter<T>(
                     position,
                     payloads,
                     mapper(item),
-                    stateFlow,
+                    clickableItemMutableStateFlow,
                     supportAction
                 )
             }
@@ -366,6 +360,6 @@ abstract class SupportListAdapter<T>(
     override fun onPause() {
         super.onPause()
         // clear our state flow, when the parent activity is paused
-        stateFlow.value = null
+        clickableItemMutableStateFlow.value = null
     }
 }

@@ -13,7 +13,6 @@ import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import kotlinx.android.synthetic.main.support_layout_state_footer_loading.view.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -25,7 +24,6 @@ open class SupportFooterLoadingItem(
     private val configuration: IStateLayoutConfig
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
-    @ExperimentalCoroutinesApi
     override fun bind(
         view: View,
         position: Int,
