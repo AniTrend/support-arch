@@ -14,7 +14,7 @@ object Versions {
     const val versionName = "$major.$minor.$patch-beta$revision"
 
     const val mockk = "1.10.2"
-    const val junit = "4.13"
+    const val junit = "4.13.1"
 
     const val timber = "4.7.1"
     const val threeTenBp = "1.2.4"
