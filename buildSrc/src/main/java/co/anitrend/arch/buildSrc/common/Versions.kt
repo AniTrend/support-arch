@@ -1,8 +1,8 @@
 package co.anitrend.arch.buildSrc.common
 
 object Versions {
-    const val compileSdk = 29
-    const val targetSdk = 29
+    const val compileSdk = 30
+    const val targetSdk = 30
     const val minSdk = 21
 
     const val major = 1
