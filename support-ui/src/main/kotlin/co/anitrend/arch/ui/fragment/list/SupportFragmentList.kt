@@ -276,7 +276,7 @@ abstract class SupportFragmentList<M>(
         supportRecyclerView = null
     }
 
-    protected fun afterPostModelChange(data: Collection<*>?) {
+    protected open fun afterPostModelChange(data: Collection<*>?) {
         /**
          * TODO: We may need to re-work this segment
          *
@@ -288,7 +288,7 @@ abstract class SupportFragmentList<M>(
             supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
         else if (supportViewAdapter.hasExtraRow()) {
             //supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
-            //supportViewAdapter.networkState = NetworkState.Loading
+            supportViewAdapter.networkState = NetworkState.Loading
         }
 
         resetWidgetStates()
@@ -299,7 +299,7 @@ abstract class SupportFragmentList<M>(
      *
      * @param model list holding data
      */
-    open fun onPostModelChange(model: Collection<M>?) {
+    protected open fun onPostModelChange(model: Collection<M>?) {
         /** Since pagedList is a type of list we check it first */
         when (model) {
             is PagedList -> {
