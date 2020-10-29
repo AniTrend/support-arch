@@ -8,22 +8,21 @@ import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.ext.gone
+import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
-import co.anitrend.arch.recycler.common.StateClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
-import kotlinx.android.synthetic.main.support_layout_state_footer_error.view.*
+import kotlinx.android.synthetic.main.support_layout_state_footer_loading.view.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
- * Footer view holder for representing loading errors
+ * View holder for representing loading status
  *
- * @since v1.2.0
+ * @since v0.9.X
  */
-class SupportFooterErrorItem(
-    private val networkState: NetworkState?,
+open class SupportLoadingItem(
     private val configuration: IStateLayoutConfig
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
@@ -34,21 +33,16 @@ class SupportFooterErrorItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        if (networkState is NetworkState.Error)
-            view.stateFooterErrorText.text = networkState.message
-
-        if (configuration.retryAction != null) {
-            view.stateFooterErrorAction.setOnClickListener {
-                stateFlow.value = StateClickableItem(networkState, it)
-            }
-            view.stateFooterErrorAction.setText(configuration.retryAction!!)
+        if (configuration.loadingMessage != null) {
+            view.stateFooterLoadingText.visible()
+            view.stateFooterLoadingText.setText(configuration.loadingMessage!!)
         }
         else
-            view.stateFooterErrorAction.gone()
+            view.stateFooterLoadingText.gone()
     }
 
     override fun unbind(view: View) {
-        view.stateFooterErrorAction.setOnClickListener(null)
+
     }
 
     override fun getSpanSize(
@@ -69,7 +63,7 @@ class SupportFooterErrorItem(
             layoutInflater: LayoutInflater
         ): SupportViewHolder {
             val view = layoutInflater.inflate(
-                R.layout.support_layout_state_footer_error,
+                R.layout.support_layout_state_footer_loading,
                 viewGroup,
                 false
             )

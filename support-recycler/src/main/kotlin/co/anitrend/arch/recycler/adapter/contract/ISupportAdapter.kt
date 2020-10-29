@@ -50,7 +50,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
     val supportAction: ISupportSelectionMode<Long>?
 
     /**
-     * Network state which will be used by [co.anitrend.arch.recycler.shared.SupportFooterErrorItem]
+     * Network state which will be used by [co.anitrend.arch.recycler.shared.SupportErrorItem]
      */
     var networkState: NetworkState?
 

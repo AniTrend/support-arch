@@ -15,8 +15,8 @@ import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
-import co.anitrend.arch.recycler.shared.SupportFooterErrorItem
-import co.anitrend.arch.recycler.shared.SupportFooterLoadingItem
+import co.anitrend.arch.recycler.shared.SupportErrorItem
+import co.anitrend.arch.recycler.shared.SupportLoadingItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
@@ -52,7 +52,7 @@ abstract class SupportPagedListAdapter<T>(
     override val clickableStateFlow: StateFlow<ClickableItem?> = clickableItemMutableStateFlow
 
     /**
-     * Network state which will be used by [SupportFooterErrorItem]
+     * Network state which will be used by [SupportErrorItem]
      */
     override var networkState: NetworkState? = null
         set(value) {
@@ -104,14 +104,14 @@ abstract class SupportPagedListAdapter<T>(
         val layoutInflater = parent.context.getLayoutInflater()
         return when (viewType) {
             R.layout.support_layout_state_footer_loading -> {
-                SupportFooterLoadingItem.createViewHolder(parent, layoutInflater).also {
-                    val model = SupportFooterLoadingItem(stateConfiguration)
+                SupportLoadingItem.createViewHolder(parent, layoutInflater).also {
+                    val model = SupportLoadingItem(stateConfiguration)
                     it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickableItemMutableStateFlow)
                 }
             }
             R.layout.support_layout_state_footer_error -> {
-                SupportFooterErrorItem.createViewHolder(parent, layoutInflater).also {
-                    val model = SupportFooterErrorItem(networkState, stateConfiguration)
+                SupportErrorItem.createViewHolder(parent, layoutInflater).also {
+                    val model = SupportErrorItem(networkState, stateConfiguration)
                     it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickableItemMutableStateFlow)
                 }
             }
@@ -149,6 +149,7 @@ abstract class SupportPagedListAdapter<T>(
     override fun onViewDetachedFromWindow(holder: SupportViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.itemView.clearAnimation()
+        holder.onViewRecycled()
     }
 
     /**
