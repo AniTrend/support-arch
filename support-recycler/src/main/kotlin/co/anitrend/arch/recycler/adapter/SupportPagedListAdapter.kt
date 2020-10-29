@@ -242,6 +242,20 @@ abstract class SupportPagedListAdapter<T>(
     }
 
     /**
+     * Fetches the non-nullable item of the underlying list with-in the adapter
+     *
+     * @param position Index of the item to get
+     *
+     * @throws IllegalStateException
+     */
+    @Throws(IllegalStateException::class)
+    override fun requireItem(position: Int): T {
+        return requireNotNull(getItem(position)) {
+            "Required item at position: $position is null, constraint violated"
+        }
+    }
+
+    /**
      * Informs us if the given [position] is within bounds of our underlying collection
      */
     override fun isWithinIndexBounds(position: Int): Boolean {
@@ -269,7 +283,7 @@ abstract class SupportPagedListAdapter<T>(
      */
     override fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int? {
         return runCatching {
-            val item = mapper(getItem(position))
+            val item = mapper(requireItem(position))
             val spanSize = spanCount ?: IRecyclerItemSpan.INVALID_SPAN_COUNT
             item.getSpanSize(spanSize, position, resources)
         }.getOrElse {
@@ -302,11 +316,10 @@ abstract class SupportPagedListAdapter<T>(
     ) {
         runCatching {
             if (isWithinIndexBounds(position)) {
-                val item = getItem(position)
                 holder.bind(
                     position,
                     payloads,
-                    mapper(item),
+                    mapper(requireItem(position)),
                     clickableItemMutableStateFlow,
                     supportAction
                 )
@@ -324,7 +337,7 @@ abstract class SupportPagedListAdapter<T>(
      */
     override fun onPause() {
         super.onPause()
-        // clear our state flow, when the parent activity is paused
+        // clear our state flow, when the lifecycle owner parent reaches its onPaused state
         clickableItemMutableStateFlow.value = null
     }
 }

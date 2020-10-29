@@ -25,7 +25,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
     /**
      * Mapper for adapters to converting models to recycler items
      */
-    val mapper: (T?) -> IRecyclerItem
+    val mapper: (T) -> IRecyclerItem
 
     /**
      * Get currently set animation type for recycler view holder items
@@ -79,6 +79,15 @@ interface ISupportAdapter<T> : SupportLifecycle {
      * @see hasExtraRow
      */
     fun isEmpty(): Boolean
+
+    /**
+     * Fetches the non-nullable item of the underlying list with-in the adapter
+     *
+     * @param position Index of the item to get
+     *
+     * @throws IllegalStateException
+     */
+    fun requireItem(position: Int): T
 
     /**
      * Informs us if the given [position] is within bounds of our underlying collection

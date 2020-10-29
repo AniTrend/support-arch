@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * @since v1.3.0
  */
 interface IRecyclerItem : IRecyclerItemSpan {
-    val id: Long?
+    val id: Long
 
     /**
      * If selection mode can be used, this will allow automatic styling of elements based
