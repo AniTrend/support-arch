@@ -37,7 +37,7 @@ internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<NetworkStat
                         )
                     )
                 }
-                else -> offer(NetworkState.Success)
+                else -> offer(NetworkState.Idle)
             }
         }
     }
