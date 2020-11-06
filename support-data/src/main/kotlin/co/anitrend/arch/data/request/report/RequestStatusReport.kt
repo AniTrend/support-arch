@@ -11,7 +11,7 @@ import co.anitrend.arch.data.request.error.RequestError
  * @param before Status of the latest request that were submitted with [IRequestHelper.RequestType.BEFORE].
  * @param after Status of the latest request that were submitted with [IRequestHelper.RequestType.AFTER].
  */
-class RequestStatusReport internal constructor(
+data class RequestStatusReport internal constructor(
     private val initial: IRequestHelper.Status,
     private val before: IRequestHelper.Status,
     private val after: IRequestHelper.Status,
