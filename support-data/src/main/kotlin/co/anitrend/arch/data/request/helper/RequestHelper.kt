@@ -35,7 +35,6 @@ class RequestHelper(
         requestType: IRequestHelper.RequestType,
         handleCallback: suspend (RequestCallback) -> Unit
     ): Boolean {
-        val hasListeners = !listeners.isEmpty()
         val report = AtomicReference<RequestStatusReport?>(null)
         mutex.withLock {
             val queue = requestQueues[requestType.ordinal]
@@ -47,7 +46,7 @@ class RequestHelper(
             queue.passed = null
             queue.lastError = null
         }
-        if (hasListeners)
+        if (listeners.isNotEmpty())
             report.set(prepareStatusReportLocked())
         report.get()?.dispatchReport()
         RequestWrapper(
@@ -69,7 +68,6 @@ class RequestHelper(
         throwable: RequestError?
     ) {
         val report = AtomicReference<RequestStatusReport?>(null)
-        val hasListeners = !listeners.isEmpty()
         val isSuccessful = throwable == null
         mutex.withLock {
             val queue = requestQueues[wrapper.type.ordinal]
@@ -85,7 +83,7 @@ class RequestHelper(
                 queue.status = IRequestHelper.Status.FAILED
             }
         }
-        if (hasListeners)
+        if (listeners.isNotEmpty())
             report.set(prepareStatusReportLocked())
         report.get()?.dispatchReport()
     }
@@ -112,16 +110,18 @@ class RequestHelper(
                         pendingRetries[index] = requestQueue.passed
                         requestQueues[index].passed = null
                     }
-                    else -> {}
+                    else -> {
+                    }
                 }
             }
+
+            pendingRetries
+                .filterNotNull()
+                .forEach { wrapper ->
+                    wrapper.retry()
+                    retried.set(true)
+                }
         }
-        pendingRetries
-            .filterNotNull()
-            .forEach { wrapper ->
-                wrapper.retry()
-                retried.set(true)
-            }
         return retried.get()
     }
 
