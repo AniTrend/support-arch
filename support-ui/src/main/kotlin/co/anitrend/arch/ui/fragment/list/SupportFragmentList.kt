@@ -64,24 +64,12 @@ abstract class SupportFragmentList<M>(
      */
     abstract fun onFetchDataInitialize()
 
-    private fun onStateObserverChanged(networkState: NetworkState) {
-        when (!supportViewAdapter.isEmpty()) {
-            true -> {
-                // to assure that the state layout is not blocking the current view
-                supportStateLayout?.networkMutableStateFlow?.value =
-                    NetworkState.Success
-                supportViewAdapter.networkState = networkState
-            }
-            false -> changeLayoutState(networkState)
-        }
-    }
-
     override val onRefreshObserver = Observer<NetworkState> {
         supportRefreshLayout?.isRefreshing = it.isLoading()
     }
 
     override val onNetworkObserver = Observer<NetworkState> {
-        onStateObserverChanged(it)
+        changeLayoutState(it)
     }
 
     /**
@@ -228,7 +216,7 @@ abstract class SupportFragmentList<M>(
      */
     override fun changeLayoutState(networkState: NetworkState?) {
         if (supportViewAdapter.hasExtraRow() || networkState !is NetworkState.Error) {
-            supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
+            supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Idle
             supportViewAdapter.networkState = networkState
         }
         else {
@@ -277,19 +265,10 @@ abstract class SupportFragmentList<M>(
     }
 
     protected open fun afterPostModelChange(data: Collection<*>?) {
-        /**
-         * TODO: We may need to re-work this segment
-         *
-         * We are assuming that if no data exists in the first pass we might have more data
-         * coming through from a network source for example. As such we react by setting our
-         * adapters network state to loading
-         */
-        if (!data.isNullOrEmpty())
-            supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
-        else if (supportViewAdapter.hasExtraRow()) {
-            //supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Success
+        /*if (data.isNullOrEmpty())
             supportViewAdapter.networkState = NetworkState.Loading
-        }
+        else
+            supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Idle*/
 
         resetWidgetStates()
     }
