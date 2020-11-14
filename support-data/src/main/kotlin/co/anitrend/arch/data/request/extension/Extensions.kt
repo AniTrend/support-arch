@@ -28,7 +28,7 @@ internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<NetworkStat
          */
         override fun onStatusChange(report: RequestStatusReport) {
             val state = when {
-                report.hasRunning() -> NetworkState.Loading()
+                report.hasRunning() -> NetworkState.Loading
                 report.hasError() -> {
                     val error = report.getRequestError()
                     NetworkState.Error(
