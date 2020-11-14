@@ -5,8 +5,14 @@ package co.anitrend.arch.domain.entities
  */
 sealed class LoadState {
 
-    object Loading : LoadState()
+    object Idle : LoadState()
+
+    data class Loading(
+        val endOfLoading: Boolean = false
+    ) : LoadState()
+
     object Success : LoadState()
+
     data class Error(
         val exception: Throwable
     ) : LoadState()
