@@ -1,7 +1,7 @@
 package co.anitrend.arch.extension.preference.delegate
 
-import android.content.SharedPreferences
 import android.content.res.Resources
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import kotlin.properties.ReadWriteProperty
 
 /**
@@ -15,7 +15,7 @@ import kotlin.properties.ReadWriteProperty
  *
  * @since v1.3.0
  */
-interface ISupportPreferenceDelegate<T> : ReadWriteProperty<SharedPreferences, T> {
+internal interface ISupportPreferenceDelegate<T> : ReadWriteProperty<AbstractSetting<T>, T> {
     val key: Int
     val default: T
     val resources: Resources

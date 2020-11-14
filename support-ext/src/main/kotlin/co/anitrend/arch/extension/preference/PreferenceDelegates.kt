@@ -1,11 +1,11 @@
 package co.anitrend.arch.extension.preference
 
-import android.content.SharedPreferences
 import android.content.res.Resources
 import androidx.annotation.StringRes
 import androidx.core.content.edit
 import co.anitrend.arch.extension.preference.delegate.ISupportPreferenceDelegate
 import co.anitrend.arch.extension.preference.delegate.ISupportPreferenceDelegate.Companion.stringOf
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import kotlin.reflect.KProperty
 
 /**
@@ -13,21 +13,21 @@ import kotlin.reflect.KProperty
  *
  * @see ISupportPreferenceDelegate
  */
-class EnumPreference<T : Enum<*>>(
+internal class EnumPreference<T : Enum<*>>(
     @StringRes
     override val key: Int,
     override val default: T,
     override val resources: Resources
 ) : ISupportPreferenceDelegate<T> {
 
-    override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): T {
-        val name = thisRef.getString(stringOf(key), default.name)
+    override fun getValue(thisRef: AbstractSetting<T>, property: KProperty<*>): T {
+        val name = thisRef.preference.getString(stringOf(key), default.name)
         val `class` = default::class.java
         return `class`.enumConstants?.firstOrNull { it.name == name } ?: default
     }
 
-    override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: T) {
-        thisRef.edit {
+    override fun setValue(thisRef: AbstractSetting<T>, property: KProperty<*>, value: T) {
+        thisRef.preference.edit {
             putString(stringOf(key), value.name)
         }
     }
@@ -38,18 +38,18 @@ class EnumPreference<T : Enum<*>>(
  *
  * @see ISupportPreferenceDelegate
  */
-class BooleanPreference(
+internal class BooleanPreference(
     override val key: Int,
     override val default: Boolean,
     override val resources: Resources
 ) : ISupportPreferenceDelegate<Boolean> {
 
-    override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): Boolean {
-        return thisRef.getBoolean(stringOf(key), default)
+    override fun getValue(thisRef: AbstractSetting<Boolean>, property: KProperty<*>): Boolean {
+        return thisRef.preference.getBoolean(stringOf(key), default)
     }
 
-    override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: Boolean) {
-        thisRef.edit {
+    override fun setValue(thisRef: AbstractSetting<Boolean>, property: KProperty<*>, value: Boolean) {
+        thisRef.preference.edit {
             putBoolean(stringOf(key), value)
         }
     }
@@ -60,18 +60,18 @@ class BooleanPreference(
  *
  * @see ISupportPreferenceDelegate
  */
-class IntPreference(
+internal class IntPreference(
     override val key: Int,
     override val default: Int,
     override val resources: Resources
 ) : ISupportPreferenceDelegate<Int> {
 
-    override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): Int {
-        return thisRef.getInt(stringOf(key), default)
+    override fun getValue(thisRef: AbstractSetting<Int>, property: KProperty<*>): Int {
+        return thisRef.preference.getInt(stringOf(key), default)
     }
 
-    override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: Int) {
-        thisRef.edit {
+    override fun setValue(thisRef: AbstractSetting<Int>, property: KProperty<*>, value: Int) {
+        thisRef.preference.edit {
             putInt(stringOf(key), value)
         }
     }
@@ -82,18 +82,18 @@ class IntPreference(
  *
  * @see ISupportPreferenceDelegate
  */
-class LongPreference(
+internal class LongPreference(
     override val key: Int,
     override val default: Long,
     override val resources: Resources
 ) : ISupportPreferenceDelegate<Long> {
 
-    override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): Long {
-        return thisRef.getLong(stringOf(key), default)
+    override fun getValue(thisRef: AbstractSetting<Long>, property: KProperty<*>): Long {
+        return thisRef.preference.getLong(stringOf(key), default)
     }
 
-    override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: Long) {
-        thisRef.edit {
+    override fun setValue(thisRef: AbstractSetting<Long>, property: KProperty<*>, value: Long) {
+        thisRef.preference.edit {
             putLong(stringOf(key), value)
         }
     }
@@ -104,18 +104,18 @@ class LongPreference(
  *
  * @see ISupportPreferenceDelegate
  */
-class StringPreference(
+internal class StringPreference(
     override val key: Int,
     override val default: String,
     override val resources: Resources
 ) : ISupportPreferenceDelegate<String> {
 
-    override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): String {
-        return thisRef.getString(stringOf(key), default) ?: default
+    override fun getValue(thisRef: AbstractSetting<String>, property: KProperty<*>): String {
+        return thisRef.preference.getString(stringOf(key), default) ?: default
     }
 
-    override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: String) {
-        thisRef.edit {
+    override fun setValue(thisRef: AbstractSetting<String>, property: KProperty<*>, value: String) {
+        thisRef.preference.edit {
             putString(stringOf(key), value)
         }
     }
@@ -126,18 +126,18 @@ class StringPreference(
  *
  * @see ISupportPreferenceDelegate
  */
-class NullableStringPreference(
+internal class NullableStringPreference(
     override val key: Int,
     override val default: String? = null,
     override val resources: Resources
 ) : ISupportPreferenceDelegate<String?> {
 
-    override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): String? {
-        return thisRef.getString(stringOf(key), default)
+    override fun getValue(thisRef: AbstractSetting<String?>, property: KProperty<*>): String? {
+        return thisRef.preference.getString(stringOf(key), default)
     }
 
-    override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: String?) {
-        thisRef.edit {
+    override fun setValue(thisRef: AbstractSetting<String?>, property: KProperty<*>, value: String?) {
+        thisRef.preference.edit {
             putString(stringOf(key), value)
         }
     }
