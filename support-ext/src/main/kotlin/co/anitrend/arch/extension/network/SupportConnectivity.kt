@@ -5,6 +5,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
+import co.anitrend.arch.extension.network.model.ConnectivityState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

@@ -1,9 +1,6 @@
 package co.anitrend.arch.extension.coroutine
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -11,7 +8,7 @@ import kotlin.coroutines.CoroutineContext
  *
  * @since v1.1.0
  */
-interface SupportCoroutine : CoroutineScope {
+interface ISupportCoroutine : CoroutineScope {
 
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import co.anitrend.arch.extension.coroutine.SupportCoroutine
+import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.ui.activity.contract.ISupportActivity
 import co.anitrend.arch.ui.common.ISupportActionUp
 import co.anitrend.arch.ui.fragment.contract.ISupportFragment
@@ -20,7 +20,7 @@ import kotlinx.coroutines.MainScope
  *
  * @since v0.9.X
  *
- * @see SupportCoroutine
+ * @see ISupportCoroutine
  * @see ISupportFragment
  */
 abstract class SupportActivity : AppCompatActivity(),

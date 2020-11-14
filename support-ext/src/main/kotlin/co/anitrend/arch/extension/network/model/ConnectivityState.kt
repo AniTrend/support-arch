@@ -1,4 +1,4 @@
-package co.anitrend.arch.extension.network
+package co.anitrend.arch.extension.network.model
 
 /**
  * Connection state representative

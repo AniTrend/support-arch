@@ -5,6 +5,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.ViewFlipper
 import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.extension.coroutine.ISupportCoroutine
+import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.getLayoutInflater
 import co.anitrend.arch.extension.ext.gone
@@ -16,6 +18,7 @@ import kotlinx.android.synthetic.main.support_state_layout_error.view.*
 import kotlinx.android.synthetic.main.support_state_layout_laoding.view.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 
 /**
  * A state layout that supports [NetworkState.Loading] and [NetworkState.Error] states
@@ -26,11 +29,13 @@ import kotlinx.coroutines.flow.*
 open class SupportStateLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : ViewFlipper(context, attrs), CustomView, CoroutineScope by MainScope() {
+) : ViewFlipper(context, attrs), CustomView, ISupportCoroutine by Main() {
 
     init {
         onInit(context, attrs)
     }
+
+    private val moduleTag = javaClass.simpleName
 
     private val interactionMutableStateFlow =
         MutableStateFlow<StateClickableItem?>(null)
@@ -180,21 +185,30 @@ open class SupportStateLayout @JvmOverloads constructor(
         super.onAttachedToWindow()
         launch {
             networkStateFlow
-                .collect {
+                .onEach {
                     updateUsingNetworkState(it)
                 }
+                .catch { cause: Throwable ->
+                    Timber.tag(moduleTag).w(cause)
+                }
+                .collect()
+
         }
         launch {
             stateConfigFlow
                 .filterNotNull()
-                .collect {
+                .onEach {
                     updateUsing(it)
                 }
+                .catch { cause: Throwable ->
+                    Timber.tag(moduleTag).w(cause)
+                }
+                .collect()
         }
     }
     
     override fun onDetachedFromWindow() {
-        cancel()
+        cancelAllChildren()
         onViewRecycled()
         super.onDetachedFromWindow()
     }
