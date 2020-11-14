@@ -6,6 +6,7 @@ import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.domain.entities.NetworkState
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
 
@@ -26,23 +27,21 @@ internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<NetworkStat
          * @param report The current status report that has all the information about the requests.
          */
         override fun onStatusChange(report: RequestStatusReport) {
-            when {
-                report.hasRunning() -> offer(NetworkState.Loading)
+            val state = when {
+                report.hasRunning() -> NetworkState.Loading()
                 report.hasError() -> {
                     val error = report.getRequestError()
-                    offer(
-                        NetworkState.Error(
-                            heading = error.topic,
-                            message = error.description
-                        )
+                    NetworkState.Error(
+                        heading = error.topic,
+                        message = error.description
                     )
                 }
-                else -> offer(NetworkState.Idle)
+                else -> NetworkState.Idle
             }
+            sendBlocking(state)
         }
     }
     addListener(requestListener)
-    awaitClose {
-        removeListener(requestListener)
-    }
+
+    awaitClose { removeListener(requestListener) }
 }
