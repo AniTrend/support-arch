@@ -1,7 +1,7 @@
 package co.anitrend.arch.data.repository
 
 import co.anitrend.arch.data.repository.contract.ISupportRepository
-import co.anitrend.arch.extension.coroutine.SupportCoroutine
+import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 
 /**
  * Core repository implementation with data source cancellation support
@@ -11,7 +11,7 @@ import co.anitrend.arch.extension.coroutine.SupportCoroutine
  * @since v1.1.0
  */
 abstract class SupportRepository(
-    private val coroutine: SupportCoroutine?
+    private val coroutine: ISupportCoroutine?
 ) : ISupportRepository {
 
     /**
