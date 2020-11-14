@@ -25,15 +25,13 @@ abstract class SupportPagingDataSource<T>(
      *
      * @see AbstractRequestHelper
      */
-    override val requestHelper = RequestHelper(dispatchers.io)
+    final override val requestHelper = RequestHelper(dispatchers.io)
 
     /**
      * Observable for network state during requests that the UI can monitor and
      * act based on state changes
      */
-    override val networkState by lazy {
-        requestHelper.createStatusFlow()
-    }
+    override val networkState = requestHelper.createStatusFlow()
 
     /**
      * Representation of the paging state
