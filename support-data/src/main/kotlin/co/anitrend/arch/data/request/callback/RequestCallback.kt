@@ -26,13 +26,10 @@ class RequestCallback(
      */
     @Throws(IllegalStateException::class)
     suspend fun recordSuccess() {
-        if (called.compareAndSet(false, true)) {
+        if (called.compareAndSet(false, true))
             helper.recordResult(wrapper, null)
-        } else {
-            throw IllegalStateException(
-                "already called recordSuccess or recordFailure"
-            )
-        }
+        else
+            throw IllegalStateException("already called recordSuccess or recordFailure")
     }
 
     /**
@@ -45,12 +42,9 @@ class RequestCallback(
      */
     @Throws(IllegalStateException::class)
     suspend fun recordFailure(throwable: RequestError) {
-        if (called.compareAndSet(false, true)) {
+        if (called.compareAndSet(false, true))
             helper.recordResult(wrapper, throwable)
-        } else {
-            throw IllegalStateException(
-                "already called recordSuccess or recordFailure"
-            )
-        }
+        else
+            throw IllegalStateException("already called recordSuccess or recordFailure")
     }
 }
