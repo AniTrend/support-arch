@@ -2,7 +2,7 @@ package co.anitrend.arch.data.source.core.contract
 
 import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.data.source.contract.ISource
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -13,7 +13,7 @@ import kotlinx.coroutines.SupervisorJob
  * @since v1.1.0
  */
 abstract class AbstractDataSource(
-    protected val dispatchers: SupportDispatchers
+    protected val dispatchers: ISupportDispatcher
 ) : IDataSource, ISource {
 
     /**

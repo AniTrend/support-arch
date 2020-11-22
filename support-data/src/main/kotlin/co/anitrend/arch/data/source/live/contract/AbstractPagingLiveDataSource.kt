@@ -2,13 +2,13 @@ package co.anitrend.arch.data.source.live.contract
 
 import androidx.paging.PageKeyedDataSource
 import co.anitrend.arch.data.source.contract.IDataSource
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 
 abstract class AbstractPagingLiveDataSource<K, V>(
-    protected val dispatchers: SupportDispatchers
+    protected val dispatcher: ISupportDispatcher
 ) : PageKeyedDataSource<K, V>(), IDataSource {
 
     /**
@@ -26,7 +26,7 @@ abstract class AbstractPagingLiveDataSource<K, V>(
      *
      * @return one of the sub-types of [kotlinx.coroutines.Dispatchers]
      */
-    final override val coroutineDispatcher = dispatchers.computation
+    final override val coroutineDispatcher = dispatcher.computation
 
     /**
      * Persistent context for the coroutine

@@ -4,7 +4,7 @@ import co.anitrend.arch.data.request.AbstractRequestHelper
 import co.anitrend.arch.data.request.extension.createStatusFlow
 import co.anitrend.arch.data.request.helper.RequestHelper
 import co.anitrend.arch.data.source.live.contract.AbstractPagingLiveDataSource
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import kotlinx.coroutines.launch
@@ -12,13 +12,13 @@ import kotlinx.coroutines.launch
 /**
  * A data source that is targeted for [androidx.paging.PagedList] without a backing source
  *
- * @param dispatchers Dispatchers that are currently available
+ * @param dispatcher Dispatchers that are currently available
  *
  * @since v1.3.0
  */
 abstract class SupportPagingLiveDataSource<K, V>(
-    dispatchers: SupportDispatchers
-) : AbstractPagingLiveDataSource<K, V>(dispatchers) {
+    dispatcher: ISupportDispatcher
+) : AbstractPagingLiveDataSource<K, V>(dispatcher) {
 
     /**
      * Request helper that controls the flow of requests to the implementing data source to avoid
@@ -26,7 +26,7 @@ abstract class SupportPagingLiveDataSource<K, V>(
      *
      * @see AbstractRequestHelper
      */
-    final override val requestHelper = RequestHelper(dispatchers.io)
+    final override val requestHelper = RequestHelper(dispatcher.io, dispatcher.confined)
 
     /**
      * Observable for network state during requests that the UI can monitor and
@@ -48,7 +48,7 @@ abstract class SupportPagingLiveDataSource<K, V>(
      * If invalidate has already been called, this method does nothing.
      */
     override fun invalidate() {
-        launch { clearDataSource(dispatchers.io) }
+        launch { clearDataSource(dispatcher.io) }
         supportPagingHelper.onPageRefresh()
         super.invalidate()
     }

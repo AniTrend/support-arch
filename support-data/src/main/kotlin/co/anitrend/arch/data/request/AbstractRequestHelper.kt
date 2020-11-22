@@ -14,7 +14,6 @@ import java.util.concurrent.CopyOnWriteArrayList
  * @since v1.3.0
  */
 abstract class AbstractRequestHelper : IRequestHelper {
-    protected val mutex = Mutex()
 
     protected val requestQueues: Array<RequestQueue> = arrayOf(
         RequestQueue(IRequestHelper.RequestType.INITIAL),

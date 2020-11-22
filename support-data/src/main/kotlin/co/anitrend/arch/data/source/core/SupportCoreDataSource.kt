@@ -5,18 +5,18 @@ import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.extension.createStatusFlow
 import co.anitrend.arch.data.request.helper.RequestHelper
 import co.anitrend.arch.data.source.core.contract.AbstractDataSource
-import co.anitrend.arch.extension.dispatchers.SupportDispatchers
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 
 /**
  * A data source that depends on [kotlinx.coroutines.flow.Flow] to publish results.
  *
- * @param dispatchers Dispatchers that are currently available
+ * @param dispatcher Dispatchers that are currently available
  *
  * @since v1.1.0
  */
 abstract class SupportCoreDataSource(
-    dispatchers: SupportDispatchers
-) : AbstractDataSource(dispatchers) {
+    dispatcher: ISupportDispatcher
+) : AbstractDataSource(dispatcher) {
 
     /**
      * Request helper that controls the flow of requests to the implementing data source to avoid
@@ -24,7 +24,7 @@ abstract class SupportCoreDataSource(
      *
      * @see AbstractRequestHelper
      */
-    final override val requestHelper = RequestHelper(dispatchers.io)
+    final override val requestHelper = RequestHelper(dispatcher.io, dispatcher.confined)
 
     /**
      * Observable for network state during requests that the UI can monitor and
