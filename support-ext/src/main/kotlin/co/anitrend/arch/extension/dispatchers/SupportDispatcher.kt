@@ -1,5 +1,6 @@
 package co.anitrend.arch.extension.dispatchers
 
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import kotlinx.coroutines.*
 
 /**
@@ -12,10 +13,10 @@ import kotlinx.coroutines.*
  *
  * @since v1.2.0
  */
-data class SupportDispatchers constructor(
-    val main: MainCoroutineDispatcher = Dispatchers.Main,
-    val computation: CoroutineDispatcher = Dispatchers.Default,
-    val io: CoroutineDispatcher = Dispatchers.IO,
+data class SupportDispatcher(
+    override val main: CoroutineDispatcher = Dispatchers.Main,
+    override val computation: CoroutineDispatcher = Dispatchers.Default,
+    override val io: CoroutineDispatcher = Dispatchers.IO,
     @OptIn(ObsoleteCoroutinesApi::class)
-    val confined: ExecutorCoroutineDispatcher = newSingleThreadContext("ConfinedContext")
-)
+    override val confined: CoroutineDispatcher = newSingleThreadContext("ConfinedContext")
+) : ISupportDispatcher
