@@ -2,7 +2,7 @@ package co.anitrend.arch.extension.util
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
-import co.anitrend.arch.extension.util.contract.ISupportDateHelper
+import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
 import co.anitrend.arch.extension.util.date.SupportDateHelper
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.junit.Assert.assertEquals
