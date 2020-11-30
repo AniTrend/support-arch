@@ -1,8 +1,13 @@
 package co.anitrend.arch.data.source.core.contract
 
+import co.anitrend.arch.data.request.AbstractRequestHelper
+import co.anitrend.arch.data.request.extension.createStatusFlow
+import co.anitrend.arch.data.request.helper.RequestHelper
 import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.data.source.contract.ISource
+import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.extension.coroutine.extension.Default
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -13,8 +18,8 @@ import kotlinx.coroutines.SupervisorJob
  * @since v1.1.0
  */
 abstract class AbstractDataSource(
-    protected val dispatchers: ISupportDispatcher
-) : IDataSource, ISource {
+    protected val dispatcher: ISupportDispatcher
+) : IDataSource, ISource, ISupportCoroutine by Default() {
 
     /**
      * Module tag for the current context
@@ -22,30 +27,23 @@ abstract class AbstractDataSource(
     protected val moduleTag: String = javaClass.simpleName
 
     /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
+     * Request helper that controls the flow of requests to the implementing data source to avoid
+     * multiple requests of the same type before others are completed for this instance
+     *
+     * @see AbstractRequestHelper
      */
-    final override val supervisorJob: Job = SupervisorJob()
+    override val requestHelper by lazy {
+        RequestHelper(
+            context = dispatcher.io,
+            synchronizer = dispatcher.confined
+        )
+    }
 
     /**
-     * Coroutine dispatcher specification
-     *
-     * @return one of the sub-types of [kotlinx.coroutines.Dispatchers]
+     * Observable for network state during requests that the UI can monitor and
+     * act based on state changes
      */
-    final override val coroutineDispatcher = dispatchers.computation
-
-    /**
-     * Persistent context for the coroutine
-     *
-     * @return [kotlin.coroutines.CoroutineContext] preferably built from
-     * [supervisorJob] + [coroutineDispatcher]
-     */
-    final override val coroutineContext = supervisorJob + coroutineDispatcher
-
-    /**
-     * A failure or cancellation of a child does not cause the supervisor job
-     * to fail and does not affect its other children.
-     *
-     * @return [kotlinx.coroutines.CoroutineScope]
-     */
-    final override val scope = CoroutineScope(coroutineContext)
+    override val networkState by lazy {
+        requestHelper.createStatusFlow()
+    }
 }

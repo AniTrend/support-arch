@@ -6,7 +6,7 @@ import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
-interface IDataSource : ISupportCoroutine {
+interface IDataSource {
 
     /**
      * Request helper that controls the flow of requests to the implementing data source to avoid

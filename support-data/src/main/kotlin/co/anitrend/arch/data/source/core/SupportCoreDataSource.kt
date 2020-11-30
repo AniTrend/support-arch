@@ -1,9 +1,6 @@
 package co.anitrend.arch.data.source.core
 
-import co.anitrend.arch.data.request.AbstractRequestHelper
 import co.anitrend.arch.data.request.contract.IRequestHelper
-import co.anitrend.arch.data.request.extension.createStatusFlow
-import co.anitrend.arch.data.request.helper.RequestHelper
 import co.anitrend.arch.data.source.core.contract.AbstractDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 
@@ -19,25 +16,10 @@ abstract class SupportCoreDataSource(
 ) : AbstractDataSource(dispatcher) {
 
     /**
-     * Request helper that controls the flow of requests to the implementing data source to avoid
-     * multiple requests of the same type before others are completed for this instance
-     *
-     * @see AbstractRequestHelper
-     */
-    final override val requestHelper = RequestHelper(dispatcher.io, dispatcher.confined)
-
-    /**
-     * Observable for network state during requests that the UI can monitor and
-     * act based on state changes
-     */
-    override val networkState = requestHelper.createStatusFlow()
-
-
-    /**
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
     override suspend fun invalidate() {
-        clearDataSource(dispatchers.io)
+        clearDataSource(dispatcher.io)
     }
 
     /**
@@ -46,17 +28,19 @@ abstract class SupportCoreDataSource(
      * @see refresh
      */
     override suspend fun retryFailed() {
-        requestHelper.retryWithStatus()
+        requestHelper.retryWithStatus(
+            IRequestHelper.Status.FAILED
+        ) {}
     }
 
     /**
      * Invalidate data source and, re-run the last successful or last failed request if applicable
      */
     override suspend fun refresh() {
-        invalidate()
         val ran = requestHelper.retryWithStatus(
             IRequestHelper.Status.SUCCESS
-        )
+        ) { invalidate() }
+
         if (!ran)
             retryFailed()
     }
