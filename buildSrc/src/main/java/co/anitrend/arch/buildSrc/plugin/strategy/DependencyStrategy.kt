@@ -42,6 +42,7 @@ internal class DependencyStrategy(
             add("implementation", Libraries.JetBrains.KotlinX.Coroutines.android)
         add("implementation", Libraries.JetBrains.KotlinX.Coroutines.core)
         add("testImplementation", Libraries.JetBrains.KotlinX.Coroutines.test)
+        add("androidTestImplementation", Libraries.CashApp.Turbine.turbine)
     }
 
     fun applyDependenciesOn(handler: DependencyHandler) {
