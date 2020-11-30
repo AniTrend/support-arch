@@ -145,6 +145,10 @@ fun Context.copyToClipboard(label: String, content: String) {
  *
  * @param show True if the keyboard should be shown otherwise False to hide it
 */
+@Deprecated(
+    message = "Use View.toggleKeyboard(show) extension instead",
+    level = DeprecationLevel.WARNING
+)
 fun Context.toggleKeyboard(show: Boolean) {
     runCatching {
         val windowToken = (this as FragmentActivity).window.decorView.windowToken
@@ -226,9 +230,9 @@ fun Context.getLayoutInflater(): LayoutInflater =
  */
 fun Context.getScreenDimens(): Point {
     val deviceDimens = Point()
-    systemServiceOf<WindowManager>()?.apply {
-        defaultDisplay?.getSize(deviceDimens)
-    }
+    systemServiceOf<WindowManager>()
+        ?.defaultDisplay
+        ?.getSize(deviceDimens)
     return deviceDimens
 }
 

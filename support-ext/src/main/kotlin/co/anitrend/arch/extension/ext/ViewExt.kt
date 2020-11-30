@@ -4,8 +4,10 @@ import android.content.res.Resources
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import android.widget.TextView
 import androidx.annotation.StringRes
+import androidx.core.view.ViewCompat
 import co.anitrend.arch.extension.R
 import co.anitrend.arch.extension.annotation.SupportExperimental
 import com.google.android.material.snackbar.Snackbar
@@ -70,14 +72,41 @@ fun View.snackBar(
     duration: Int,
     @StringRes actionRes: Int,
     action: (Snackbar) -> Unit
-) =
-    snackBar(
-        resources.getString(stringRes),
-        duration,
-        resources.getString(actionRes),
-        action
-    )
+) = snackBar(
+    resources.getString(stringRes),
+    duration,
+    resources.getString(actionRes),
+    action
+)
 
+/**
+ * Request to show or hide the soft input window
+ *
+ * @param show True if the keyboard should be shown otherwise False to hide it
+ */
+fun View.toggleIme(show: Boolean) {
+    val controller = ViewCompat.getWindowInsetsController(this)
+    when (show) {
+        true -> controller?.show(WindowInsets.Type.ime())
+        else -> controller?.hide(WindowInsets.Type.ime())
+    }
+}
+
+/**
+ * @return Visibility status of the [WindowInsets.Type.ime] or null
+ */
+fun View.isImeVisible(): Boolean? {
+    val insets = ViewCompat.getRootWindowInsets(this)
+    return insets?.isVisible(WindowInsets.Type.ime())
+}
+
+/**
+ * @return Height of the [WindowInsets.Type.ime] or null if not shown
+ */
+fun View.isImeHeight(): Int? {
+    val insets = ViewCompat.getRootWindowInsets(this)
+    return insets?.getInsets(WindowInsets.Type.ime())?.bottom
+}
 
 fun Float.dipToPx() : Int {
     val scale = Resources.getSystem().displayMetrics.density
