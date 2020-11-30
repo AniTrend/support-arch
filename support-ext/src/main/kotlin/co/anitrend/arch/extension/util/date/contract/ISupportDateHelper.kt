@@ -1,4 +1,4 @@
-package co.anitrend.arch.extension.util.contract
+package co.anitrend.arch.extension.util.date.contract
 
 import android.annotation.TargetApi
 import android.os.Build

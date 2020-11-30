@@ -1,7 +1,7 @@
 package co.anitrend.arch.extension.util.date
 
 import co.anitrend.arch.extension.util.attribute.SeasonType
-import co.anitrend.arch.extension.util.contract.ISupportDateHelper
+import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
 import java.util.*
 
 /**
