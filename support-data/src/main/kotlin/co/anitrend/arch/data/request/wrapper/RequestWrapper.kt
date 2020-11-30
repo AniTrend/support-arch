@@ -21,18 +21,14 @@ class RequestWrapper internal constructor(
 ) {
     /**
      * Retries a request if it is not already running
-     *
-     * @param context coroutine context to run in
      */
-    suspend operator fun invoke(context: CoroutineContext) {
-        withContext(context) {
-            handleCallback(
-                RequestCallback(
-                    this@RequestWrapper,
-                    helper
-                )
+    suspend operator fun invoke() {
+        handleCallback(
+            RequestCallback(
+                this@RequestWrapper,
+                helper
             )
-        }
+        )
     }
 
     /**

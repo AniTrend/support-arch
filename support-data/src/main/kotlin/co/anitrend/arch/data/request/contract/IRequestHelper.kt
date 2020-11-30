@@ -56,9 +56,15 @@ interface IRequestHelper {
     /**
      * Retries all request types for a given [status].
      *
+     * @param status Status for request to retry
+     * @param action Action to run when [status is satisfied]
+     *
      * @return True if any request is retried, false otherwise.
      */
-    suspend fun retryWithStatus(status: Status = Status.FAILED): Boolean
+    suspend fun retryWithStatus(
+        status: Status = Status.FAILED,
+        action: suspend () -> Unit
+    ): Boolean
 
     /**
      * Check if request handler has any finished request with [status]

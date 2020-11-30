@@ -10,7 +10,7 @@ import co.anitrend.arch.data.request.error.RequestError
  *
  * @since v1.3.0
  */
-class RequestQueue(
+data class RequestQueue(
     val requestType: IRequestHelper.RequestType
 ) {
     var failed: RequestWrapper? = null

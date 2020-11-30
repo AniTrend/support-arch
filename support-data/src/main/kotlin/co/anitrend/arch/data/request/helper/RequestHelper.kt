@@ -17,7 +17,7 @@ import kotlin.coroutines.CoroutineContext
  * A request helper that manages requests, retrying and blocking duplication
  *
  * @param context The coroutine context that should be used in a coroutine scope
- * @param executor The coroutine context that should be for synchronization
+ * @param synchronizer The coroutine context that should be for synchronization
  *
  * @since v1.3.0
  */
@@ -40,24 +40,35 @@ class RequestHelper(
         handleCallback: suspend (RequestCallback) -> Unit
     ): Boolean {
         val report = AtomicReference<RequestStatusReport?>(null)
+        val ran = AtomicBoolean(false)
 
-        return withContext(synchronizer) {
+        withContext(synchronizer) {
             val queue = requestQueues[requestType.ordinal]
-            if (queue.running != null)
-                return@withContext false
-            queue.running = handleCallback
-            queue.status = IRequestHelper.Status.RUNNING
-            queue.failed = null
-            queue.passed = null
-            queue.lastError = null
+            if (queue.running == null) {
+                queue.running = handleCallback
+                queue.status = IRequestHelper.Status.RUNNING
+                queue.failed = null
+                queue.passed = null
+                queue.lastError = null
 
-            if (listeners.isNotEmpty())
-                report.set(prepareStatusReportLocked())
-            report.get()?.dispatchReport()
+                if (listeners.isNotEmpty())
+                    report.set(prepareStatusReportLocked())
+                report.get()?.dispatchReport()
 
-            RequestWrapper(handleCallback, this@RequestHelper, requestType).invoke(context)
-            return@withContext true
+                withContext(context) {
+                    val wrapper = RequestWrapper(
+                        handleCallback = handleCallback,
+                        helper = this@RequestHelper,
+                        type = requestType
+                    )
+                    wrapper.invoke()
+                }
+
+                ran.set(true)
+            }
         }
+
+        return ran.get()
     }
 
     /**
@@ -70,13 +81,13 @@ class RequestHelper(
         wrapper: RequestWrapper,
         throwable: RequestError?
     ) {
-        val report = AtomicReference<RequestStatusReport?>(null)
-        val isSuccessful = throwable == null
+        val isSuccessful = AtomicBoolean(throwable == null)
         withContext(synchronizer) {
+            var report: RequestStatusReport? = null
             val queue = requestQueues[wrapper.type.ordinal]
             queue.running = null
             queue.lastError = throwable
-            if (isSuccessful) {
+            if (isSuccessful.get()) {
                 queue.failed = null
                 queue.passed = wrapper
                 queue.status = IRequestHelper.Status.SUCCESS
@@ -85,10 +96,12 @@ class RequestHelper(
                 queue.passed = null
                 queue.status = IRequestHelper.Status.FAILED
             }
+
             if (listeners.isNotEmpty())
-                report.set(prepareStatusReportLocked())
+                report = prepareStatusReportLocked()
+
+            report?.dispatchReport()
         }
-        report.get()?.dispatchReport()
     }
 
     /**
@@ -96,7 +109,10 @@ class RequestHelper(
      *
      * @return True if any request is retried, false otherwise.
      */
-    override suspend fun retryWithStatus(status: IRequestHelper.Status): Boolean {
+    override suspend fun retryWithStatus(
+        status: IRequestHelper.Status,
+        action: suspend () -> Unit
+    ): Boolean {
         val retried = AtomicBoolean(false)
         withContext(synchronizer) {
             val requestTypes = IRequestHelper.RequestType.values()
@@ -115,16 +131,22 @@ class RequestHelper(
                         requestQueues[index].passed = null
                     }
                     else -> {
+                        // Pending, nothing to do
                     }
                 }
             }
 
-            pendingRetries
-                .filterNotNull()
-                .forEach { wrapper ->
-                    wrapper.retry()
-                    retried.set(true)
-                }
+            if (!pendingRetries.isNullOrEmpty())
+                action()
+
+            withContext(context) {
+                pendingRetries
+                    .filterNotNull()
+                    .forEach { wrapper ->
+                        wrapper.retry()
+                        retried.set(true)
+                    }
+            }
         }
         return retried.get()
     }
