@@ -6,7 +6,7 @@ package co.anitrend.arch.ui.common
  *
  * @see [co.anitrend.arch.ui.activity.SupportActivity.onBackPressed]
  */
-@Deprecated("Use OnBackPressedCallback instead")
+@Deprecated(message = "Use OnBackPressedCallback instead", level = DeprecationLevel.ERROR)
 interface ISupportActionUp {
 
     /**

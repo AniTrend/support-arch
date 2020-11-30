@@ -5,7 +5,6 @@ import android.view.*
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
-import co.anitrend.arch.ui.common.ISupportActionUp
 import co.anitrend.arch.ui.fragment.contract.ISupportFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -27,9 +26,9 @@ import kotlinx.coroutines.MainScope
 abstract class SupportFragment(
     @MenuRes protected open val inflateMenu: Int = ISupportFragment.NO_MENU_ITEM,
     @LayoutRes protected open val inflateLayout: Int = ISupportFragment.NO_LAYOUT_ITEM
-) : Fragment(), ISupportFragment, CoroutineScope by MainScope(), ISupportActionUp {
+) : Fragment(), ISupportFragment, CoroutineScope by MainScope() {
 
-    override val moduleTag = javaClass.simpleName
+    override val moduleTag: String = javaClass.simpleName
 
     /**
      * Invoke view model observer to watch for changes, this will be called

@@ -10,7 +10,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.ui.activity.contract.ISupportActivity
-import co.anitrend.arch.ui.common.ISupportActionUp
 import co.anitrend.arch.ui.fragment.contract.ISupportFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -26,7 +25,7 @@ import kotlinx.coroutines.MainScope
 abstract class SupportActivity : AppCompatActivity(),
     ISupportActivity, CoroutineScope by MainScope() {
 
-    override val moduleTag = javaClass.simpleName
+    override val moduleTag: String = javaClass.simpleName
 
     /** Current fragment in view tag which will be used by [getSupportFragmentManager] */
     protected var currentFragmentTag: String? = null
@@ -35,20 +34,6 @@ abstract class SupportActivity : AppCompatActivity(),
      * Can be used to configure custom theme styling as desired
      */
     protected abstract fun configureActivity()
-
-    /**
-     * Checks if the current loaded fragment is allowed to intercept action.
-     *
-     * @see ISupportActionUp
-     */
-    protected open fun currentFragmentInterceptsActionUp(): Boolean {
-        val fragment = supportFragmentManager
-                .findFragmentByTag(currentFragmentTag)
-        return when (fragment) {
-            is ISupportActionUp -> fragment.hasBackPressableAction()
-            else -> false
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         configureActivity()
@@ -84,11 +69,5 @@ abstract class SupportActivity : AppCompatActivity(),
         else if (!ActivityCompat.shouldShowRequestPermissionRationale(this, manifestPermission))
             ActivityCompat.requestPermissions(this, arrayOf(manifestPermission), compatViewPermissionValue)
         return false
-    }
-
-    override fun onBackPressed() {
-        if (currentFragmentInterceptsActionUp())
-            return
-        return super.onBackPressed()
     }
 }
