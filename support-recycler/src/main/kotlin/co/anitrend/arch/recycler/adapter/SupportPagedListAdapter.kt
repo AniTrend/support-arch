@@ -149,7 +149,8 @@ abstract class SupportPagedListAdapter<T>(
     override fun onViewDetachedFromWindow(holder: SupportViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.itemView.clearAnimation()
-        holder.onViewRecycled()
+        // disable view holder recycling on detached from window
+        // holder.onViewRecycled()
     }
 
     /**
