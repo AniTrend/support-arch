@@ -20,15 +20,10 @@ object Libraries {
         }
     }
 
-    object Google {
-        private const val version = "1.2.0"
-        const val material = "com.google.android.material:material:$version"
-    }
-
     object AndroidX {
 
         object Core {
-            private const val version = "1.5.0-alpha04"
+            private const val version = "1.5.0-alpha05"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
         }
@@ -62,7 +57,7 @@ object Libraries {
         }
 
         object StartUp {
-            private const val version = "1.0.0-rc01"
+            private const val version = "1.0.0"
             const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
@@ -93,6 +88,18 @@ object Libraries {
         }
     }
 
+    object CashApp {
+        object Turbine {
+            private const val version = "0.3.0"
+            const val turbine = "app.cash.turbine:turbine:$version"
+        }
+    }
+
+    object Google {
+        private const val version = "1.2.0"
+        const val material = "com.google.android.material:material:$version"
+    }
+
     object JetBrains {
         object Dokka {
             private const val version = "0.10.1"
@@ -100,7 +107,7 @@ object Libraries {
         }
 
         object Kotlin {
-            private const val version = "1.4.10"
+            private const val version = "1.4.20"
             const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
             const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -115,7 +122,7 @@ object Libraries {
 
         object KotlinX {
             object Coroutines {
-                private const val version = "1.4.1"
+                private const val version = "1.4.2"
                 const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
                 const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
                 const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
