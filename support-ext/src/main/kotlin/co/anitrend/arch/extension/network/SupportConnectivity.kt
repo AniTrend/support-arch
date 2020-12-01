@@ -22,8 +22,6 @@ open class SupportConnectivity(
     private val connectivityCapabilities: Int = NetworkCapabilities.NET_CAPABILITY_INTERNET
 ) {
 
-    override val moduleTag: String = SupportConnectivity::class.java.simpleName
-
     /**
      * Check if the device is connected to any network with internet capabilities, this is only
      * a snapshot of the state at the time of request
