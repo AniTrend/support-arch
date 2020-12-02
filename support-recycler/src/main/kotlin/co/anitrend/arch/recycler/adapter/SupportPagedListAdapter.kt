@@ -23,18 +23,21 @@ import timber.log.Timber
 
 /**
  * Core implementation for handling complex logic for [androidx.paging.PagedListAdapter] and
- * [androidx.recyclerview.widget.RecyclerView.ViewHolder] binding logic, By default
- * [PagedListAdapter.setHasStableIds] is set to true
+ * [androidx.recyclerview.widget.RecyclerView.ViewHolder] binding logic
+ *
+ * @param differCallback Callback for calculating the diff between two non-null items in a list.
+ * @param supportsStableIds Sets [PagedListAdapter.setHasStableIds] which is defaulted to true
  *
  * @see SupportViewHolder
  * @since v1.2.0
  */
 abstract class SupportPagedListAdapter<T>(
-    differCallback: DiffUtil.ItemCallback<T>
+    differCallback: DiffUtil.ItemCallback<T>,
+    supportsStableIds: Boolean = true
 ) : ISupportAdapter<T>, PagedListAdapter<T, SupportViewHolder>(differCallback) {
 
     init {
-        this.setHasStableIds(true)
+        this.setHasStableIds(supportsStableIds)
     }
 
     protected abstract val resources: Resources
