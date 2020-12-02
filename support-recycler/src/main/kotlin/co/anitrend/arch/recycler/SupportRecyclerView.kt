@@ -21,7 +21,7 @@ open class SupportRecyclerView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : RecyclerView(context, attrs, defStyle), SupportLifecycle {
 
-    override val moduleTag = SupportRecyclerView::class.java.simpleName
+    override val moduleTag: String = javaClass.simpleName
 
     /**
      * Tells this recycler to set it's adapters instance to false when [SupportLifecycle.onDestroy]
