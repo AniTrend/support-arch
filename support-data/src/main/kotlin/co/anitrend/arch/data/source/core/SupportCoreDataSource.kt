@@ -1,6 +1,6 @@
 package co.anitrend.arch.data.source.core
 
-import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.contract.AbstractDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 
@@ -29,7 +29,7 @@ abstract class SupportCoreDataSource(
      */
     override suspend fun retryFailed() {
         requestHelper.retryWithStatus(
-            IRequestHelper.Status.FAILED
+            Request.Status.FAILED
         ) {}
     }
 
@@ -38,7 +38,7 @@ abstract class SupportCoreDataSource(
      */
     override suspend fun refresh() {
         val ran = requestHelper.retryWithStatus(
-            IRequestHelper.Status.SUCCESS
+            Request.Status.SUCCESS
         ) { invalidate() }
 
         if (!ran)

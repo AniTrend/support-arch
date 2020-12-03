@@ -1,6 +1,6 @@
 package co.anitrend.arch.data.source.paging
 
-import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.paging.contract.AbstractPagingDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
@@ -38,7 +38,7 @@ abstract class SupportPagingDataSource<T>(
      */
     override suspend fun retryFailed() {
         requestHelper.retryWithStatus(
-            IRequestHelper.Status.FAILED
+            Request.Status.FAILED
         ) {}
     }
 
