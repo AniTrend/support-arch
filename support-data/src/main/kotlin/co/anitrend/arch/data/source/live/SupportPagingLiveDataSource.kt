@@ -4,6 +4,7 @@ import co.anitrend.arch.data.request.AbstractRequestHelper
 import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.extension.createStatusFlow
 import co.anitrend.arch.data.request.helper.RequestHelper
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.live.contract.AbstractPagingLiveDataSource
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
@@ -45,7 +46,7 @@ abstract class SupportPagingLiveDataSource<K, V>(
      */
     override suspend fun retryFailed() {
         requestHelper.retryWithStatus(
-            IRequestHelper.Status.FAILED
+            Request.Status.FAILED
         ) {}
     }
 

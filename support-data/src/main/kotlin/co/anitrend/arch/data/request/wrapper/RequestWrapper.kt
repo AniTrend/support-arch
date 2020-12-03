@@ -2,22 +2,21 @@ package co.anitrend.arch.data.request.wrapper
 
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.contract.IRequestHelper
-import kotlinx.coroutines.withContext
-import kotlin.coroutines.CoroutineContext
+import co.anitrend.arch.data.request.model.Request
 
 /**
  * A wrapper for creating requests
  *
  * @param handleCallback The callback that should be invoked
  * @param helper A type of request helper to use
- * @param type The type of request
+ * @param request The type of request
  *
  * @since v1.3.0
  */
 class RequestWrapper internal constructor(
     val handleCallback: suspend (RequestCallback) -> Unit,
     val helper: IRequestHelper,
-    val type: IRequestHelper.RequestType
+    val request: Request
 ) {
     /**
      * Retries a request if it is not already running
@@ -35,6 +34,6 @@ class RequestWrapper internal constructor(
      * Retries a request if it is not already running
      */
     suspend fun retry() {
-        helper.runIfNotRunning(type, handleCallback)
+        helper.runIfNotRunning(request, handleCallback)
     }
 }

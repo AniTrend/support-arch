@@ -2,12 +2,11 @@ package co.anitrend.arch.data.request.helper
 
 import co.anitrend.arch.data.request.*
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.error.RequestError
+import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.data.request.queue.RequestQueue
 import co.anitrend.arch.data.request.report.RequestStatusReport
 import co.anitrend.arch.data.request.wrapper.RequestWrapper
-import kotlinx.coroutines.ExecutorCoroutineDispatcher
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
@@ -26,40 +25,49 @@ class RequestHelper(
     private val synchronizer: CoroutineContext
 ) : AbstractRequestHelper() {
 
+    private fun addOrReuseRequest(request: Request): RequestQueue {
+        var queue = requestQueue.firstOrNull { it.request == request }
+        if (queue == null) {
+            queue = RequestQueue(request)
+            requestQueue.add(queue)
+        }
+        return queue
+    }
+
     /**
      * Runs the given [RequestCallback] if no other requests in the given request type is already
      * running. If run, the request will be run in the current thread.
      *
-     * @param requestType The type of the request.
+     * @param request The type of the request.
      * @param handleCallback The request to run.
      *
      * @return True if the request is run, false otherwise.
      */
     override suspend fun runIfNotRunning(
-        requestType: IRequestHelper.RequestType,
+        request: Request,
         handleCallback: suspend (RequestCallback) -> Unit
     ): Boolean {
         val report = AtomicReference<RequestStatusReport?>(null)
         val ran = AtomicBoolean(false)
 
         withContext(synchronizer) {
-            val queue = requestQueues[requestType.ordinal]
+            val queue = addOrReuseRequest(request)
             if (queue.running == null) {
                 queue.running = handleCallback
-                queue.status = IRequestHelper.Status.RUNNING
+                queue.request.status = Request.Status.RUNNING
+                queue.request.lastError = null
                 queue.failed = null
                 queue.passed = null
-                queue.lastError = null
 
                 if (listeners.isNotEmpty())
-                    report.set(prepareStatusReportLocked())
+                    report.set(prepareStatusReportLocked(request))
                 report.get()?.dispatchReport()
 
                 withContext(context) {
                     val wrapper = RequestWrapper(
                         handleCallback = handleCallback,
                         helper = this@RequestHelper,
-                        type = requestType
+                        request = request
                     )
                     wrapper.invoke()
                 }
@@ -81,24 +89,24 @@ class RequestHelper(
         wrapper: RequestWrapper,
         throwable: RequestError?
     ) {
-        val isSuccessful = AtomicBoolean(throwable == null)
         withContext(synchronizer) {
+            val isSuccessful = throwable == null
             var report: RequestStatusReport? = null
-            val queue = requestQueues[wrapper.type.ordinal]
+            val queue = addOrReuseRequest(wrapper.request)
             queue.running = null
-            queue.lastError = throwable
-            if (isSuccessful.get()) {
+            queue.request.lastError = throwable
+            if (isSuccessful) {
                 queue.failed = null
                 queue.passed = wrapper
-                queue.status = IRequestHelper.Status.SUCCESS
+                queue.request.status = Request.Status.SUCCESS
             } else {
                 queue.failed = wrapper
                 queue.passed = null
-                queue.status = IRequestHelper.Status.FAILED
+                queue.request.status = Request.Status.FAILED
             }
 
             if (listeners.isNotEmpty())
-                report = prepareStatusReportLocked()
+                report = prepareStatusReportLocked(wrapper.request)
 
             report?.dispatchReport()
         }
@@ -110,29 +118,24 @@ class RequestHelper(
      * @return True if any request is retried, false otherwise.
      */
     override suspend fun retryWithStatus(
-        status: IRequestHelper.Status,
+        status: Request.Status,
         action: suspend () -> Unit
     ): Boolean {
         val retried = AtomicBoolean(false)
         withContext(synchronizer) {
-            val requestTypes = IRequestHelper.RequestType.values()
-            val pendingRetries = arrayOfNulls<RequestWrapper>(requestTypes.size)
+            val pendingRetries = mutableListOf<RequestWrapper?>()
 
-            requestTypes.forEach {
-                val index = it.ordinal
-                val requestQueue = requestQueues[index]
+            requestQueue.forEach { queue ->
                 when (status) {
-                    IRequestHelper.Status.FAILED -> {
-                        pendingRetries[index] = requestQueue.failed
-                        requestQueues[index].failed = null
+                    Request.Status.SUCCESS -> {
+                        pendingRetries.add(queue.passed)
+                        queue.passed = null
                     }
-                    IRequestHelper.Status.SUCCESS -> {
-                        pendingRetries[index] = requestQueue.passed
-                        requestQueues[index].passed = null
+                    Request.Status.FAILED -> {
+                        pendingRetries.add(queue.failed)
+                        queue.failed = null
                     }
-                    else -> {
-                        // Pending, nothing to do
-                    }
+                    else -> {}
                 }
             }
 
@@ -141,9 +144,8 @@ class RequestHelper(
 
             withContext(context) {
                 pendingRetries
-                    .filterNotNull()
                     .forEach { wrapper ->
-                        wrapper.retry()
+                        wrapper?.retry()
                         retried.set(true)
                     }
             }
@@ -156,15 +158,12 @@ class RequestHelper(
      *
      * @return True if a match is found, false otherwise.
      */
-    override suspend fun hasAnyWithStatus(status: IRequestHelper.Status): Boolean {
+    override suspend fun hasAnyWithStatus(status: Request.Status): Boolean {
         return withContext(synchronizer) {
-            val requestQueue = requestQueues[status.ordinal]
-            val requestWrapper = when (status) {
-                IRequestHelper.Status.SUCCESS -> requestQueue.passed
-                IRequestHelper.Status.FAILED -> requestQueue.failed
-                else -> null
+            val queue = requestQueue.firstOrNull {
+                it.request.status == status
             }
-            return@withContext requestWrapper != null
+            return@withContext queue != null
         }
     }
 }
