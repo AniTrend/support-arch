@@ -22,8 +22,6 @@ import timber.log.Timber
 import java.util.*
 import kotlin.system.exitProcess
 
-const val delayDuration = 100
-
 /**
  * Extension for getting system services
  */
@@ -75,13 +73,14 @@ inline fun <reified T> Context.stopServiceMatching(intentAction: String): Boolea
 
 /**
  * Extension helper for context that helps us restart the application
+ *
+ * @param intentId Id of the pending intent which will be used
  */
-inline fun <reified T> Context.restartApplication() {
+inline fun <reified T> Context.restartApplication(intentId: Int = 1510, delayDuration: Int = 100) {
     runCatching {
-        val startTargetIntentId = 1510
         val startTargetIntent = Intent(this, T::class.java)
         val pendingIntent = PendingIntent.getActivity(
-            this, startTargetIntentId, startTargetIntent,
+            this, intentId, startTargetIntent,
             PendingIntent.FLAG_CANCEL_CURRENT
         )
         val alarmManager = systemServiceOf<AlarmManager>()
