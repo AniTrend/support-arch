@@ -1,6 +1,5 @@
 package co.anitrend.arch.data.state
 
-import androidx.lifecycle.LiveData
 import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.data.source.core.contract.AbstractDataSource
 import co.anitrend.arch.domain.entities.NetworkState
@@ -19,7 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * @param retry Retries any failed requests.
  */
 data class DataState<T> internal constructor(
-    val model: LiveData<T>,
+    val model: Flow<T>,
     override val networkState: Flow<NetworkState>,
     override val refreshState: Flow<NetworkState>,
     override val refresh: suspend () -> Unit,
@@ -36,7 +35,7 @@ data class DataState<T> internal constructor(
          * @see AbstractDataSource
          */
         infix fun <T> IDataSource.create(
-            model: LiveData<T>
+            model: Flow<T>
         ) : DataState<T> {
             val refreshTrigger: MutableStateFlow<NetworkState> =
                 MutableStateFlow(NetworkState.Idle)
