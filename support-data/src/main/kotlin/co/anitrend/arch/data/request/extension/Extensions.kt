@@ -4,6 +4,7 @@ import co.anitrend.arch.data.request.AbstractRequestHelper
 import co.anitrend.arch.data.request.report.RequestStatusReport
 import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.error.RequestError
+import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.domain.entities.NetworkState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
 
 private fun RequestStatusReport.getRequestError(): RequestError {
-    return IRequestHelper.RequestType.values().mapNotNull {
+    return Request.Type.values().mapNotNull {
         getErrorFor(it)
     }.first()
 }
@@ -36,7 +37,7 @@ internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<NetworkStat
                         message = error.description
                     )
                 }
-                else -> NetworkState.Idle
+                else -> NetworkState.Success
             }
             sendBlocking(state)
         }
