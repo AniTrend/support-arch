@@ -60,7 +60,7 @@ fun FragmentActivity.makeStatusBarTransparent() {
  * Hides both status bar and navigation bar
  */
 fun FragmentActivity.hideStatusBarAndNavigationBar() {
-    WindowCompat.setDecorFitsSystemWindows(window, true)
+    //WindowCompat.setDecorFitsSystemWindows(window, true)
     val controller = ViewCompat.getWindowInsetsController(window.decorView)
 
     // swipe in system bars, this is now sticky immersive
