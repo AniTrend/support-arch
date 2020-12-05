@@ -12,6 +12,7 @@ import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
+import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import co.anitrend.arch.recycler.shared.SupportErrorItem
 import co.anitrend.arch.recycler.shared.SupportLoadingItem
@@ -43,7 +44,7 @@ abstract class SupportListAdapter<T>(
         AsyncListDiffer(this, differCallback)
     }
 
-    override val moduleTag: String = javaClass.name
+    override val moduleTag: String = javaClass.simpleName
 
     override var lastAnimatedPosition: Int = 0
 
@@ -123,14 +124,12 @@ abstract class SupportListAdapter<T>(
      */
     override fun getItemId(position: Int): Long {
         return when (hasStableIds()) {
-            true -> if (isWithinIndexBounds(position)) {
-                runCatching{
-                    getStableIdFor(getItem(position))
-                }.getOrElse {
-                    Timber.tag(moduleTag).v(it)
-                    RecyclerView.NO_ID
-                }
-            } else RecyclerView.NO_ID
+            true -> runCatching {
+                getStableIdFor(getItem(position))
+            }.getOrElse {
+                Timber.tag(moduleTag).v(it, "getItemId(position: Int) -> position: $position")
+                RecyclerView.NO_ID
+            }
             else -> super.getItemId(position)
         }
     }
@@ -354,19 +353,33 @@ abstract class SupportListAdapter<T>(
         position: Int,
         payloads: List<Any>
     ) {
-        runCatching {
-            if (isWithinIndexBounds(position)) {
-                holder.bind(
-                    position,
-                    payloads,
-                    mapper(requireItem(position)),
-                    clickableItemMutableStateFlow,
-                    supportAction
-                )
+        val recyclerItem: IRecyclerItem? = when (getItemViewType(position)) {
+            R.layout.support_layout_state_footer_loading -> {
+                SupportLoadingItem(stateConfiguration)
             }
+            R.layout.support_layout_state_footer_error -> {
+                SupportErrorItem(networkState, stateConfiguration)
+            }
+            else -> {
+                runCatching {
+                    mapper(requireItem(position))
+                }.onFailure {
+                    Timber.tag(moduleTag).v(it, "bindViewHolderByType(...)->when (getItemViewType(position))")
+                }.getOrNull()
+            }
+        }
+
+        runCatching {
+            holder.bind(
+                position,
+                payloads,
+                recyclerItem!!,
+                clickableItemMutableStateFlow,
+                supportAction
+            )
             animateViewHolder(holder, position)
         }.onFailure {
-            Timber.tag(moduleTag).e(it)
+            Timber.tag(moduleTag).w(it, "bindViewHolderByType(holder: SupportViewHolder, position: Int, payloads: List<Any>)")
         }
     }
 
