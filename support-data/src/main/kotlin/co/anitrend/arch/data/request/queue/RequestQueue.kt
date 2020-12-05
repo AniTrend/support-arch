@@ -2,7 +2,6 @@ package co.anitrend.arch.data.request.queue
 
 import co.anitrend.arch.data.request.wrapper.RequestWrapper
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.data.request.model.Request
 
 /**

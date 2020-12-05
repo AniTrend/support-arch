@@ -24,8 +24,8 @@ class RequestWrapper internal constructor(
     suspend operator fun invoke() {
         handleCallback(
             RequestCallback(
-                this@RequestWrapper,
-                helper
+                wrapper = this,
+                helper = helper
             )
         )
     }

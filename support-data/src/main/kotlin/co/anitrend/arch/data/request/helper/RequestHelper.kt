@@ -7,6 +7,7 @@ import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.request.queue.RequestQueue
 import co.anitrend.arch.data.request.report.RequestStatusReport
 import co.anitrend.arch.data.request.wrapper.RequestWrapper
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import kotlinx.coroutines.withContext
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
@@ -15,14 +16,12 @@ import kotlin.coroutines.CoroutineContext
 /**
  * A request helper that manages requests, retrying and blocking duplication
  *
- * @param context The coroutine context that should be used in a coroutine scope
- * @param synchronizer The coroutine context that should be for synchronization
+ * @param dispatcher Coroutine dispatchers
  *
  * @since v1.3.0
  */
 class RequestHelper(
-    private val context: CoroutineContext,
-    private val synchronizer: CoroutineContext
+    private val dispatcher: ISupportDispatcher
 ) : AbstractRequestHelper() {
 
     private fun addOrReuseRequest(request: Request): RequestQueue {
@@ -50,7 +49,7 @@ class RequestHelper(
         val report = AtomicReference<RequestStatusReport?>(null)
         val ran = AtomicBoolean(false)
 
-        withContext(synchronizer) {
+        withContext(dispatcher.confined) {
             val queue = addOrReuseRequest(request)
             if (queue.running == null) {
                 queue.running = handleCallback
@@ -63,7 +62,7 @@ class RequestHelper(
                     report.set(prepareStatusReportLocked(queue.request))
                 report.get()?.dispatchReport()
 
-                withContext(context) {
+                withContext(dispatcher.io) {
                     val wrapper = RequestWrapper(
                         handleCallback = handleCallback,
                         helper = this@RequestHelper,
@@ -89,7 +88,7 @@ class RequestHelper(
         wrapper: RequestWrapper,
         throwable: RequestError?
     ) {
-        withContext(synchronizer) {
+        withContext(dispatcher.confined) {
             val isSuccessful = throwable == null
             var report: RequestStatusReport? = null
             val queue = addOrReuseRequest(wrapper.request)
@@ -122,7 +121,7 @@ class RequestHelper(
         action: suspend () -> Unit
     ): Boolean {
         val retried = AtomicBoolean(false)
-        withContext(synchronizer) {
+        withContext(dispatcher.confined) {
             val pendingRetries = mutableListOf<RequestWrapper?>()
 
             requestQueue.forEach { queue ->
@@ -142,7 +141,7 @@ class RequestHelper(
             if (!pendingRetries.isNullOrEmpty())
                 action()
 
-            withContext(context) {
+            withContext(dispatcher.io) {
                 pendingRetries
                     .forEach { wrapper ->
                         wrapper?.retry()
@@ -159,7 +158,7 @@ class RequestHelper(
      * @return True if a match is found, false otherwise.
      */
     override suspend fun hasAnyWithStatus(status: Request.Status): Boolean {
-        return withContext(synchronizer) {
+        return withContext(dispatcher.confined) {
             val queue = requestQueue.firstOrNull {
                 it.request.status == status
             }
