@@ -9,7 +9,7 @@ import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import kotlin.reflect.KProperty
 
 /**
- * Enum preference delegate
+ * [Enum] preference delegate
  *
  * @see ISupportPreferenceDelegate
  */
@@ -34,7 +34,7 @@ internal class EnumPreference<T : Enum<*>>(
 }
 
 /**
- * Boolean preference delegate
+ * [Boolean] preference delegate
  *
  * @see ISupportPreferenceDelegate
  */
@@ -56,7 +56,7 @@ internal class BooleanPreference(
 }
 
 /**
- * Int preference delegate
+ * [Int] preference delegate
  *
  * @see ISupportPreferenceDelegate
  */
@@ -78,7 +78,29 @@ internal class IntPreference(
 }
 
 /**
- * Long preference delegate
+ * [Float] preference delegate
+ *
+ * @see ISupportPreferenceDelegate
+ */
+internal class FloatPreference(
+    override val key: Int,
+    override val default: Float,
+    override val resources: Resources
+) : ISupportPreferenceDelegate<Float> {
+
+    override fun getValue(thisRef: AbstractSetting<Float>, property: KProperty<*>): Float {
+        return thisRef.preference.getFloat(stringOf(key), default)
+    }
+
+    override fun setValue(thisRef: AbstractSetting<Float>, property: KProperty<*>, value: Float) {
+        thisRef.preference.edit {
+            putFloat(stringOf(key), value)
+        }
+    }
+}
+
+/**
+ * [Long] preference delegate
  *
  * @see ISupportPreferenceDelegate
  */
@@ -100,7 +122,7 @@ internal class LongPreference(
 }
 
 /**
- * String preference delegate
+ * [String] preference delegate
  *
  * @see ISupportPreferenceDelegate
  */
@@ -122,7 +144,7 @@ internal class StringPreference(
 }
 
 /**
- * Null string preference delegate
+ * Null [String] preference delegate
  *
  * @see ISupportPreferenceDelegate
  */

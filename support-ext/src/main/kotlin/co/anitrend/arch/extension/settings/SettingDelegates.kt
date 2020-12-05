@@ -84,6 +84,28 @@ class IntSetting(
  * @since v1.3.0
  * @see AbstractSetting
  */
+class FloatSetting(
+    key: Int,
+    default: Float,
+    resources: Resources,
+    preference: SharedPreferences
+) : AbstractSetting<Float>(preference, default) {
+
+    override var value by FloatPreference(key, default, resources)
+
+    override val flow = callbackFlow {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener {
+                _, _ -> sendBlocking(value)
+        }
+        preference.registerOnSharedPreferenceChangeListener(listener)
+        awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
+}
+
+/**
+ * @since v1.3.0
+ * @see AbstractSetting
+ */
 class LongSetting(
     key: Int,
     default: Long,
