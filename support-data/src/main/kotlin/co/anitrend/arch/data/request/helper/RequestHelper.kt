@@ -60,14 +60,14 @@ class RequestHelper(
                 queue.passed = null
 
                 if (listeners.isNotEmpty())
-                    report.set(prepareStatusReportLocked(request))
+                    report.set(prepareStatusReportLocked(queue.request))
                 report.get()?.dispatchReport()
 
                 withContext(context) {
                     val wrapper = RequestWrapper(
                         handleCallback = handleCallback,
                         helper = this@RequestHelper,
-                        request = request
+                        request = queue.request
                     )
                     wrapper.invoke()
                 }
@@ -106,7 +106,7 @@ class RequestHelper(
             }
 
             if (listeners.isNotEmpty())
-                report = prepareStatusReportLocked(wrapper.request)
+                report = prepareStatusReportLocked(queue.request)
 
             report?.dispatchReport()
         }
