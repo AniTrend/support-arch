@@ -101,7 +101,9 @@ internal fun Project.configureOptions() {
                     classpath += variant.javaCompileProvider.get().classpath
                 }
             }
-            exclude("**/R.html", "**/R.*.html", "**/index.html")
+            // exclude("**/R.html", "**/R.*.html", "**/index.html")
+            // allow index html to be packaged in javadoc
+            exclude("**/R.html", "**/R.*.html")
         }
 
         val javadocJar = tasks.create("javadocJar", Jar::class.java) {
@@ -121,7 +123,7 @@ internal fun Project.configureOptions() {
         publishingExtension().publications {
             val component = components.findByName("android")
 
-            println("Configuring maven publication options for ${project.path}:maven with component-> ${component?.name}")
+            println("Configuring maven publication options for ${project.path}:maven with component -> ${component?.name}")
             create("maven", MavenPublication::class.java) {
                 groupId = "co.anitrend.arch"
                 artifactId = project.name
