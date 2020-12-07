@@ -3,16 +3,12 @@ package co.anitrend.arch.extension.settings
 import android.content.SharedPreferences
 import android.content.res.Resources
 import co.anitrend.arch.extension.preference.*
-import co.anitrend.arch.extension.preference.BooleanPreference
-import co.anitrend.arch.extension.preference.EnumPreference
-import co.anitrend.arch.extension.preference.IntPreference
-import co.anitrend.arch.extension.preference.LongPreference
-import co.anitrend.arch.extension.preference.StringPreference
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+
+private typealias SettingsListener = SharedPreferences.OnSharedPreferenceChangeListener
 
 /**
  * @since v1.3.0
@@ -25,11 +21,14 @@ class EnumSetting<T : Enum<*>>(
     preference: SharedPreferences
 ) : AbstractSetting<T>(preference, default) {
 
-    override var value by EnumPreference(key, default, resources)
-
+    override val identifier = resources.getString(key)
+    
+    override var value by EnumPreference(identifier, default)
+    
     override val flow = callbackFlow {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener {
-                _, _ -> sendBlocking(value)
+        val listener = SettingsListener { _, id ->
+            if (id == identifier)
+                sendBlocking(value)
         }
         preference.registerOnSharedPreferenceChangeListener(listener)
         awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -47,11 +46,14 @@ class BooleanSetting(
     preference: SharedPreferences
 ) : AbstractSetting<Boolean>(preference, default) {
 
-    override var value by BooleanPreference(key, default, resources)
+    override val identifier = resources.getString(key)
+
+    override var value by BooleanPreference(identifier, default)
 
     override val flow = callbackFlow {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener {
-                _, _ -> sendBlocking(value)
+        val listener = SettingsListener { _, id ->
+            if (id == identifier)
+                sendBlocking(value)
         }
         preference.registerOnSharedPreferenceChangeListener(listener)
         awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -69,11 +71,14 @@ class IntSetting(
     preference: SharedPreferences
 ) : AbstractSetting<Int>(preference, default) {
 
-    override var value by IntPreference(key, default, resources)
+    override val identifier = resources.getString(key)
+
+    override var value by IntPreference(identifier, default)
 
     override val flow = callbackFlow {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener {
-                _, _ -> sendBlocking(value)
+        val listener = SettingsListener { _, id ->
+            if (id == identifier)
+                sendBlocking(value)
         }
         preference.registerOnSharedPreferenceChangeListener(listener)
         awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -91,11 +96,14 @@ class FloatSetting(
     preference: SharedPreferences
 ) : AbstractSetting<Float>(preference, default) {
 
-    override var value by FloatPreference(key, default, resources)
+    override val identifier = resources.getString(key)
+
+    override var value by FloatPreference(identifier, default)
 
     override val flow = callbackFlow {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener {
-                _, _ -> sendBlocking(value)
+        val listener = SettingsListener { _, id ->
+            if (id == identifier)
+                sendBlocking(value)
         }
         preference.registerOnSharedPreferenceChangeListener(listener)
         awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -113,11 +121,14 @@ class LongSetting(
     preference: SharedPreferences
 ) : AbstractSetting<Long>(preference, default) {
 
-    override var value by LongPreference(key, default, resources)
+    override val identifier = resources.getString(key)
+
+    override var value by LongPreference(identifier, default)
 
     override val flow = callbackFlow {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener {
-                _, _ -> sendBlocking(value)
+        val listener = SettingsListener { _, id ->
+            if (id == identifier)
+                sendBlocking(value)
         }
         preference.registerOnSharedPreferenceChangeListener(listener)
         awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -135,11 +146,14 @@ class StringSetting(
     preference: SharedPreferences
 ) : AbstractSetting<String>(preference, default) {
 
-    override var value by StringPreference(key, default, resources)
+    override val identifier = resources.getString(key)
+
+    override var value by StringPreference(identifier, default)
 
     override val flow = callbackFlow {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener {
-                _, _ -> sendBlocking(value)
+        val listener = SettingsListener { _, id ->
+            if (id == identifier)
+                sendBlocking(value)
         }
         preference.registerOnSharedPreferenceChangeListener(listener)
         awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -157,11 +171,14 @@ class NullableStringSetting(
     preference: SharedPreferences
 ) : AbstractSetting<String?>(preference, default) {
 
-    override var value by NullableStringPreference(key, default, resources)
+    override val identifier = resources.getString(key)
+
+    override var value by NullableStringPreference(identifier, default)
 
     override val flow = callbackFlow {
-        val listener = SharedPreferences.OnSharedPreferenceChangeListener {
-                _, _ -> sendBlocking(value)
+        val listener = SettingsListener { _, id ->
+            if (id == identifier)
+                sendBlocking(value)
         }
         preference.registerOnSharedPreferenceChangeListener(listener)
         awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
