@@ -51,7 +51,7 @@ object Libraries {
         }
 
         object Recycler {
-            private const val version = "1.2.0-alpha06"
+            private const val version = "1.2.0-beta01"
             const val recyclerView = "androidx.recyclerview:recyclerview:$version"
             const val recyclerViewSelection = "androidx.recyclerview:recyclerview-selection:$version"
         }
