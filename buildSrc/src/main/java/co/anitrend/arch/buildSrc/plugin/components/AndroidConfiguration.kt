@@ -74,6 +74,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                 listOf(
                     "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                     "-Xopt-in=kotlinx.coroutines.FlowPreview",
+                    "-Xopt-in=kotlin.time.ExperimentalTime",
                     "-Xopt-in=kotlin.Experimental"
                 )
             } else {
