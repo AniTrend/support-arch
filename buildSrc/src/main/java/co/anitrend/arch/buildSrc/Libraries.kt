@@ -23,13 +23,13 @@ object Libraries {
     object AndroidX {
 
         object Core {
-            private const val version = "1.5.0-alpha05"
+            private const val version = "1.5.0-beta01"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
         }
 
         object Lifecycle {
-            private const val version = "2.3.0-beta01"
+            private const val version = "2.3.0-rc01"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
             const val runTimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
@@ -51,7 +51,7 @@ object Libraries {
         }
 
         object Recycler {
-            private const val version = "1.2.0-alpha06"
+            private const val version = "1.2.0-beta01"
             const val recyclerView = "androidx.recyclerview:recyclerview:$version"
             const val recyclerViewSelection = "androidx.recyclerview:recyclerview-selection:$version"
         }
@@ -81,7 +81,7 @@ object Libraries {
         }
 
         object Work {
-            private const val version = "2.5.0-beta01"
+            private const val version = "2.5.0-rc01"
             const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
             const val runtime = "androidx.work:work-runtime:$version"
             const val test = "androidx.work:work-test:$version"
