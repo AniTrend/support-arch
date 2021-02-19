@@ -6,25 +6,25 @@ import co.anitrend.arch.data.request.helper.RequestHelper
 import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.data.source.contract.ISource
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.coroutine.extension.Default
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 
 /**
  * Contract for data sources
  *
  * @since v1.1.0
  */
-abstract class AbstractDataSource(
-    protected val dispatcher: ISupportDispatcher
-) : IDataSource, ISource, ISupportCoroutine by Default() {
+abstract class AbstractDataSource : IDataSource, ISource, ISupportCoroutine by Default() {
 
     /**
      * Module tag for the current context
      */
     protected val moduleTag: String = javaClass.simpleName
+
+    /**
+     * Contract for multiple types of [coroutineDispatcher]
+     */
+    protected abstract val dispatcher: ISupportDispatcher
 
     /**
      * Request helper that controls the flow of requests to the implementing data source to avoid

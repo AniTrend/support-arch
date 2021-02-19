@@ -1,12 +1,7 @@
 package co.anitrend.arch.data.source.live
 
-import co.anitrend.arch.data.request.AbstractRequestHelper
-import co.anitrend.arch.data.request.contract.IRequestHelper
-import co.anitrend.arch.data.request.extension.createStatusFlow
-import co.anitrend.arch.data.request.helper.RequestHelper
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.live.contract.AbstractPagingLiveDataSource
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 import kotlinx.coroutines.launch
@@ -18,9 +13,7 @@ import kotlinx.coroutines.launch
  *
  * @since v1.3.0
  */
-abstract class SupportPagingLiveDataSource<K, V>(
-    dispatcher: ISupportDispatcher
-) : AbstractPagingLiveDataSource<K, V>(dispatcher) {
+abstract class SupportPagingLiveDataSource<K, V> : AbstractPagingLiveDataSource<K, V>() {
 
     /**
      * Representation of the paging state

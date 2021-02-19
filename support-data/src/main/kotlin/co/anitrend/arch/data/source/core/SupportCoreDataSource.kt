@@ -2,7 +2,6 @@ package co.anitrend.arch.data.source.core
 
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.contract.AbstractDataSource
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 
 /**
  * A data source that depends on [kotlinx.coroutines.flow.Flow] to publish results.
@@ -11,9 +10,7 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
  *
  * @since v1.1.0
  */
-abstract class SupportCoreDataSource(
-    dispatcher: ISupportDispatcher
-) : AbstractDataSource(dispatcher) {
+abstract class SupportCoreDataSource : AbstractDataSource() {
 
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload

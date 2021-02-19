@@ -2,7 +2,6 @@ package co.anitrend.arch.data.source.paging
 
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.paging.contract.AbstractPagingDataSource
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
 
@@ -13,9 +12,7 @@ import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
  *
  * @since v1.1.0
  */
-abstract class SupportPagingDataSource<T>(
-    dispatcher: ISupportDispatcher
-) : AbstractPagingDataSource<T>(dispatcher) {
+abstract class SupportPagingDataSource<T> : AbstractPagingDataSource<T>() {
 
     /**
      * Representation of the paging state

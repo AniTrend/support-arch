@@ -2,7 +2,6 @@ package co.anitrend.arch.data.source.contract
 
 import co.anitrend.arch.data.request.AbstractRequestHelper
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 
