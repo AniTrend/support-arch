@@ -1,82 +1,44 @@
 package co.anitrend.arch.data.source.core
 
-import androidx.lifecycle.MutableLiveData
-import co.anitrend.arch.data.source.core.contract.ICoreDataSource
-import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.arch.extension.network.SupportConnectivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.SupervisorJob
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.data.source.core.contract.AbstractDataSource
 
 /**
- * A non-coroutine that depends on [androidx.lifecycle.LiveData] to publish results.
- * This data source is targeted for UI components, but not for [androidx.paging.PagedList]
- * dependant resources that may require boundary callbacks.
+ * A data source that depends on [kotlinx.coroutines.flow.Flow] to publish results.
+ *
+ * @param dispatcher Dispatchers that are currently available
  *
  * @since v1.1.0
  */
-abstract class SupportCoreDataSource(
-    protected val dispatchers: SupportDispatchers
-) : ICoreDataSource, KoinComponent {
-
-    protected val moduleTag: String = javaClass.simpleName
-
-    /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
-     */
-    final override val supervisorJob: Job = SupervisorJob()
-
-    override val networkState = MutableLiveData<NetworkState>()
-
-    /**
-     * Function reference for the retry event
-     */
-    protected var retry: (() -> Unit)? = null
-
-    private fun retryPreviousRequest() {
-        val prevRetry = retry
-        retry = null
-        prevRetry?.invoke()
-    }
-
-    /**
-     * Retries the last executed request
-     */
-    override fun retryRequest() {
-        retryPreviousRequest()
-    }
+abstract class SupportCoreDataSource : AbstractDataSource() {
 
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
-    override fun invalidateAndRefresh() {
-        super.invalidateAndRefresh()
-        retryPreviousRequest()
+    override suspend fun invalidate() {
+        clearDataSource(dispatcher.io)
     }
 
     /**
-     * Coroutine dispatcher specification
+     * Retries the last executed request, may also be called in [refresh]
      *
-     * @return one of the sub-types of [kotlinx.coroutines.Dispatchers]
+     * @see refresh
      */
-    final override val coroutineDispatcher = dispatchers.computation
+    override suspend fun retryFailed() {
+        requestHelper.retryWithStatus(
+            Request.Status.FAILED
+        ) {}
+    }
 
     /**
-     * Persistent context for the coroutine
-     *
-     * @return [kotlin.coroutines.CoroutineContext] preferably built from
-     * [supervisorJob] + [coroutineDispatcher]
+     * Invalidate data source and, re-run the last successful or last failed request if applicable
      */
-    final override val coroutineContext = supervisorJob + coroutineDispatcher
+    override suspend fun refresh() {
+        val ran = requestHelper.retryWithStatus(
+            Request.Status.SUCCESS
+        ) { invalidate() }
 
-    /**
-     * A failure or cancellation of a child does not cause the supervisor job
-     * to fail and does not affect its other children.
-     *
-     * @return [kotlinx.coroutines.CoroutineScope]
-     */
-    final override val scope = CoroutineScope(coroutineContext)
+        if (!ran)
+            retryFailed()
+    }
 }

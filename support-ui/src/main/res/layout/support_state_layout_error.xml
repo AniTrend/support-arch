@@ -31,7 +31,7 @@
             android:layout_marginStart="@dimen/xl_margin"
             android:layout_marginEnd="@dimen/xl_margin">
 
-            <co.anitrend.arch.ui.view.text.SingleLineTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/stateLayoutErrorHeading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,6 +39,8 @@
                 android:layout_marginEnd="@dimen/lg_margin"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_gravity="center"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:gravity="center"
                 tools:text="Resource Not Found" />
 

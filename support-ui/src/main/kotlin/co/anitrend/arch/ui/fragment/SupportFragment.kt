@@ -1,57 +1,52 @@
 package co.anitrend.arch.ui.fragment
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
-import co.anitrend.arch.core.presenter.SupportPresenter
-import co.anitrend.arch.extension.LAZY_MODE_UNSAFE
-import co.anitrend.arch.ui.action.SupportActionMode
-import co.anitrend.arch.ui.action.contract.ISupportActionMode
-import co.anitrend.arch.ui.action.event.ActionModeListener
-import co.anitrend.arch.ui.view.contract.ISupportFragmentActivity
+import co.anitrend.arch.ui.fragment.contract.ISupportFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import timber.log.Timber
 
 /**
- * Core implementation contract for detailed fragment which may not complex or mixed UI elements.
+ * Core implementation contract for fragments, which automatically retains instance,
+ * see [setRetainInstance] for behavior changes
+ *
+ * @param inflateMenu setting this to anything other than [ISupportFragment.NO_MENU_ITEM]
+ * will automatically inflate the given menu in [onCreateOptionsMenu] and set [setHasOptionsMenu]
+ * to true.
+ * @param inflateLayout settings this to anything other than [ISupportFragment.NO_LAYOUT_ITEM]
+ * will inflate the given layout automatically in [onCreateView].
  *
  * @since v0.9.X
- * @see ISupportFragmentActivity
+ *
+ * @see ISupportFragment
  */
-abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(),
-    ActionModeListener, ISupportFragmentActivity<VM, P>, CoroutineScope by MainScope() {
+abstract class SupportFragment(
+    @MenuRes protected open val inflateMenu: Int = ISupportFragment.NO_MENU_ITEM,
+    @LayoutRes protected open val inflateLayout: Int = ISupportFragment.NO_LAYOUT_ITEM
+) : Fragment(), ISupportFragment, CoroutineScope by MainScope() {
 
-    protected val moduleTag: String = javaClass.simpleName
+    override val moduleTag: String = javaClass.simpleName
 
-    @MenuRes
-    protected open var inflateMenu: Int = ISupportFragmentActivity.NO_MENU_ITEM
-
-    @LayoutRes
-    protected open val inflateLayout: Int = ISupportFragmentActivity.NO_LAYOUT_ITEM
-
-    protected val supportAction: ISupportActionMode<M> by lazy(LAZY_MODE_UNSAFE) {
-        SupportActionMode<M>(
-            actionModeListener = this,
-            presenter = supportPresenter
-        )
-    }
+    /**
+     * Invoke view model observer to watch for changes, this will be called
+     * called in [onViewCreated]
+     */
+    protected abstract fun setUpViewModelObserver()
 
     /**
      * Called to do initial creation of a fragment. This is called after
      * [SupportFragment.onAttach] and before [SupportFragment.onCreateView].
      *
-     * Note that this can be called while the fragment's activity is
-     * still in the process of being created.  As such, you can not rely
-     * on things like the activity's content view hierarchy being initialized
-     * at this point.  If you want to do work once the activity itself is
-     * created, see [.onActivityCreated].
+     * **N.B.** This can be called while the fragment's activity is still in the process of
+     * being created.  As such, you can not rely on things like the activity's content view
+     * hierarchy being initialized at this point. If you want to do work once the activity itself
+     * is created, use [onActivityCreated]
      *
-     *
-     * Any restored child fragments will be created before the base [SupportFragment.onCreate] method returns.
+     * Any restored child fragments will be created before the base [SupportFragment.onCreate]
+     * method returns.
      *
      * @param savedInstanceState If the fragment is being re-created from
      * a previous saved state, this is the state.
@@ -59,6 +54,8 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
+        initializeComponents(savedInstanceState)
+        setHasOptionsMenu(inflateMenu != ISupportFragment.NO_MENU_ITEM)
     }
 
     /**
@@ -77,7 +74,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(),
      *
      * @param inflater The LayoutInflater object that can be used to inflate any views in the fragment
      * @param container If non-null, this is the parent view that the fragment's UI should be
-     * attached to.  The fragment should not add the view itself, but this can be used to generate
+     * attached to. The fragment should not add the view itself, but this can be used to generate
      * the LayoutParams of the view.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
@@ -89,37 +86,31 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return if (inflateLayout != ISupportFragmentActivity.NO_LAYOUT_ITEM) {
+        return if (inflateLayout != ISupportFragment.NO_LAYOUT_ITEM) {
             inflater.inflate(inflateLayout, container, false)
         } else super.onCreateView(inflater, container, savedInstanceState)
     }
 
     /**
-     * Called when the Fragment is visible to the user.  This is generally
-     * tied to [Fragment.onStart] of the containing
-     * Activity's lifecycle.
+     * Called immediately after [onCreateView] has returned, but before any saved state has been
+     * restored in to the view. This gives subclasses a chance to initialize themselves once
+     * they know their view hierarchy has been completely created.
+     *
+     * The fragment's view hierarchy is not however attached to its parent at this point.
+     *
+     * @param view The View returned by [onCreateView].
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
+     * saved state as given here.
      */
-    override fun onStart() {
-        super.onStart()
-        setHasOptionsMenu(isMenuEnabled)
-    }
-
-    override fun onPause() {
-        supportPresenter.onPause(this)
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        supportPresenter.onResume(this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUpViewModelObserver()
     }
 
     /**
-     * Initialize the contents of the Fragment host's standard options menu.  You
-     * should place your menu items in to <var>menu</var>.  For this method
-     * to be called, you must have first called [.setHasOptionsMenu].  See
-     * [SupportFragment.onCreateOptionsMenu]
-     * for more information.
+     * Initialize the contents of the Fragment host's standard options menu. You should place
+     * your menu items in to [menu]. For this method to be called, you must have first
+     * called [setHasOptionsMenu]. See [SupportFragment.onCreateOptionsMenu] for more information.
      *
      * @param menu The options menu in which you place your items.
      * @param inflater menu inflater
@@ -129,78 +120,7 @@ abstract class SupportFragment<M, P : SupportPresenter<*>, VM> : Fragment(),
      * @see SupportFragment.onOptionsItemSelected
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (inflateMenu != ISupportFragmentActivity.NO_MENU_ITEM)
+        if (inflateMenu != ISupportFragment.NO_MENU_ITEM)
             inflater.inflate(inflateMenu, menu)
     }
-
-    override fun hasBackPressableAction(): Boolean {
-        if (supportAction.getAllSelectedItems().isNotEmpty()) {
-            supportAction.clearSelection()
-            return true
-        }
-        return super.hasBackPressableAction()
-    }
-
-    /**
-     * Called when an item is selected or deselected.
-     *
-     * @param mode The current ActionMode being used
-     */
-    override fun onSelectionChanged(mode: ActionMode?, count: Int) {
-        Timber.tag(moduleTag).d("onSelectionChanged(mode: ActionMode?, count: Int) -> count = $count")
-    }
-
-    /**
-     * Called when action mode is first created. The menu supplied will be used to
-     * generate action buttons for the action mode.
-     *
-     * @param mode ActionMode being created
-     * @param menu Menu used to populate action buttons
-     * @return true if the action mode should be created, false if entering this
-     * mode should be aborted.
-     */
-    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-        return false
-    }
-
-    /**
-     * Called to refresh an action mode's action menu whenever it is invalidated.
-     *
-     * @param mode ActionMode being prepared
-     * @param menu Menu used to populate action buttons
-     * @return true if the menu or action mode was updated, false otherwise.
-     */
-    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-        return false
-    }
-
-    /**
-     * Called to report a user click on an action button.
-     *
-     * @param mode The current ActionMode
-     * @param item The item that was clicked
-     * @return true if this supportActionMode handled the event, false if the standard MenuItem
-     * invocation should continue.
-     */
-    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-        return false
-    }
-
-    /**
-     * Called when an action mode is about to be exited and destroyed.
-     *
-     * @param mode The current ActionMode being destroyed
-     */
-    override fun onDestroyActionMode(mode: ActionMode) {
-        supportAction.clearSelection()
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        Timber.tag(moduleTag).d("onSharedPreferenceChanged -> $key | Changed value")
-    }
-
-    /**
-     * Invoke view model observer to watch for changes
-     */
-    protected abstract fun setUpViewModelObserver()
 }

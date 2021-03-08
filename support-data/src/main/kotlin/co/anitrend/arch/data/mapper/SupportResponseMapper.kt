@@ -9,5 +9,8 @@ import co.anitrend.arch.data.mapper.contract.ISupportResponseMapper
  */
 abstract class SupportResponseMapper<S, D> : ISupportResponseMapper<S, D> {
 
+    /**
+    * Current module identifier tag
+    */
     protected val moduleTag: String = javaClass.simpleName
 }

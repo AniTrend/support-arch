@@ -2,7 +2,7 @@ package co.anitrend.arch.extension.util.pagination
 
 import android.os.Bundle
 import android.os.Parcelable
-import co.anitrend.arch.extension.util.SupportExtKeyStore
+import co.anitrend.arch.extension.util.KEY_PAGINATION
 import co.anitrend.arch.extension.util.pagination.contract.ISupportPagingHelper
 import kotlinx.android.parcel.Parcelize
 
@@ -29,6 +29,14 @@ data class SupportPagingHelper(
     }
 
     /**
+     * Calculates the previous page offset and index
+     */
+    override fun onPagePrevious() {
+        page -= 1
+        pageOffset -= pageSize
+    }
+
+    /**
      * Calculates the next page offset and index
      */
     override fun onPageNext() {
@@ -44,13 +52,9 @@ data class SupportPagingHelper(
 
     /**
      * Restore state from bundle
-     *
-     * @param bundle saved state
      */
-    fun from(bundle: Bundle?) {
-        val saved = bundle?.getParcelable<SupportPagingHelper>(
-            SupportExtKeyStore.key_pagination
-        )
+    fun Bundle.from() {
+        val saved: SupportPagingHelper? = getParcelable(KEY_PAGINATION)
         if (saved != null) {
             page = saved.page
             pageOffset = saved.pageOffset

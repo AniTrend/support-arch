@@ -4,7 +4,7 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
 import android.view.animation.LinearInterpolator
-import co.anitrend.arch.theme.animator.contract.ISupportAnimator
+import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 
 /**
  * Scale animator for recycler animations
@@ -14,7 +14,7 @@ import co.anitrend.arch.theme.animator.contract.ISupportAnimator
 class ScaleAnimator(
     private val from: Float = .85f,
     private val to: Float = 1f
-) : ISupportAnimator {
+) : AbstractAnimator() {
 
     override val interpolator = LinearInterpolator()
 

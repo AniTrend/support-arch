@@ -1,10 +1,7 @@
 package co.anitrend.arch.extension.util.date
 
-import android.content.Context
-import androidx.annotation.IntRange
 import co.anitrend.arch.extension.util.attribute.SeasonType
-import co.anitrend.arch.extension.util.contract.ISupportDateHelper
-import com.jakewharton.threetenabp.AndroidThreeTen
+import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
 import java.util.*
 
 /**
@@ -13,11 +10,7 @@ import java.util.*
  * @param context application context
  * @since v1.1.0
  */
-class SupportDateHelper(context: Context) : ISupportDateHelper {
-
-    init {
-        initializeThreeTenBackPort(context)
-    }
+class SupportDateHelper : ISupportDateHelper {
 
     /**
      * @return current seasons name
@@ -31,16 +24,6 @@ class SupportDateHelper(context: Context) : ISupportDateHelper {
                 else -> SeasonType.WINTER
             }
         }
-
-    /** [Three Ten Android Backport](https://github.com/JakeWharton/ThreeTenABP)
-     * Should handle initialization of ThreeTenABP if you are overriding the interface
-     * and wish to make use of the default methods
-     *
-     * @param context application context
-     */
-    override fun initializeThreeTenBackPort(context: Context) {
-        AndroidThreeTen.init(context)
-    }
 
     /**
      * Gets the current year + delta, if the season for the year is winter later in the year

@@ -13,6 +13,11 @@ interface ISupportPagingHelper {
     fun onPageRefresh()
 
     /**
+     * Calculates the previous page offset and index
+     */
+    fun onPagePrevious()
+
+    /**
      * Calculates the next page offset and index
      */
     fun onPageNext()

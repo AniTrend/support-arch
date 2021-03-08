@@ -4,18 +4,16 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import co.anitrend.arch.extension.preference.contract.ISupportPreference
+import co.anitrend.arch.extension.settings.contract.AbstractSetting
 
 /**
  * Core abstract implementation for application preferences
  *
  * @since v0.9.X
+ *
+ * @see AbstractSetting
  */
-abstract class SupportPreference(
+abstract class SupportPreference @JvmOverloads constructor(
     protected val context: Context,
-    private val sharedPreferences: SharedPreferences
-) : ISupportPreference, SharedPreferences by sharedPreferences {
-
-    constructor(context: Context): this(
-        context, PreferenceManager.getDefaultSharedPreferences(context)
-    )
-}
+    sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+) : ISupportPreference, SharedPreferences by sharedPreferences

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import co.anitrend.arch.extension.use
+import co.anitrend.arch.extension.ext.use
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.view.contract.CustomView
 
@@ -17,16 +17,17 @@ import co.anitrend.arch.ui.view.contract.CustomView
  *
  * @since v0.9.X
  */
-open class SupportImageView : AppCompatImageView, CustomView {
+open class SupportImageView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : AppCompatImageView(context, attrs, defStyleAttr), CustomView {
 
     protected open var aspectRatio = DEFAULT_ASPECT_RATIO
 
-    constructor(context: Context) :
-            super(context) { onInit(context) }
-    constructor(context: Context, attrs: AttributeSet?) :
-            super(context, attrs) { onInit(context, attrs) }
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
-            super(context, attrs, defStyleAttr) { onInit(context, attrs) }
+    init {
+        onInit(context, attrs, defStyleAttr)
+    }
 
     /**
      * Callable in view constructors to perform view inflation and
@@ -58,6 +59,22 @@ open class SupportImageView : AppCompatImageView, CustomView {
         }
 
         setMeasuredDimension(width, height)
+    }
+
+    /**
+     * Should be called on a view's detach from window to unbind or release object references
+     * and cancel all running coroutine jobs if the current view
+     *
+     * Consider calling this in [android.view.View.onDetachedFromWindow]
+     */
+    override fun onViewRecycled() {
+        if (hasOnClickListeners())
+            setOnClickListener(null)
+    }
+
+    override fun onDetachedFromWindow() {
+        onViewRecycled()
+        super.onDetachedFromWindow()
     }
 
     companion object {

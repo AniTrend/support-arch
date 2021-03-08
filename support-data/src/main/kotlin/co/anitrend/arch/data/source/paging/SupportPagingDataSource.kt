@@ -1,83 +1,48 @@
 package co.anitrend.arch.data.source.paging
 
-import androidx.paging.PagedList
-import androidx.paging.PagingRequestHelper
-import androidx.paging.extension.createStatusLiveData
-import co.anitrend.arch.data.source.paging.contract.IPagingDataSource
-import co.anitrend.arch.extension.SupportDispatchers
-import co.anitrend.arch.extension.util.SupportExtKeyStore
+import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.data.source.paging.contract.AbstractPagingDataSource
+import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.asExecutor
 
 /**
- * A non-coroutine that depends on [androidx.lifecycle.LiveData] to publish results.
- * This data source is targeted for UI components that depend on [androidx.paging.PagedList]
+ * A data source that is targeted for [androidx.paging.PagedList]
+ *
+ * @param dispatcher Dispatchers that are currently available
  *
  * @since v1.1.0
  */
-abstract class SupportPagingDataSource<T>(
-    protected val dispatchers: SupportDispatchers
-) : PagedList.BoundaryCallback<T>(), IPagingDataSource {
-
-    protected val moduleTag: String = javaClass.simpleName
+abstract class SupportPagingDataSource<T> : AbstractPagingDataSource<T>() {
 
     /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
+     * Representation of the paging state
      */
-    final override val supervisorJob = SupervisorJob()
-
-    protected val pagingRequestHelper by lazy {
-        PagingRequestHelper(coroutineDispatcher.asExecutor())
-    }
-
-    override val networkState by lazy {
-        pagingRequestHelper.createStatusLiveData()
-    }
-
-    protected val supportPagingHelper by lazy {
-        SupportPagingHelper(
-            isPagingLimit = false,
-            pageSize = SupportExtKeyStore.pagingLimit
-        )
-    }
+    protected open val supportPagingHelper = SupportPagingHelper(
+        isPagingLimit = false,
+        pageSize = DEFAULT_PAGE_SIZE
+    )
 
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
-    override fun invalidateAndRefresh() {
-        super.invalidateAndRefresh()
+    override suspend fun invalidate() {
+        clearDataSource(dispatcher.io)
         supportPagingHelper.onPageRefresh()
     }
 
     /**
      * Performs the necessary operation to invoke a network retry request
      */
-    override fun retryRequest() {
-        pagingRequestHelper.retryAllFailed()
+    override suspend fun retryFailed() {
+        requestHelper.retryWithStatus(
+            Request.Status.FAILED
+        ) {}
     }
 
     /**
-     * Coroutine dispatcher specification
-     *
-     * @return one of the sub-types of [kotlinx.coroutines.Dispatchers]
+     * Invalidate data source and, re-run the last successful or last failed request if applicable
      */
-    final override val coroutineDispatcher = dispatchers.computation
-
-    /**
-     * Persistent context for the coroutine
-     *
-     * @return [kotlin.coroutines.CoroutineContext] preferably built from
-     * [supervisorJob] + [coroutineDispatcher]
-     */
-    final override val coroutineContext = supervisorJob + coroutineDispatcher
-
-    /**
-     * A failure or cancellation of a child does not cause the supervisor job
-     * to fail and does not affect its other children.
-     *
-     * @return [kotlinx.coroutines.CoroutineScope]
-     */
-    final override val scope = CoroutineScope(coroutineContext)
+    override suspend fun refresh() {
+        invalidate()
+    }
 }
