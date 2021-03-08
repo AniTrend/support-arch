@@ -3,7 +3,6 @@ package co.anitrend.arch.core.worker
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import co.anitrend.arch.core.presenter.SupportPresenter
 
 /**
  * A class that performs work synchronously on a background thread provided by [androidx.work.WorkManager].
@@ -24,12 +23,10 @@ import co.anitrend.arch.core.presenter.SupportPresenter
  *
  * @since v0.9.X
  */
-abstract class SupportWorker<P : SupportPresenter<*>>(
+abstract class SupportWorker(
     context: Context,
     workerParameters: WorkerParameters
 ): Worker(context, workerParameters) {
-
-    protected open val presenter: P? = null
 
     /**
      * Override this method to do your actual background processing.  This method is called on a

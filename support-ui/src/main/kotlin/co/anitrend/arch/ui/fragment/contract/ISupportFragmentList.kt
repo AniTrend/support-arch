@@ -1,56 +1,45 @@
 package co.anitrend.arch.ui.fragment.contract
 
-import android.view.View
-import androidx.annotation.IntegerRes
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.ui.R
-import co.anitrend.arch.ui.recycler.SupportRecyclerView
-import co.anitrend.arch.ui.recycler.adapter.contract.ISupportViewAdapter
-import co.anitrend.arch.ui.util.SupportStateLayoutConfiguration
+import co.anitrend.arch.recycler.SupportRecyclerView
+import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
+import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 
 /**
  * Fragment list contract
  *
  * @since v0.9.X
  */
-interface ISupportFragmentList<M> : SwipeRefreshLayout.OnRefreshListener {
-
-    var supportStateLayout: SupportStateLayout?
-    var supportRefreshLayout: SwipeRefreshLayout?
-    var supportRecyclerView: SupportRecyclerView?
-
-    /**
-     * Default grid sized items for the built in layout manager
-     *
-     * @see R.integer.grid_list_x3
-     */
-    @get:IntegerRes
-    val columnSize: Int
-        get() = R.integer.grid_list_x3
-
-    val stateLayoutOnClick: View.OnClickListener
-
-    val adapterFooterRetryAction: View.OnClickListener
+interface ISupportFragmentList<T> : SwipeRefreshLayout.OnRefreshListener {
 
     val onRefreshObserver: Observer<NetworkState>
-
     val onNetworkObserver: Observer<NetworkState>
 
     /**
-     * Adapter that should be used for the recycler view
+     * Adapter that should be used for the recycler view, by default [StateRestorationPolicy]
+     * is set to [StateRestorationPolicy.PREVENT_WHEN_EMPTY]
      */
-    val supportViewAdapter: ISupportViewAdapter<M>
+    val supportViewAdapter: ISupportAdapter<T>
 
     /**
      * State configuration for any underlying state representing widgets
      */
-    val supportStateConfiguration: SupportStateLayoutConfiguration
+    val stateConfig: StateLayoutConfig
+
+    /**
+     * Provides a layout manager that should be used by [setRecyclerLayoutManager]
+     */
+    fun provideLayoutManager(): RecyclerView.LayoutManager
 
     /**
      * Sets a layout manager to the recycler view
+     *
+     * @see provideLayoutManager
      */
     fun setRecyclerLayoutManager(recyclerView: SupportRecyclerView)
 

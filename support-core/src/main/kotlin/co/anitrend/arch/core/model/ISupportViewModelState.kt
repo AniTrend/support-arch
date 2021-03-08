@@ -23,12 +23,12 @@ interface ISupportViewModelState<R> {
     /**
      * Triggers use case to perform a retry operation
      */
-    fun retry()
+    suspend fun retry()
 
     /**
      * Triggers use case to perform refresh operation
      */
-    fun refresh()
+    suspend fun refresh()
 
     /**
      * Called upon [androidx.lifecycle.ViewModel.onCleared] and should optionally

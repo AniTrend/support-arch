@@ -8,13 +8,16 @@ import timber.log.Timber
 /**
  * Contract for life cycle aware components, with all lifecycle events optional
  *
- * @see [co.anitrend.arch.extension.attachComponent]
- * @see [co.anitrend.arch.extension.detachComponent]
+ * @see [co.anitrend.arch.extension.ext.attachComponent]
+ * @see [co.anitrend.arch.extension.ext.detachComponent]
  *
  * @since v1.2.0
  */
 interface SupportLifecycle : LifecycleObserver {
 
+    /**
+     * Tag descriptor of the current module
+     */
     val moduleTag: String
 
     /**
@@ -24,7 +27,7 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        Timber.tag(moduleTag).d("onCreate")
+        Timber.tag(moduleTag).v("onCreate")
     }
 
     /**
@@ -34,7 +37,7 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
-        Timber.tag(moduleTag).d("onStart")
+        Timber.tag(moduleTag).v("onStart")
     }
 
     /**
@@ -44,7 +47,7 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-        Timber.tag(moduleTag).d("onStop")
+        Timber.tag(moduleTag).v("onStop")
     }
 
     /**
@@ -54,7 +57,7 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {
-        Timber.tag(moduleTag).d("onResume")
+        Timber.tag(moduleTag).v("onResume")
     }
 
     /**
@@ -64,7 +67,7 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onPause() {
-        Timber.tag(moduleTag).d("onPause")
+        Timber.tag(moduleTag).v("onPause")
     }
 
     /**
@@ -74,6 +77,6 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
-        Timber.tag(moduleTag).d("onDestroy")
+        Timber.tag(moduleTag).v("onDestroy")
     }
 }
