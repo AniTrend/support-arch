@@ -19,7 +19,7 @@ import co.anitrend.arch.extension.ext.detachComponent
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.adapter.SupportPagedListAdapter
-import co.anitrend.arch.recycler.common.StateClickableItem
+import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.extension.configureWidgetBehaviorWith
 import co.anitrend.arch.ui.extension.onResponseResetStates
@@ -120,7 +120,7 @@ abstract class SupportFragmentList<M>(
         lifecycleScope.launchWhenResumed {
             supportViewAdapter.clickableStateFlow
                 .debounce(16)
-                .filterIsInstance<StateClickableItem>()
+                .filterIsInstance<ClickableItem.State>()
                 .collect {
                     if (it.state !is NetworkState.Loading)
                         viewModelState()?.retry()

@@ -10,7 +10,7 @@ import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.getLayoutInflater
 import co.anitrend.arch.extension.ext.gone
-import co.anitrend.arch.recycler.common.StateClickableItem
+import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.view.contract.CustomView
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
@@ -38,12 +38,12 @@ open class SupportStateLayout @JvmOverloads constructor(
     private val moduleTag = javaClass.simpleName
 
     private val interactionMutableStateFlow =
-        MutableStateFlow<StateClickableItem?>(null)
+        MutableStateFlow<ClickableItem.State?>(null)
 
     /**
      * Observable for click interactions, which returns the current network state
      */
-    val interactionStateFlow: StateFlow<StateClickableItem?> =
+    val interactionStateFlow: StateFlow<ClickableItem.State?> =
         interactionMutableStateFlow
 
     /**
@@ -114,7 +114,7 @@ open class SupportStateLayout @JvmOverloads constructor(
 
         stateLayoutErrorRetryAction.setOnClickListener {
             interactionMutableStateFlow.value =
-                StateClickableItem(
+                ClickableItem.State(
                     state = networkMutableStateFlow.value,
                     view = it
                 )

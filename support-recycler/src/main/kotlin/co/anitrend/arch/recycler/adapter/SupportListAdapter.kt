@@ -31,7 +31,7 @@ import timber.log.Timber
  */
 abstract class SupportListAdapter<T>(
     differCallback: DiffUtil.ItemCallback<T>,
-    supportsStableIds: Boolean = true
+    supportsStableIds: Boolean = false
 ) : ISupportAdapter<T>, RecyclerView.Adapter<SupportViewHolder>() {
 
     init {
