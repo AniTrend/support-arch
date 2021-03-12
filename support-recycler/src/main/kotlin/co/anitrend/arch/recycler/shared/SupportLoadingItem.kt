@@ -13,7 +13,7 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
-import kotlinx.android.synthetic.main.support_layout_state_footer_loading.view.*
+import kotlinx.android.synthetic.main.support_layout_state_loading.view.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -62,7 +62,7 @@ open class SupportLoadingItem(
             layoutInflater: LayoutInflater
         ): SupportViewHolder {
             val view = layoutInflater.inflate(
-                R.layout.support_layout_state_footer_loading,
+                R.layout.support_layout_state_loading,
                 viewGroup,
                 false
             )

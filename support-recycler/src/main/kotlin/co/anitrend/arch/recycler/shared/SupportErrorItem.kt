@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.R
@@ -14,7 +14,7 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
-import kotlinx.android.synthetic.main.support_layout_state_footer_error.view.*
+import kotlinx.android.synthetic.main.support_layout_state_error.view.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * @since v1.2.0
  */
 class SupportErrorItem(
-    private val networkState: NetworkState?,
+    private val loadState: LoadState?,
     private val configuration: IStateLayoutConfig
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
@@ -34,13 +34,13 @@ class SupportErrorItem(
         stateFlow: MutableStateFlow<ClickableItem?>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        if (networkState is NetworkState.Error)
-            view.stateFooterErrorText.text = networkState.message
+        if (loadState is LoadState.Error)
+            view.stateFooterErrorText.text = loadState.details.message
 
         if (configuration.retryAction != null) {
             view.stateFooterErrorAction.visible()
             view.stateFooterErrorAction.setOnClickListener {
-                stateFlow.value = ClickableItem.State(networkState, it)
+                stateFlow.value = ClickableItem.State(loadState, it)
             }
             view.stateFooterErrorAction.setText(configuration.retryAction!!)
         }
@@ -70,7 +70,7 @@ class SupportErrorItem(
             layoutInflater: LayoutInflater
         ): SupportViewHolder {
             val view = layoutInflater.inflate(
-                R.layout.support_layout_state_footer_error,
+                R.layout.support_layout_state_error,
                 viewGroup,
                 false
             )
