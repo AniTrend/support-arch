@@ -10,7 +10,7 @@ repositories {
     jcenter()
     mavenCentral()
     maven {
-        url = URI("https://jitpack.io")
+        url = URI("https://www.jitpack.io")
     }
 }
 
