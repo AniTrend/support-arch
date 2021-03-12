@@ -1,7 +1,7 @@
 package co.anitrend.arch.recycler.common
 
 import android.view.View
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 
 /**
  * Clickable item base class
@@ -31,7 +31,7 @@ sealed class ClickableItem {
      * Clickable item for footer views
      */
     data class State(
-        val state: NetworkState?,
+        val state: LoadState?,
         val view: View
     ) : ClickableItem()
 
