@@ -2,7 +2,7 @@ package co.anitrend.arch.data.state
 
 import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.data.source.core.contract.AbstractDataSource
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.state.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,11 +19,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
  */
 data class DataState<T> internal constructor(
     val model: Flow<T>,
-    override val networkState: Flow<NetworkState>,
-    override val refreshState: Flow<NetworkState>,
+    override val networkState: Flow<LoadState>,
+    override val refreshState: Flow<LoadState>,
     override val refresh: suspend () -> Unit,
     override val retry: suspend () -> Unit
-): UiState<Flow<NetworkState>>() {
+): UiState<Flow<LoadState>>() {
 
     companion object {
 
@@ -37,17 +37,17 @@ data class DataState<T> internal constructor(
         infix fun <T> IDataSource.create(
             model: Flow<T>
         ) : DataState<T> {
-            val refreshTrigger: MutableStateFlow<NetworkState> =
-                MutableStateFlow(NetworkState.Idle)
+            val refreshTrigger: MutableStateFlow<LoadState> =
+                MutableStateFlow(LoadState.Idle)
 
             return DataState(
                 model = model,
-                networkState = networkState,
+                networkState = loadState,
                 refreshState = refreshTrigger,
                 refresh = {
-                    refreshTrigger.value = NetworkState.Loading
+                    refreshTrigger.value = LoadState.Loading()
                     refresh()
-                    refreshTrigger.value = NetworkState.Success
+                    refreshTrigger.value = LoadState.Success
                 },
                 retry = {
                     retryFailed()

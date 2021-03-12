@@ -1,6 +1,6 @@
 package co.anitrend.arch.data.request.report
 
-import co.anitrend.arch.data.request.error.RequestError
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.data.request.model.Request
 
 /**
@@ -30,6 +30,24 @@ data class RequestStatusReport internal constructor(
     }
 
     /**
+     * Convenience method to check if there are any idle requests.
+     *
+     * @return True if there are no requests.
+     */
+    fun hasIdle(): Boolean {
+        return request.status == Request.Status.IDLE
+    }
+
+    /**
+     * Convenience method to check if there are any requests that resulted in success.
+     *
+     * @return True if there are any requests that finished without an error, false otherwise.
+     */
+    fun hasSuccess(): Boolean {
+        return request.status == Request.Status.SUCCESS
+    }
+
+    /**
      * Returns the error for the given request type.
      *
      * @param type The request type for which the error should be returned.
@@ -42,6 +60,13 @@ data class RequestStatusReport internal constructor(
             return request.lastError
         return null
     }
+
+    /**
+     * Returns the current request type.
+     *
+     * @return The [Request.Type] in the current context
+     */
+    fun getType(): Request.Type = request.type
 
     override fun toString(): String {
         return """

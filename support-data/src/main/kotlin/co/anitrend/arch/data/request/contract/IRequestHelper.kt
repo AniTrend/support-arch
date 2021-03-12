@@ -3,8 +3,8 @@ package co.anitrend.arch.data.request.contract
 import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.report.RequestStatusReport
 import co.anitrend.arch.data.request.wrapper.RequestWrapper
-import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.domain.entities.RequestError
 
 /**
  * Request helper contract

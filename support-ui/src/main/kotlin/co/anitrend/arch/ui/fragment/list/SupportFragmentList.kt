@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.domain.extensions.isLoading
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.attachComponent
 import co.anitrend.arch.extension.ext.detachComponent
 import co.anitrend.arch.recycler.SupportRecyclerView
@@ -64,11 +63,11 @@ abstract class SupportFragmentList<M>(
      */
     abstract fun onFetchDataInitialize()
 
-    override val onRefreshObserver = Observer<NetworkState> {
-        supportRefreshLayout?.isRefreshing = it.isLoading()
+    override val onRefreshObserver = Observer<LoadState> {
+        supportRefreshLayout?.isRefreshing = it is LoadState.Loading
     }
 
-    override val onNetworkObserver = Observer<NetworkState> {
+    override val onNetworkObserver = Observer<LoadState> {
         changeLayoutState(it)
     }
 
@@ -122,7 +121,7 @@ abstract class SupportFragmentList<M>(
                 .debounce(16)
                 .filterIsInstance<ClickableItem.State>()
                 .collect {
-                    if (it.state !is NetworkState.Loading)
+                    if (it.state !is LoadState.Loading)
                         viewModelState()?.retry()
                     else
                         Timber.tag(moduleTag).d(
@@ -135,7 +134,7 @@ abstract class SupportFragmentList<M>(
                 ?.filterNotNull()
                 ?.debounce(16)
                 ?.collect {
-                    if (it.state !is NetworkState.Loading)
+                    if (it.state !is LoadState.Loading)
                         viewModelState()?.retry()
                     else
                         Timber.tag(moduleTag).d(
@@ -212,15 +211,15 @@ abstract class SupportFragmentList<M>(
     /**
      * Informs the underlying [SupportStateLayout] of changes to the [NetworkState]
      *
-     * @param networkState New state from the application
+     * @param loadState New state from the application
      */
-    override fun changeLayoutState(networkState: NetworkState?) {
-        if (supportViewAdapter.hasExtraRow() || networkState !is NetworkState.Error) {
-            supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Idle
-            supportViewAdapter.networkState = networkState
+    override fun changeLayoutState(loadState: LoadState?) {
+        if (supportViewAdapter.hasExtraRow() || loadState !is LoadState.Error) {
+            supportStateLayout?.loadStateMutableStateFlow?.value = LoadState.Idle
+            supportViewAdapter.loadState = loadState
         }
         else {
-            supportStateLayout?.networkMutableStateFlow?.value = networkState
+            supportStateLayout?.loadStateMutableStateFlow?.value = loadState
         }
 
         resetWidgetStates()

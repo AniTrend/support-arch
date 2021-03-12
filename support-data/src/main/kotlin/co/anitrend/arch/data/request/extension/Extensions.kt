@@ -3,12 +3,11 @@ package co.anitrend.arch.data.request.extension
 import co.anitrend.arch.data.request.AbstractRequestHelper
 import co.anitrend.arch.data.request.report.RequestStatusReport
 import co.anitrend.arch.data.request.contract.IRequestHelper
-import co.anitrend.arch.data.request.error.RequestError
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.data.request.model.Request
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
 
 private fun RequestStatusReport.getRequestError(): RequestError {
@@ -17,10 +16,16 @@ private fun RequestStatusReport.getRequestError(): RequestError {
     }.first()
 }
 
+private fun RequestStatusReport.getRunningPosition() = when (getType()) {
+    Request.Type.INITIAL -> LoadState.Loading.Position.TOP
+    Request.Type.BEFORE -> LoadState.Loading.Position.TOP
+    Request.Type.AFTER -> LoadState.Loading.Position.BOTTOM
+}
+
 /**
  * Creates a live data observable on the paging request helper
  */
-internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<NetworkState> {
+internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<LoadState> {
     val requestListener = object : IRequestHelper.Listener {
         /**
          * Called when the status for any of the requests has changed.
@@ -29,15 +34,10 @@ internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<NetworkStat
          */
         override fun onStatusChange(report: RequestStatusReport) {
             val state = when {
-                report.hasRunning() -> NetworkState.Loading
-                report.hasError() -> {
-                    val error = report.getRequestError()
-                    NetworkState.Error(
-                        heading = error.topic,
-                        message = error.description
-                    )
-                }
-                else -> NetworkState.Success
+                report.hasRunning() -> LoadState.Loading(report.getRunningPosition())
+                report.hasError() -> LoadState.Error(report.getRequestError())
+                report.hasSuccess() -> LoadState.Success
+                else -> LoadState.Idle
             }
             sendBlocking(state)
         }

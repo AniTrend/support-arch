@@ -37,7 +37,7 @@ abstract class AbstractPagingDataSource<T> : PagedList.BoundaryCallback<T>(),
      * Observable for network state during requests that the UI can monitor and
      * act based on state changes
      */
-    override val networkState by lazy {
+    override val loadState by lazy {
         requestHelper.createStatusFlow()
     }
 }

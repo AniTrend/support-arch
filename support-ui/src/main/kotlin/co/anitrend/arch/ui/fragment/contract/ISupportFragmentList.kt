@@ -4,7 +4,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
@@ -17,8 +17,8 @@ import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
  */
 interface ISupportFragmentList<T> : SwipeRefreshLayout.OnRefreshListener {
 
-    val onRefreshObserver: Observer<NetworkState>
-    val onNetworkObserver: Observer<NetworkState>
+    val onRefreshObserver: Observer<LoadState>
+    val onNetworkObserver: Observer<LoadState>
 
     /**
      * Adapter that should be used for the recycler view, by default [StateRestorationPolicy]
@@ -51,7 +51,7 @@ interface ISupportFragmentList<T> : SwipeRefreshLayout.OnRefreshListener {
     /**
      * Informs the underlying [SupportStateLayout] of changes to the [NetworkState]
      *
-     * @param networkState New state from the application
+     * @param loadState New state from the application
      */
-    fun changeLayoutState(networkState: NetworkState?)
+    fun changeLayoutState(loadState: LoadState?)
 }

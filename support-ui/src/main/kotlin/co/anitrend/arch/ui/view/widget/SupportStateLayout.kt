@@ -4,7 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ViewFlipper
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.arch.extension.ext.getCompatDrawable
@@ -21,7 +22,7 @@ import kotlinx.coroutines.flow.*
 import timber.log.Timber
 
 /**
- * A state layout that supports [NetworkState.Loading] and [NetworkState.Error] states
+ * A state layout that supports [LoadState.Loading] and [LoadState.Error] states
  * by default by using a [ViewFlipper] as the underlying view
  *
  * @since v1.1.0
@@ -49,10 +50,10 @@ open class SupportStateLayout @JvmOverloads constructor(
     /**
      * Observable for publishing states to this widget
      */
-    val networkMutableStateFlow =
-        MutableStateFlow<NetworkState>(NetworkState.Success)
+    val loadStateMutableStateFlow =
+        MutableStateFlow<LoadState>(LoadState.Success)
 
-    private val networkStateFlow: StateFlow<NetworkState> = networkMutableStateFlow
+    private val loadStateFlow: StateFlow<LoadState> = loadStateMutableStateFlow
 
     /**
      * Configuration for that should be used by the different view states
@@ -115,7 +116,7 @@ open class SupportStateLayout @JvmOverloads constructor(
         stateLayoutErrorRetryAction.setOnClickListener {
             interactionMutableStateFlow.value =
                 ClickableItem.State(
-                    state = networkMutableStateFlow.value,
+                    state = loadStateMutableStateFlow.value,
                     view = it
                 )
         }
@@ -144,35 +145,27 @@ open class SupportStateLayout @JvmOverloads constructor(
     }
 
     /**
-     * Changes the layout state based on [NetworkState]
-     *
-     * @param networkState state to use
+     * Updates the UI using the supplied [loadState]
      */
-    @Deprecated(
-        "Use networkMutableStateFlow directly to inform this control about changes",
-        ReplaceWith("networkMutableStateFlow.value = "),
-        DeprecationLevel.ERROR
-    )
-    open fun setNetworkState(networkState: NetworkState) {
-        networkMutableStateFlow.value = networkState
-    }
-
-    /**
-     * Updates the UI using the supplied [networkState]
-     */
-    protected open fun updateUsingNetworkState(networkState: NetworkState) {
-        when (networkState) {
-            is NetworkState.Loading -> {
+    protected open fun updateUsingLoadState(loadState: LoadState) {
+        when (loadState) {
+            is LoadState.Loading -> {
                 if (!isLoading)
                     displayedChild = LOADING_VIEW
             }
-            is NetworkState.Error -> {
-                stateLayoutErrorHeading.text = networkState.heading
-                stateLayoutErrorMessage.text = networkState.message
+            is LoadState.Error -> {
+                if (loadState.details is RequestError) {
+                    val requestError = loadState.details as RequestError
+                    stateLayoutErrorHeading.text = requestError.topic
+                    stateLayoutErrorMessage.text = requestError.message
+                } else {
+                    stateLayoutErrorHeading.text = loadState.details.javaClass.simpleName
+                    stateLayoutErrorMessage.text = loadState.details.message
+                }
                 if (!isError)
                     displayedChild = ERROR_VIEW
             }
-            is NetworkState.Success, NetworkState.Idle -> {
+            is LoadState.Success, LoadState.Idle -> {
                 if (!isContent)
                     displayedChild = CONTENT_VIEW
             }
@@ -184,9 +177,9 @@ open class SupportStateLayout @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         launch {
-            networkStateFlow
+            loadStateFlow
                 .onEach {
-                    updateUsingNetworkState(it)
+                    updateUsingLoadState(it)
                 }
                 .catch { cause: Throwable ->
                     Timber.tag(moduleTag).w(cause)
