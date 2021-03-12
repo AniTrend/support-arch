@@ -12,7 +12,6 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
-import co.anitrend.arch.recycler.common.StateClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import kotlinx.android.synthetic.main.support_layout_state_footer_error.view.*
@@ -41,7 +40,7 @@ class SupportErrorItem(
         if (configuration.retryAction != null) {
             view.stateFooterErrorAction.visible()
             view.stateFooterErrorAction.setOnClickListener {
-                stateFlow.value = StateClickableItem(networkState, it)
+                stateFlow.value = ClickableItem.State(networkState, it)
             }
             view.stateFooterErrorAction.setText(configuration.retryAction!!)
         }
