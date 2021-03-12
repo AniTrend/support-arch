@@ -10,12 +10,12 @@ repositories {
     jcenter()
     mavenCentral()
     maven {
-        url = URI("https://jitpack.io")
+        url = URI("https://www.jitpack.io")
     }
 }
 
-val kotlinVersion = "1.4.10"
-val buildToolsVersion = "4.1.1"
+val kotlinVersion = "1.4.31"
+val buildToolsVersion = "4.1.2"
 val dokkaVersion = "0.10.1"
 val manesVersion = "0.33.0"
 
