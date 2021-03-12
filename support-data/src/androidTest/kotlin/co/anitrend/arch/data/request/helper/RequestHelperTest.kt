@@ -8,6 +8,8 @@ import co.anitrend.arch.data.request.extension.createStatusFlow
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Main
+import co.anitrend.arch.extension.dispatchers.SupportDispatcher
+import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -25,11 +27,9 @@ class RequestHelperTest : ISupportCoroutine by Main() {
 
     private val firstAttempt = AtomicBoolean(true)
 
-    private val requestHelper: AbstractRequestHelper =
-        RequestHelper(
-            Dispatchers.IO,
-            Dispatchers.Unconfined
-        )
+    private val dispatcher: ISupportDispatcher = SupportDispatcher()
+
+    private val requestHelper: AbstractRequestHelper = RequestHelper(dispatcher)
 
     init {
         launch {
