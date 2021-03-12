@@ -5,17 +5,16 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.*
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getLayoutInflater
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
+import co.anitrend.arch.recycler.adapter.controller.SupportAdapterController
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import co.anitrend.arch.recycler.shared.SupportErrorItem
-import co.anitrend.arch.recycler.shared.SupportLoadingItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
@@ -48,33 +47,26 @@ abstract class SupportListAdapter<T>(
 
     override var lastAnimatedPosition: Int = 0
 
-    /**
-     * Dispatches clicks from parent views
-     */
-    protected val clickableItemMutableStateFlow =
-        MutableStateFlow<ClickableItem?>(null)
+    protected open val controller by lazy {
+        SupportAdapterController(this, this)
+    }
 
-    override val clickableStateFlow: StateFlow<ClickableItem?> = clickableItemMutableStateFlow
+    override val clickableStateFlow: StateFlow<ClickableItem?> by lazy {
+        controller.actionStateFlow
+    }
 
     /**
      * Network state which will be used by [SupportErrorItem]
      */
-    override var networkState: NetworkState? = null
+    override var loadState: LoadState? = null
         set(value) {
             val previousState = field
             val hadExtraRow = hasExtraRow()
             field = value
             val hasExtraRow = hasExtraRow()
-            when {
-                hadExtraRow != hasExtraRow -> {
-                    if (hadExtraRow)
-                        notifyItemRemoved(itemCount)
-                    else
-                        notifyItemInserted(itemCount)
-                }
-                hasExtraRow && previousState != value ->
-                    notifyItemChanged(itemCount - 1)
-            }
+            controller.onLoadStateChanged(
+                previousState, value, hasExtraRow, hadExtraRow
+            )
         }
 
     /**
@@ -136,24 +128,18 @@ abstract class SupportListAdapter<T>(
 
     /**
      * Overridden implementation creates a default loading footer view when the [viewType] is
-     * [R.layout.support_layout_state_footer_loading] or [R.layout.support_layout_state_footer_error]
+     * [R.layout.support_layout_state_loading] or [R.layout.support_layout_state_error]
      * otherwise [createDefaultViewHolder] is called to resolve the view holder type
      */
     override fun onCreateViewHolder(parent: ViewGroup, @LayoutRes viewType: Int): SupportViewHolder {
         val layoutInflater = parent.context.getLayoutInflater()
         return when (viewType) {
-            R.layout.support_layout_state_footer_loading -> {
-                SupportLoadingItem.createViewHolder(parent, layoutInflater).also {
-                    val model = SupportLoadingItem(stateConfiguration)
-                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickableItemMutableStateFlow)
-                }
-            }
-            R.layout.support_layout_state_footer_error -> {
-                SupportErrorItem.createViewHolder(parent, layoutInflater).also {
-                    val model = SupportErrorItem(networkState, stateConfiguration)
-                    it.bind(RecyclerView.NO_POSITION, emptyList(), model, clickableItemMutableStateFlow)
-                }
-            }
+            R.layout.support_layout_state_loading -> controller.getLoadingViewHolder(
+                parent, layoutInflater, stateConfiguration
+            )
+            R.layout.support_layout_state_error -> controller.getErrorViewHolder(
+                parent, layoutInflater, stateConfiguration
+            )
             else -> createDefaultViewHolder(parent, viewType, layoutInflater)
         }
     }
@@ -258,11 +244,11 @@ abstract class SupportListAdapter<T>(
     @LayoutRes
     override fun getItemViewType(position: Int): Int {
         if (hasExtraRow() && position == itemCount - 1)
-            return when (networkState) {
-                is NetworkState.Error ->
-                    R.layout.support_layout_state_footer_error
-                is NetworkState.Loading ->
-                    R.layout.support_layout_state_footer_loading
+            return when (loadState) {
+                is LoadState.Error ->
+                    R.layout.support_layout_state_error
+                is LoadState.Loading ->
+                    R.layout.support_layout_state_loading
                 else -> super.getItemViewType(position)
             }
 
@@ -352,36 +338,7 @@ abstract class SupportListAdapter<T>(
         holder: SupportViewHolder,
         position: Int,
         payloads: List<Any>
-    ) {
-        val recyclerItem: IRecyclerItem? = when (getItemViewType(position)) {
-            R.layout.support_layout_state_footer_loading -> {
-                SupportLoadingItem(stateConfiguration)
-            }
-            R.layout.support_layout_state_footer_error -> {
-                SupportErrorItem(networkState, stateConfiguration)
-            }
-            else -> {
-                runCatching {
-                    mapper(requireItem(position))
-                }.onFailure {
-                    Timber.tag(moduleTag).v(it, "bindViewHolderByType(...)->when (getItemViewType(position))")
-                }.getOrNull()
-            }
-        }
-
-        runCatching {
-            holder.bind(
-                position,
-                payloads,
-                recyclerItem!!,
-                clickableItemMutableStateFlow,
-                supportAction
-            )
-            animateViewHolder(holder, position)
-        }.onFailure {
-            Timber.tag(moduleTag).w(it, "bindViewHolderByType(holder: SupportViewHolder, position: Int, payloads: List<Any>)")
-        }
-    }
+    ) = controller.bindViewHolderByType(stateConfiguration, holder, position, payloads)
 
     /**
      * Triggered when the lifecycleOwner reaches it's onPause state
@@ -391,6 +348,6 @@ abstract class SupportListAdapter<T>(
     override fun onPause() {
         super.onPause()
         // clear our state flow, when the lifecycle owner parent reaches its onPaused state
-        clickableItemMutableStateFlow.value = null
+        controller.actionStateFlow.value = null
     }
 }

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.core.model.IStateLayoutConfig
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
@@ -53,7 +53,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
     /**
      * Network state which will be used by [co.anitrend.arch.recycler.shared.SupportErrorItem]
      */
-    var networkState: NetworkState?
+    var loadState: LoadState?
 
     /**
      * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
@@ -101,8 +101,8 @@ interface ISupportAdapter<T> : SupportLifecycle {
     /**
      * Checks if current network state represents an additional row of data
      */
-    fun hasExtraRow() = networkState != null &&
-            (networkState is NetworkState.Loading || networkState is NetworkState.Error)
+    fun hasExtraRow() = loadState != null &&
+            (loadState is LoadState.Loading || loadState is LoadState.Error)
 
     /**
      * Should return the span size for the item at [position], when called from
