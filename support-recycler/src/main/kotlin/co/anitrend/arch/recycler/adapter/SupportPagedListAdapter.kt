@@ -34,7 +34,7 @@ import timber.log.Timber
  */
 abstract class SupportPagedListAdapter<T>(
     differCallback: DiffUtil.ItemCallback<T>,
-    supportsStableIds: Boolean = true
+    supportsStableIds: Boolean = false
 ) : ISupportAdapter<T>, PagedListAdapter<T, SupportViewHolder>(differCallback) {
 
     init {

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.NetworkState
@@ -61,7 +62,10 @@ interface ISupportAdapter<T> : SupportLifecycle {
      * The identifiable id of each item should unique, and if non exists
      * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
      */
-    fun getStableIdFor(item: T?): Long
+    fun getStableIdFor(item: T?): Long {
+        //Stable Ids are no longer supported by default prior to paging v3.0 migration
+        return RecyclerView.NO_ID
+    }
 
     /**
      * Should provide the required view holder, this function is a substitute for
