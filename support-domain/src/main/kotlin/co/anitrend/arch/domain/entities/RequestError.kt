@@ -1,4 +1,4 @@
-package co.anitrend.arch.data.request.error
+package co.anitrend.arch.domain.entities
 
 /**
  * Custom error for requests
@@ -14,5 +14,9 @@ data class RequestError(
     val description: String? = null,
     val throwable: Throwable? = null
 ) : Throwable(description, throwable) {
-    constructor(cause: Throwable?) : this(null, cause?.toString(), cause)
+    constructor(cause: Throwable?) : this(
+        cause?.javaClass?.simpleName,
+        cause?.toString(),
+        cause
+    )
 }
