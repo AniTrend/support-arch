@@ -5,15 +5,33 @@ package co.anitrend.arch.domain.entities
  */
 sealed class LoadState {
 
+    /**
+     * Load state is idle
+     */
     object Idle : LoadState()
 
-    data class Loading(
-        val endOfLoading: Boolean = false
-    ) : LoadState()
-
+    /**
+     * Load state is successful
+     */
     object Success : LoadState()
 
+    /**
+     * Load state is loading
+     *
+     * @param position Where the loader should be placed
+     */
+    data class Loading(
+        val position: Position = Position.TOP
+    ) : LoadState() {
+        enum class Position { TOP, BOTTOM }
+    }
+
+    /**
+     * Load state for failed loading
+     *
+     * @param details General [Throwable] type with details regarding the error
+     */
     data class Error(
-        val exception: Throwable
+        val details: Throwable
     ) : LoadState()
 }
