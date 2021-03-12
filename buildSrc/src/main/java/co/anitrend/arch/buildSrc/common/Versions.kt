@@ -8,7 +8,7 @@ internal object Versions {
     private const val major = 1
     private const val minor = 3
     private const val patch = 0
-    private const val revision = 37
+    private const val revision = 38
 
     const val versionCode = major * 100_000 + minor * 10_000 + patch * 1_000 + revision * 100
     const val versionName = "$major.$minor.$patch-beta$revision"
