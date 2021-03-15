@@ -9,6 +9,7 @@ import co.anitrend.arch.data.request.report.RequestStatusReport
 import co.anitrend.arch.data.request.wrapper.RequestWrapper
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.CoroutineContext
@@ -140,11 +141,12 @@ class RequestHelper(
 
             if (!pendingRetries.isNullOrEmpty())
                 action()
+            else Timber.i("No requests for status: $status to retry")
 
             withContext(dispatcher.io) {
-                pendingRetries
+                pendingRetries.filterNotNull()
                     .forEach { wrapper ->
-                        wrapper?.retry()
+                        wrapper.retry()
                         retried.set(true)
                     }
             }
