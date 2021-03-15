@@ -2,6 +2,7 @@ package co.anitrend.arch.extension.util.date.contract
 
 import android.annotation.TargetApi
 import android.os.Build
+import co.anitrend.arch.extension.util.attribute.SeasonType
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -14,7 +15,20 @@ import java.util.*
  *
  * @since v1.2.0
  */
-interface ISupportDateHelper {
+abstract class AbstractSupportDateHelper {
+
+    /**
+     * @return current seasons name
+     */
+    abstract val currentSeason: SeasonType
+
+    /**
+     * Gets the current year + delta, if the season for the year is winter later in the year
+     * then the result would be the current year plus the delta
+     *
+     * @return current year with a given delta
+     */
+    abstract fun getCurrentYear(delta: Int = 0): Int
 
     /**
      * [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) date format pattern, this default pattern
