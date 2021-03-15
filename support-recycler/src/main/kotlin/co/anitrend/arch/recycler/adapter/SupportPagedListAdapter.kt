@@ -207,7 +207,7 @@ abstract class SupportPagedListAdapter<T>(
      */
     @LayoutRes
     override fun getItemViewType(position: Int): Int {
-        if (hasExtraRow())
+        if (hasExtraRow() && position == itemCount - 1)
             return when (loadState) {
                 is LoadState.Error ->
                     R.layout.support_layout_state_error
