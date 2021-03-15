@@ -30,11 +30,4 @@ interface IDataSource {
      * Invalidate data source and, re-run the last successful or last failed request if applicable
      */
     suspend fun refresh()
-
-    /**
-     * Clears data sources (databases, preferences, e.t.c)
-     *
-     * @param context Dispatcher context to run in
-     */
-    suspend fun clearDataSource(context: CoroutineDispatcher)
 }
