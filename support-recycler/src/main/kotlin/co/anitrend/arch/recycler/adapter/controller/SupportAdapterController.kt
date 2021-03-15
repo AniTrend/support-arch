@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.extension.annotation.SupportExperimental
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.adapter.controller.contract.ISupportAdapterController
@@ -67,11 +68,13 @@ open class SupportAdapterController<T>(
         return viewHolder
     }
 
+    @SupportExperimental
     private fun getPositionForStateChanged(
         previousState: LoadState?,
         currentState: LoadState?,
         offset: Int = 0
     ): Int {
+        // This is a work in progress
         if (previousState == null && currentState is LoadState.Loading) {
             return if (currentState.position == LoadState.Loading.Position.TOP)
                 1 - offset
@@ -97,20 +100,15 @@ open class SupportAdapterController<T>(
         )
         val rowHasChanged = hadExtraRow != hasExtraRow
         val stateHasChanged = previousState != currentState
+        val itemCount = recyclerAdapter.itemCount
         if (rowHasChanged) {
             if (hadExtraRow)
-                recyclerAdapter.notifyItemRemoved(
-                    getPositionForStateChanged(previousState, currentState)
-                )
+                recyclerAdapter.notifyItemRemoved(itemCount)
             else
-                recyclerAdapter.notifyItemInserted(
-                    getPositionForStateChanged(currentState, currentState)
-                )
+                recyclerAdapter.notifyItemInserted(itemCount)
         }
         else if (hasExtraRow && stateHasChanged) {
-            recyclerAdapter.notifyItemChanged(
-                getPositionForStateChanged(currentState, currentState, - 1)
-            )
+            recyclerAdapter.notifyItemChanged(itemCount - 1)
         }
     }
 
