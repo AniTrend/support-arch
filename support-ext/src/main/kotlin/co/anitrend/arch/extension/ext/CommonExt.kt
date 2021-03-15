@@ -1,6 +1,7 @@
 package co.anitrend.arch.extension.ext
 
 import androidx.lifecycle.*
+import timber.log.Timber
 
 /**
  * Lazy intent parameters for saved state handle
@@ -17,6 +18,6 @@ fun <T : Any> SavedStateHandle.extra(key: String, default: T) = lazy(PUBLICATION
         else
             default
     } catch (e: Exception) {
-        error(e)
+        Timber.e(e)
     }
 }

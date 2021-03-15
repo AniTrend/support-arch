@@ -5,17 +5,18 @@ import android.graphics.Color
 import android.os.Build
 import android.view.View
 import android.view.WindowInsets
-import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
-import androidx.core.view.*
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
+import timber.log.Timber
 
 /**
  * Starts a shared transition of activities connected by views
@@ -117,7 +118,7 @@ fun <T : Any?> FragmentActivity.extra(key: String, default: T? = null) = lazy(PU
         else
             default
     } catch (e: Exception) {
-        error(e)
+        Timber.e(e)
     }
 }
 
@@ -137,6 +138,6 @@ fun <T : Any?> Fragment.argument(key: String, default: T? = null) = lazy(PUBLICA
         else
             default
     } catch (e: Exception) {
-        error(e)
+        Timber.e(e)
     }
 }
