@@ -12,11 +12,9 @@ import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
-import timber.log.Timber
 
 /**
  * Starts a shared transition of activities connected by views
@@ -101,43 +99,3 @@ fun LifecycleOwner.attachComponent(supportLifecycle: SupportLifecycle) =
  */
 fun LifecycleOwner.detachComponent(supportLifecycle: SupportLifecycle) =
     lifecycle.removeObserver(supportLifecycle)
-
-/**
- * Lazy intent parameters for fragment activities
- *
- * @param key lookup key for the embedded item in the [FragmentActivity.getIntent]
- * @param default default value to use when key does not exist
- *
- * @return [Lazy] of the target type
- */
-@Suppress("UNCHECKED_CAST")
-fun <T : Any?> FragmentActivity.extra(key: String, default: T? = null) = lazy(PUBLICATION) {
-    try {
-        if (intent?.extras?.containsKey(key) == true)
-            intent?.extras?.get(key) as T
-        else
-            default
-    } catch (e: Exception) {
-        Timber.e(e)
-    }
-}
-
-/**
- * Lazy intent parameters for fragments
- *
- * @param key lookup key for the embedded item in the [Fragment.getArguments]
- * @param default default value to use when key does not exist
- *
- * @return [Lazy] of the target type
- */
-@Suppress("UNCHECKED_CAST")
-fun <T : Any?> Fragment.argument(key: String, default: T? = null) = lazy(PUBLICATION) {
-    try {
-        if (arguments?.containsKey(key) == true)
-            arguments?.get(key) as T
-        else
-            default
-    } catch (e: Exception) {
-        Timber.e(e)
-    }
-}
