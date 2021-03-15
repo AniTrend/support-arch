@@ -16,9 +16,9 @@ import co.anitrend.arch.domain.entities.LoadState
  */
 interface ISupportViewModelState<R> {
 
-    val model: LiveData<R?>
-    val networkState: LiveData<LoadState>?
-    val refreshState: LiveData<LoadState>?
+    val model: LiveData<R>
+    val networkState: LiveData<LoadState>
+    val refreshState: LiveData<LoadState>
 
     /**
      * Triggers use case to perform a retry operation
