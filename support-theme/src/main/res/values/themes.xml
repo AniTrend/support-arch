@@ -5,15 +5,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="cardColor">@color/colorPrimary</item>
-        <item name="drawerColor">@color/primaryColor</item>
-
-        <item name="rootColor">@color/colorPrimary</item>
-        <item name="lineColor">@color/colorPrimaryVariant</item>
-        <item name="titleColor">@color/primaryTextColor</item>
-        <item name="subtitleColor">@color/secondaryTextColor</item>
-        <item name="contentColor">@color/secondaryTextColor</item>
-        <item name="toolbarColor">@style/SupportTheme.ToolbarTheme</item>
 
         <item name="android:textColorPrimary">@color/primaryTextColor</item>
         <item name="android:textColorSecondary">@color/secondaryTextColor</item>
