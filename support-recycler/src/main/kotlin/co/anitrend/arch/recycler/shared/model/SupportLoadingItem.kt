@@ -1,4 +1,4 @@
-package co.anitrend.arch.recycler.shared
+package co.anitrend.arch.recycler.shared.model
 
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -29,15 +29,16 @@ open class SupportLoadingItem(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>,
+        stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        if (configuration.loadingMessage != null) {
-            view.stateFooterLoadingText.visible()
-            view.stateFooterLoadingText.setText(configuration.loadingMessage!!)
+        val message = configuration.loadingMessage
+        if (message != null) {
+            view.stateLoadingText.visible()
+            view.stateLoadingText.setText(message)
         }
         else
-            view.stateFooterLoadingText.gone()
+            view.stateLoadingText.gone()
     }
 
     override fun unbind(view: View) {

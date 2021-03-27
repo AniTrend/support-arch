@@ -1,22 +1,17 @@
 package co.anitrend.arch.recycler.adapter
 
-import android.content.res.Resources
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.*
-import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getLayoutInflater
-import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.adapter.controller.SupportAdapterController
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
+import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
-import co.anitrend.arch.recycler.shared.SupportErrorItem
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
 
 /**
@@ -31,79 +26,19 @@ import timber.log.Timber
 abstract class SupportListAdapter<T>(
     differCallback: DiffUtil.ItemCallback<T>,
     supportsStableIds: Boolean = false
-) : ISupportAdapter<T>, RecyclerView.Adapter<SupportViewHolder>() {
+) : SupportAdapter<T>, ListAdapter<T, SupportViewHolder>(differCallback) {
 
     init {
         this.setHasStableIds(supportsStableIds)
     }
 
-    protected abstract val resources: Resources
-
-    private val mDiffer: AsyncListDiffer<T> by lazy(UNSAFE) {
-        AsyncListDiffer(this, differCallback)
-    }
-
-    override val moduleTag: String = javaClass.simpleName
-
     override var lastAnimatedPosition: Int = 0
 
-    protected open val controller by lazy {
-        SupportAdapterController(this, this)
+    override val controller by lazy {
+        SupportAdapterController(this)
     }
 
-    override val clickableStateFlow: StateFlow<ClickableItem?> by lazy {
-        controller.actionStateFlow
-    }
-
-    /**
-     * Network state which will be used by [SupportErrorItem]
-     */
-    override var loadState: LoadState? = null
-        set(value) {
-            val previousState = field
-            val hadExtraRow = hasExtraRow()
-            field = value
-            val hasExtraRow = hasExtraRow()
-            controller.onLoadStateChanged(
-                previousState, value, hasExtraRow, hadExtraRow
-            )
-        }
-
-    /**
-     * Returns a model at the given index
-     */
-    open fun getItem(position: Int): T? {
-        val currentList = getCurrentList()
-        if (!isWithinIndexBounds(position))
-            return null
-
-        return currentList[position]
-    }
-
-    /**
-     * Returns the List currently being displayed by the Adapter.
-     *
-     * This is not necessarily the most recent list passed to [submitList],
-     * because a diff is computed asynchronously between the new list and the current list before
-     * updating the currentList value.
-     *
-     * @return The list currently being displayed.
-     */
-    open fun getCurrentList(): List<T> {
-        return mDiffer.currentList
-    }
-
-    /**
-     * Set the new list to be displayed.
-     *
-     * If a list is already being displayed, a diff will be computed on a background thread, which
-     * will dispatch Adapter.notifyItem events on the main thread.
-     *
-     * @param list The new list to be displayed.
-     */
-    open fun submitList(list: List<T>?, commitCallback: Runnable? = null) {
-        mDiffer.submitList(list, commitCallback)
-    }
+    override val clickableFlow = MutableStateFlow<ClickableItem>(ClickableItem.None)
 
     /**
      * Return the stable ID for the item at [position]. If [hasStableIds]
@@ -119,7 +54,7 @@ abstract class SupportListAdapter<T>(
             true -> runCatching {
                 getStableIdFor(getItem(position))
             }.getOrElse {
-                Timber.tag(moduleTag).v(it, "getItemId(position: Int) -> position: $position")
+                Timber.v(it, "getItemId(position: Int) -> position: $position")
                 RecyclerView.NO_ID
             }
             else -> super.getItemId(position)
@@ -127,21 +62,11 @@ abstract class SupportListAdapter<T>(
     }
 
     /**
-     * Overridden implementation creates a default loading footer view when the [viewType] is
-     * [R.layout.support_layout_state_loading] or [R.layout.support_layout_state_error]
-     * otherwise [createDefaultViewHolder] is called to resolve the view holder type
+     * Overridden implementation [createDefaultViewHolder] calls to resolve the view holder type
      */
     override fun onCreateViewHolder(parent: ViewGroup, @LayoutRes viewType: Int): SupportViewHolder {
         val layoutInflater = parent.context.getLayoutInflater()
-        return when (viewType) {
-            R.layout.support_layout_state_loading -> controller.getLoadingViewHolder(
-                parent, layoutInflater, stateConfiguration
-            )
-            R.layout.support_layout_state_error -> controller.getErrorViewHolder(
-                parent, layoutInflater, stateConfiguration
-            )
-            else -> createDefaultViewHolder(parent, viewType, layoutInflater)
-        }
+        return createDefaultViewHolder(parent, viewType, layoutInflater)
     }
 
     /**
@@ -243,54 +168,7 @@ abstract class SupportListAdapter<T>(
      */
     @LayoutRes
     override fun getItemViewType(position: Int): Int {
-        if (hasExtraRow() && position == itemCount - 1)
-            return when (loadState) {
-                is LoadState.Error ->
-                    R.layout.support_layout_state_error
-                is LoadState.Loading ->
-                    R.layout.support_layout_state_loading
-                else -> super.getItemViewType(position)
-            }
-
-        return super.getItemViewType(position)
-    }
-
-    /**
-     * Returns a boolean indicating whether or not the adapter had data, and caters for [hasExtraRow]
-     *
-     * @return [Boolean]
-     * @see hasExtraRow
-     */
-    override fun isEmpty(): Boolean {
-        if (hasExtraRow())
-            return itemCount < 2
-        return itemCount < 1
-    }
-
-    /**
-     * Fetches the non-nullable item of the underlying list with-in the adapter
-     *
-     * @param position Index of the item to get
-     *
-     * @throws IllegalStateException
-     */
-    @Throws(IllegalStateException::class)
-    override fun requireItem(position: Int): T {
-        return requireNotNull(getItem(position)) {
-            "Required item at position: $position is null, constraint violated"
-        }
-    }
-
-    /**
-     * Informs us if the given [position] is within bounds of our underlying collection
-     */
-    override fun isWithinIndexBounds(position: Int): Boolean {
-        val trueItemCount = itemCount.let { if (hasExtraRow()) it - 1 else it  }
-        if (position <= RecyclerView.NO_POSITION || position >= trueItemCount) {
-            Timber.tag(moduleTag).w("Invalid selected position: $position")
-            return false
-        }
-        return true
+        return ISupportAdapter.DEFAULT_VIEW_TYPE
     }
 
     /**
@@ -308,26 +186,20 @@ abstract class SupportListAdapter<T>(
      */
     override fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int? {
         return runCatching {
-            val item = mapper(requireItem(position))
+            val item = mapper(getItem(position))
             val spanSize = spanCount ?: IRecyclerItemSpan.INVALID_SPAN_COUNT
             item.getSpanSize(spanSize, position, resources)
         }.getOrElse {
-            if (!hasExtraRow())
-                Timber.tag(moduleTag).w(it)
-            Timber.tag(moduleTag).v("Span size: $spanCount")
+            Timber.w(it, "Span size: $spanCount")
             // we don't know which span size to use so we use the supplied or default full size
             spanCount ?: ISupportAdapter.FULL_SPAN_SIZE
         }
     }
 
-    override fun getItemCount(): Int {
-        return getCurrentList().size + if (hasExtraRow()) 1 else 0
-    }
-
     /**
      * Informs view adapter of changes related to it's view holder
      */
-    override fun updateSelection() {
+    override fun notifyDataSetNeedsRefreshing() {
         notifyDataSetChanged()
     }
 
@@ -338,7 +210,15 @@ abstract class SupportListAdapter<T>(
         holder: SupportViewHolder,
         position: Int,
         payloads: List<Any>
-    ) = controller.bindViewHolderByType(stateConfiguration, holder, position, payloads)
+    ) {
+        runCatching {
+            val recyclerItem: IRecyclerItem = mapper(getItem(position))
+            holder.bind(position, payloads, recyclerItem, clickableFlow, supportAction)
+            animateViewHolder(holder, position)
+        }.onFailure { throwable ->
+            Timber.w(throwable, "bindViewHolderByType(holder: .., position: .., payloads: ..)")
+        }
+    }
 
     /**
      * Triggered when the lifecycleOwner reaches it's onPause state
@@ -348,6 +228,6 @@ abstract class SupportListAdapter<T>(
     override fun onPause() {
         super.onPause()
         // clear our state flow, when the lifecycle owner parent reaches its onPaused state
-        controller.actionStateFlow.value = null
+        clickableFlow.value = ClickableItem.None
     }
 }

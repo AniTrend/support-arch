@@ -55,8 +55,8 @@ fun SupportRecyclerView.setUpWith(
  * things like direction, colors, behavior etc.
  */
 fun SwipeRefreshLayout.configureWidgetBehaviorWith() {
-    setProgressBackgroundColorSchemeColor(context.getColorFromAttr(R.attr.rootColor))
-    setColorSchemeColors(context.getColorFromAttr(R.attr.contentColor))
+    setProgressBackgroundColorSchemeColor(context.getColorFromAttr(R.attr.colorOnPrimary))
+    setColorSchemeColors(context.getColorFromAttr(R.attr.colorOnBackground))
 }
 
 /**

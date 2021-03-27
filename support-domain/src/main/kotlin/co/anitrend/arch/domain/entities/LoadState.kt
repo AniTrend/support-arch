@@ -2,29 +2,38 @@ package co.anitrend.arch.domain.entities
 
 /**
  * State representing ongoing, completed or failed operations
+ *
+ * @property position Where the loader should be placed
  */
 sealed class LoadState {
+
+    abstract val position: Position
+
+    /**
+     * State position identifier
+     */
+    enum class Position { TOP, BOTTOM, UNDEFINED }
 
     /**
      * Load state is idle
      */
-    object Idle : LoadState()
+    data class Idle(
+        override val position: Position = Position.UNDEFINED
+    ) : LoadState()
 
     /**
      * Load state is successful
      */
-    object Success : LoadState()
+    data class Success(
+        override val position: Position = Position.UNDEFINED
+    ) : LoadState()
 
     /**
      * Load state is loading
-     *
-     * @param position Where the loader should be placed
      */
     data class Loading(
-        val position: Position = Position.TOP
-    ) : LoadState() {
-        enum class Position { TOP, BOTTOM }
-    }
+        override val position: Position = Position.UNDEFINED
+    ) : LoadState()
 
     /**
      * Load state for failed loading
@@ -32,6 +41,7 @@ sealed class LoadState {
      * @param details General [Throwable] type with details regarding the error
      */
     data class Error(
-        val details: Throwable
+        val details: Throwable,
+        override val position: Position = Position.UNDEFINED
     ) : LoadState()
 }

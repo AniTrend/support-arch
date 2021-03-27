@@ -13,7 +13,7 @@ import co.anitrend.arch.extension.ext.getLayoutInflater
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.ui.R
-import co.anitrend.arch.ui.view.contract.CustomView
+import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
 import kotlinx.android.synthetic.main.support_state_layout_error.view.*
 import kotlinx.android.synthetic.main.support_state_layout_laoding.view.*
@@ -27,48 +27,38 @@ import timber.log.Timber
  *
  * @since v1.1.0
  */
-open class SupportStateLayout @JvmOverloads constructor(
+class SupportStateLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : ViewFlipper(context, attrs), CustomView, ISupportCoroutine by Main() {
+) : ViewFlipper(context, attrs), ISupportStateLayout, ISupportCoroutine by Main() {
 
     init {
         onInit(context, attrs)
     }
 
-    private val moduleTag = javaClass.simpleName
-
-    private val interactionMutableStateFlow =
-        MutableStateFlow<ClickableItem.State?>(null)
-
     /**
      * Observable for click interactions, which returns the current network state
      */
-    val interactionStateFlow: StateFlow<ClickableItem.State?> =
-        interactionMutableStateFlow
+    override val interactionFlow = MutableStateFlow<ClickableItem>(ClickableItem.None)
 
     /**
      * Observable for publishing states to this widget
      */
-    val loadStateMutableStateFlow =
-        MutableStateFlow<LoadState>(LoadState.Success)
-
-    private val loadStateFlow: StateFlow<LoadState> = loadStateMutableStateFlow
+    override val loadStateFlow = MutableStateFlow<LoadState>(LoadState.Success())
 
     /**
      * Configuration for that should be used by the different view states
      */
-    val stateConfigFlow =
-        MutableStateFlow<StateLayoutConfig?>(null)
+    override val stateConfigFlow = MutableStateFlow<StateLayoutConfig?>(null)
 
-    open val isLoading
-        get() = displayedChild == LOADING_VIEW
+    override val isLoading
+        get() = displayedChild == ISupportStateLayout.LOADING_VIEW
 
-    open val isError
-        get() = displayedChild == ERROR_VIEW
+    override val isError
+        get() = displayedChild == ISupportStateLayout.ERROR_VIEW
 
-    open val isContent
-        get() = displayedChild == CONTENT_VIEW
+    override val isContent
+        get() = displayedChild == ISupportStateLayout.CONTENT_VIEW
 
     private fun updateUsing(config: StateLayoutConfig) {
         setInAnimation(context, config.inAnimation)
@@ -102,23 +92,21 @@ open class SupportStateLayout @JvmOverloads constructor(
      * Callable in view constructors to perform view inflation and
      * additional attribute initialization
      */
-    @Suppress("EXPERIMENTAL_API_USAGE")
-    final override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
+    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
         if (!isInEditMode)
             setupAdditionalViews()
 
         attrs?.apply {
             val a = context.obtainStyledAttributes(this, R.styleable.SupportStateLayout)
-            displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, CONTENT_VIEW)
+            displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, ISupportStateLayout.CONTENT_VIEW)
             a.recycle()
         }
 
         stateLayoutErrorRetryAction.setOnClickListener {
-            interactionMutableStateFlow.value =
-                ClickableItem.State(
-                    state = loadStateMutableStateFlow.value,
-                    view = it
-                )
+            interactionFlow.value = ClickableItem.State(
+                state = loadStateFlow.value,
+                view = it
+            )
         }
     }
 
@@ -128,11 +116,11 @@ open class SupportStateLayout @JvmOverloads constructor(
      */
     override fun onViewRecycled() {
         stateLayoutErrorRetryAction.setOnClickListener(null)
-        interactionMutableStateFlow.value = null
+        interactionFlow.value = ClickableItem.None
     }
 
     @SuppressLint("InflateParams")
-    protected open fun setupAdditionalViews() {
+    private fun setupAdditionalViews() {
         val loadingView = getLayoutInflater().inflate(
             R.layout.support_state_layout_laoding, null
         )
@@ -147,11 +135,11 @@ open class SupportStateLayout @JvmOverloads constructor(
     /**
      * Updates the UI using the supplied [loadState]
      */
-    protected open fun updateUsingLoadState(loadState: LoadState) {
+    private fun updateUsingLoadState(loadState: LoadState) {
         when (loadState) {
             is LoadState.Loading -> {
                 if (!isLoading)
-                    displayedChild = LOADING_VIEW
+                    displayedChild = ISupportStateLayout.LOADING_VIEW
             }
             is LoadState.Error -> {
                 if (loadState.details is RequestError) {
@@ -163,11 +151,12 @@ open class SupportStateLayout @JvmOverloads constructor(
                     stateLayoutErrorMessage.text = loadState.details.message
                 }
                 if (!isError)
-                    displayedChild = ERROR_VIEW
+                    displayedChild = ISupportStateLayout.ERROR_VIEW
             }
-            is LoadState.Success, LoadState.Idle -> {
+            is LoadState.Idle,
+            is LoadState.Success -> {
                 if (!isContent)
-                    displayedChild = CONTENT_VIEW
+                    displayedChild = ISupportStateLayout.CONTENT_VIEW
             }
         }
         if (!isInLayout)
@@ -182,10 +171,9 @@ open class SupportStateLayout @JvmOverloads constructor(
                     updateUsingLoadState(it)
                 }
                 .catch { cause: Throwable ->
-                    Timber.tag(moduleTag).w(cause)
+                    Timber.w(cause)
                 }
                 .collect()
-
         }
         launch {
             stateConfigFlow
@@ -194,7 +182,7 @@ open class SupportStateLayout @JvmOverloads constructor(
                     updateUsing(it)
                 }
                 .catch { cause: Throwable ->
-                    Timber.tag(moduleTag).w(cause)
+                    Timber.w(cause)
                 }
                 .collect()
         }
@@ -204,14 +192,5 @@ open class SupportStateLayout @JvmOverloads constructor(
         cancelAllChildren()
         onViewRecycled()
         super.onDetachedFromWindow()
-    }
-
-    companion object {
-        /** First view inflated index which is loading view */
-        const val LOADING_VIEW = 0
-        /** Second view inflated in this case the error view */
-        const val ERROR_VIEW = 1
-        /** Third inflated view should be the current view wrapped by this layout */
-        const val CONTENT_VIEW = 2
     }
 }

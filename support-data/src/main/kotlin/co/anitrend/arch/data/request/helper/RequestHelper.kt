@@ -6,6 +6,7 @@ import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.request.queue.RequestQueue
 import co.anitrend.arch.data.request.report.RequestStatusReport
+import co.anitrend.arch.data.request.report.contract.IRequestStatusReport
 import co.anitrend.arch.data.request.wrapper.RequestWrapper
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import kotlinx.coroutines.withContext
@@ -47,7 +48,7 @@ class RequestHelper(
         request: Request,
         handleCallback: suspend (RequestCallback) -> Unit
     ): Boolean {
-        val report = AtomicReference<RequestStatusReport?>(null)
+        val report = AtomicReference<IRequestStatusReport?>(null)
         val ran = AtomicBoolean(false)
 
         withContext(dispatcher.confined) {
@@ -91,7 +92,7 @@ class RequestHelper(
     ) {
         withContext(dispatcher.confined) {
             val isSuccessful = throwable == null
-            var report: RequestStatusReport? = null
+            var report: IRequestStatusReport? = null
             val queue = addOrReuseRequest(wrapper.request)
             queue.running = null
             queue.request.lastError = throwable

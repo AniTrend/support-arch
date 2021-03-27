@@ -4,9 +4,7 @@ import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.request.queue.RequestQueue
 import co.anitrend.arch.data.request.report.RequestStatusReport
-import co.anitrend.arch.data.request.wrapper.RequestWrapper
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import co.anitrend.arch.data.request.report.contract.IRequestStatusReport
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -25,7 +23,7 @@ abstract class AbstractRequestHelper : IRequestHelper {
      *
      * @return [RequestStatusReport]
      */
-    protected fun prepareStatusReportLocked(request: Request): RequestStatusReport {
+    protected fun prepareStatusReportLocked(request: Request): IRequestStatusReport {
         return RequestStatusReport(request)
     }
 
@@ -52,7 +50,7 @@ abstract class AbstractRequestHelper : IRequestHelper {
     /*
     * Helper extension to dispatch changes to all listeners
     */
-    protected fun RequestStatusReport.dispatchReport() {
+    protected fun IRequestStatusReport.dispatchReport() {
         listeners.forEach {
             it.onStatusChange(this)
         }

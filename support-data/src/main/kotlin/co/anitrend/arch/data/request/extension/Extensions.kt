@@ -1,25 +1,25 @@
 package co.anitrend.arch.data.request.extension
 
 import co.anitrend.arch.data.request.AbstractRequestHelper
-import co.anitrend.arch.data.request.report.RequestStatusReport
 import co.anitrend.arch.data.request.contract.IRequestHelper
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.data.request.report.contract.IRequestStatusReport
 import co.anitrend.arch.domain.entities.LoadState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.callbackFlow
 
-private fun RequestStatusReport.getRequestError(): RequestError {
+private fun IRequestStatusReport.getRequestError(): RequestError {
     return Request.Type.values().mapNotNull {
         getErrorFor(it)
     }.first()
 }
 
-private fun RequestStatusReport.getRunningPosition() = when (getType()) {
-    Request.Type.INITIAL -> LoadState.Loading.Position.TOP
-    Request.Type.BEFORE -> LoadState.Loading.Position.TOP
-    Request.Type.AFTER -> LoadState.Loading.Position.BOTTOM
+private fun IRequestStatusReport.getTypeLoadPosition() = when (getType()) {
+    Request.Type.INITIAL -> LoadState.Position.UNDEFINED
+    Request.Type.BEFORE -> LoadState.Position.TOP
+    Request.Type.AFTER -> LoadState.Position.BOTTOM
 }
 
 /**
@@ -32,12 +32,16 @@ internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<LoadState> 
          *
          * @param report The current status report that has all the information about the requests.
          */
-        override fun onStatusChange(report: RequestStatusReport) {
+        override fun onStatusChange(report: IRequestStatusReport) {
+            val position = report.getTypeLoadPosition()
             val state = when {
-                report.hasRunning() -> LoadState.Loading(report.getRunningPosition())
-                report.hasError() -> LoadState.Error(report.getRequestError())
-                report.hasSuccess() -> LoadState.Success
-                else -> LoadState.Idle
+                report.hasRunning() -> LoadState.Loading(position)
+                report.hasError() -> {
+                    val error = report.getRequestError()
+                    LoadState.Error(error, position)
+                }
+                report.hasSuccess() -> LoadState.Success(position)
+                else -> LoadState.Idle(position)
             }
             sendBlocking(state)
         }

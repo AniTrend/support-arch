@@ -1,52 +1,40 @@
-package co.anitrend.arch.data.request.report
+package co.anitrend.arch.data.request.report.contract
 
-import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.data.request.model.Request
-import co.anitrend.arch.data.request.report.contract.IRequestStatusReport
+import co.anitrend.arch.domain.entities.RequestError
 
 /**
- * Data class that holds the information about the current status of the ongoing requests
- * using this helper.
+ * Status report contract
  */
-data class RequestStatusReport internal constructor(
-    private val request: Request
-) : IRequestStatusReport {
+interface IRequestStatusReport {
 
     /**
      * Convenience method to check if there are any running requests.
      *
      * @return True if there are any running requests, false otherwise.
      */
-    override fun hasRunning(): Boolean {
-        return request.status == Request.Status.RUNNING
-    }
+    fun hasRunning(): Boolean
 
     /**
      * Convenience method to check if there are any requests that resulted in an error.
      *
      * @return True if there are any requests that finished with error, false otherwise.
      */
-    override fun hasError(): Boolean {
-        return request.status == Request.Status.FAILED
-    }
+    fun hasError(): Boolean
 
     /**
      * Convenience method to check if there are any idle requests.
      *
      * @return True if there are no requests.
      */
-    override fun hasIdle(): Boolean {
-        return request.status == Request.Status.IDLE
-    }
+    fun hasIdle(): Boolean
 
     /**
      * Convenience method to check if there are any requests that resulted in success.
      *
      * @return True if there are any requests that finished without an error, false otherwise.
      */
-    override fun hasSuccess(): Boolean {
-        return request.status == Request.Status.SUCCESS
-    }
+    fun hasSuccess(): Boolean
 
     /**
      * Returns the error for the given request type.
@@ -56,24 +44,12 @@ data class RequestStatusReport internal constructor(
      * @return The [Throwable] returned by the failing request with the given type or
      * `null` if the request for the given type did not fail.
      */
-    override fun getErrorFor(type: Request.Type): RequestError? {
-        if (request.type == type)
-            return request.lastError
-        return null
-    }
+    fun getErrorFor(type: Request.Type): RequestError?
 
     /**
      * Returns the current request type.
      *
      * @return The [Request.Type] in the current context
      */
-    override fun getType(): Request.Type = request.type
-
-    override fun toString(): String {
-        return """
-                StatusReport {
-                    request: $request
-                }
-            """.trimIndent()
-    }
+    fun getType(): Request.Type
 }

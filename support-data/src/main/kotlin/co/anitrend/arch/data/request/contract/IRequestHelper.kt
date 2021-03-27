@@ -4,6 +4,7 @@ import co.anitrend.arch.data.request.callback.RequestCallback
 import co.anitrend.arch.data.request.report.RequestStatusReport
 import co.anitrend.arch.data.request.wrapper.RequestWrapper
 import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.data.request.report.contract.IRequestStatusReport
 import co.anitrend.arch.domain.entities.RequestError
 
 /**
@@ -83,6 +84,6 @@ interface IRequestHelper {
          *
          * @param report The current status report that has all the information about the requests.
          */
-        fun onStatusChange(report: RequestStatusReport)
+        fun onStatusChange(report: IRequestStatusReport)
     }
 }
