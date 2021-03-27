@@ -68,13 +68,7 @@ abstract class SupportPageAdapter(
     override fun getPageTitle(position: Int): CharSequence {
         if (position <= titles.size)
             return titles[position].toUpperCase(Locale.getDefault())
-        Timber.tag(TAG).w(
-            "Page title at position: $position doesn't have a corresponding title, returning empty string"
-        )
+        Timber.w("Page title at position: $position doesn't have a corresponding title, returning empty string")
         return String.empty()
-    }
-
-    companion object {
-        protected val TAG = SupportPageAdapter::class.java.simpleName
     }
 }

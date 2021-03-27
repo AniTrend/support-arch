@@ -4,7 +4,6 @@ import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.live.contract.AbstractPagingLiveDataSource
 import co.anitrend.arch.extension.util.DEFAULT_PAGE_SIZE
 import co.anitrend.arch.extension.util.pagination.SupportPagingHelper
-import kotlinx.coroutines.launch
 
 /**
  * A data source that is targeted for [androidx.paging.PagedList] without a backing source
@@ -29,7 +28,6 @@ abstract class SupportPagingLiveDataSource<K, V> : AbstractPagingLiveDataSource<
      * If invalidate has already been called, this method does nothing.
      */
     override fun invalidate() {
-        launch { clearDataSource(dispatcher.io) }
         supportPagingHelper.onPageRefresh()
         super.invalidate()
     }

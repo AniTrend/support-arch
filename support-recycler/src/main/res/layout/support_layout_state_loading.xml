@@ -5,17 +5,18 @@
     android:gravity="center"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/spacing_lg">
+    android:layout_height="wrap_content"
+    android:padding="@dimen/xl_margin">
 
     <ProgressBar
-        android:id="@+id/stateFooterLoadingBar"
+        android:id="@+id/stateLoadingProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         style="?android:attr/progressBarStyleSmall" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/stateFooterLoadingText"
+        android:id="@+id/stateLoadingText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

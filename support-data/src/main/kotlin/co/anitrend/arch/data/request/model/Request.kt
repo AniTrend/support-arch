@@ -1,6 +1,6 @@
 package co.anitrend.arch.data.request.model
 
-import co.anitrend.arch.data.request.error.RequestError
+import co.anitrend.arch.domain.entities.RequestError
 
 /**
  * Request type

@@ -12,6 +12,7 @@ import co.anitrend.arch.core.model.IStateLayoutConfig
  * @param loadingDrawable drawable for loading state, set this to null if you wish to hide the element
  * @param errorDrawable drawable for error state, set this to null if you wish to hide the element
  * @param loadingMessage label for loading message, set this to null if you wish to hide the element
+ * @property defaultMessage label for success state, set this to null if you wish to hide the element
  * @param retryAction label for retry action, set this to null if you wish to hide the element
  * @param inAnimation optional animations to use for switching in views
  * @param outAnimation optional animations to use for switching out views
@@ -22,7 +23,8 @@ data class StateLayoutConfig(
     @DrawableRes override val loadingDrawable: Int? = null,
     @DrawableRes override val errorDrawable: Int? = null,
     @StringRes override val loadingMessage: Int? = null,
+    @StringRes override val defaultMessage: Int? = null,
     @StringRes override val retryAction: Int? = null,
     @AnimRes override val inAnimation: Int = android.R.anim.fade_in,
-    @AnimRes override val outAnimation: Int = android.R.anim.fade_out
+    @AnimRes override val outAnimation: Int = android.R.anim.fade_out,
 ) : IStateLayoutConfig

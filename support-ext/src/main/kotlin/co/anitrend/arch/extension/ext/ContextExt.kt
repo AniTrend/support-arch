@@ -8,8 +8,10 @@ import android.content.res.TypedArray
 import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.*
@@ -17,6 +19,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import timber.log.Timber
 import java.util.*
@@ -91,7 +94,7 @@ inline fun <reified T> Context.restartApplication(intentId: Int = 1510, delayDur
         )
         exitProcess(0)
     }.onFailure {
-        Timber.tag("restartApplication").e(it)
+        Timber.e(it)
     }
 }
 
@@ -99,7 +102,7 @@ inline fun <reified T> Context.restartApplication(intentId: Int = 1510, delayDur
  * Schedule a repeating alarm that has inexact trigger time requirements.
  *
  * @param enabled schedules or cancels the scheduled task
- * @param interval duration between each alarm event
+ * @param interval duration between each alarm event in milliseconds
  */
 inline fun <reified T> Context.scheduleWithAlarm(enabled: Boolean, interval: Long) {
     val intent = Intent(this, T::class.java)
@@ -163,7 +166,7 @@ fun Context.toggleKeyboard(show: Boolean) {
                     windowToken, 0
                 )
     }.onFailure {
-        Timber.tag("toggleKeyboard").e(it)
+        Timber.e(it)
     }
 }
 
@@ -197,7 +200,7 @@ inline fun <reified T> Context?.startNewActivity(params: Bundle? = null, options
         }
         this?.startActivity(intent, options)
     }.onFailure {
-        Timber.tag("startNewActivity").e(it)
+        Timber.e(it)
     }
 }
 
@@ -229,9 +232,26 @@ fun Context.getLayoutInflater(): LayoutInflater =
  */
 fun Context.getScreenDimens(): Point {
     val deviceDimens = Point()
-    systemServiceOf<WindowManager>()
-        ?.defaultDisplay
-        ?.getSize(deviceDimens)
+    val metrics = systemServiceOf<WindowManager>()
+        ?.currentWindowMetrics
+
+    if (metrics != null) {
+        val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(metrics.windowInsets)
+        val insets = windowInsets.getInsetsIgnoringVisibility(
+            WindowInsets.Type.navigationBars() or
+                    WindowInsets.Type.displayCutout()
+        )
+        val insetsWidth = insets.right + insets.left
+        val insetsHeight = insets.top + insets.bottom
+        // Legacy size that Display#getSize reports
+        val bounds = metrics.bounds
+        val legacySize = Size(
+            bounds.width() - insetsWidth,
+            bounds.height() - insetsHeight
+        )
+        deviceDimens.x = legacySize.width
+        deviceDimens.y - legacySize.height
+    }
     return deviceDimens
 }
 
@@ -303,19 +323,19 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int) =
  * that the state of each drawable is not shared
  *
  * @param resource The resource id of the drawable or vector drawable
- * @param tintColor A specific color to tint the drawable
+ * @param colorRes A specific color to tint the drawable
  *
  * @return [Drawable] tinted with the tint color
  *
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes tintColor : Int): Drawable? {
+fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes colorRes : Int): Drawable? {
     val drawableResource = AppCompatResources.getDrawable(this, resource)
     if (drawableResource != null) {
         val drawableResult = DrawableCompat.wrap(drawableResource).mutate()
-        if (tintColor != 0)
-            DrawableCompat.setTint(drawableResult, getCompatColor(tintColor))
+        if (colorRes != 0)
+            DrawableCompat.setTint(drawableResult, getCompatColor(colorRes))
         return drawableResource
     }
     return null
@@ -355,7 +375,7 @@ fun Context.getTintedDrawableWithAttribute(
  * of each drawable is not shared
  *
  * @param resource The resource id of the drawable or vector drawable
- * @param colorAttr A specific color to tint the drawable
+ * @param colorInt A specific color to tint the drawable
  *
  * @return [Drawable] tinted with the tint color
  *
@@ -363,12 +383,15 @@ fun Context.getTintedDrawableWithAttribute(
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getTintedDrawable(@DrawableRes resource : Int, @AttrRes colorAttr : Int): Drawable? {
+fun Context.getTintedDrawable(
+    @DrawableRes resource : Int,
+    @ColorInt colorInt : Int
+): Drawable? {
     val originalDrawable = getCompatDrawable(resource)
     var drawable : Drawable? = null
     if (originalDrawable != null) {
         drawable = DrawableCompat.wrap(originalDrawable).mutate()
-        DrawableCompat.setTint(drawable, getColorFromAttr(colorAttr))
+        DrawableCompat.setTint(drawable, colorInt)
     }
     return drawable
 }

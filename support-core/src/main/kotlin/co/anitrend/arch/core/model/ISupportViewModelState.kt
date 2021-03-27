@@ -1,13 +1,13 @@
 package co.anitrend.arch.core.model
 
 import androidx.lifecycle.LiveData
-import co.anitrend.arch.domain.entities.NetworkState
+import co.anitrend.arch.domain.entities.LoadState
 
 /**
  * A helper contract for view model items
  *
  * @property model observable model from a use case output
- * @property networkState observable network state from underlying sources
+ * @property loadState observable network state from underlying sources
  * @property refreshState observable network refresh state from underlying sources
  *
  * @param R type of your [model]
@@ -16,9 +16,9 @@ import co.anitrend.arch.domain.entities.NetworkState
  */
 interface ISupportViewModelState<R> {
 
-    val model: LiveData<R?>
-    val networkState: LiveData<NetworkState>?
-    val refreshState: LiveData<NetworkState>?
+    val model: LiveData<R>
+    val loadState: LiveData<LoadState>
+    val refreshState: LiveData<LoadState>
 
     /**
      * Triggers use case to perform a retry operation

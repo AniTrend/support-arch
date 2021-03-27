@@ -1,23 +1,18 @@
 package co.anitrend.arch.extension.util.pagination
 
-import android.os.Bundle
-import android.os.Parcelable
-import co.anitrend.arch.extension.util.KEY_PAGINATION
 import co.anitrend.arch.extension.util.pagination.contract.ISupportPagingHelper
-import kotlinx.android.parcel.Parcelize
 
 /**
  * Paging helper, makes the manipulating of paging related variables easier
  *
  * @since v1.1.0
  */
-@Parcelize
 data class SupportPagingHelper(
     var page: Int = 1,
     var pageOffset: Int = 0,
     val pageSize: Int,
     var isPagingLimit: Boolean
-) : Parcelable, ISupportPagingHelper {
+) : ISupportPagingHelper {
 
     /**
      * Resets the paging parameters to their default
@@ -49,16 +44,4 @@ data class SupportPagingHelper(
      */
     override fun isFirstPage() =
         page == 1 && pageOffset == 0
-
-    /**
-     * Restore state from bundle
-     */
-    fun Bundle.from() {
-        val saved: SupportPagingHelper? = getParcelable(KEY_PAGINATION)
-        if (saved != null) {
-            page = saved.page
-            pageOffset = saved.pageOffset
-            isPagingLimit = saved.isPagingLimit
-        }
-    }
 }

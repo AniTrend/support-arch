@@ -2,7 +2,7 @@ package co.anitrend.arch.data.request.callback
 
 import co.anitrend.arch.data.request.wrapper.RequestWrapper
 import co.anitrend.arch.data.request.contract.IRequestHelper
-import co.anitrend.arch.data.request.error.RequestError
+import co.anitrend.arch.domain.entities.RequestError
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**

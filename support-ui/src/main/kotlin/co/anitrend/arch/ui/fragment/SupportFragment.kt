@@ -5,7 +5,7 @@ import android.view.*
 import androidx.annotation.LayoutRes
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
-import co.anitrend.arch.ui.fragment.contract.ISupportFragment
+import co.anitrend.arch.ui.common.ILifecycleController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 
@@ -24,11 +24,9 @@ import kotlinx.coroutines.MainScope
  * @see ISupportFragment
  */
 abstract class SupportFragment(
-    @MenuRes protected open val inflateMenu: Int = ISupportFragment.NO_MENU_ITEM,
-    @LayoutRes protected open val inflateLayout: Int = ISupportFragment.NO_LAYOUT_ITEM
-) : Fragment(), ISupportFragment, CoroutineScope by MainScope() {
-
-    override val moduleTag: String = javaClass.simpleName
+    @MenuRes protected open val inflateMenu: Int = NO_MENU_ITEM,
+    @LayoutRes protected open val inflateLayout: Int = NO_LAYOUT_ITEM
+) : Fragment(), ILifecycleController, CoroutineScope by MainScope() {
 
     /**
      * Invoke view model observer to watch for changes, this will be called
@@ -55,7 +53,7 @@ abstract class SupportFragment(
         super.onCreate(savedInstanceState)
         retainInstance = true
         initializeComponents(savedInstanceState)
-        setHasOptionsMenu(inflateMenu != ISupportFragment.NO_MENU_ITEM)
+        setHasOptionsMenu(inflateMenu != NO_MENU_ITEM)
     }
 
     /**
@@ -86,7 +84,7 @@ abstract class SupportFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return if (inflateLayout != ISupportFragment.NO_LAYOUT_ITEM) {
+        return if (inflateLayout != NO_LAYOUT_ITEM) {
             inflater.inflate(inflateLayout, container, false)
         } else super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -120,7 +118,25 @@ abstract class SupportFragment(
      * @see SupportFragment.onOptionsItemSelected
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (inflateMenu != ISupportFragment.NO_MENU_ITEM)
+        if (inflateMenu != NO_MENU_ITEM)
             inflater.inflate(inflateMenu, menu)
+    }
+
+    companion object {
+
+        /**
+         * Constant value that indicates that no dynamic menu will be inflated for a [CustomView]
+         *
+         * [NO_MENU_ITEM] has the default value of 0
+         */
+        const val NO_MENU_ITEM = 0
+
+        /**
+         * Constant value that indicates that no dynamic layout will be inflated for a
+         * [ISupportFragment] derivative
+         *
+         * [NO_LAYOUT_ITEM] has the default value of 0
+         */
+        const val NO_LAYOUT_ITEM = 0
     }
 }

@@ -25,7 +25,7 @@ open class SupportViewHolder(view: View) : ISupportViewHolder, RecyclerView.View
         position: Int,
         payloads: List<Any>,
         model: IRecyclerItem,
-        stateFlow: MutableStateFlow<ClickableItem?>,
+        stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
         recyclerItem = model

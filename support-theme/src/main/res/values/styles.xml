@@ -7,7 +7,7 @@
     <style name="SupportTheme.ToolbarTheme">
         <!-- android:textColorPrimary is the  color of the title text
              in the Toolbar, in the Theme.AppCompat theme:  -->
-        <item name="android:textColorPrimary">?attr/titleColor</item>
+        <item name="android:textColorPrimary">?attr/colorOnSurface</item>
 
         <!-- android:textColorPrimaryInverse is the  color of the title
              text in the Toolbar, in the Theme.AppCompat.Light theme:  -->
@@ -20,10 +20,10 @@
               when running on API 21, but not on older versions of
               Android, so this is only necessary to support older
               Android versions.-->
-        <item name="actionMenuTextColor">?attr/titleColor</item>
+        <item name="actionMenuTextColor">?attr/colorOnSurface</item>
         <!-- android:textColorSecondary is the color of the menu
              overflow icon (three vertical dots) -->
-        <item name="android:textColorSecondary">?attr/subtitleColor</item>
+        <item name="android:textColorSecondary">?attr/colorOnPrimarySurface</item>
 
         <!-- This would set the toolbar's background color,
               but setting this also changes the popup menu's background,
@@ -32,7 +32,7 @@
     </style>
 
     <style name="SupportTheme.PopupTheme" parent="@android:style/Widget.Holo.PopupMenu">
-        <item name="android:popupBackground">?attr/rootColor</item>
+        <item name="android:popupBackground">?attr/colorPrimary</item>
     </style>
 
     <style name="SupportTheme.Translucent">

@@ -18,10 +18,4 @@ import co.anitrend.arch.extension.preference.SupportPreference
 abstract class SupportPresenter<S : SupportPreference>(
     protected val context: Context,
     override val settings: S
-): ISupportPresenter, SupportLifecycle {
-
-    /**
-     * Tag descriptor of the current module
-     */
-    override val moduleTag = javaClass.simpleName
-}
+): ISupportPresenter, SupportLifecycle
