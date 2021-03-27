@@ -10,6 +10,7 @@ import androidx.annotation.StringRes
  * @property loadingDrawable drawable for loading state, set this to null if you wish to hide the element
  * @property errorDrawable drawable for error state, set this to null if you wish to hide the element
  * @property loadingMessage label for loading message, set this to null if you wish to hide the element
+ * @property defaultMessage label for success state, set this to null if you wish to hide the element
  * @property retryAction label for retry action, set this to null if you wish to hide the element
  * @property inAnimation optional animations to use for switching in views
  * @property outAnimation optional animations to use for switching out views
@@ -23,6 +24,8 @@ interface IStateLayoutConfig {
     val errorDrawable: Int?
     @get:StringRes
     val loadingMessage: Int?
+    @get:StringRes
+    val defaultMessage: Int?
     @get:StringRes
     val retryAction: Int?
     @get:AnimRes

@@ -2,13 +2,15 @@ package co.anitrend.arch.data.request.helper
 
 import co.anitrend.arch.data.request.*
 import co.anitrend.arch.data.request.callback.RequestCallback
-import co.anitrend.arch.data.request.error.RequestError
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.request.queue.RequestQueue
 import co.anitrend.arch.data.request.report.RequestStatusReport
+import co.anitrend.arch.data.request.report.contract.IRequestStatusReport
 import co.anitrend.arch.data.request.wrapper.RequestWrapper
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.CoroutineContext
@@ -46,7 +48,7 @@ class RequestHelper(
         request: Request,
         handleCallback: suspend (RequestCallback) -> Unit
     ): Boolean {
-        val report = AtomicReference<RequestStatusReport?>(null)
+        val report = AtomicReference<IRequestStatusReport?>(null)
         val ran = AtomicBoolean(false)
 
         withContext(dispatcher.confined) {
@@ -90,7 +92,7 @@ class RequestHelper(
     ) {
         withContext(dispatcher.confined) {
             val isSuccessful = throwable == null
-            var report: RequestStatusReport? = null
+            var report: IRequestStatusReport? = null
             val queue = addOrReuseRequest(wrapper.request)
             queue.running = null
             queue.request.lastError = throwable
@@ -140,11 +142,12 @@ class RequestHelper(
 
             if (!pendingRetries.isNullOrEmpty())
                 action()
+            else Timber.i("No requests for status: $status to retry")
 
             withContext(dispatcher.io) {
-                pendingRetries
+                pendingRetries.filterNotNull()
                     .forEach { wrapper ->
-                        wrapper?.retry()
+                        wrapper.retry()
                         retried.set(true)
                     }
             }

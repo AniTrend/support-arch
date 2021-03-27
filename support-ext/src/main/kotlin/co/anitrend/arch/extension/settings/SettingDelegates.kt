@@ -2,6 +2,7 @@ package co.anitrend.arch.extension.settings
 
 import android.content.SharedPreferences
 import android.content.res.Resources
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.preference.*
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import kotlinx.coroutines.channels.awaitClose
@@ -25,13 +26,15 @@ class EnumSetting<T : Enum<*>>(
     
     override var value by EnumPreference(identifier, default)
     
-    override val flow = callbackFlow {
-        val listener = SettingsListener { _, id ->
-            if (id == identifier)
-                sendBlocking(value)
+    override val flow by lazy(UNSAFE) {
+        callbackFlow {
+            val listener = SettingsListener { _, id ->
+                if (id == identifier)
+                    sendBlocking(value)
+            }
+            preference.registerOnSharedPreferenceChangeListener(listener)
+            awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
-        preference.registerOnSharedPreferenceChangeListener(listener)
-        awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 }
 
@@ -50,13 +53,15 @@ class BooleanSetting(
 
     override var value by BooleanPreference(identifier, default)
 
-    override val flow = callbackFlow {
-        val listener = SettingsListener { _, id ->
-            if (id == identifier)
-                sendBlocking(value)
+    override val flow by lazy(UNSAFE) {
+        callbackFlow {
+            val listener = SettingsListener { _, id ->
+                if (id == identifier)
+                    sendBlocking(value)
+            }
+            preference.registerOnSharedPreferenceChangeListener(listener)
+            awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
-        preference.registerOnSharedPreferenceChangeListener(listener)
-        awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 }
 
@@ -75,13 +80,15 @@ class IntSetting(
 
     override var value by IntPreference(identifier, default)
 
-    override val flow = callbackFlow {
-        val listener = SettingsListener { _, id ->
-            if (id == identifier)
-                sendBlocking(value)
+    override val flow by lazy(UNSAFE) {
+        callbackFlow {
+            val listener = SettingsListener { _, id ->
+                if (id == identifier)
+                    sendBlocking(value)
+            }
+            preference.registerOnSharedPreferenceChangeListener(listener)
+            awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
-        preference.registerOnSharedPreferenceChangeListener(listener)
-        awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 }
 
@@ -100,13 +107,15 @@ class FloatSetting(
 
     override var value by FloatPreference(identifier, default)
 
-    override val flow = callbackFlow {
-        val listener = SettingsListener { _, id ->
-            if (id == identifier)
-                sendBlocking(value)
+    override val flow by lazy(UNSAFE) {
+        callbackFlow {
+            val listener = SettingsListener { _, id ->
+                if (id == identifier)
+                    sendBlocking(value)
+            }
+            preference.registerOnSharedPreferenceChangeListener(listener)
+            awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
-        preference.registerOnSharedPreferenceChangeListener(listener)
-        awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 }
 
@@ -125,13 +134,15 @@ class LongSetting(
 
     override var value by LongPreference(identifier, default)
 
-    override val flow = callbackFlow {
-        val listener = SettingsListener { _, id ->
-            if (id == identifier)
-                sendBlocking(value)
+    override val flow by lazy(UNSAFE) {
+        callbackFlow {
+            val listener = SettingsListener { _, id ->
+                if (id == identifier)
+                    sendBlocking(value)
+            }
+            preference.registerOnSharedPreferenceChangeListener(listener)
+            awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
-        preference.registerOnSharedPreferenceChangeListener(listener)
-        awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 }
 
@@ -150,13 +161,15 @@ class StringSetting(
 
     override var value by StringPreference(identifier, default)
 
-    override val flow = callbackFlow {
-        val listener = SettingsListener { _, id ->
-            if (id == identifier)
-                sendBlocking(value)
+    override val flow by lazy(UNSAFE) {
+        callbackFlow {
+            val listener = SettingsListener { _, id ->
+                if (id == identifier)
+                    sendBlocking(value)
+            }
+            preference.registerOnSharedPreferenceChangeListener(listener)
+            awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
-        preference.registerOnSharedPreferenceChangeListener(listener)
-        awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 }
 
@@ -175,12 +188,14 @@ class NullableStringSetting(
 
     override var value by NullableStringPreference(identifier, default)
 
-    override val flow = callbackFlow {
-        val listener = SettingsListener { _, id ->
-            if (id == identifier)
-                sendBlocking(value)
+    override val flow by lazy(UNSAFE) {
+        callbackFlow {
+            val listener = SettingsListener { _, id ->
+                if (id == identifier)
+                    sendBlocking(value)
+            }
+            preference.registerOnSharedPreferenceChangeListener(listener)
+            awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
-        preference.registerOnSharedPreferenceChangeListener(listener)
-        awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 }

@@ -148,7 +148,6 @@ internal fun Project.configureOptions() {
                         developer {
                             id.set("wax911")
                             name.set("Maxwell Mapako")
-                            email.set("mxt.developer@gmail.com")
                             organizationUrl.set("https://github.com/anitrend")
                         }
                     }

@@ -12,20 +12,23 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import co.anitrend.arch.domain.entities.NetworkState
-import co.anitrend.arch.domain.extensions.isLoading
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.attachComponent
 import co.anitrend.arch.extension.ext.detachComponent
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.adapter.SupportPagedListAdapter
+import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
+import co.anitrend.arch.recycler.extensions.isEmpty
+import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
 import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.extension.configureWidgetBehaviorWith
 import co.anitrend.arch.ui.extension.onResponseResetStates
 import co.anitrend.arch.ui.fragment.SupportFragment
-import co.anitrend.arch.ui.fragment.contract.ISupportFragmentList
+import co.anitrend.arch.ui.fragment.list.contract.ISupportFragmentList
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
+import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -42,7 +45,7 @@ abstract class SupportFragmentList<M>(
     override val inflateLayout: Int = R.layout.support_list
 ) : SupportFragment(), ISupportFragmentList<M> {
 
-    protected open var supportStateLayout: SupportStateLayout? = null
+    protected open var supportStateLayout: ISupportStateLayout? = null
     protected open var supportRefreshLayout: SwipeRefreshLayout? = null
     protected open var supportRecyclerView: SupportRecyclerView? = null
 
@@ -64,11 +67,11 @@ abstract class SupportFragmentList<M>(
      */
     abstract fun onFetchDataInitialize()
 
-    override val onRefreshObserver = Observer<NetworkState> {
-        supportRefreshLayout?.isRefreshing = it.isLoading()
+    override val onRefreshObserver = Observer<LoadState> {
+        supportRefreshLayout?.isRefreshing = it is LoadState.Loading
     }
 
-    override val onNetworkObserver = Observer<NetworkState> {
+    override val onNetworkObserver = Observer<LoadState> {
         changeLayoutState(it)
     }
 
@@ -77,6 +80,20 @@ abstract class SupportFragmentList<M>(
      */
     protected open fun resetWidgetStates() =
         supportRefreshLayout?.onResponseResetStates()
+
+    protected open fun ISupportAdapter<*>.registerFlowListener() {
+        lifecycleScope.launchWhenResumed {
+            clickableFlow
+                .debounce(16)
+                .filterIsInstance<ClickableItem.State>()
+                .onEach {
+                    if (it.state !is LoadState.Loading)
+                        viewModelState()?.retry()
+                    else
+                        Timber.d("retry -> state is loading? current state: ${it.state}")
+                }.collect()
+        }
+    }
 
     /**
      * Provides a layout manager that should be used by [setRecyclerLayoutManager]
@@ -101,11 +118,16 @@ abstract class SupportFragmentList<M>(
      */
     override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
         if (recyclerView.adapter == null) {
-            recyclerView.adapter = supportViewAdapter.let { adapter ->
-                adapter as RecyclerView.Adapter<*>
-                adapter.stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-                adapter
+            val footer = SupportLoadStateAdapter(resources, stateConfig).apply {
+                registerFlowListener()
             }
+
+            if (supportViewAdapter is RecyclerView.Adapter<*>) {
+                (supportViewAdapter as RecyclerView.Adapter<*>)
+                    .stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            }
+
+            recyclerView.adapter = supportViewAdapter.withLoadStateFooter(footer = footer)
         }
     }
 
@@ -118,30 +140,15 @@ abstract class SupportFragmentList<M>(
     override fun initializeComponents(savedInstanceState: Bundle?) {
         attachComponent(supportViewAdapter)
         lifecycleScope.launchWhenResumed {
-            supportViewAdapter.clickableStateFlow
-                .debounce(16)
-                .filterIsInstance<ClickableItem.State>()
-                .collect {
-                    if (it.state !is NetworkState.Loading)
-                        viewModelState()?.retry()
-                    else
-                        Timber.tag(moduleTag).d(
-                            "retryFooterAction -> state is loading? current state: ${it.state}"
-                        )
-                }
-        }
-        lifecycleScope.launchWhenResumed {
-            supportStateLayout?.interactionStateFlow
-                ?.filterNotNull()
+            supportStateLayout?.interactionFlow
                 ?.debounce(16)
-                ?.collect {
-                    if (it.state !is NetworkState.Loading)
+                ?.filterIsInstance<ClickableItem.State>()
+                ?.onEach {
+                    if (it.state !is LoadState.Loading)
                         viewModelState()?.retry()
                     else
-                        Timber.tag(moduleTag).d(
-                            "onStateLayoutObserver -> state is loading? current state: ${it.state}"
-                        )
-                }
+                        Timber.d("onStateLayoutObserver -> state is loading? current state: ${it.state}")
+                }?.collect()
         }
         lifecycleScope.launchWhenResumed {
             if (supportViewAdapter.isEmpty())
@@ -170,7 +177,7 @@ abstract class SupportFragmentList<M>(
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)?.apply {
-            supportStateLayout = findViewById(R.id.supportStateLayout)
+            supportStateLayout = findViewById<SupportStateLayout>(R.id.supportStateLayout)
             supportRefreshLayout = findViewById(R.id.supportRefreshLayout)
             supportRecyclerView = findViewById(R.id.supportRecyclerView)
         }
@@ -205,22 +212,22 @@ abstract class SupportFragmentList<M>(
         super.onViewCreated(view, savedInstanceState)
         supportRecyclerView?.also { attachComponent(it) }
         setUpViewModelObserver()
-        viewModelState()?.networkState?.observe(viewLifecycleOwner, onNetworkObserver)
+        viewModelState()?.loadState?.observe(viewLifecycleOwner, onNetworkObserver)
         viewModelState()?.refreshState?.observe(viewLifecycleOwner, onRefreshObserver)
     }
 
     /**
      * Informs the underlying [SupportStateLayout] of changes to the [NetworkState]
      *
-     * @param networkState New state from the application
+     * @param loadState New state from the application
      */
-    override fun changeLayoutState(networkState: NetworkState?) {
-        if (supportViewAdapter.hasExtraRow() || networkState !is NetworkState.Error) {
-            supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Idle
-            supportViewAdapter.networkState = networkState
+    override fun changeLayoutState(loadState: LoadState) {
+        if (!supportViewAdapter.isEmpty() || loadState.position != LoadState.Position.UNDEFINED) {
+            supportStateLayout?.loadStateFlow?.value = LoadState.Idle()
+            supportViewAdapter.setLoadState(loadState)
         }
         else {
-            supportStateLayout?.networkMutableStateFlow?.value = networkState
+            supportStateLayout?.loadStateFlow?.value = loadState
         }
 
         resetWidgetStates()

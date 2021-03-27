@@ -1,6 +1,7 @@
 package co.anitrend.arch.extension.network
 
 import android.net.*
+import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,10 +18,10 @@ import kotlinx.coroutines.flow.callbackFlow
  *
  * @since v1.2.0
  */
-open class SupportConnectivity(
+class SupportConnectivity(
     private val connectivityManager: ConnectivityManager?,
     private val connectivityCapabilities: Int = NetworkCapabilities.NET_CAPABILITY_INTERNET
-) {
+) : ISupportConnectivity {
 
     /**
      * Check if the device is connected to any network with internet capabilities, this is only
@@ -28,7 +29,7 @@ open class SupportConnectivity(
      *
      * @return true if a internet activity is present otherwise false
      */
-    open val isConnected
+    override val isConnected
         get() = (connectivityManager?.allNetworks?.filter {
             val network = connectivityManager.getNetworkCapabilities(it)
             network?.hasCapability(connectivityCapabilities) ?: false
@@ -39,7 +40,7 @@ open class SupportConnectivity(
      *
      * @see ConnectivityState
      */
-    val connectivityStateFlow = callbackFlow<ConnectivityState> {
+    override val connectivityStateFlow = callbackFlow<ConnectivityState> {
         val callback = object : ConnectivityManager.NetworkCallback() {
             /**
              * Called when the framework connects and has declared a new network ready for use.

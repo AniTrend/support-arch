@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/xl_margin">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/stateDefaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:layout_marginStart="@dimen/lg_margin"
+        android:layout_marginEnd="@dimen/lg_margin"
+        tools:text="@sample/footer_sample.json/empty" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

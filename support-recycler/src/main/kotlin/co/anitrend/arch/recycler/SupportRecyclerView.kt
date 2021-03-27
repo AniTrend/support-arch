@@ -21,8 +21,6 @@ open class SupportRecyclerView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : RecyclerView(context, attrs, defStyle), SupportLifecycle {
 
-    override val moduleTag: String = javaClass.simpleName
-
     /**
      * Tells this recycler to set it's adapters instance to false when [SupportLifecycle.onDestroy]
      * is triggered, assuming you've called [co.anitrend.arch.extension.ext.attachComponent] on this
@@ -66,9 +64,7 @@ open class SupportRecyclerView @JvmOverloads constructor(
     override fun onDestroy() {
         super.onDestroy()
         if (autoClearAdapter) {
-            Timber.tag(moduleTag).d(
-                "Clearing adapter reference for this recycler to avoid potential leaks"
-            )
+            Timber.v("Clearing adapter reference for this recycler to avoid potential leaks")
             adapter = null
         }
     }

@@ -1,4 +1,5 @@
 {
   "message": "Loading, please wait a moment..",
+  "empty": "No more more data to show",
   "error": "Your request to load more results has failed due to a network error. The application cannot detect any internet connectivity."
 }

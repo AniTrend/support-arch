@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.core.model.IStateLayoutConfig
-import co.anitrend.arch.domain.entities.NetworkState
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -38,7 +38,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
     /**
      * An observer to listen for clicks on clickable items
      */
-    val clickableStateFlow: StateFlow<ClickableItem?>
+    val clickableFlow: Flow<ClickableItem>
 
     /**
      * Configuration for the state based footer
@@ -49,11 +49,6 @@ interface ISupportAdapter<T> : SupportLifecycle {
      * Assigned if the current adapter supports needs to supports action mode
      */
     val supportAction: ISupportSelectionMode<Long>?
-
-    /**
-     * Network state which will be used by [co.anitrend.arch.recycler.shared.SupportErrorItem]
-     */
-    var networkState: NetworkState?
 
     /**
      * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
@@ -75,34 +70,6 @@ interface ISupportAdapter<T> : SupportLifecycle {
     fun createDefaultViewHolder(
         parent: ViewGroup, @LayoutRes viewType: Int, layoutInflater: LayoutInflater
     ): SupportViewHolder
-
-    /**
-     * Returns a boolean indicating whether or not the adapter had data, and caters for [hasExtraRow]
-     *
-     * @return [Boolean]
-     * @see hasExtraRow
-     */
-    fun isEmpty(): Boolean
-
-    /**
-     * Fetches the non-nullable item of the underlying list with-in the adapter
-     *
-     * @param position Index of the item to get
-     *
-     * @throws IllegalStateException
-     */
-    fun requireItem(position: Int): T
-
-    /**
-     * Informs us if the given [position] is within bounds of our underlying collection
-     */
-    fun isWithinIndexBounds(position: Int): Boolean
-
-    /**
-     * Checks if current network state represents an additional row of data
-     */
-    fun hasExtraRow() = networkState != null &&
-            (networkState is NetworkState.Loading || networkState is NetworkState.Error)
 
     /**
      * Should return the span size for the item at [position], when called from
@@ -170,7 +137,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
     /**
      * Informs view adapter of changes related to it's view holder
      */
-    fun updateSelection()
+    fun notifyDataSetNeedsRefreshing()
 
     /**
      * Binds view holder by view type at [position]

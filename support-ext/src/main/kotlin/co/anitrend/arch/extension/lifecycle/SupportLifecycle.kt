@@ -16,18 +16,13 @@ import timber.log.Timber
 interface SupportLifecycle : LifecycleObserver {
 
     /**
-     * Tag descriptor of the current module
-     */
-    val moduleTag: String
-
-    /**
      * Triggered when the lifecycleOwner reaches it's onCreate state
      *
      * @see [androidx.lifecycle.LifecycleOwner]
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        Timber.tag(moduleTag).v("onCreate")
+        Timber.v("onCreate")
     }
 
     /**
@@ -37,7 +32,7 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
-        Timber.tag(moduleTag).v("onStart")
+        Timber.v("onStart")
     }
 
     /**
@@ -47,7 +42,7 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-        Timber.tag(moduleTag).v("onStop")
+        Timber.v("onStop")
     }
 
     /**
@@ -57,7 +52,7 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {
-        Timber.tag(moduleTag).v("onResume")
+        Timber.v("onResume")
     }
 
     /**
@@ -67,7 +62,7 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onPause() {
-        Timber.tag(moduleTag).v("onPause")
+        Timber.v("onPause")
     }
 
     /**
@@ -77,6 +72,6 @@ interface SupportLifecycle : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
-        Timber.tag(moduleTag).v("onDestroy")
+        Timber.v("onDestroy")
     }
 }

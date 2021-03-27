@@ -1,11 +1,13 @@
-package co.anitrend.arch.recycler.shared
+package co.anitrend.arch.recycler.shared.model
 
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
+import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.R
@@ -13,31 +15,34 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
-import kotlinx.android.synthetic.main.support_layout_state_footer_loading.view.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
- * View holder for representing loading status
+ * View holder for representing idle or success states
  *
- * @since v0.9.X
+ * @since v1.3.0
  */
-open class SupportLoadingItem(
-    private val configuration: IStateLayoutConfig
+class SupportDefaultItem(
+    private val loadState: LoadState,
+    private val stateConfig: IStateLayoutConfig
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
     override fun bind(
         view: View,
         position: Int,
         payloads: List<Any>,
-        stateFlow: MutableStateFlow<ClickableItem?>,
+        stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
-        if (configuration.loadingMessage != null) {
-            view.stateFooterLoadingText.visible()
-            view.stateFooterLoadingText.setText(configuration.loadingMessage!!)
+        val defaultMessage = stateConfig.defaultMessage
+        if (loadState is LoadState.Success && defaultMessage != null) {
+            view.visible()
+            view.findViewById<AppCompatTextView>(
+                R.id.stateDefaultText
+            ).setText(defaultMessage)
         }
         else
-            view.stateFooterLoadingText.gone()
+            view.gone()
     }
 
     override fun unbind(view: View) {
@@ -62,7 +67,7 @@ open class SupportLoadingItem(
             layoutInflater: LayoutInflater
         ): SupportViewHolder {
             val view = layoutInflater.inflate(
-                R.layout.support_layout_state_footer_loading,
+                R.layout.support_layout_state_default,
                 viewGroup,
                 false
             )

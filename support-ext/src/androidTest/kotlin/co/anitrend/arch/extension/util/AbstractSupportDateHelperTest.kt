@@ -2,7 +2,7 @@ package co.anitrend.arch.extension.util
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
-import co.anitrend.arch.extension.util.date.contract.ISupportDateHelper
+import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.arch.extension.util.date.SupportDateHelper
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.junit.Assert.assertEquals
@@ -19,9 +19,9 @@ import java.util.*
  */
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class ISupportDateHelperTest {
+class AbstractSupportDateHelperTest {
 
-    private val dateHelper : ISupportDateHelper = SupportDateHelper()
+    private val dateHelper : AbstractSupportDateHelper = SupportDateHelper()
 
     private val context by lazy {
         InstrumentationRegistry.getInstrumentation().context
