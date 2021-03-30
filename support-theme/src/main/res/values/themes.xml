@@ -6,6 +6,27 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorSurface">@color/colorSurface</item>
+
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="scrimBackground">@color/colorScrim</item>
+
+        <item name="colorError">@color/colorError</item>
+        <item name="colorWarning">@color/colorWarning</item>
+        <item name="colorSuccess">@color/colorSuccess</item>
+        <item name="colorInfo">@color/colorInfo</item>
+
+        <item name="colorPrimaryText">@color/primaryTextColor</item>
+        <item name="colorSecondaryText">@color/secondaryTextColor</item>
+        <item name="colorBackground">@color/colorBackground</item>
+        <item name="colorBackgroundFloating">@color/colorSurface</item>
+
         <item name="android:textColorPrimary">@color/primaryTextColor</item>
         <item name="android:textColorSecondary">@color/secondaryTextColor</item>
 
@@ -26,12 +47,10 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="android:textViewStyle">@style/SupportTheme.FontFamily</item>
 
-        <item name="android:listDivider">@color/primaryColor</item>
+        <item name="android:listDivider">@color/colorDivider</item>
 
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:popupMenuStyle">@style/SupportTheme.PopupTheme</item>
-
-        <item name="scrimBackground">@color/colorScrim</item>
     </style>
 
     <style name="SupportTheme.AppTheme" />

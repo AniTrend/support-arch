@@ -9,8 +9,6 @@ import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.adapter.controller.SupportAdapterController
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
-import co.anitrend.arch.recycler.model.contract.IRecyclerItem
-import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 
@@ -32,6 +30,17 @@ abstract class SupportListAdapter<T>(
         this.setHasStableIds(supportsStableIds)
     }
 
+    /**
+     * Internal use only indicator for checking against the use of a
+     * concat adapter for headers and footers, which is in turn used
+     * to figure out how to get the view holder id
+     *
+     * @see withLoadStateHeader
+     * @see withLoadStateFooter
+     * @see withLoadStateHeaderAndFooter
+     */
+    override var isUsingConcatAdapter: Boolean = false
+
     override var lastAnimatedPosition: Int = 0
 
     override val controller by lazy {
@@ -39,6 +48,18 @@ abstract class SupportListAdapter<T>(
     }
 
     override val clickableFlow = MutableStateFlow<ClickableItem>(ClickableItem.None)
+
+    /**
+     * Returns the non-nullable item for this adapter
+     *
+     * @param position The current position of the adapter
+     *
+     * @throws IllegalArgumentException when the item is null
+     * @throws IndexOutOfBoundsException when the [position] is invalid
+     */
+    override fun requireItem(position: Int): T {
+        return requireNotNull(getItem(position))
+    }
 
     /**
      * Return the stable ID for the item at [position]. If [hasStableIds]
@@ -52,11 +73,10 @@ abstract class SupportListAdapter<T>(
     override fun getItemId(position: Int): Long {
         return when (hasStableIds()) {
             true -> runCatching {
-                getStableIdFor(getItem(position))
-            }.getOrElse {
-                Timber.v(it, "getItemId(position: Int) -> position: $position")
-                RecyclerView.NO_ID
-            }
+                getStableIdFor(requireItem(position))
+            }.onFailure {
+                Timber.v(it, "get item id -> position: $position")
+            }.getOrDefault(RecyclerView.NO_ID)
             else -> super.getItemId(position)
         }
     }
@@ -81,8 +101,12 @@ abstract class SupportListAdapter<T>(
     override fun onViewAttachedToWindow(holder: SupportViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.itemView.layoutParams?.also {
+            val position = if (isUsingConcatAdapter)
+                holder.bindingAdapterPosition
+            else holder.absoluteAdapterPosition
+
             when (it is StaggeredGridLayoutManager.LayoutParams) {
-                true -> setLayoutSpanSize(it, holder.absoluteAdapterPosition)
+                true -> setLayoutSpanSize(it, position)
             }
         }
     }
@@ -172,52 +196,10 @@ abstract class SupportListAdapter<T>(
     }
 
     /**
-     * Should return the span size for the item at [position], when called from
-     * [androidx.recyclerview.widget.GridLayoutManager] [spanCount] will be the span
-     * size for the item at the [position].
-     *
-     * Otherwise if called from [androidx.recyclerview.widget.StaggeredGridLayoutManager]
-     * then [spanCount] may be null
-     *
-     * @param position item position in the adapter
-     * @param spanCount current span count for the layout manager
-     *
-     * @see co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
-     */
-    override fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int? {
-        return runCatching {
-            val item = mapper(getItem(position))
-            val spanSize = spanCount ?: IRecyclerItemSpan.INVALID_SPAN_COUNT
-            item.getSpanSize(spanSize, position, resources)
-        }.getOrElse {
-            Timber.w(it, "Span size: $spanCount")
-            // we don't know which span size to use so we use the supplied or default full size
-            spanCount ?: ISupportAdapter.FULL_SPAN_SIZE
-        }
-    }
-
-    /**
      * Informs view adapter of changes related to it's view holder
      */
     override fun notifyDataSetNeedsRefreshing() {
         notifyDataSetChanged()
-    }
-
-    /**
-     * Binds view holder by view type at [position]
-     */
-    override fun bindViewHolderByType(
-        holder: SupportViewHolder,
-        position: Int,
-        payloads: List<Any>
-    ) {
-        runCatching {
-            val recyclerItem: IRecyclerItem = mapper(getItem(position))
-            holder.bind(position, payloads, recyclerItem, clickableFlow, supportAction)
-            animateViewHolder(holder, position)
-        }.onFailure { throwable ->
-            Timber.w(throwable, "bindViewHolderByType(holder: .., position: .., payloads: ..)")
-        }
     }
 
     /**

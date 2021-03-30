@@ -2,31 +2,47 @@
 <resources>
     <!-- Material X Light Colors -->
 
-    <color name="primaryColor">#fafafa</color>
-    <color name="primaryLightColor">#ffffff</color>
-    <color name="primaryDarkColor">#c7c7c7</color>
+    <color name="primaryColor">#E8EAF6</color>
+    <color name="primaryLightColor">#ECEEF7</color>
+    <color name="primaryDarkColor">#A2A3AC</color>
 
-    <color name="secondaryColor">#ffffff</color>
-    <color name="secondaryLightColor">#ffffff</color>
-    <color name="secondaryDarkColor">#cccccc</color>
+    <color name="secondaryColor">#9AA49A</color>
+    <color name="secondaryLightColor">#899395</color>
+    <color name="secondaryDarkColor">#4B5456</color>
 
     <color name="primaryTextColor">#424242</color>
     <color name="secondaryTextColor">#757575</color>
 
     <color name="colorPrimary">@color/primaryColor</color>
+    <color name="colorPrimaryDark">@color/primaryDarkColor</color>
     <color name="colorPrimaryVariant">@color/primaryLightColor</color>
     <color name="colorSecondary">@color/secondaryColor</color>
     <color name="colorSecondaryVariant">@color/secondaryLightColor</color>
 
-    <color name="colorBackground">@color/primaryLightColor</color>
-    <color name="colorSurface">@color/primaryLightColor</color>
-    <color name="colorError">@color/colorStateRed</color>
+    <color name="colorBackground">#FAFAFA</color>
+    <color name="colorSurface">#ffffff</color>
 
-    <color name="colorOnPrimary">@color/primaryLightColor</color>
-    <color name="colorOnSecondary">#000000</color>
+    <color name="colorError">#F44336</color>
+    <color name="colorErrorVariant">#E57373</color>
+    <color name="colorErrorDark">#D32F2F</color>
+
+    <color name="colorWarning">#FF9800</color>
+    <color name="colorWarningVariant">#FFB74D</color>
+    <color name="colorWarningDark">#F57C00</color>
+
+    <color name="colorInfo">#2196F3</color>
+    <color name="colorInfoVariant">#4DABF5</color>
+    <color name="colorInfoDark">#1769AA</color>
+
+    <color name="colorSuccess">#4CAF50</color>
+    <color name="colorSuccessVariant">#81C784</color>
+    <color name="colorSuccessDark">#388E3C</color>
+
+    <color name="colorOnPrimary">#424242</color>
+    <color name="colorOnSecondary">#ffffff</color>
     <color name="colorOnBackground">#000000</color>
     <color name="colorOnSurface">#000000</color>
-    <color name="colorOnError">@color/primaryLightColor</color>
+    <color name="colorOnError">#ffffff</color>
 
     <!-- State Light -->
 
@@ -39,8 +55,7 @@
     <color name="colorTransparentImageBackground">#46000000</color>
 
     <color name="colorScrim">#52000000</color>
+    <color name="colorDivider">#2f000000</color>
 
-    <color name="colorAccent">@color/colorStateBlue</color>
-
-    <color name="colorPrimaryDark">@color/primaryDarkColor</color>
+    <color name="colorAccent">#2979FF</color>
 </resources>

@@ -5,5 +5,5 @@
         android:topLeftRadius="@dimen/xl_margin"
         android:topRightRadius="@dimen/xl_margin" />
     <padding android:top="@dimen/lg_margin" />
-    <solid android:color="@color/colorPrimary" />
+    <solid android:color="?colorBackgroundFloating" />
 </shape>

@@ -3,8 +3,8 @@
 
     <style name="SupportTheme.AppTheme">
         <item name="android:windowLightStatusBar">@bool/isLightStatusBar</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
-        <item name="android:navigationBarColor">@color/secondaryDarkColor</item>
+        <item name="android:statusBarColor">?colorPrimary</item>
+        <item name="android:navigationBarColor">?colorPrimary</item>
     </style>
 
     <style name="SupportTheme.Translucent">
