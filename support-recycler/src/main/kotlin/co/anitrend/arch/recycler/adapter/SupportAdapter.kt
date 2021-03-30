@@ -11,6 +11,15 @@ import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
  */
 interface SupportAdapter<T> : ISupportAdapter<T> {
 
+    /**
+     * Internal use only indicator for checking against the use of a
+     * concat adapter for headers and footers, which is in turn used
+     * to figure out how to get the view holder id
+     *
+     * @see withLoadStateHeader
+     * @see withLoadStateFooter
+     * @see withLoadStateHeaderAndFooter
+     */
     var isUsingConcatAdapter: Boolean
 
     /**

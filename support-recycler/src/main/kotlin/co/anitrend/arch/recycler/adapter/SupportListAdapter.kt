@@ -30,6 +30,17 @@ abstract class SupportListAdapter<T>(
         this.setHasStableIds(supportsStableIds)
     }
 
+    /**
+     * Internal use only indicator for checking against the use of a
+     * concat adapter for headers and footers, which is in turn used
+     * to figure out how to get the view holder id
+     *
+     * @see withLoadStateHeader
+     * @see withLoadStateFooter
+     * @see withLoadStateHeaderAndFooter
+     */
+    override var isUsingConcatAdapter: Boolean = false
+
     override var lastAnimatedPosition: Int = 0
 
     override val controller by lazy {
