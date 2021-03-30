@@ -4,7 +4,7 @@
 
     <shape android:shape="rectangle">
         <corners android:radius="@dimen/xl_margin" />
-        <solid android:color="@color/colorBackground" />
+        <solid android:color="?colorBackgroundFloating" />
     </shape>
 
 </inset>
