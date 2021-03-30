@@ -15,6 +15,7 @@ import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import timber.log.Timber
 
 /**
  * Contract for recycler view adapters
@@ -128,10 +129,14 @@ interface ISupportAdapter<T> : SupportLifecycle {
      * @param layoutParams StaggeredGridLayoutManager.LayoutParams for your recycler
      */
     fun setLayoutSpanSize(layoutParams: StaggeredGridLayoutManager.LayoutParams, position: Int) {
-        val spanCount = getSpanSizeForItemAt(
-            position, layoutParams.spanIndex
-        ) ?: 0
-        layoutParams.isFullSpan = spanCount == FULL_SPAN_SIZE
+        if (position != RecyclerView.NO_POSITION) {
+            val spanCount = getSpanSizeForItemAt(
+                position, layoutParams.spanIndex
+            ) ?: 0
+            layoutParams.isFullSpan = spanCount == FULL_SPAN_SIZE
+        } else {
+            Timber.d("Adapter position RecyclerView.NO_POSITION")
+        }
     }
 
     /**
