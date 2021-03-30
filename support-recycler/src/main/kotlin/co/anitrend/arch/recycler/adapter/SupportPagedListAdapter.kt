@@ -45,6 +45,18 @@ abstract class SupportPagedListAdapter<T>(
     override val clickableFlow = MutableStateFlow<ClickableItem>(ClickableItem.None)
 
     /**
+     * Returns the non-nullable item for this adapter
+     *
+     * @param position The current position of the adapter
+     *
+     * @throws IllegalArgumentException when the item is null
+     * @throws IndexOutOfBoundsException when the [position] is invalid
+     */
+    override fun requireItem(position: Int): T {
+        return requireNotNull(getItem(position))
+    }
+
+    /**
      * Return the stable ID for the item at [position]. If [hasStableIds]
      * would return false this method should return [RecyclerView.NO_ID].
      *
@@ -56,11 +68,10 @@ abstract class SupportPagedListAdapter<T>(
     override fun getItemId(position: Int): Long {
         return when (hasStableIds()) {
             true -> runCatching {
-                getStableIdFor(getItem(position))
-            }.getOrElse {
-                Timber.v(it, "getItemId(position: Int) -> position: $position")
-                RecyclerView.NO_ID
-            }
+                getStableIdFor(requireItem(position))
+            }.onFailure {
+                Timber.v(it, "get item id -> position: $position")
+            }.getOrDefault(RecyclerView.NO_ID)
             else -> super.getItemId(position)
         }
     }
@@ -85,8 +96,12 @@ abstract class SupportPagedListAdapter<T>(
     override fun onViewAttachedToWindow(holder: SupportViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.itemView.layoutParams?.also {
+            val position = if (isUsingConcatAdapter)
+                holder.bindingAdapterPosition
+            else holder.absoluteAdapterPosition
+
             when (it is StaggeredGridLayoutManager.LayoutParams) {
-                true -> setLayoutSpanSize(it, holder.absoluteAdapterPosition)
+                true -> setLayoutSpanSize(it, position)
             }
         }
     }
@@ -176,65 +191,9 @@ abstract class SupportPagedListAdapter<T>(
     }
 
     /**
-     * Should return the span size for the item at [position], when called from
-     * [androidx.recyclerview.widget.GridLayoutManager] [spanCount] will be the span
-     * size for the item at the [position].
-     *
-     * Otherwise if called from [androidx.recyclerview.widget.StaggeredGridLayoutManager]
-     * then [spanCount] may be null
-     *
-     * @param position item position in the adapter
-     * @param spanCount current span count for the layout manager
-     *
-     * @see co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
-     */
-    override fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int? {
-        return runCatching {
-            val data = requireNotNull(getItem(position)) {
-                "getSpanSizeForItemAt(position: $position, spanCount: $spanCount) -> getItem(..) was null"
-            }
-            val spanSize = spanCount ?: IRecyclerItemSpan.INVALID_SPAN_COUNT
-            mapper(data).getSpanSize(spanSize, position, resources)
-        }.getOrElse {
-            Timber.w(it, "Span size: $spanCount")
-            // we don't know which span size to use so we use the supplied or default full size
-            spanCount ?: ISupportAdapter.FULL_SPAN_SIZE
-        }
-    }
-
-    /**
      * Informs view adapter of changes related to it's view holder
      */
     override fun notifyDataSetNeedsRefreshing() {
         notifyDataSetChanged()
-    }
-
-    /**
-     * Binds view holder by view type at [position]
-     */
-    override fun bindViewHolderByType(
-        holder: SupportViewHolder,
-        position: Int,
-        payloads: List<Any>
-    ) {
-        runCatching {
-            val data = requireNotNull(getItem(position))
-            val recyclerItem: IRecyclerItem = mapper(data)
-            holder.bind(position, payloads, recyclerItem, clickableFlow, supportAction)
-            animateViewHolder(holder, position)
-        }.onFailure { throwable ->
-            Timber.w(throwable, "bindViewHolderByType(holder: .., position: .., payloads: ..)")
-        }
-    }
-
-    /**
-     * Triggered when the lifecycleOwner reaches it's onPause state
-     *
-     * @see [androidx.lifecycle.LifecycleOwner]
-     */
-    override fun onPause() {
-        super.onPause()
-        // clear our state flow, when the lifecycle owner parent reaches its onPaused state
-        clickableFlow.value = ClickableItem.None
     }
 }

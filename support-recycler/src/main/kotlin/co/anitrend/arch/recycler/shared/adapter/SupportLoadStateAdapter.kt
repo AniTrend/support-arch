@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.getLayoutInflater
@@ -15,22 +16,20 @@ import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
-import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import co.anitrend.arch.recycler.shared.model.SupportDefaultItem
 import co.anitrend.arch.recycler.shared.model.SupportErrorItem
 import co.anitrend.arch.recycler.shared.model.SupportLoadingItem
 import co.anitrend.arch.theme.animator.ScaleAnimator
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import kotlinx.coroutines.flow.MutableStateFlow
-import timber.log.Timber
 
 open class SupportLoadStateAdapter(
-    private val resources: Resources,
+    override val resources: Resources,
     override val stateConfiguration: IStateLayoutConfig,
     override val mapper: (LoadState) -> IRecyclerItem = {
         when (it) {
-            is LoadState.Error -> SupportErrorItem(it, stateConfiguration)
             is LoadState.Loading -> SupportLoadingItem(stateConfiguration)
+            is LoadState.Error -> SupportErrorItem(it, stateConfiguration)
             else -> SupportDefaultItem(it, stateConfiguration)
         }
     },
@@ -49,7 +48,7 @@ open class SupportLoadStateAdapter(
                 } else if (newItem && !oldItem) {
                     notifyItemInserted(0)
                 } else if (oldItem && newItem) {
-                    notifyItemChanged(0)
+                    notifyDataSetNeedsRefreshing()
                 }
                 field = loadState
             }
@@ -68,10 +67,36 @@ open class SupportLoadStateAdapter(
         return loadState is LoadState.Loading || loadState is LoadState.Error
     }
 
-    final override fun getItemCount(): Int = if (displayLoadStateAsItem(loadState)) 1 else 0
+    /**
+     * Returns the non-nullable item for this adapter
+     *
+     * @param position The current position of the adapter
+     *
+     * @throws IllegalArgumentException when the item is null
+     * @throws IndexOutOfBoundsException when the [position] is invalid
+     */
+    override fun requireItem(position: Int) = loadState
 
+    final override fun getItemCount(): Int {
+        val state = requireItem(RecyclerView.NO_POSITION)
+        val isLoadStateItem = displayLoadStateAsItem(state)
+        return if (isLoadStateItem) 1 else 0
+    }
+
+    /**
+     * Return the view type of the item at `position` for the purposes
+     * of view recycling.
+     *
+     * The default implementation of this method returns 0, making the assumption of
+     * a single view type for the adapter. Unlike ListView adapters, types need not
+     * be contiguous. Consider using id resources to uniquely identify item view types.
+     *
+     * @param position position to query
+     * @return integer value identifying the type of the view needed to represent the item at
+     * `position`. Type codes need not be contiguous.
+     */
     override fun getItemViewType(position: Int): Int {
-        return when (loadState) {
+        return when (requireItem(position)) {
             is LoadState.Loading -> R.layout.support_layout_state_loading
             is LoadState.Error -> R.layout.support_layout_state_error
             else -> R.layout.support_layout_state_default
@@ -96,6 +121,11 @@ open class SupportLoadStateAdapter(
         bindViewHolderByType(holder, position)
     }
 
+    /**
+     * Should provide the required view holder, this function is a substitute for
+     * [androidx.recyclerview.widget.RecyclerView.Adapter.onCreateViewHolder] which now
+     * has extended functionality
+     */
     override fun createDefaultViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -109,52 +139,10 @@ open class SupportLoadStateAdapter(
     }
 
     /**
-     * Should return the span size for the item at [position], when called from
-     * [androidx.recyclerview.widget.GridLayoutManager] [spanCount] will be the span
-     * size for the item at the [position].
-     *
-     * Otherwise if called from [androidx.recyclerview.widget.StaggeredGridLayoutManager]
-     * then [spanCount] may be null
-     *
-     * @param position item position in the adapter
-     * @param spanCount current span count for the layout manager
-     *
-     * @see co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
-     */
-    override fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int {
-        return runCatching {
-            val item = mapper(loadState)
-            val spanSize = spanCount ?: IRecyclerItemSpan.INVALID_SPAN_COUNT
-            item.getSpanSize(spanSize, position, resources)
-        }.getOrElse {
-            Timber.w(it, "Span size: $spanCount")
-            // we don't know which span size to use so we use the supplied or default full size
-            spanCount ?: ISupportAdapter.FULL_SPAN_SIZE
-        }
-    }
-
-    /**
      * Informs view adapter of changes related to it's view holder
      */
     override fun notifyDataSetNeedsRefreshing() {
         notifyItemChanged(0)
-    }
-
-    /**
-     * Binds view holder by view type at [position]
-     */
-    override fun bindViewHolderByType(
-        holder: SupportViewHolder,
-        position: Int,
-        payloads: List<Any>
-    ) {
-        val recyclerItem: IRecyclerItem = mapper(loadState)
-        runCatching {
-            holder.bind(position, payloads, recyclerItem, clickableFlow, supportAction)
-            animateViewHolder(holder, position)
-        }.onFailure { throwable ->
-            Timber.w(throwable, "bindViewHolderByType(holder: .., position: .., payloads: ..)")
-        }
     }
 
     override fun onPause() {

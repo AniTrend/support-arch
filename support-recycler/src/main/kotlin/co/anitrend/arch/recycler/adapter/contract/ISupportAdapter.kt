@@ -1,5 +1,6 @@
 package co.anitrend.arch.recycler.adapter.contract
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -12,10 +13,13 @@ import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
+import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
+import kotlin.jvm.Throws
 
 /**
  * Contract for recycler view adapters
@@ -23,6 +27,8 @@ import timber.log.Timber
 interface ISupportAdapter<T> : SupportLifecycle {
 
     var lastAnimatedPosition: Int
+
+    val resources: Resources
 
     /**
      * Mapper for adapters to converting models to recycler items
@@ -50,6 +56,17 @@ interface ISupportAdapter<T> : SupportLifecycle {
      * Assigned if the current adapter supports needs to supports action mode
      */
     val supportAction: ISupportSelectionMode<Long>?
+
+    /**
+     * Returns the non-nullable item for this adapter
+     *
+     * @param position The current position of the adapter
+     *
+     * @throws IllegalArgumentException when the item is null
+     * @throws IndexOutOfBoundsException when the [position] is invalid
+     */
+    @Throws(IllegalArgumentException::class, IndexOutOfBoundsException::class)
+    fun requireItem(position: Int): T
 
     /**
      * Used to get stable ids for [androidx.recyclerview.widget.RecyclerView.Adapter] but only if
@@ -85,7 +102,17 @@ interface ISupportAdapter<T> : SupportLifecycle {
      *
      * @see co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
      */
-    fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int?
+    fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int? {
+        return try {
+            val item = mapper(requireItem(position))
+            val spanSize = spanCount ?: IRecyclerItemSpan.INVALID_SPAN_COUNT
+            item.getSpanSize(spanSize, position, resources)
+        } catch (exception: Exception) {
+            Timber.w(exception, "span size for -> position: $position | spanCount: $spanCount")
+            // We don't know which span size to use, so we'll just take up the entire span size
+            spanCount ?: FULL_SPAN_SIZE
+        }
+    }
 
     /**
      * Initial implementation is only specific for group types of recyclers,
@@ -151,7 +178,22 @@ interface ISupportAdapter<T> : SupportLifecycle {
         holder: SupportViewHolder,
         position: Int,
         payloads: List<Any> = emptyList()
-    )
+    ) {
+        runCatching {
+            val recyclerItem: IRecyclerItem = mapper(requireItem(position))
+            val mutableFlow = clickableFlow as MutableStateFlow
+            holder.bind(
+                position = position,
+                payloads = payloads,
+                model = recyclerItem,
+                stateFlow = mutableFlow,
+                selectionMode = supportAction
+            )
+            animateViewHolder(holder, position)
+        }.onFailure { throwable ->
+            Timber.w(throwable, "binding view holder -> holder: $holder, position: $position, payloads: [${payloads.joinToString()}]")
+        }
+    }
 
     companion object {
         const val FULL_SPAN_SIZE = 1
