@@ -118,6 +118,9 @@ abstract class SupportFragmentList<M>(
      */
     override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
         if (recyclerView.adapter == null) {
+            val header = SupportLoadStateAdapter(resources, stateConfig).apply {
+                registerFlowListener()
+            }
             val footer = SupportLoadStateAdapter(resources, stateConfig).apply {
                 registerFlowListener()
             }
@@ -127,7 +130,9 @@ abstract class SupportFragmentList<M>(
                     .stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }
 
-            recyclerView.adapter = supportViewAdapter.withLoadStateFooter(footer = footer)
+            recyclerView.adapter = supportViewAdapter.withLoadStateHeaderAndFooter(
+                header = header, footer = footer
+            )
         }
     }
 
