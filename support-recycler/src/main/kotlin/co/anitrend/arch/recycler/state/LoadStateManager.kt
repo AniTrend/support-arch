@@ -22,21 +22,30 @@ import co.anitrend.arch.domain.entities.LoadState
  * ```
  */
 abstract class LoadStateManager {
-    var startState: LoadState = LoadState.Idle()
-    var endState: LoadState = LoadState.Idle()
+    private var startState: LoadState = LoadState.Idle()
+    private var endState: LoadState = LoadState.Idle()
 
-    /** Updates load state */
+    /**
+     * Updates load state for the header or footer, if the position of [state]
+     * is unknown the [startState] will will be updated accordingly
+     */
     fun setState(state: LoadState) {
         when (state.position) {
             LoadState.Position.TOP -> {
+                endState = LoadState.Idle()
                 if (startState == state) return
                     startState = state
             }
             LoadState.Position.BOTTOM -> {
+                startState = LoadState.Idle()
                 if (endState == state) return
                     endState = state
             }
-            else -> { }
+            else -> {
+                endState = LoadState.Idle()
+                if (startState == state) return
+                    startState = state
+            }
         }
         onStateChanged(state)
     }

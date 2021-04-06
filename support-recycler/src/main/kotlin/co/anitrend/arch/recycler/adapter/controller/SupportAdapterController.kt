@@ -8,6 +8,7 @@ import co.anitrend.arch.recycler.adapter.controller.contract.AdapterController
 import co.anitrend.arch.recycler.adapter.controller.contract.StateListener
 import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
 import co.anitrend.arch.recycler.state.LoadStateManager
+import timber.log.Timber
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -29,7 +30,7 @@ class SupportAdapterController<T>(
 
     /**
      * Create a [ConcatAdapter] with the provided [SupportLoadStateAdapter]s displaying the
-     * [LoadState.Loading.Position.TOP] [LoadState] as a list item at the end of the presented list.
+     * [LoadState.Position.TOP] [LoadState] as a list item at the end of the presented list.
      *
      * @see SupportLoadStateAdapter
      * @see withLoadStateHeaderAndFooter
@@ -37,7 +38,8 @@ class SupportAdapterController<T>(
      */
     override fun withLoadStateHeader(header: SupportLoadStateAdapter): ConcatAdapter {
         addLoadStateListener { loadPosition, loadState ->
-            if (loadPosition == LoadState.Position.TOP)
+            Timber.d("load state header dispatching update -> position: $loadPosition | state: $loadState")
+            if (loadPosition != LoadState.Position.BOTTOM)
                 header.loadState = loadState
         }
         adapter as RecyclerView.Adapter<*>
@@ -46,7 +48,7 @@ class SupportAdapterController<T>(
 
     /**
      * Create a [ConcatAdapter] with the provided [SupportLoadStateAdapter]s displaying the
-     * [LoadState.Loading.Position.BOTTOM] [LoadState] as a list item at the start of the presented list.
+     * [LoadState.Position.BOTTOM] [LoadState] as a list item at the start of the presented list.
      *
      * @see SupportLoadStateAdapter
      * @see withLoadStateHeaderAndFooter
@@ -54,7 +56,8 @@ class SupportAdapterController<T>(
      */
     override fun withLoadStateFooter(footer: SupportLoadStateAdapter): ConcatAdapter {
         addLoadStateListener { loadPosition, loadState ->
-            if (loadPosition == LoadState.Position.BOTTOM)
+            Timber.d("load state footer dispatching update -> position: $loadPosition | state: $loadState")
+            if (loadPosition != LoadState.Position.TOP)
                 footer.loadState = loadState
         }
         adapter as RecyclerView.Adapter<*>
@@ -63,7 +66,7 @@ class SupportAdapterController<T>(
 
     /**
      * Create a [ConcatAdapter] with the provided [SupportLoadStateAdapter]s displaying the
-     * [LoadState.Loading.Position.TOP] and [LoadState.Loading.Position.BOTTOM] [LoadState]s
+     * [LoadState.Position.TOP] and [LoadState.Position.BOTTOM] [LoadState]s
      * as list items at the start and end respectively.
      *
      * @see SupportLoadStateAdapter
@@ -75,10 +78,17 @@ class SupportAdapterController<T>(
         footer: SupportLoadStateAdapter
     ): ConcatAdapter {
         addLoadStateListener { loadPosition, loadState ->
-            if (loadPosition == LoadState.Position.TOP)
-                header.loadState = loadState
-            if (loadPosition == LoadState.Position.BOTTOM)
-                footer.loadState = loadState
+            Timber.d("load state header and footer dispatching update -> position: $loadPosition | state: $loadState")
+            when (loadPosition) {
+                LoadState.Position.BOTTOM -> {
+                    header.loadState = LoadState.Idle()
+                    footer.loadState = loadState
+                }
+                else -> {
+                    footer.loadState = LoadState.Idle()
+                    header.loadState = loadState
+                }
+            }
         }
         adapter as RecyclerView.Adapter<*>
         return ConcatAdapter(header, adapter, footer)
