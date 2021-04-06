@@ -39,8 +39,6 @@ internal fun Project.configureOptions() {
     if (containsAndroidPlugin()) {
         println("Applying extension options for ${project.path}")
 
-        androidExtensionsExtension().isExperimental = true
-
         val baseExt = baseExtension()
         val mainSourceSet = baseExt.sourceSets["main"].java.srcDirs
 

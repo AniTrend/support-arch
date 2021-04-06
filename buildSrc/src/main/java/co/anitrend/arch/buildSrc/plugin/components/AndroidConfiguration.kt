@@ -1,6 +1,7 @@
 package co.anitrend.arch.buildSrc.plugin.components
 
 import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
+import co.anitrend.arch.buildSrc.plugin.extensions.libraryExtension
 import co.anitrend.arch.buildSrc.plugin.theme
 import co.anitrend.arch.buildSrc.plugin.domain
 import co.anitrend.arch.buildSrc.common.Versions
@@ -9,7 +10,6 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.io.File
-
 
 internal fun Project.configureAndroid(): Unit = baseExtension().run {
     compileSdkVersion(Versions.compileSdk)
@@ -20,6 +20,12 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         versionName = Versions.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles.add(File("consumer-rules.pro"))
+    }
+
+    libraryExtension().run {
+        buildFeatures {
+            viewBinding = true
+        }
     }
 
     buildTypes {

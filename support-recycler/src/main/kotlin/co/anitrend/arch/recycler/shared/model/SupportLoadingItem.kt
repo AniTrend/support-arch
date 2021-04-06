@@ -11,9 +11,9 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
+import co.anitrend.arch.recycler.databinding.SupportLayoutStateLoadingBinding
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
-import kotlinx.android.synthetic.main.support_layout_state_loading.view.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -25,6 +25,8 @@ open class SupportLoadingItem(
     private val configuration: IStateLayoutConfig
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
+    private var binding: SupportLayoutStateLoadingBinding? = null
+
     override fun bind(
         view: View,
         position: Int,
@@ -32,17 +34,18 @@ open class SupportLoadingItem(
         stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
+        binding = SupportLayoutStateLoadingBinding.bind(view)
         val message = configuration.loadingMessage
         if (message != null) {
-            view.stateLoadingText.visible()
-            view.stateLoadingText.setText(message)
+            binding?.stateLoadingText?.visible()
+            binding?.stateLoadingText?.setText(message)
         }
         else
-            view.stateLoadingText.gone()
+            binding?.stateLoadingText?.gone()
     }
 
     override fun unbind(view: View) {
-
+        binding = null
     }
 
     override fun getSpanSize(
@@ -62,12 +65,10 @@ open class SupportLoadingItem(
             viewGroup: ViewGroup,
             layoutInflater: LayoutInflater
         ): SupportViewHolder {
-            val view = layoutInflater.inflate(
-                R.layout.support_layout_state_loading,
-                viewGroup,
-                false
+            val binding = SupportLayoutStateLoadingBinding.inflate(
+                layoutInflater, viewGroup, false
             )
-            return SupportViewHolder(view)
+            return SupportViewHolder(binding)
         }
     }
 }

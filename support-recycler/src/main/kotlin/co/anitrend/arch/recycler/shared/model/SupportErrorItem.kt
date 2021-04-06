@@ -12,9 +12,9 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
+import co.anitrend.arch.recycler.databinding.SupportLayoutStateErrorBinding
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
-import kotlinx.android.synthetic.main.support_layout_state_error.view.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -27,6 +27,8 @@ class SupportErrorItem(
     private val configuration: IStateLayoutConfig
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
+    private var binding: SupportLayoutStateErrorBinding? = null
+
     override fun bind(
         view: View,
         position: Int,
@@ -34,22 +36,24 @@ class SupportErrorItem(
         stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
+        binding = SupportLayoutStateErrorBinding.bind(view)
         if (loadState is LoadState.Error)
-            view.stateErrorText.text = loadState.details.message
+            binding?.stateErrorText?.text = loadState.details.message
 
         if (configuration.retryAction != null) {
-            view.stateErrorAction.visible()
-            view.stateErrorAction.setOnClickListener {
+            binding?.stateErrorAction?.visible()
+            binding?.stateErrorAction?.setOnClickListener {
                 stateFlow.value = ClickableItem.State(loadState, it)
             }
-            view.stateErrorAction.setText(configuration.retryAction!!)
+            binding?.stateErrorAction?.setText(configuration.retryAction!!)
         }
         else
-            view.stateErrorAction.gone()
+            binding?.stateErrorAction?.gone()
     }
 
     override fun unbind(view: View) {
-        view.stateErrorAction.setOnClickListener(null)
+        binding?.stateErrorAction?.setOnClickListener(null)
+        binding = null
     }
 
     override fun getSpanSize(
@@ -69,12 +73,10 @@ class SupportErrorItem(
             viewGroup: ViewGroup,
             layoutInflater: LayoutInflater
         ): SupportViewHolder {
-            val view = layoutInflater.inflate(
-                R.layout.support_layout_state_error,
-                viewGroup,
-                false
+            val binding = SupportLayoutStateErrorBinding.inflate(
+                layoutInflater, viewGroup, false
             )
-            return SupportViewHolder(view)
+            return SupportViewHolder(binding)
         }
     }
 }

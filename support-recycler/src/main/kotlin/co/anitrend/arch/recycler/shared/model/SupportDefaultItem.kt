@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.core.model.IStateLayoutConfig
 import co.anitrend.arch.domain.entities.LoadState
@@ -13,6 +12,7 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
+import co.anitrend.arch.recycler.databinding.SupportLayoutStateDefaultBinding
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +27,8 @@ class SupportDefaultItem(
     private val stateConfig: IStateLayoutConfig
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
+    private var binding: SupportLayoutStateDefaultBinding? = null
+
     override fun bind(
         view: View,
         position: Int,
@@ -34,19 +36,17 @@ class SupportDefaultItem(
         stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
+        binding = SupportLayoutStateDefaultBinding.bind(view)
         val defaultMessage = stateConfig.defaultMessage
         if (loadState is LoadState.Success && defaultMessage != null) {
-            view.visible()
-            view.findViewById<AppCompatTextView>(
-                R.id.stateDefaultText
-            ).setText(defaultMessage)
+            binding?.root?.visible()
+            binding?.stateDefaultText?.setText(defaultMessage)
         }
-        else
-            view.gone()
+        else binding?.root?.gone()
     }
 
     override fun unbind(view: View) {
-
+        binding = null
     }
 
     override fun getSpanSize(
@@ -66,12 +66,10 @@ class SupportDefaultItem(
             viewGroup: ViewGroup,
             layoutInflater: LayoutInflater
         ): SupportViewHolder {
-            val view = layoutInflater.inflate(
-                R.layout.support_layout_state_default,
-                viewGroup,
-                false
+            val binding = SupportLayoutStateDefaultBinding.inflate(
+                layoutInflater, viewGroup, false
             )
-            return SupportViewHolder(view)
+            return SupportViewHolder(binding)
         }
     }
 }

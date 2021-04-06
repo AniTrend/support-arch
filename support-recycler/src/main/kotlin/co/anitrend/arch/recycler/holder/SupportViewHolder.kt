@@ -2,6 +2,7 @@ package co.anitrend.arch.recycler.holder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.holder.contract.ISupportViewHolder
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * @see ISupportViewHolder
  * @since 1.3.0
  */
-open class SupportViewHolder(view: View) : ISupportViewHolder, RecyclerView.ViewHolder(view) {
+open class SupportViewHolder(binding: ViewBinding) : ISupportViewHolder, RecyclerView.ViewHolder(binding.root) {
 
     private var recyclerItem: IRecyclerItem? = null
 
