@@ -118,7 +118,6 @@ abstract class AbstractSupportDateHelper {
      */
     fun convertToUnixTimeStamp(
         originDate: String,
-        locale: Locale = Locale.getDefault(),
         dateTimeFormatter: DateTimeFormatter,
         targetTimeZone: TimeZone = TimeZone.getDefault()
     ): Long {
