@@ -364,42 +364,15 @@ fun Context.getCompatDrawable(@DrawableRes resource: Int) =
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getCompatDrawable(@DrawableRes resource: Int, @ColorInt colorTint: Int): Drawable? {
+fun Context.getCompatDrawable(@DrawableRes resource: Int, @ColorRes colorTint: Int): Drawable? {
     val drawableResource = AppCompatResources.getDrawable(this, resource)
     if (drawableResource != null) {
         val drawableResult = DrawableCompat.wrap(drawableResource).mutate()
         if (colorTint != 0)
-            DrawableCompat.setTint(drawableResult, colorTint)
+            DrawableCompat.setTint(drawableResult, getCompatColor(colorTint))
         return drawableResource
     }
     return null
-}
-
-/**
- * Avoids resource not found when using vector drawables in API levels < Lollipop
- * and tints the drawable depending on the current selected theme, images loaded
- * from this method apply the [Drawable.mutate] to assure that the state
- * of each drawable is not shared.
- *
- * @param resource The resource id of the drawable or vector drawable
- *
- * @return [Drawable] tinted with [colorAttr]
- *
- * @see AttrRes
- * @see Drawable
- * @see DrawableRes
- */
-fun Context.getTintedDrawableWithAttribute(
-    @DrawableRes resource: Int,
-    @AttrRes colorAttr: Int
-): Drawable? {
-    val originalDrawable = getCompatDrawable(resource)
-    var drawable: Drawable? = null
-    if (originalDrawable != null) {
-        drawable = DrawableCompat.wrap(originalDrawable).mutate()
-        DrawableCompat.setTint(drawable, getColorFromAttr(colorAttr))
-    }
-    return drawable
 }
 
 /**
@@ -417,7 +390,7 @@ fun Context.getTintedDrawableWithAttribute(
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getTintedDrawable(
+fun Context.getCompatDrawableTint(
     @DrawableRes resource: Int,
     @ColorInt colorInt: Int
 ): Drawable? {
@@ -426,6 +399,33 @@ fun Context.getTintedDrawable(
     if (originalDrawable != null) {
         drawable = DrawableCompat.wrap(originalDrawable).mutate()
         DrawableCompat.setTint(drawable, colorInt)
+    }
+    return drawable
+}
+
+/**
+ * Avoids resource not found when using vector drawables in API levels < Lollipop
+ * and tints the drawable depending on the current selected theme, images loaded
+ * from this method apply the [Drawable.mutate] to assure that the state
+ * of each drawable is not shared.
+ *
+ * @param resource The resource id of the drawable or vector drawable
+ *
+ * @return [Drawable] tinted with [colorAttr]
+ *
+ * @see AttrRes
+ * @see Drawable
+ * @see DrawableRes
+ */
+fun Context.getCompatDrawableTintAttr(
+    @DrawableRes resource: Int,
+    @AttrRes colorAttr: Int
+): Drawable? {
+    val originalDrawable = getCompatDrawable(resource)
+    var drawable: Drawable? = null
+    if (originalDrawable != null) {
+        drawable = DrawableCompat.wrap(originalDrawable).mutate()
+        DrawableCompat.setTint(drawable, getColorFromAttr(colorAttr))
     }
     return drawable
 }
