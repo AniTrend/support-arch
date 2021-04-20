@@ -9,18 +9,25 @@ import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Size
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
+import android.view.animation.Interpolator
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.res.use
 import androidx.core.app.ActivityManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
 import java.util.*
 import kotlin.system.exitProcess
@@ -323,19 +330,19 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int) =
  * that the state of each drawable is not shared
  *
  * @param resource The resource id of the drawable or vector drawable
- * @param colorRes A specific color to tint the drawable
+ * @param colorTint A specific color to tint the drawable
  *
  * @return [Drawable] tinted with the tint color
  *
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorRes colorRes : Int): Drawable? {
+fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorInt colorTint : Int): Drawable? {
     val drawableResource = AppCompatResources.getDrawable(this, resource)
     if (drawableResource != null) {
         val drawableResult = DrawableCompat.wrap(drawableResource).mutate()
-        if (colorRes != 0)
-            DrawableCompat.setTint(drawableResult, getCompatColor(colorRes))
+        if (colorTint != 0)
+            DrawableCompat.setTint(drawableResult, colorTint)
         return drawableResource
     }
     return null
@@ -397,13 +404,67 @@ fun Context.getTintedDrawable(
 }
 
 /**
- * Auto disposable extension for recycling and catching exceptions for typed arrays
+ * Avoids resource not found when using vector drawables in API levels < Lollipop
+ * Also images loaded from this method apply the [Drawable.mutate] to assure
+ * that the state of each drawable is not shared
+ *
+ * @param attribute The resource id of the drawable or vector drawable as an attribute
+ *
+ * @return [Drawable] tinted with the tint color
+ *
+ * @see Drawable
+ * @see DrawableRes
  */
-inline fun TypedArray.use(block: (TypedArray) -> Unit) {
-    runCatching {
-        block(this)
-        recycle()
-    }.onFailure {
-        Timber.tag("TypedArray.use").e(it)
+fun Context.getCompatDrawableAttr(@AttrRes attribute : Int): Drawable? {
+    val typedValue = TypedValue().apply {
+        theme.resolveAttribute(attribute, this, true)
+    }
+    return getCompatDrawable(typedValue.resourceId)
+}
+
+/**
+ * Retrieve a style from the current [android.content.res.Resources.Theme].
+ */
+@StyleRes
+fun Context.themeStyle(@AttrRes attributeResource: Int): Int {
+    val typedValue = TypedValue()
+    theme.resolveAttribute(
+        attributeResource,
+        typedValue,
+        true
+    )
+    return typedValue.data
+}
+
+fun Context.themeInterpolator(
+    @AttrRes attributeResource: Int,
+    @InterpolatorRes interpolator: Int
+): Interpolator {
+    return AnimationUtils.loadInterpolator(
+        this,
+        obtainStyledAttributes(intArrayOf(attributeResource)).use {
+            it.getResourceId(0, interpolator)
+        }
+    )
+}
+
+/**
+ * Creates a callback flow a [BroadcastReceiver] using the given [IntentFilter]
+ *
+ * @param intentFilter The intent to subscribe to
+ *
+ * @return [Flow] of [Intent]
+ */
+fun Context.flowOfBroadcast(
+    intentFilter: IntentFilter
+): Flow<Intent> = callbackFlow {
+    val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            offer(intent)
+        }
+    }
+    registerReceiver(receiver, intentFilter)
+    awaitClose {
+        unregisterReceiver(receiver)
     }
 }

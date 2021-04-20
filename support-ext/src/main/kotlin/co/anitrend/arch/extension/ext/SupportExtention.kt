@@ -1,5 +1,8 @@
 package co.anitrend.arch.extension.ext
 
+import android.content.res.Resources
+import java.util.*
+import kotlin.math.roundToInt
 
 
 /**
@@ -43,7 +46,7 @@ fun String?.capitalizeWords(exceptions: List<String>? = null): String = when {
             when (word.isNotEmpty()) {
                 true -> {
                     if (!exceptions.isNullOrEmpty() && exceptions.contains(word)) result.append(word)
-                    else result.append(word.capitalize())
+                    else result.append(word.capitalize(Locale.ROOT))
                 }
             }
             if (index != words.size - 1)
@@ -54,4 +57,46 @@ fun String?.capitalizeWords(exceptions: List<String>? = null): String = when {
     else -> String.empty()
 }
 
+/**
+ * Convert this receiver as DP to PX
+ */
+val Float.dipToPx: Int get() {
+    val scale = Resources.getSystem().displayMetrics.density
+    return (this * scale + 0.5f).toInt()
+}
 
+/**
+ * Convert this receiver as PX to DP
+ */
+val Float.pxToDip: Int get() {
+    val scale = Resources.getSystem().displayMetrics.density
+    return (this / scale + 0.5f).toInt()
+}
+
+/**
+ * Convert this receiver as SP to PX
+ */
+val Float.spToPx: Int get() {
+    val scaledDensity = Resources.getSystem().displayMetrics.scaledDensity
+    return (this * scaledDensity).roundToInt()
+}
+
+/**
+ * Check if this receiver is small width screen
+ */
+val Float.isSmallWidthScreen : Boolean get() {
+    val displayMetrics = Resources.getSystem().displayMetrics
+    val widthDp = displayMetrics.widthPixels / displayMetrics.density
+    val heightDp = displayMetrics.heightPixels / displayMetrics.density
+    val screenSw = widthDp.coerceAtMost(heightDp)
+    return screenSw >= this
+}
+
+/**
+ * Check if this receiver is wide screen
+ */
+val Float.isWideScreen : Boolean get() {
+    val displayMetrics = Resources.getSystem().displayMetrics
+    val screenWidth = displayMetrics.widthPixels / displayMetrics.density
+    return screenWidth >= this
+}
