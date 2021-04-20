@@ -1,11 +1,11 @@
-/*
- * Copyright 2019 Google LLC
+/**
+ * Copyright 2019 AniTrend
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,10 +21,14 @@ import androidx.paging.DataSource
 import androidx.paging.PagedList
 import co.anitrend.arch.data.paging.builder.AbstractFlowPagedListBuilder
 import co.anitrend.arch.data.paging.contract.ClearInvalidatedCallback
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Builder for `Flow<PagedList>` given a [DataSource.Factory] and a [PagedList.Config].

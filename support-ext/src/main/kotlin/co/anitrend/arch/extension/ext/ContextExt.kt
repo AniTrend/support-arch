@@ -1,10 +1,31 @@
+/**
+ * Copyright 2021 AniTrend
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package co.anitrend.arch.extension.ext
 
 import android.app.ActivityManager
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.*
-import android.content.res.TypedArray
+import android.content.BroadcastReceiver
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -17,20 +38,26 @@ import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
 import android.view.inputmethod.InputMethodManager
-import androidx.annotation.*
+import androidx.annotation.ArrayRes
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.InterpolatorRes
+import androidx.annotation.StyleRes
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.res.use
 import androidx.core.app.ActivityManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.use
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
+import java.util.Calendar
+import kotlin.system.exitProcess
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
-import java.util.*
-import kotlin.system.exitProcess
 
 /**
  * Extension for getting system services
@@ -188,7 +215,7 @@ fun Context.toggleKeyboard(show: Boolean) {
 fun Context?.isLowRamDevice(): Boolean {
     val activityManager = this?.systemServiceOf<ActivityManager>()
     return if (activityManager != null)
-         ActivityManagerCompat.isLowRamDevice(activityManager)
+        ActivityManagerCompat.isLowRamDevice(activityManager)
     else false
 }
 
@@ -201,7 +228,7 @@ fun Context?.isLowRamDevice(): Boolean {
 inline fun <reified T> Context?.startNewActivity(params: Bundle? = null, options: Bundle? = null) {
     runCatching {
         val intent = Intent(this, T::class.java)
-        with (intent) {
+        with(intent) {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
             params?.also { putExtras(it) }
         }
@@ -218,7 +245,7 @@ inline fun <reified T> Context?.startNewActivity(params: Bundle? = null, options
  *
  * @throws Exception if the given ID does not exist.
  */
-fun Context.getStringList(@ArrayRes arrayRes : Int): List<String> {
+fun Context.getStringList(@ArrayRes arrayRes: Int): List<String> {
     val array = resources.getStringArray(arrayRes)
     return array.toList()
 }
@@ -246,7 +273,7 @@ fun Context.getScreenDimens(): Point {
         val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(metrics.windowInsets)
         val insets = windowInsets.getInsetsIgnoringVisibility(
             WindowInsets.Type.navigationBars() or
-                    WindowInsets.Type.displayCutout()
+                WindowInsets.Type.displayCutout()
         )
         val insetsWidth = insets.right + insets.left
         val insetsHeight = insets.top + insets.bottom
@@ -272,7 +299,7 @@ fun Context.getScreenDimens(): Point {
  * @throws UnsupportedOperationException if the attribute is defined but is
  *         not a color or drawable resource.
  */
-fun Context.getDrawableAttr(@AttrRes drawableAttr : Int): Drawable? {
+fun Context.getDrawableAttr(@AttrRes drawableAttr: Int): Drawable? {
     val drawableAttribute = obtainStyledAttributes(intArrayOf(drawableAttr))
     val drawable = drawableAttribute.getDrawable(0)
     drawableAttribute.recycle()
@@ -290,7 +317,7 @@ fun Context.getDrawableAttr(@AttrRes drawableAttr : Int): Drawable? {
  * @throws UnsupportedOperationException if the attribute is defined but is
  *         not a color or drawable resource.
  */
-fun Context.getColorFromAttr(@AttrRes colorAttr : Int, defaultColor : Int = 0): Int {
+fun Context.getColorFromAttr(@AttrRes colorAttr: Int, defaultColor: Int = 0): Int {
     val colorAttribute = obtainStyledAttributes(intArrayOf(colorAttr))
     @ColorInt val color = colorAttribute.getColor(0, defaultColor)
     colorAttribute.recycle()
@@ -321,7 +348,7 @@ fun Context.getCompatColor(@ColorRes colorRes: Int) =
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getCompatDrawable(@DrawableRes resource : Int) =
+fun Context.getCompatDrawable(@DrawableRes resource: Int) =
     AppCompatResources.getDrawable(this, resource)
 
 /**
@@ -337,7 +364,7 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int) =
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorInt colorTint : Int): Drawable? {
+fun Context.getCompatDrawable(@DrawableRes resource: Int, @ColorInt colorTint: Int): Drawable? {
     val drawableResource = AppCompatResources.getDrawable(this, resource)
     if (drawableResource != null) {
         val drawableResult = DrawableCompat.wrap(drawableResource).mutate()
@@ -363,11 +390,11 @@ fun Context.getCompatDrawable(@DrawableRes resource : Int, @ColorInt colorTint :
  * @see DrawableRes
  */
 fun Context.getTintedDrawableWithAttribute(
-    @DrawableRes resource : Int,
+    @DrawableRes resource: Int,
     @AttrRes colorAttr: Int
 ): Drawable? {
     val originalDrawable = getCompatDrawable(resource)
-    var drawable : Drawable? = null
+    var drawable: Drawable? = null
     if (originalDrawable != null) {
         drawable = DrawableCompat.wrap(originalDrawable).mutate()
         DrawableCompat.setTint(drawable, getColorFromAttr(colorAttr))
@@ -391,11 +418,11 @@ fun Context.getTintedDrawableWithAttribute(
  * @see DrawableRes
  */
 fun Context.getTintedDrawable(
-    @DrawableRes resource : Int,
-    @ColorInt colorInt : Int
+    @DrawableRes resource: Int,
+    @ColorInt colorInt: Int
 ): Drawable? {
     val originalDrawable = getCompatDrawable(resource)
-    var drawable : Drawable? = null
+    var drawable: Drawable? = null
     if (originalDrawable != null) {
         drawable = DrawableCompat.wrap(originalDrawable).mutate()
         DrawableCompat.setTint(drawable, colorInt)
@@ -415,7 +442,7 @@ fun Context.getTintedDrawable(
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getCompatDrawableAttr(@AttrRes attribute : Int): Drawable? {
+fun Context.getCompatDrawableAttr(@AttrRes attribute: Int): Drawable? {
     val typedValue = TypedValue().apply {
         theme.resolveAttribute(attribute, this, true)
     }

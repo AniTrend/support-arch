@@ -1,9 +1,24 @@
+/**
+ * Copyright 2021 AniTrend
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package co.anitrend.arch.extension.ext
 
 import android.content.res.Resources
-import java.util.*
+import java.util.Locale
 import kotlin.math.roundToInt
-
 
 /**
  * No locks are used to synchronize an access to the [Lazy] instance value; if the instance is accessed from multiple threads,
@@ -31,7 +46,6 @@ val SYNCHRONIZED = LazyThreadSafetyMode.SYNCHRONIZED
  */
 fun String.Companion.empty() = ""
 
-
 /**
  * Returns a copy of this strings having its first letter uppercase, or the original string,
  * if it's empty or already starts with an upper case letter.
@@ -45,7 +59,8 @@ fun String?.capitalizeWords(exceptions: List<String>? = null): String = when {
         for ((index, word) in words.withIndex()) {
             when (word.isNotEmpty()) {
                 true -> {
-                    if (!exceptions.isNullOrEmpty() && exceptions.contains(word)) result.append(word)
+                    if (!exceptions.isNullOrEmpty() && exceptions.contains(word))
+                        result.append(word)
                     else result.append(word.capitalize(Locale.ROOT))
                 }
             }
@@ -84,7 +99,7 @@ val Float.spToPx: Int get() {
 /**
  * Check if this receiver is small width screen
  */
-val Float.isSmallWidthScreen : Boolean get() {
+val Float.isSmallWidthScreen: Boolean get() {
     val displayMetrics = Resources.getSystem().displayMetrics
     val widthDp = displayMetrics.widthPixels / displayMetrics.density
     val heightDp = displayMetrics.heightPixels / displayMetrics.density
@@ -95,7 +110,7 @@ val Float.isSmallWidthScreen : Boolean get() {
 /**
  * Check if this receiver is wide screen
  */
-val Float.isWideScreen : Boolean get() {
+val Float.isWideScreen: Boolean get() {
     val displayMetrics = Resources.getSystem().displayMetrics
     val screenWidth = displayMetrics.widthPixels / displayMetrics.density
     return screenWidth >= this

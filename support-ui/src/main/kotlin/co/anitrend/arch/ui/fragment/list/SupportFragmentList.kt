@@ -1,3 +1,19 @@
+/**
+ * Copyright 2021 AniTrend
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package co.anitrend.arch.ui.fragment.list
 
 import android.os.Bundle
@@ -29,7 +45,10 @@ import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.arch.ui.fragment.list.contract.ISupportFragmentList
 import co.anitrend.arch.ui.view.widget.SupportStateLayout
 import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -152,7 +171,7 @@ abstract class SupportFragmentList<M>(
                     if (it.state !is LoadState.Loading)
                         viewModelState()?.retry()
                     else
-                        Timber.d("onStateLayoutObserver -> state is loading? current state: ${it.state}")
+                        Timber.d("state is loading? current state: ${it.state}")
                 }?.collect()
         }
         lifecycleScope.launchWhenResumed {
@@ -180,7 +199,11 @@ abstract class SupportFragmentList<M>(
      *
      * @return Return the [View] for the fragment's UI, or null.
      */
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)?.apply {
             supportStateLayout = findViewById<SupportStateLayout>(R.id.supportStateLayout)
             supportRefreshLayout = findViewById(R.id.supportRefreshLayout)
@@ -230,8 +253,7 @@ abstract class SupportFragmentList<M>(
         if (!supportViewAdapter.isEmpty() || loadState.position != LoadState.Position.UNDEFINED) {
             supportStateLayout?.loadStateFlow?.value = LoadState.Idle()
             supportViewAdapter.setLoadState(loadState)
-        }
-        else {
+        } else {
             supportStateLayout?.loadStateFlow?.value = loadState
         }
 
@@ -294,12 +316,12 @@ abstract class SupportFragmentList<M>(
         /** Since pagedList is a type of list we check it first */
         when (model) {
             is PagedList -> {
-                with (supportViewAdapter as SupportPagedListAdapter) {
+                with(supportViewAdapter as SupportPagedListAdapter) {
                     submitList(model)
                 }
             }
             is List -> {
-                with (supportViewAdapter as SupportListAdapter) {
+                with(supportViewAdapter as SupportListAdapter) {
                     submitList(model)
                 }
             }

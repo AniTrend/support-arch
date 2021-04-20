@@ -1,9 +1,26 @@
+/**
+ * Copyright 2021 AniTrend
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package co.anitrend.arch.ui.view.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ViewFlipper
+import androidx.core.content.res.use
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
@@ -18,8 +35,12 @@ import co.anitrend.arch.ui.databinding.SupportStateLayoutErrorBinding
 import co.anitrend.arch.ui.databinding.SupportStateLayoutLaodingBinding
 import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -36,11 +57,11 @@ class SupportStateLayout @JvmOverloads constructor(
     private val loadingBinding: SupportStateLayoutLaodingBinding by lazy(UNSAFE) {
         SupportStateLayoutLaodingBinding.inflate(getLayoutInflater())
     }
-    
+
     private val errorBinding: SupportStateLayoutErrorBinding by lazy(UNSAFE) {
         SupportStateLayoutErrorBinding.inflate(getLayoutInflater())
     }
-    
+
     init {
         onInit(context, attrs)
     }
@@ -105,10 +126,11 @@ class SupportStateLayout @JvmOverloads constructor(
         if (!isInEditMode)
             setupAdditionalViews()
 
-        attrs?.apply {
-            val a = context.obtainStyledAttributes(this, R.styleable.SupportStateLayout)
-            displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, ISupportStateLayout.CONTENT_VIEW)
-            a.recycle()
+        context.obtainStyledAttributes(attrs, R.styleable.SupportStateLayout).use {
+            displayedChild = it.getInt(
+                R.styleable.SupportStateLayout_showState,
+                ISupportStateLayout.CONTENT_VIEW
+            )
         }
 
         errorBinding.stateLayoutErrorRetryAction.setOnClickListener {
@@ -149,8 +171,10 @@ class SupportStateLayout @JvmOverloads constructor(
                     errorBinding.stateLayoutErrorHeading.text = requestError.topic
                     errorBinding.stateLayoutErrorMessage.text = requestError.message
                 } else {
-                    errorBinding.stateLayoutErrorHeading.text = loadState.details.javaClass.simpleName
-                    errorBinding.stateLayoutErrorMessage.text = loadState.details.message
+                    errorBinding.stateLayoutErrorHeading.text =
+                        loadState.details.javaClass.simpleName
+                    errorBinding.stateLayoutErrorMessage.text =
+                        loadState.details.message
                 }
                 if (!isError)
                     displayedChild = ISupportStateLayout.ERROR_VIEW
@@ -189,7 +213,7 @@ class SupportStateLayout @JvmOverloads constructor(
                 .collect()
         }
     }
-    
+
     override fun onDetachedFromWindow() {
         cancelAllChildren()
         onViewRecycled()
