@@ -27,8 +27,8 @@
         <item name="colorBackground">@color/colorBackground</item>
         <item name="colorBackgroundFloating">@color/colorSurface</item>
 
-        <item name="android:textColorPrimary">@color/primaryTextColor</item>
-        <item name="android:textColorSecondary">@color/secondaryTextColor</item>
+        <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.MaterialComponents.BottomSheetDialog</item>
 
         <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
@@ -44,13 +44,14 @@
         <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
         <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
 
-        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:textColorPrimary">@color/primaryTextColor</item>
+        <item name="android:textColorSecondary">@color/secondaryTextColor</item>
         <item name="android:textViewStyle">@style/SupportTheme.FontFamily</item>
-
         <item name="android:listDivider">@color/colorDivider</item>
-
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:popupMenuStyle">@style/SupportTheme.PopupTheme</item>
+        <item name="android:toolbarStyle">@style/SupportTheme.ToolbarStyle</item>
     </style>
 
     <style name="SupportTheme.AppTheme" />
