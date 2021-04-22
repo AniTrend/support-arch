@@ -365,7 +365,7 @@ fun Context.getCompatDrawable(@DrawableRes resource: Int) =
  * @see DrawableRes
  */
 fun Context.getCompatDrawable(@DrawableRes resource: Int, @ColorRes colorTint: Int): Drawable? {
-    val drawableResource = AppCompatResources.getDrawable(this, resource)
+    val drawableResource = getCompatDrawable(resource)
     if (drawableResource != null) {
         val drawableResult = DrawableCompat.wrap(drawableResource).mutate()
         if (colorTint != 0)
