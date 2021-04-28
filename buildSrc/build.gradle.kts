@@ -1,5 +1,3 @@
-import java.net.URI
-
 plugins {
     `kotlin-dsl`
     `maven-publish`
@@ -10,10 +8,10 @@ repositories {
     jcenter()
     mavenCentral()
     maven {
-        url = URI("https://www.jitpack.io")
+        setUrl("https://www.jitpack.io")
     }
     maven {
-        url = URI("https://plugins.gradle.org/m2/")
+        setUrl("https://plugins.gradle.org/m2/")
     }
 }
 
