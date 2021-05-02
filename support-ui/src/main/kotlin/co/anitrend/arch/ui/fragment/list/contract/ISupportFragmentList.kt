@@ -62,11 +62,4 @@ interface ISupportFragmentList<T> : SwipeRefreshLayout.OnRefreshListener {
      * Sets the adapter for the recycler view
      */
     fun setRecyclerAdapter(recyclerView: SupportRecyclerView)
-
-    /**
-     * Informs the underlying [SupportStateLayout] of changes to the [NetworkState]
-     *
-     * @param loadState New state from the application
-     */
-    fun changeLayoutState(loadState: LoadState)
 }
