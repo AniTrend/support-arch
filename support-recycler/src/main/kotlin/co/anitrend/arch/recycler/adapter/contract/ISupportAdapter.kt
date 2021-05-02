@@ -197,16 +197,18 @@ interface ISupportAdapter<T> : SupportLifecycle {
         payloads: List<Any> = emptyList()
     ) {
         runCatching {
-            val recyclerItem: IRecyclerItem = mapper(requireItem(position))
-            val mutableFlow = clickableFlow as MutableStateFlow
-            holder.bind(
-                position = position,
-                payloads = payloads,
-                model = recyclerItem,
-                stateFlow = mutableFlow,
-                selectionMode = supportAction
-            )
-            animateViewHolder(holder, position)
+            if (position != RecyclerView.NO_POSITION) {
+                val recyclerItem: IRecyclerItem = mapper(requireItem(position))
+                val mutableFlow = clickableFlow as MutableStateFlow
+                holder.bind(
+                    position = position,
+                    payloads = payloads,
+                    model = recyclerItem,
+                    stateFlow = mutableFlow,
+                    selectionMode = supportAction
+                )
+                animateViewHolder(holder, position)
+            }
         }.onFailure { throwable ->
             Timber.w(
                 throwable,
