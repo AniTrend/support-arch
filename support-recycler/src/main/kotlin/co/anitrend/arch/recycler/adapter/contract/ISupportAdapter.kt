@@ -1,3 +1,19 @@
+/**
+ * Copyright 2021 AniTrend
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package co.anitrend.arch.recycler.adapter.contract
 
 import android.content.res.Resources
@@ -15,11 +31,10 @@ import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
+import kotlin.jvm.Throws
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import timber.log.Timber
-import kotlin.jvm.Throws
 
 /**
  * Contract for recycler view adapters
@@ -76,7 +91,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
      * then this function should return [androidx.recyclerview.widget.RecyclerView.NO_ID]
      */
     fun getStableIdFor(item: T?): Long {
-        //Stable Ids are no longer supported by default prior to paging v3.0 migration
+        // Stable Ids are no longer supported by default prior to paging v3.0 migration
         return RecyclerView.NO_ID
     }
 
@@ -86,7 +101,9 @@ interface ISupportAdapter<T> : SupportLifecycle {
      * has extended functionality
      */
     fun createDefaultViewHolder(
-        parent: ViewGroup, @LayoutRes viewType: Int, layoutInflater: LayoutInflater
+        parent: ViewGroup,
+        @LayoutRes viewType: Int,
+        layoutInflater: LayoutInflater
     ): SupportViewHolder
 
     /**
@@ -180,18 +197,23 @@ interface ISupportAdapter<T> : SupportLifecycle {
         payloads: List<Any> = emptyList()
     ) {
         runCatching {
-            val recyclerItem: IRecyclerItem = mapper(requireItem(position))
-            val mutableFlow = clickableFlow as MutableStateFlow
-            holder.bind(
-                position = position,
-                payloads = payloads,
-                model = recyclerItem,
-                stateFlow = mutableFlow,
-                selectionMode = supportAction
-            )
-            animateViewHolder(holder, position)
+            if (position != RecyclerView.NO_POSITION) {
+                val recyclerItem: IRecyclerItem = mapper(requireItem(position))
+                val mutableFlow = clickableFlow as MutableStateFlow
+                holder.bind(
+                    position = position,
+                    payloads = payloads,
+                    model = recyclerItem,
+                    stateFlow = mutableFlow,
+                    selectionMode = supportAction
+                )
+                animateViewHolder(holder, position)
+            }
         }.onFailure { throwable ->
-            Timber.w(throwable, "binding view holder -> holder: $holder, position: $position, payloads: [${payloads.joinToString()}]")
+            Timber.w(
+                throwable,
+                "holder: $holder, position: $position, payloads: [${payloads.joinToString()}]"
+            )
         }
     }
 

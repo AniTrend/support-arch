@@ -1,3 +1,19 @@
+/**
+ * Copyright 2021 AniTrend
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package co.anitrend.arch.extension.ext
 
 import android.content.res.Resources
@@ -11,8 +27,6 @@ import androidx.core.view.ViewCompat
 import co.anitrend.arch.extension.R
 import co.anitrend.arch.extension.annotation.SupportExperimental
 import com.google.android.material.snackbar.Snackbar
-import kotlin.math.roundToInt
-
 
 /**
  * Sets the current views visibility to GONE
@@ -42,12 +56,36 @@ fun View.visible() {
 }
 
 /**
- * set margin top for view
+ * Updates layout margins with the given values
+ *
+ * @throws UnsupportedOperationException if layoutParams is not a
+ * type of [ViewGroup.MarginLayoutParams]
  */
-fun View.setMarginTop(marginTop: Int) {
-    val menuLayoutParams = layoutParams as ViewGroup.MarginLayoutParams
-    menuLayoutParams.setMargins(0, marginTop, 0, 0)
-    layoutParams = menuLayoutParams
+@Throws(UnsupportedOperationException::class)
+fun View.updateMargins(
+    start: Int = 0,
+    top: Int = 0,
+    end: Int = 0,
+    bottom: Int = 0
+) {
+    if (layoutParams !is ViewGroup.MarginLayoutParams)
+        throw UnsupportedOperationException(
+            "Expected layoutParams of ViewGroup.MarginLayoutParams but was $layoutParams instead"
+        )
+    val marginLayoutParams = layoutParams as ViewGroup.MarginLayoutParams
+    marginLayoutParams.setMargins(start, top, end, bottom)
+    requestLayout()
+}
+
+/**
+ * Updates layout margins with the given values
+ *
+ * @throws UnsupportedOperationException if layoutParams is not a
+ * type of [ViewGroup.MarginLayoutParams]
+ */
+@Throws(UnsupportedOperationException::class)
+fun View.updateMargins(margin: Int) {
+    updateMargins(margin, margin, margin, margin)
 }
 
 inline fun View.snackBar(
@@ -103,38 +141,25 @@ fun View.isImeVisible(): Boolean? {
 /**
  * @return Height of the [WindowInsets.Type.ime] or null if not shown
  */
-fun View.isImeHeight(): Int? {
+fun View.imeHeight(): Int? {
     val insets = ViewCompat.getRootWindowInsets(this)
     return insets?.getInsets(WindowInsets.Type.ime())?.bottom
 }
 
-fun Float.dipToPx() : Int {
-    val scale = Resources.getSystem().displayMetrics.density
-    return (this * scale + 0.5f).toInt()
+/**
+ * @return Height of the [WindowInsets.Type.systemBars] top
+ */
+fun View.statusBarHeight(): Int? {
+    val insets = ViewCompat.getRootWindowInsets(this)
+    return insets?.getInsets(WindowInsets.Type.systemBars())?.top
 }
 
-fun Float.pxToDip() : Int {
-    val scale = Resources.getSystem().displayMetrics.density
-    return (this / scale + 0.5f).toInt()
-}
-
-fun Float.spToPx() : Int {
-    val scaledDensity = Resources.getSystem().displayMetrics.scaledDensity
-    return (this * scaledDensity).roundToInt()
-}
-
-fun Float.isSmallWidthScreen() : Boolean {
-    val displayMetrics = Resources.getSystem().displayMetrics
-    val widthDp = displayMetrics.widthPixels / displayMetrics.density
-    val heightDp = displayMetrics.heightPixels / displayMetrics.density
-    val screenSw = Math.min(widthDp, heightDp)
-    return screenSw >= this
-}
-
-fun Float.isWideScreen() : Boolean {
-    val displayMetrics = Resources.getSystem().displayMetrics
-    val screenWidth = displayMetrics.widthPixels / displayMetrics.density
-    return screenWidth >= this
+/**
+ * @return Height of the [WindowInsets.Type.systemBars] bottom
+ */
+fun View.navigationBarHeight(): Int? {
+    val insets = ViewCompat.getRootWindowInsets(this)
+    return insets?.getInsets(WindowInsets.Type.systemBars())?.bottom
 }
 
 /**
@@ -145,7 +170,8 @@ fun Float.isWideScreen() : Boolean {
  * @author hamakn
  */
 @SupportExperimental
-fun Resources.getStatusBarHeight() : Int? {
+@Deprecated("Use View.statusBarHeight extension instead")
+fun Resources.getStatusBarHeight(): Int? {
     val resourceId = getIdentifier(
         "status_bar_height",
         "dimen",
@@ -164,7 +190,8 @@ fun Resources.getStatusBarHeight() : Int? {
  * @author hamakn
  */
 @SupportExperimental
-fun Resources.getNavigationBarHeight() : Int? {
+@Deprecated("Use View.navigationBarHeight extension instead")
+fun Resources.getNavigationBarHeight(): Int? {
     val resourceId = getIdentifier(
         "navigation_bar_height",
         "dimen",

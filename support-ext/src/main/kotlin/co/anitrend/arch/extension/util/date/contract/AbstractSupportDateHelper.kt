@@ -1,14 +1,31 @@
+/**
+ * Copyright 2021 AniTrend
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package co.anitrend.arch.extension.util.date.contract
 
 import android.annotation.TargetApi
 import android.os.Build
 import co.anitrend.arch.extension.util.attribute.SeasonType
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Contract for date helper
@@ -44,7 +61,7 @@ abstract class AbstractSupportDateHelper {
      * @see [SimpleDateFormat](https://developer.android.com/reference/java/text/SimpleDateFormat.html)
      */
     val defaultOutputDatePattern
-        get() =  "yyyy-MM-dd HH:mm:ss"
+        get() = "yyyy-MM-dd HH:mm:ss"
 
     /**
      * Helper utility for converting unix timestamp to a date string format
@@ -118,7 +135,6 @@ abstract class AbstractSupportDateHelper {
      */
     fun convertToUnixTimeStamp(
         originDate: String,
-        locale: Locale = Locale.getDefault(),
         dateTimeFormatter: DateTimeFormatter,
         targetTimeZone: TimeZone = TimeZone.getDefault()
     ): Long {

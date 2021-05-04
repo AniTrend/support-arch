@@ -1,59 +1,58 @@
 package co.anitrend.arch.buildSrc.plugin.strategy
 
 import co.anitrend.arch.buildSrc.Libraries
-import co.anitrend.arch.buildSrc.plugin.core
-import co.anitrend.arch.buildSrc.plugin.data
-import co.anitrend.arch.buildSrc.plugin.ext
-import co.anitrend.arch.buildSrc.plugin.ui
-import co.anitrend.arch.buildSrc.plugin.recycler
+import co.anitrend.arch.buildSrc.plugin.extensions.hasDependencies
+import co.anitrend.arch.buildSrc.plugin.extensions.isUiModule
+import co.anitrend.arch.buildSrc.plugin.extensions.implementation
+import co.anitrend.arch.buildSrc.plugin.extensions.androidTest
+import co.anitrend.arch.buildSrc.plugin.extensions.test
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 internal class DependencyStrategy(
-    private val module: String
+    private val project: Project
 ) {
 
     private fun DependencyHandler.applyLoggingDependencies() {
-        add("implementation", Libraries.timber)
+        implementation(Libraries.timber)
     }
 
     private fun DependencyHandler.applyDefaultDependencies() {
-        add("implementation", Libraries.JetBrains.Kotlin.stdlib)
+        implementation(Libraries.JetBrains.Kotlin.stdlib)
 
         // Testing libraries
-        add("testImplementation", Libraries.junit)
-        add("testImplementation", Libraries.mockk)
+        test(Libraries.junit)
+        test(Libraries.mockk)
     }
 
     private fun DependencyHandler.applyTestDependencies() {
-        add("androidTestImplementation", Libraries.AndroidX.Test.core)
-        add("androidTestImplementation", Libraries.AndroidX.Test.rules)
-        add("androidTestImplementation", Libraries.AndroidX.Test.runner)
+        androidTest(Libraries.AndroidX.Test.core)
+        androidTest(Libraries.AndroidX.Test.rules)
+        androidTest(Libraries.AndroidX.Test.runner)
     }
 
     private fun DependencyHandler.applyLifeCycleDependencies() {
-        add("implementation", Libraries.AndroidX.Lifecycle.liveDataCoreKtx)
-        add("implementation", Libraries.AndroidX.Lifecycle.runTimeKtx)
-        add("implementation", Libraries.AndroidX.Lifecycle.liveDataKtx)
-        add("implementation", Libraries.AndroidX.Lifecycle.extensions)
+        implementation(Libraries.AndroidX.Lifecycle.liveDataCoreKtx)
+        implementation(Libraries.AndroidX.Lifecycle.runTimeKtx)
+        implementation(Libraries.AndroidX.Lifecycle.liveDataKtx)
+        implementation(Libraries.AndroidX.Lifecycle.extensions)
     }
 
     private fun DependencyHandler.applyCoroutinesDependencies() {
-        if (module == ui)
-            add("implementation", Libraries.JetBrains.KotlinX.Coroutines.android)
-        add("implementation", Libraries.JetBrains.KotlinX.Coroutines.core)
-        add("testImplementation", Libraries.JetBrains.KotlinX.Coroutines.test)
-        add("androidTestImplementation", Libraries.CashApp.Turbine.turbine)
+        if (project.isUiModule())
+            implementation(Libraries.JetBrains.KotlinX.Coroutines.android)
+        implementation(Libraries.JetBrains.KotlinX.Coroutines.core)
+        test(Libraries.JetBrains.KotlinX.Coroutines.test)
+        androidTest(Libraries.CashApp.Turbine.turbine)
     }
 
     fun applyDependenciesOn(handler: DependencyHandler) {
         handler.applyDefaultDependencies()
-        when (module) {
-            core, data, ext, recycler, ui -> {
-                handler.applyLifeCycleDependencies()
-                handler.applyLoggingDependencies()
-                handler.applyTestDependencies()
-                handler.applyCoroutinesDependencies()
-            }
+        if (project.hasDependencies()) {
+            handler.applyLifeCycleDependencies()
+            handler.applyLoggingDependencies()
+            handler.applyTestDependencies()
+            handler.applyCoroutinesDependencies()
         }
     }
 }

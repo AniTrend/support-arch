@@ -4,9 +4,8 @@ jdk:
 #   - ./custom_setup.sh
 install:
    - echo "Running build commands"
-   #- ./gradlew clean test build --stacktrace
    - ./gradlew clean build --stacktrace
-   - ./gradlew dokka
+   # - ./gradlew dokkaHtml
    - ./gradlew dependencyUpdates
    - ./gradlew publishMavenPublicationToMavenLocal
 env:

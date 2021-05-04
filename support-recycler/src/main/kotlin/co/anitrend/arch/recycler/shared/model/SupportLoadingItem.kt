@@ -1,3 +1,19 @@
+/**
+ * Copyright 2021 AniTrend
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package co.anitrend.arch.recycler.shared.model
 
 import android.content.res.Resources
@@ -11,9 +27,9 @@ import co.anitrend.arch.extension.ext.visible
 import co.anitrend.arch.recycler.R
 import co.anitrend.arch.recycler.action.contract.ISupportSelectionMode
 import co.anitrend.arch.recycler.common.ClickableItem
+import co.anitrend.arch.recycler.databinding.SupportLayoutStateLoadingBinding
 import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.RecyclerItem
-import kotlinx.android.synthetic.main.support_layout_state_loading.view.*
 import kotlinx.coroutines.flow.MutableStateFlow
 
 /**
@@ -25,6 +41,8 @@ open class SupportLoadingItem(
     private val configuration: IStateLayoutConfig
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
+    private var binding: SupportLayoutStateLoadingBinding? = null
+
     override fun bind(
         view: View,
         position: Int,
@@ -32,17 +50,17 @@ open class SupportLoadingItem(
         stateFlow: MutableStateFlow<ClickableItem>,
         selectionMode: ISupportSelectionMode<Long>?
     ) {
+        binding = SupportLayoutStateLoadingBinding.bind(view)
         val message = configuration.loadingMessage
         if (message != null) {
-            view.stateLoadingText.visible()
-            view.stateLoadingText.setText(message)
-        }
-        else
-            view.stateLoadingText.gone()
+            binding?.stateLoadingText?.visible()
+            binding?.stateLoadingText?.setText(message)
+        } else
+            binding?.stateLoadingText?.gone()
     }
 
     override fun unbind(view: View) {
-
+        binding = null
     }
 
     override fun getSpanSize(
@@ -62,12 +80,10 @@ open class SupportLoadingItem(
             viewGroup: ViewGroup,
             layoutInflater: LayoutInflater
         ): SupportViewHolder {
-            val view = layoutInflater.inflate(
-                R.layout.support_layout_state_loading,
-                viewGroup,
-                false
+            val binding = SupportLayoutStateLoadingBinding.inflate(
+                layoutInflater, viewGroup, false
             )
-            return SupportViewHolder(view)
+            return SupportViewHolder(binding)
         }
     }
 }

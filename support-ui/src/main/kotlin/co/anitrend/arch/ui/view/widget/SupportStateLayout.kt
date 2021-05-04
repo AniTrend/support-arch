@@ -1,24 +1,46 @@
+/**
+ * Copyright 2021 AniTrend
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package co.anitrend.arch.ui.view.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ViewFlipper
+import androidx.core.content.res.use
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Main
+import co.anitrend.arch.extension.ext.UNSAFE
 import co.anitrend.arch.extension.ext.getCompatDrawable
 import co.anitrend.arch.extension.ext.getLayoutInflater
 import co.anitrend.arch.extension.ext.gone
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.ui.R
+import co.anitrend.arch.ui.databinding.SupportStateLayoutErrorBinding
+import co.anitrend.arch.ui.databinding.SupportStateLayoutLaodingBinding
 import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
 import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
-import kotlinx.android.synthetic.main.support_state_layout_error.view.*
-import kotlinx.android.synthetic.main.support_state_layout_laoding.view.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -31,6 +53,14 @@ class SupportStateLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : ViewFlipper(context, attrs), ISupportStateLayout, ISupportCoroutine by Main() {
+
+    private val loadingBinding: SupportStateLayoutLaodingBinding by lazy(UNSAFE) {
+        SupportStateLayoutLaodingBinding.inflate(getLayoutInflater())
+    }
+
+    private val errorBinding: SupportStateLayoutErrorBinding by lazy(UNSAFE) {
+        SupportStateLayoutErrorBinding.inflate(getLayoutInflater())
+    }
 
     init {
         onInit(context, attrs)
@@ -64,28 +94,28 @@ class SupportStateLayout @JvmOverloads constructor(
         setInAnimation(context, config.inAnimation)
         setOutAnimation(context, config.outAnimation)
         if (config.errorDrawable != null)
-            stateLayoutErrorImage.setImageDrawable(
+            errorBinding.stateLayoutErrorImage.setImageDrawable(
                 context.getCompatDrawable(config.errorDrawable)
             )
         else
-            stateLayoutErrorImage.gone()
+            errorBinding.stateLayoutErrorImage.gone()
 
         if (config.loadingDrawable != null)
-            stateLayoutLoadingImage.setImageDrawable(
+            loadingBinding.stateLayoutLoadingImage.setImageDrawable(
                 context.getCompatDrawable(config.loadingDrawable)
             )
         else
-            stateLayoutLoadingImage.gone()
+            loadingBinding.stateLayoutLoadingImage.gone()
 
         if (config.retryAction != null)
-            stateLayoutErrorRetryAction.setText(config.retryAction)
+            errorBinding.stateLayoutErrorRetryAction.setText(config.retryAction)
         else
-            stateLayoutErrorRetryAction.gone()
+            errorBinding.stateLayoutErrorRetryAction.gone()
 
         if (config.loadingMessage != null)
-            stateLayoutLoadingText.setText(config.loadingMessage)
+            loadingBinding.stateLayoutLoadingText.setText(config.loadingMessage)
         else
-            stateLayoutLoadingText.gone()
+            loadingBinding.stateLayoutLoadingText.gone()
     }
 
     /**
@@ -96,13 +126,14 @@ class SupportStateLayout @JvmOverloads constructor(
         if (!isInEditMode)
             setupAdditionalViews()
 
-        attrs?.apply {
-            val a = context.obtainStyledAttributes(this, R.styleable.SupportStateLayout)
-            displayedChild = a.getInt(R.styleable.SupportStateLayout_showState, ISupportStateLayout.CONTENT_VIEW)
-            a.recycle()
+        context.obtainStyledAttributes(attrs, R.styleable.SupportStateLayout).use {
+            displayedChild = it.getInt(
+                R.styleable.SupportStateLayout_showState,
+                ISupportStateLayout.CONTENT_VIEW
+            )
         }
 
-        stateLayoutErrorRetryAction.setOnClickListener {
+        errorBinding.stateLayoutErrorRetryAction.setOnClickListener {
             interactionFlow.value = ClickableItem.State(
                 state = loadStateFlow.value,
                 view = it
@@ -115,21 +146,14 @@ class SupportStateLayout @JvmOverloads constructor(
      * release object references and cancel all running coroutine jobs if the current view
      */
     override fun onViewRecycled() {
-        stateLayoutErrorRetryAction.setOnClickListener(null)
+        errorBinding.stateLayoutErrorRetryAction.setOnClickListener(null)
         interactionFlow.value = ClickableItem.None
     }
 
     @SuppressLint("InflateParams")
     private fun setupAdditionalViews() {
-        val loadingView = getLayoutInflater().inflate(
-            R.layout.support_state_layout_laoding, null
-        )
-        addView(loadingView)
-
-        val errorView = getLayoutInflater().inflate(
-            R.layout.support_state_layout_error, null
-        )
-        addView(errorView)
+        addView(loadingBinding.root)
+        addView(errorBinding.root)
     }
 
     /**
@@ -144,11 +168,13 @@ class SupportStateLayout @JvmOverloads constructor(
             is LoadState.Error -> {
                 if (loadState.details is RequestError) {
                     val requestError = loadState.details as RequestError
-                    stateLayoutErrorHeading.text = requestError.topic
-                    stateLayoutErrorMessage.text = requestError.message
+                    errorBinding.stateLayoutErrorHeading.text = requestError.topic
+                    errorBinding.stateLayoutErrorMessage.text = requestError.message
                 } else {
-                    stateLayoutErrorHeading.text = loadState.details.javaClass.simpleName
-                    stateLayoutErrorMessage.text = loadState.details.message
+                    errorBinding.stateLayoutErrorHeading.text =
+                        loadState.details.javaClass.simpleName
+                    errorBinding.stateLayoutErrorMessage.text =
+                        loadState.details.message
                 }
                 if (!isError)
                     displayedChild = ISupportStateLayout.ERROR_VIEW
@@ -187,7 +213,7 @@ class SupportStateLayout @JvmOverloads constructor(
                 .collect()
         }
     }
-    
+
     override fun onDetachedFromWindow() {
         cancelAllChildren()
         onViewRecycled()

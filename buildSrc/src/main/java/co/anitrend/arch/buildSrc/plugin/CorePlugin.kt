@@ -1,6 +1,7 @@
 package co.anitrend.arch.buildSrc.plugin
 
 import co.anitrend.arch.buildSrc.plugin.components.configureAndroid
+import co.anitrend.arch.buildSrc.plugin.components.configureSpotless
 import co.anitrend.arch.buildSrc.plugin.components.configureDependencies
 import co.anitrend.arch.buildSrc.plugin.components.configureOptions
 import co.anitrend.arch.buildSrc.plugin.components.configurePlugins
@@ -36,8 +37,8 @@ open class CorePlugin : Plugin<Project> {
         project.configureAndroid()
         project.configureOptions()
         project.configureDependencies()
-
-        //project.availableExtensions()
-        //project.availableComponents()
+        project.configureSpotless()
+        project.availableExtensions()
+        project.availableComponents()
     }
 }

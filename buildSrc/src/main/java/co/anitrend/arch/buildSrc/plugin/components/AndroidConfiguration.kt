@@ -1,8 +1,10 @@
 package co.anitrend.arch.buildSrc.plugin.components
 
+import co.anitrend.arch.buildSrc.plugin.extensions.spotlessExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
-import co.anitrend.arch.buildSrc.plugin.theme
-import co.anitrend.arch.buildSrc.plugin.domain
+import co.anitrend.arch.buildSrc.plugin.extensions.libraryExtension
+import co.anitrend.arch.buildSrc.plugin.extensions.isDomainModule
+import co.anitrend.arch.buildSrc.plugin.extensions.isThemeModule
 import co.anitrend.arch.buildSrc.common.Versions
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -10,6 +12,16 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.io.File
 
+internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
+    kotlin {
+        target("**/*.kt")
+        targetExclude("$buildDir/**/*.kt", "bin/**/*.kt")
+        ktlint(Versions.ktlint).userData(
+            mapOf("android" to "true")
+        )
+        licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+    }
+}
 
 internal fun Project.configureAndroid(): Unit = baseExtension().run {
     compileSdkVersion(Versions.compileSdk)
@@ -20,6 +32,12 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         versionName = Versions.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles.add(File("consumer-rules.pro"))
+    }
+
+    libraryExtension().run {
+        buildFeatures {
+            viewBinding = true
+        }
     }
 
     buildTypes {
@@ -70,7 +88,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             allWarningsAsErrors = false
 
             // Filter out modules that won't be using coroutines
-            freeCompilerArgs = if (project.name != theme || project.name != domain) {
+            freeCompilerArgs = if (!project.isThemeModule() || !project.isDomainModule()) {
                 listOf(
                     "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                     "-Xopt-in=kotlinx.coroutines.FlowPreview",

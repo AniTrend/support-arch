@@ -1,16 +1,33 @@
+/**
+ * Copyright 2021 AniTrend
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package co.anitrend.arch.extension.util
 
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import androidx.test.platform.app.InstrumentationRegistry
-import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import co.anitrend.arch.extension.util.date.SupportDateHelper
+import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import com.jakewharton.threetenabp.AndroidThreeTen
+import java.util.Locale
+import java.util.TimeZone
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.threeten.bp.format.DateTimeFormatter
-import java.util.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -21,7 +38,7 @@ import java.util.*
 @RunWith(AndroidJUnit4ClassRunner::class)
 class AbstractSupportDateHelperTest {
 
-    private val dateHelper : AbstractSupportDateHelper = SupportDateHelper()
+    private val dateHelper: AbstractSupportDateHelper = SupportDateHelper()
 
     private val context by lazy {
         InstrumentationRegistry.getInstrumentation().context
@@ -65,7 +82,7 @@ class AbstractSupportDateHelperTest {
 
         assertEquals(expected, actual)
     }
-    
+
     @Test
     fun date_conversion_from_RFC_822_format_to_short_date_timestamp() {
         val targetTimeZone = "GMT+2"
@@ -75,7 +92,7 @@ class AbstractSupportDateHelperTest {
             originDate = input,
             locale = Locale.US,
             dateTimeFormatter = DateTimeFormatter.RFC_1123_DATE_TIME,
-            //inputPattern = "EEE, dd MMM yyyy HH:mm:ss z",
+            // inputPattern = "EEE, dd MMM yyyy HH:mm:ss z",
             outputDatePattern = "yyyy-MM-dd HH:mm:ss",
             targetTimeZone = TimeZone.getTimeZone(targetTimeZone)
         )
@@ -92,7 +109,6 @@ class AbstractSupportDateHelperTest {
 
         val actual = dateHelper.convertToUnixTimeStamp(
             originDate = input,
-            locale = Locale.US,
             dateTimeFormatter = DateTimeFormatter.RFC_1123_DATE_TIME,
             targetTimeZone = TimeZone.getTimeZone(targetTimeZone)
         )

@@ -1,5 +1,3 @@
-import java.net.URI
-
 plugins {
     `kotlin-dsl`
     `maven-publish`
@@ -10,14 +8,18 @@ repositories {
     jcenter()
     mavenCentral()
     maven {
-        url = URI("https://www.jitpack.io")
+        setUrl("https://www.jitpack.io")
+    }
+    maven {
+        setUrl("https://plugins.gradle.org/m2/")
     }
 }
 
 val kotlinVersion = "1.4.32"
 val buildToolsVersion = "4.1.3"
-val dokkaVersion = "0.10.1"
+val dokkaVersion = "1.4.30"
 val manesVersion = "0.33.0"
+val spotlessVersion = "5.12.1"
 
 dependencies {
     /* Depend on the android gradle plugin, since we want to access it in our plugin */
@@ -31,6 +33,9 @@ dependencies {
 
     /** Dependency management */
     implementation("com.github.ben-manes:gradle-versions-plugin:$manesVersion")
+
+    /** Spotless */
+    implementation("com.diffplug.spotless:spotless-plugin-gradle:$spotlessVersion")
 
     /* Depend on the default Gradle API's since we want to build a custom plugin */
     implementation(gradleApi())

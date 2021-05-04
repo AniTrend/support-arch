@@ -2,13 +2,13 @@
 <resources>
     <!-- Material X Light Colors -->
 
-    <color name="primaryColor">#E8EAF6</color>
-    <color name="primaryLightColor">#ECEEF7</color>
-    <color name="primaryDarkColor">#A2A3AC</color>
+    <color name="primaryColor">#FAFAFA</color>
+    <color name="primaryLightColor">#FBFBFB</color>
+    <color name="primaryDarkColor">#AFAFAF</color>
 
-    <color name="secondaryColor">#9AA49A</color>
-    <color name="secondaryLightColor">#899395</color>
-    <color name="secondaryDarkColor">#4B5456</color>
+    <color name="secondaryColor">#263238</color>
+    <color name="secondaryLightColor">#515B5F</color>
+    <color name="secondaryDarkColor">#1A2327</color>
 
     <color name="primaryTextColor">#424242</color>
     <color name="secondaryTextColor">#757575</color>
