@@ -74,7 +74,7 @@ internal fun Project.configureOptions() {
                     suppress.set(false)
 
                     // Used to prevent resolving package-lists online. When this option is set to true, only local files are resolved
-                    offlineMode.set(false)
+                    offlineMode.set(true) // this is failing in the ci env
 
                     // Use to include or exclude non public members
                     includeNonPublic.set(false)
@@ -109,18 +109,20 @@ internal fun Project.configureOptions() {
                     // Repeat for multiple sourceRoots
                     sourceRoot(file("src"))
 
-                    // Specifies the location of the project source code on the Web.
-                    // If provided, Dokka generates "source" links for each declaration.
-                    // Repeat for multiple mappings
-                    sourceLink {
-                        // Unix based directory relative path to the root of the project (where you execute gradle respectively).
-                        localDirectory.set(file("src/main/kotlin"))
+                    dependenciesOfProject().forEach { module ->
+                        // Specifies the location of the project source code on the Web.
+                        // If provided, Dokka generates "source" links for each declaration.
+                        // Repeat for multiple mappings
+                        sourceLink {
+                            // Unix based directory relative path to the root of the project (where you execute gradle respectively).
+                            localDirectory.set(file("src/main/kotlin"))
 
-                        val repository = "https://github.com/anitrend/support-arch/tree/develop"
-                        // URL showing where the source code can be accessed through the web browser
-                        remoteUrl.set(URL("$repository/${project.name}/src/main/kotlin"))
-                        // Suffix which is used to append the line number to the URL. Use #L for GitHub
-                        remoteLineSuffix.set("#L")
+                            val repository = "https://github.com/anitrend/support-arch/tree/develop"
+                            // URL showing where the source code can be accessed through the web browser
+                            remoteUrl.set(URL("$repository/${module.id}/src/main/kotlin"))
+                            // Suffix which is used to append the line number to the URL. Use #L for GitHub
+                            remoteLineSuffix.set("#L")
+                        }
                     }
 
                     // Used for linking to JDK documentation
