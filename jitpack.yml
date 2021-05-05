@@ -5,7 +5,6 @@ jdk:
 install:
    - echo "Running build commands"
    - ./gradlew clean build --stacktrace
-   - ./gradlew dokkaHtml
    - ./gradlew dependencyUpdates
    - ./gradlew publishMavenPublicationToMavenLocal
 env:

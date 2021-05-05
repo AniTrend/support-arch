@@ -101,7 +101,7 @@ private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtm
             suppress.set(false)
 
             // Used to prevent resolving package-lists online. When this option is set to true, only local files are resolved
-            offlineMode.set(true) // this is failing in the ci env
+            offlineMode.set(false) // this is failing in the ci env
 
             // Use to include or exclude non public members
             includeNonPublic.set(false)
@@ -116,7 +116,7 @@ private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtm
             skipEmptyPackages.set(true)
 
             // This name will be shown in the final output
-            displayName.set("JVM")
+            //displayName.set("JVM")
 
             // Platform used for code analysis. See the "Platforms" section of this readme
             platform.set(org.jetbrains.dokka.Platform.jvm)
@@ -219,7 +219,6 @@ internal fun Project.configureOptions() {
         }
 
         val javadoc = tasks.create("javadoc", Javadoc::class.java) {
-            //setSource(mainSourceSet)
             classpath += project.files(baseExt.bootClasspath.joinToString(File.pathSeparator))
             libraryExtension().libraryVariants.forEach { variant ->
                 if (variant.name == "release") {
@@ -232,7 +231,8 @@ internal fun Project.configureOptions() {
         }
 
         val javadocJar = tasks.create("javadocJar", Jar::class.java) {
-            dependsOn(javadoc, dokka)
+            //dependsOn(javadoc, dokka)
+            dependsOn(javadoc)
             archiveClassifier.set("javadoc")
             duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             includeEmptyDirs = false
