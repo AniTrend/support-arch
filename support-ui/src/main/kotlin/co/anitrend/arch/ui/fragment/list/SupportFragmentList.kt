@@ -37,7 +37,6 @@ import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.common.ClickableItem
 import co.anitrend.arch.recycler.extensions.isEmpty
 import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
-import co.anitrend.arch.ui.R
 import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.arch.ui.fragment.list.contract.ISupportFragmentList
 import co.anitrend.arch.ui.fragment.list.presenter.SupportListPresenter
