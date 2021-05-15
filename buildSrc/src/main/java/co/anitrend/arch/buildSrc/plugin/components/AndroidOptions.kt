@@ -44,7 +44,7 @@ private fun Project.dependenciesOfProject(): List<Modules.Module> {
     }
 }
 
-private fun Project.createMavenPublicationUsing(javadoc: Jar, sources: Jar) {
+private fun Project.createMavenPublicationUsing(sources: Jar) {
     publishingExtension().publications {
         val component = components.findByName("android")
 
@@ -54,7 +54,6 @@ private fun Project.createMavenPublicationUsing(javadoc: Jar, sources: Jar) {
             artifactId = project.name
             version = Versions.versionName
 
-            artifact(javadoc)
             artifact(sources)
             artifact("${project.buildDir}/outputs/aar/${project.name}-release.aar")
             from(component)
@@ -95,7 +94,7 @@ private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtm
     dokkaSourceSets {
         configureEach { // Or source set name, for single-platform the default source sets are `main` and `test`
             // Used when configuring source sets manually for declaring which source sets this one depends on
-            dependsOn(dependenciesOfProject().map(Modules.Module::path))
+            //dependsOn(dependenciesOfProject().map(Modules.Module::path))
 
             // Used to remove a source set from documentation, test source sets are suppressed by default
             suppress.set(false)
@@ -202,12 +201,7 @@ internal fun Project.configureOptions() {
 
         println("Applying additional tasks options for dokka and javadoc on ${project.path}")
 
-        val dokka = createDokkaTaskProvider()
-
-        val dokkaJar by tasks.register("dokkaJar", Jar::class.java) {
-            archiveClassifier.set("javadoc")
-            from(dokka)
-        }
+        createDokkaTaskProvider()
 
         val sourcesJar by tasks.register("sourcesJar", Jar::class.java) {
             archiveClassifier.set("sources")
@@ -218,33 +212,11 @@ internal fun Project.configureOptions() {
             from("${project.buildDir}/intermediates/classes/release")
         }
 
-        val javadoc = tasks.create("javadoc", Javadoc::class.java) {
-            classpath += project.files(baseExt.bootClasspath.joinToString(File.pathSeparator))
-            libraryExtension().libraryVariants.forEach { variant ->
-                if (variant.name == "release") {
-                    classpath += variant.javaCompileProvider.get().classpath
-                }
-            }
-            // exclude("**/R.html", "**/R.*.html", "**/index.html")
-            // allow index html to be packaged in javadoc
-            exclude("**/R.html", "**/R.*.html")
-        }
-
-        val javadocJar = tasks.create("javadocJar", Jar::class.java) {
-            //dependsOn(javadoc, dokka)
-            dependsOn(javadoc)
-            archiveClassifier.set("javadoc")
-            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-            includeEmptyDirs = false
-            from(javadoc.destinationDir, dokka.flatMap { it.outputDirectory })
-        }
-
         artifacts {
-            add("archives", dokkaJar)
             add("archives", classesJar)
             add("archives", sourcesJar)
         }
 
-        createMavenPublicationUsing(javadocJar, sourcesJar)
+        createMavenPublicationUsing(sourcesJar)
     }
 }
