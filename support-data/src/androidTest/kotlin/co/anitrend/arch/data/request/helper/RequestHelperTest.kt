@@ -19,9 +19,9 @@ package co.anitrend.arch.data.request.helper
 import android.util.Log
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import co.anitrend.arch.data.request.AbstractRequestHelper
-import co.anitrend.arch.data.request.error.RequestError
 import co.anitrend.arch.data.request.extension.createStatusFlow
 import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Main
 import co.anitrend.arch.extension.dispatchers.SupportDispatcher
