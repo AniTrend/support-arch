@@ -51,7 +51,7 @@ object Libraries {
         }
 
         object Recycler {
-            private const val version = "1.2.0-rc01"
+            private const val version = "1.2.0"
             const val recyclerView = "androidx.recyclerview:recyclerview:$version"
             const val recyclerViewSelection = "androidx.recyclerview:recyclerview-selection:$version"
         }
@@ -90,13 +90,13 @@ object Libraries {
 
     object CashApp {
         object Turbine {
-            private const val version = "0.4.1"
+            private const val version = "0.5.0"
             const val turbine = "app.cash.turbine:turbine:$version"
         }
     }
 
     object Google {
-        private const val version = "1.4.0-alpha01"
+        private const val version = "1.4.0-beta01"
         const val material = "com.google.android.material:material:$version"
     }
 
