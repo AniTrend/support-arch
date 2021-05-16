@@ -37,13 +37,6 @@ interface ISupportListPresenter<T> : SupportLifecycle {
     fun onCreateView(fragmentList: ISupportFragmentList<T>, view: View?)
 
     /**
-     * Mirrors controller lifecycle state for view created
-     *
-     * @param lifecycleOwner Current lifecycle owner
-     */
-    fun onViewCreated(lifecycleOwner: LifecycleOwner)
-
-    /**
      * Responds to load state changes when refreshing
      *
      * @param loadState Load state or null
@@ -62,6 +55,4 @@ interface ISupportListPresenter<T> : SupportLifecycle {
      * Checks and resets swipe refresh layout and snack bar states
      */
     fun resetWidgetStates()
-
-    fun onDetach(lifecycleOwner: LifecycleOwner)
 }

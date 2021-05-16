@@ -17,12 +17,9 @@
 package co.anitrend.arch.ui.fragment.list.presenter
 
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.domain.entities.LoadState
-import co.anitrend.arch.extension.ext.attachComponent
-import co.anitrend.arch.extension.ext.detachComponent
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.extensions.isEmpty
@@ -56,14 +53,6 @@ abstract class SupportListPresenter<T> : ISupportListPresenter<T> {
                 fragmentList.setRecyclerLayoutManager(this)
             }
             isNestedScrollingEnabled = true
-        }
-    }
-
-    override fun onViewCreated(lifecycleOwner: LifecycleOwner) {
-        if (recyclerView is SupportLifecycle) {
-            lifecycleOwner.attachComponent(
-                recyclerView as SupportLifecycle
-            )
         }
     }
 
@@ -109,11 +98,14 @@ abstract class SupportListPresenter<T> : ISupportListPresenter<T> {
         swipeRefreshLayout?.setOnRefreshListener(null)
     }
 
-    override fun onDetach(lifecycleOwner: LifecycleOwner) {
-        if (recyclerView is SupportLifecycle) {
-            lifecycleOwner.detachComponent(
-                recyclerView as SupportLifecycle
-            )
-        }
+    /**
+     * Triggered when the lifecycleOwner reaches it's onDestroy state
+     *
+     * @see [androidx.lifecycle.LifecycleOwner]
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        if (recyclerView is SupportLifecycle)
+            (recyclerView as SupportLifecycle).onDestroy()
     }
 }

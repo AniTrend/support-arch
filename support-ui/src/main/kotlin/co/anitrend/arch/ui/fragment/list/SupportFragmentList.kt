@@ -57,7 +57,7 @@ import timber.log.Timber
  */
 abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<M> {
 
-    protected abstract val supportListPresenter: SupportListPresenter<M>
+    protected abstract val listPresenter: SupportListPresenter<M>
 
     /**
      * Default span size of [IntegerRes] the layout manager will use.
@@ -78,11 +78,11 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
     abstract fun onFetchDataInitialize()
 
     override val onRefreshObserver = Observer<LoadState> { loadState ->
-        supportListPresenter.onRefreshObserverChanged(loadState)
+        listPresenter.onRefreshObserverChanged(loadState)
     }
 
     override val onNetworkObserver = Observer<LoadState> { loadState ->
-        supportListPresenter.onNetworkObserverChanged(this, loadState)
+        listPresenter.onNetworkObserverChanged(this, loadState)
     }
 
     protected open fun ISupportAdapter<*>.registerFlowListener() {
@@ -148,9 +148,9 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
      */
     override fun initializeComponents(savedInstanceState: Bundle?) {
         attachComponent(supportViewAdapter)
-        attachComponent(supportListPresenter)
+        attachComponent(listPresenter)
         lifecycleScope.launchWhenResumed {
-            supportListPresenter.stateLayout.interactionFlow
+            listPresenter.stateLayout.interactionFlow
                 .debounce(16)
                 .filterIsInstance<ClickableItem.State>()
                 .onEach {
@@ -191,7 +191,7 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
         savedInstanceState: Bundle?
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
-        supportListPresenter.onCreateView(this, view)
+        listPresenter.onCreateView(this, view)
         return view
     }
 
@@ -208,7 +208,6 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModelObserver()
-        supportListPresenter.onViewCreated(viewLifecycleOwner)
         viewModelState()?.loadState?.observe(viewLifecycleOwner, onNetworkObserver)
         viewModelState()?.refreshState?.observe(viewLifecycleOwner, onRefreshObserver)
     }
@@ -229,8 +228,7 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
     override fun onDetach() {
         super.onDetach()
         detachComponent(supportViewAdapter)
-        detachComponent(supportListPresenter)
-        supportListPresenter.onDetach(viewLifecycleOwner)
+        detachComponent(listPresenter)
     }
 
     protected open fun afterPostModelChange(data: Collection<*>?) {
@@ -239,7 +237,7 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
         else
             supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Idle*/
 
-        supportListPresenter.resetWidgetStates()
+        listPresenter.resetWidgetStates()
     }
 
     /**
