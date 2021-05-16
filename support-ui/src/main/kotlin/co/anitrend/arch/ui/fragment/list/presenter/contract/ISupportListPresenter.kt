@@ -17,7 +17,6 @@
 package co.anitrend.arch.ui.fragment.list.presenter.contract
 
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import co.anitrend.arch.ui.fragment.list.contract.ISupportFragmentList
