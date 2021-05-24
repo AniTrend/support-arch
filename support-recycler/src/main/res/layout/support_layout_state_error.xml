@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        app:backgroundTint="?colorAccent"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         tools:text="Retry" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
