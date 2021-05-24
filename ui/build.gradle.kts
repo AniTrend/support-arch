@@ -5,14 +5,15 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":support-ext"))
-    implementation(project(":support-core"))
-    implementation(project(":support-theme"))
-    implementation(project(":support-domain"))
+    implementation(project(":extension"))
+    implementation(project(":core"))
+    implementation(project(":theme"))
+    implementation(project(":domain"))
+    implementation(project(":recycler"))
 
     implementation(Libraries.Google.material)
 
+    implementation(Libraries.AndroidX.Core.coreKtx)
     implementation(Libraries.AndroidX.SwipeRefresh.swipeRefreshLayout)
-    implementation(Libraries.AndroidX.Recycler.recyclerView)
     implementation(Libraries.AndroidX.Paging.runtimeKtx)
 }

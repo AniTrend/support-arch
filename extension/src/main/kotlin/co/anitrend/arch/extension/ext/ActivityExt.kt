@@ -56,6 +56,8 @@ fun FragmentActivity.disableToolbarTitle() {
  * Makes status bar transparent
  */
 fun FragmentActivity.makeStatusBarTransparent() {
+    // TODO: Figure out how to make status bar transparent pre android R using insets
+    @Suppress("DEPRECATION")
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         window.apply {
             clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -86,7 +88,7 @@ fun FragmentActivity.hideStatusBarAndNavigationBar() {
         // hide status and navigation bar
         controller?.hide(WindowInsets.Type.systemBars())
     } else {
-        // Until I figure out how to hide status bar and nav pre android R using insets
+        // TODO: Figure out how to hide status bar and nav pre android R using insets
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LOW_PROFILE or

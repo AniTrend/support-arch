@@ -5,8 +5,8 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":support-domain"))
-    implementation(project(":support-ext"))
+    implementation(project(":domain"))
+    implementation(project(":extension"))
 
     implementation(Libraries.AndroidX.Paging.common)
     implementation(Libraries.AndroidX.Paging.runtime)

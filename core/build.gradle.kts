@@ -5,9 +5,9 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":support-ext"))
-    implementation(project(":support-data"))
-    implementation(project(":support-domain"))
+    implementation(project(":extension"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
 
     implementation(Libraries.Google.material)
     implementation(Libraries.AndroidX.Work.runtimeKtx)
