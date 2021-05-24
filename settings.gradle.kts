@@ -1,14 +1,9 @@
 include(
-    ":support-core",
-    ":support-ext",
-    ":support-ui",
-    ":support-data",
-    ":support-domain",
-    ":support-theme",
-    ":support-recycler"
+    ":core",
+    ":extension",
+    ":ui",
+    ":data",
+    ":domain",
+    ":theme",
+    ":recycler"
 )
-
-/*
-if (System.getenv("CI") == null)
-    include ":app", ":core", ":data", ":domain"
-*/

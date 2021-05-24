@@ -12,12 +12,12 @@ internal object Modules {
     }
 
     enum class Support(override val id: String) : Module {
-        Core("support-core"),
-        Data("support-data"),
-        Domain("support-domain"),
-        Extensions("support-ext"),
-        Recycler("support-recycler"),
-        Theme("support-theme"),
-        Ui("support-ui")
+        Core("core"),
+        Data("data"),
+        Domain("domain"),
+        Extensions("extension"),
+        Recycler("recycler"),
+        Theme("theme"),
+        Ui("ui")
     }
 }
