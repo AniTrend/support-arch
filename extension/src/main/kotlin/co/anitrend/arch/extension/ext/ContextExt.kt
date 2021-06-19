@@ -272,8 +272,8 @@ fun Context.getScreenDimens(): Point {
     if (metrics != null) {
         val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(metrics.windowInsets)
         val insets = windowInsets.getInsetsIgnoringVisibility(
-            WindowInsets.Type.navigationBars() or
-                WindowInsets.Type.displayCutout()
+			WindowInsetsCompat.Type.navigationBars() or
+			WindowInsetsCompat.Type.displayCutout()
         )
         val insetsWidth = insets.right + insets.left
         val insetsHeight = insets.top + insets.bottom
