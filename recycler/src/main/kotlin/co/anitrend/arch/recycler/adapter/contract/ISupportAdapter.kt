@@ -207,7 +207,8 @@ interface ISupportAdapter<T> : SupportLifecycle {
                     stateFlow = mutableFlow,
                     selectionMode = supportAction
                 )
-                animateViewHolder(holder, position)
+                if (payloads.isEmpty())
+                    animateViewHolder(holder, position)
             }
         }.onFailure { throwable ->
             Timber.w(
