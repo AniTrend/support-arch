@@ -28,12 +28,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Point
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Size
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
@@ -266,25 +266,32 @@ fun Context.getLayoutInflater(): LayoutInflater =
  */
 fun Context.getScreenDimens(): Point {
     val deviceDimens = Point()
-    val metrics = systemServiceOf<WindowManager>()
-        ?.currentWindowMetrics
+    val windowManager = systemServiceOf<WindowManager>()
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        val metrics = windowManager?.currentWindowMetrics
 
-    if (metrics != null) {
-        val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(metrics.windowInsets)
-        val insets = windowInsets.getInsetsIgnoringVisibility(
-			WindowInsetsCompat.Type.navigationBars() or
-			WindowInsetsCompat.Type.displayCutout()
-        )
-        val insetsWidth = insets.right + insets.left
-        val insetsHeight = insets.top + insets.bottom
-        // Legacy size that Display#getSize reports
-        val bounds = metrics.bounds
-        val legacySize = Size(
-            bounds.width() - insetsWidth,
-            bounds.height() - insetsHeight
-        )
-        deviceDimens.x = legacySize.width
-        deviceDimens.y - legacySize.height
+        if (metrics != null) {
+            val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(metrics.windowInsets)
+            val insets = windowInsets.getInsetsIgnoringVisibility(
+                WindowInsetsCompat.Type.navigationBars() or
+                    WindowInsetsCompat.Type.displayCutout()
+            )
+            val insetsWidth = insets.right + insets.left
+            val insetsHeight = insets.top + insets.bottom
+            // Legacy size that Display#getSize reports
+            val bounds = metrics.bounds
+            val legacySize = Size(
+                bounds.width() - insetsWidth,
+                bounds.height() - insetsHeight
+            )
+            deviceDimens.x = legacySize.width
+            deviceDimens.y - legacySize.height
+        }
+    } else {
+        @Suppress("DEPRECATION")
+        windowManager
+            ?.defaultDisplay
+            ?.getSize(deviceDimens)
     }
     return deviceDimens
 }

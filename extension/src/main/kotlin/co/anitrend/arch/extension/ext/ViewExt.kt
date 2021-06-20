@@ -17,14 +17,11 @@
 package co.anitrend.arch.extension.ext
 
 import android.content.res.Resources
-import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
-import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.core.view.ViewCompat
-import co.anitrend.arch.extension.R
+import androidx.core.view.WindowInsetsCompat
 import co.anitrend.arch.extension.annotation.SupportExperimental
 import com.google.android.material.snackbar.Snackbar
 
@@ -88,34 +85,39 @@ fun View.updateMargins(margin: Int) {
     updateMargins(margin, margin, margin, margin)
 }
 
+/**
+ * Creates a snack bar and returns it
+ *
+ * @param text Message for this snack bar
+ * @param duration Duration before snack bar is dismissed, default [Snackbar.LENGTH_SHORT]
+ *
+ * @return [Snackbar]
+ */
+fun View.snackBar(
+    text: String,
+    duration: Int = Snackbar.LENGTH_SHORT,
+) = Snackbar.make(this, text, duration)
+
+/**
+ * Creates a snack bar and returns it
+ *
+ * @param text Message for this snack bar
+ * @param actionText Label for the action
+ * @param duration Duration before snack bar is dismissed
+ * @param action Action delegate
+ *
+ * @return [Snackbar]
+ */
 inline fun View.snackBar(
     text: String,
-    duration: Int,
     actionText: String,
+    duration: Int,
     crossinline action: (Snackbar) -> Unit
 ): Snackbar {
-    val snackBar = Snackbar.make(this, text, duration)
+    val snackBar = snackBar(text, duration)
     snackBar.setAction(actionText) { action(snackBar) }
-    snackBar.view.setBackgroundColor(context.getColorFromAttr(R.attr.colorPrimaryDark))
-    val mainTextView = snackBar.view.findViewById<TextView>(R.id.snackbar_text)
-    val actionTextView = snackBar.view.findViewById<TextView>(R.id.snackbar_action)
-    mainTextView.setTextColor(context.getColorFromAttr(R.attr.titleTextColor))
-    actionTextView.setTextColor(context.getColorFromAttr(R.attr.colorAccent))
-    actionTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
     return snackBar
 }
-
-fun View.snackBar(
-    @StringRes stringRes: Int,
-    duration: Int,
-    @StringRes actionRes: Int,
-    action: (Snackbar) -> Unit
-) = snackBar(
-    resources.getString(stringRes),
-    duration,
-    resources.getString(actionRes),
-    action
-)
 
 /**
  * Request to show or hide the soft input window
@@ -125,8 +127,8 @@ fun View.snackBar(
 fun View.toggleIme(show: Boolean) {
     val controller = ViewCompat.getWindowInsetsController(this)
     when (show) {
-        true -> controller?.show(WindowInsets.Type.ime())
-        else -> controller?.hide(WindowInsets.Type.ime())
+        true -> controller?.show(WindowInsetsCompat.Type.ime())
+        else -> controller?.hide(WindowInsetsCompat.Type.ime())
     }
 }
 
@@ -135,7 +137,7 @@ fun View.toggleIme(show: Boolean) {
  */
 fun View.isImeVisible(): Boolean? {
     val insets = ViewCompat.getRootWindowInsets(this)
-    return insets?.isVisible(WindowInsets.Type.ime())
+    return insets?.isVisible(WindowInsetsCompat.Type.ime())
 }
 
 /**
@@ -143,7 +145,7 @@ fun View.isImeVisible(): Boolean? {
  */
 fun View.imeHeight(): Int? {
     val insets = ViewCompat.getRootWindowInsets(this)
-    return insets?.getInsets(WindowInsets.Type.ime())?.bottom
+    return insets?.getInsets(WindowInsetsCompat.Type.ime())?.bottom
 }
 
 /**
@@ -151,7 +153,7 @@ fun View.imeHeight(): Int? {
  */
 fun View.statusBarHeight(): Int? {
     val insets = ViewCompat.getRootWindowInsets(this)
-    return insets?.getInsets(WindowInsets.Type.systemBars())?.top
+    return insets?.getInsets(WindowInsetsCompat.Type.systemBars())?.top
 }
 
 /**
@@ -159,7 +161,7 @@ fun View.statusBarHeight(): Int? {
  */
 fun View.navigationBarHeight(): Int? {
     val insets = ViewCompat.getRootWindowInsets(this)
-    return insets?.getInsets(WindowInsets.Type.systemBars())?.bottom
+    return insets?.getInsets(WindowInsetsCompat.Type.systemBars())?.bottom
 }
 
 /**
