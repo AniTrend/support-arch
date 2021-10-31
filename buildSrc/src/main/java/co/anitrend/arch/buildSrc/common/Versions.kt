@@ -6,8 +6,8 @@ internal object Versions {
         return if (this < 9) "0$this" else "$this"
     }
 
-    const val compileSdk = 30
-    const val targetSdk = 30
+    const val compileSdk = 31
+    const val targetSdk = 31
     const val minSdk = 21
 
     private const val major = 1
