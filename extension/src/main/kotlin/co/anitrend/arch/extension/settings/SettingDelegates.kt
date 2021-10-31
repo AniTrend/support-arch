@@ -28,8 +28,10 @@ import co.anitrend.arch.extension.preference.NullableStringPreference
 import co.anitrend.arch.extension.preference.StringPreference
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.callbackFlow
+import timber.log.Timber
 
 private typealias SettingsListener = SharedPreferences.OnSharedPreferenceChangeListener
 
@@ -53,6 +55,7 @@ class EnumSetting<T : Enum<*>>(
             val listener = SettingsListener { _, id ->
                 if (id == identifier)
                     trySendBlocking(value)
+                        .onFailure { Timber.e(it) }
             }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -80,6 +83,7 @@ class BooleanSetting(
             val listener = SettingsListener { _, id ->
                 if (id == identifier)
                     trySendBlocking(value)
+                        .onFailure { Timber.e(it) }
             }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -107,6 +111,7 @@ class IntSetting(
             val listener = SettingsListener { _, id ->
                 if (id == identifier)
                     trySendBlocking(value)
+                        .onFailure { Timber.e(it) }
             }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -134,6 +139,7 @@ class FloatSetting(
             val listener = SettingsListener { _, id ->
                 if (id == identifier)
                     trySendBlocking(value)
+                        .onFailure { Timber.e(it) }
             }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -161,6 +167,7 @@ class LongSetting(
             val listener = SettingsListener { _, id ->
                 if (id == identifier)
                     trySendBlocking(value)
+                        .onFailure { Timber.e(it) }
             }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -188,6 +195,7 @@ class StringSetting(
             val listener = SettingsListener { _, id ->
                 if (id == identifier)
                     trySendBlocking(value)
+                        .onFailure { Timber.e(it) }
             }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
@@ -215,6 +223,7 @@ class NullableStringSetting(
             val listener = SettingsListener { _, id ->
                 if (id == identifier)
                     trySendBlocking(value)
+                        .onFailure { Timber.e(it) }
             }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
