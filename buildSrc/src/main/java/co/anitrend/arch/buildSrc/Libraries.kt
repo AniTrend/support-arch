@@ -29,7 +29,7 @@ object Libraries {
         }
 
         object Lifecycle {
-            private const val version = "2.4.0-alpha01"
+            private const val version = "2.4.0"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
             const val runTimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
