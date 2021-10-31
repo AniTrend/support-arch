@@ -18,6 +18,7 @@ package co.anitrend.arch.recycler
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import co.anitrend.arch.extension.lifecycle.SupportLifecycle
 import timber.log.Timber
@@ -73,12 +74,15 @@ open class SupportRecyclerView @JvmOverloads constructor(
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onDestroy state
+     * Notifies that `ON_DESTROY` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called before the [LifecycleOwner]'s `onDestroy` method
+     * is called.
+     *
+     * @param owner the component, whose state was changed
      */
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
         if (autoClearAdapter) {
             Timber.v("Clearing adapter reference for this recycler to avoid potential leaks")
             adapter = null

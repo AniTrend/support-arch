@@ -16,6 +16,7 @@
 
 package co.anitrend.arch.recycler.adapter
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.ConcatAdapter
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
@@ -88,12 +89,15 @@ interface SupportAdapter<T> : ISupportAdapter<T> {
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onPause state
+     * Notifies that `ON_PAUSE` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called before the [LifecycleOwner]'s `onPause` method
+     * is called.
+     *
+     * @param owner the component, whose state was changed
      */
-    override fun onPause() {
-        super.onPause()
+    override fun onPause(owner: LifecycleOwner) {
+        super.onPause(owner)
         controller.onPause()
     }
 }
