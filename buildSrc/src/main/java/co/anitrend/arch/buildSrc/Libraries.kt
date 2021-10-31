@@ -96,7 +96,7 @@ object Libraries {
     }
 
     object Google {
-        private const val version = "1.4.0-beta01"
+        private const val version = "1.5.0-alpha05"
         const val material = "com.google.android.material:material:$version"
     }
 
