@@ -16,7 +16,8 @@
 
 package co.anitrend.arch.extension.lifecycle
 
-import androidx.lifecycle.*
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import timber.log.Timber
 
 /**
