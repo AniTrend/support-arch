@@ -24,7 +24,6 @@ import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.onFailure
-import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
 
