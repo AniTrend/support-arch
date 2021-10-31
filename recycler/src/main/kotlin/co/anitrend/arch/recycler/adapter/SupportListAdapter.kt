@@ -18,6 +18,7 @@ package co.anitrend.arch.recycler.adapter
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.lifecycle.LifecycleOwner
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -226,12 +227,15 @@ abstract class SupportListAdapter<T>(
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onPause state
+     * Notifies that `ON_PAUSE` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called before the [LifecycleOwner]'s `onPause` method
+     * is called.
+     *
+     * @param owner the component, whose state was changed
      */
-    override fun onPause() {
-        super.onPause()
+    override fun onPause(owner: LifecycleOwner) {
+        super.onPause(owner)
         // clear our state flow, when the lifecycle owner parent reaches its onPaused state
         clickableFlow.value = ClickableItem.None
     }

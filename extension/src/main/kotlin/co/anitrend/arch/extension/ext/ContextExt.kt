@@ -55,6 +55,7 @@ import androidx.fragment.app.FragmentActivity
 import java.util.Calendar
 import kotlin.system.exitProcess
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
@@ -494,7 +495,8 @@ fun Context.flowOfBroadcast(
 ): Flow<Intent> = callbackFlow {
     val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            offer(intent)
+            trySend(intent)
+                .onFailure { Timber.e(it) }
         }
     }
     registerReceiver(receiver, intentFilter)
