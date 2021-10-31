@@ -21,7 +21,7 @@ internal object Versions {
     const val mockk = "1.11.0"
     const val junit = "4.13.2"
 
-    const val timber = "4.7.1"
+    const val timber = "5.0.1"
     const val threeTenBp = "1.3.1"
     const val ktlint = "0.40.0"
 }
