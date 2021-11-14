@@ -1,0 +1,52 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:co.anitrend.arch.core.analytic.contract////PointingToDeclaration/core/co.anitrend.arch.core.analytic.contract/index.html
+$dokka.location:co.anitrend.arch.core.analytic.contract/ISupportAnalytics///PointingToDeclaration/core/co.anitrend.arch.core.analytic.contract/-i-support-analytics/index.html
+$dokka.location:co.anitrend.arch.core.analytic.contract/ISupportAnalytics/clearCrashAnalyticsSession/#/PointingToDeclaration/core/co.anitrend.arch.core.analytic.contract/-i-support-analytics/clear-crash-analytics-session.html
+$dokka.location:co.anitrend.arch.core.analytic.contract/ISupportAnalytics/log/#kotlin.Int#kotlin.String?#kotlin.String/PointingToDeclaration/core/co.anitrend.arch.core.analytic.contract/-i-support-analytics/log.html
+$dokka.location:co.anitrend.arch.core.analytic.contract/ISupportAnalytics/logCurrentScreen/#androidx.fragment.app.FragmentActivity#kotlin.String/PointingToDeclaration/core/co.anitrend.arch.core.analytic.contract/-i-support-analytics/log-current-screen.html
+$dokka.location:co.anitrend.arch.core.analytic.contract/ISupportAnalytics/logCurrentState/#kotlin.String#android.os.Bundle?/PointingToDeclaration/core/co.anitrend.arch.core.analytic.contract/-i-support-analytics/log-current-state.html
+$dokka.location:co.anitrend.arch.core.analytic.contract/ISupportAnalytics/logException/#kotlin.Throwable/PointingToDeclaration/core/co.anitrend.arch.core.analytic.contract/-i-support-analytics/log-exception.html
+$dokka.location:co.anitrend.arch.core.analytic.contract/ISupportAnalytics/setCrashAnalyticIdentifier/#kotlin.String/PointingToDeclaration/core/co.anitrend.arch.core.analytic.contract/-i-support-analytics/set-crash-analytic-identifier.html
+$dokka.location:co.anitrend.arch.core.model////PointingToDeclaration/core/co.anitrend.arch.core.model/index.html
+$dokka.location:co.anitrend.arch.core.model/IStateLayoutConfig///PointingToDeclaration/core/co.anitrend.arch.core.model/-i-state-layout-config/index.html
+$dokka.location:co.anitrend.arch.core.model/IStateLayoutConfig/defaultMessage/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-state-layout-config/default-message.html
+$dokka.location:co.anitrend.arch.core.model/IStateLayoutConfig/errorDrawable/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-state-layout-config/error-drawable.html
+$dokka.location:co.anitrend.arch.core.model/IStateLayoutConfig/inAnimation/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-state-layout-config/in-animation.html
+$dokka.location:co.anitrend.arch.core.model/IStateLayoutConfig/loadingDrawable/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-state-layout-config/loading-drawable.html
+$dokka.location:co.anitrend.arch.core.model/IStateLayoutConfig/loadingMessage/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-state-layout-config/loading-message.html
+$dokka.location:co.anitrend.arch.core.model/IStateLayoutConfig/outAnimation/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-state-layout-config/out-animation.html
+$dokka.location:co.anitrend.arch.core.model/IStateLayoutConfig/retryAction/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-state-layout-config/retry-action.html
+$dokka.location:co.anitrend.arch.core.model/ISupportViewModelState///PointingToDeclaration/core/co.anitrend.arch.core.model/-i-support-view-model-state/index.html
+$dokka.location:co.anitrend.arch.core.model/ISupportViewModelState/loadState/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-support-view-model-state/load-state.html
+$dokka.location:co.anitrend.arch.core.model/ISupportViewModelState/model/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-support-view-model-state/model.html
+$dokka.location:co.anitrend.arch.core.model/ISupportViewModelState/onCleared/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-support-view-model-state/on-cleared.html
+$dokka.location:co.anitrend.arch.core.model/ISupportViewModelState/refresh/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-support-view-model-state/refresh.html
+$dokka.location:co.anitrend.arch.core.model/ISupportViewModelState/refreshState/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-support-view-model-state/refresh-state.html
+$dokka.location:co.anitrend.arch.core.model/ISupportViewModelState/retry/#/PointingToDeclaration/core/co.anitrend.arch.core.model/-i-support-view-model-state/retry.html
+$dokka.location:co.anitrend.arch.core.presenter.contract////PointingToDeclaration/core/co.anitrend.arch.core.presenter.contract/index.html
+$dokka.location:co.anitrend.arch.core.presenter.contract/ISupportPresenter///PointingToDeclaration/core/co.anitrend.arch.core.presenter.contract/-i-support-presenter/index.html
+$dokka.location:co.anitrend.arch.core.presenter.contract/ISupportPresenter/settings/#/PointingToDeclaration/core/co.anitrend.arch.core.presenter.contract/-i-support-presenter/settings.html
+$dokka.location:co.anitrend.arch.core.presenter////PointingToDeclaration/core/co.anitrend.arch.core.presenter/index.html
+$dokka.location:co.anitrend.arch.core.presenter/SupportPresenter///PointingToDeclaration/core/co.anitrend.arch.core.presenter/-support-presenter/index.html
+$dokka.location:co.anitrend.arch.core.presenter/SupportPresenter/SupportPresenter/#android.content.Context#TypeParam(bounds=[co.anitrend.arch.extension.preference.SupportPreference])/PointingToDeclaration/core/co.anitrend.arch.core.presenter/-support-presenter/-support-presenter.html
+$dokka.location:co.anitrend.arch.core.presenter/SupportPresenter/settings/#/PointingToDeclaration/core/co.anitrend.arch.core.presenter/-support-presenter/settings.html
+$dokka.location:co.anitrend.arch.core.provider////PointingToDeclaration/core/co.anitrend.arch.core.provider/index.html
+$dokka.location:co.anitrend.arch.core.provider/SupportFileProvider.Companion///PointingToDeclaration/core/co.anitrend.arch.core.provider/-support-file-provider/-companion/index.html
+$dokka.location:co.anitrend.arch.core.provider/SupportFileProvider.Companion/uriForFile/#android.content.Context#kotlin.String#java.io.File/PointingToDeclaration/core/co.anitrend.arch.core.provider/-support-file-provider/-companion/uri-for-file.html
+$dokka.location:co.anitrend.arch.core.provider/SupportFileProvider///PointingToDeclaration/core/co.anitrend.arch.core.provider/-support-file-provider/index.html
+$dokka.location:co.anitrend.arch.core.provider/SupportFileProvider/SupportFileProvider/#/PointingToDeclaration/core/co.anitrend.arch.core.provider/-support-file-provider/-support-file-provider.html
+$dokka.location:co.anitrend.arch.core.worker////PointingToDeclaration/core/co.anitrend.arch.core.worker/index.html
+$dokka.location:co.anitrend.arch.core.worker/SupportCoroutineWorker///PointingToDeclaration/core/co.anitrend.arch.core.worker/-support-coroutine-worker/index.html
+$dokka.location:co.anitrend.arch.core.worker/SupportCoroutineWorker/SupportCoroutineWorker/#android.content.Context#androidx.work.WorkerParameters/PointingToDeclaration/core/co.anitrend.arch.core.worker/-support-coroutine-worker/-support-coroutine-worker.html
+$dokka.location:co.anitrend.arch.core.worker/SupportCoroutineWorker/doWork/#/PointingToDeclaration/core/co.anitrend.arch.core.worker/-support-coroutine-worker/do-work.html
+$dokka.location:co.anitrend.arch.core.worker/SupportWorker///PointingToDeclaration/core/co.anitrend.arch.core.worker/-support-worker/index.html
+$dokka.location:co.anitrend.arch.core.worker/SupportWorker/SupportWorker/#android.content.Context#androidx.work.WorkerParameters/PointingToDeclaration/core/co.anitrend.arch.core.worker/-support-worker/-support-worker.html
+$dokka.location:co.anitrend.arch.core.worker/SupportWorker/doWork/#/PointingToDeclaration/core/co.anitrend.arch.core.worker/-support-worker/do-work.html
+co.anitrend.arch.core.analytic.contract
+co.anitrend.arch.core.model
+co.anitrend.arch.core.presenter
+co.anitrend.arch.core.presenter.contract
+co.anitrend.arch.core.provider
+co.anitrend.arch.core.worker
+

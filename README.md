@@ -1,3 +1,0 @@
-# support
-
-Support project library
