@@ -23,7 +23,7 @@ object Libraries {
     object AndroidX {
 
         object Core {
-            private const val version = "1.5.0-rc01"
+            private const val version = "1.6.0"
             const val core = "androidx.core:core:$version"
             const val coreKtx = "androidx.core:core-ktx:$version"
         }
@@ -57,7 +57,7 @@ object Libraries {
         }
 
         object StartUp {
-            private const val version = "1.0.0"
+            private const val version = "1.1.0"
             const val startUpRuntime = "androidx.startup:startup-runtime:$version"
         }
 
@@ -90,13 +90,13 @@ object Libraries {
 
     object CashApp {
         object Turbine {
-            private const val version = "0.5.0"
+            private const val version = "0.7.0"
             const val turbine = "app.cash.turbine:turbine:$version"
         }
     }
 
     object Google {
-        private const val version = "1.4.0-beta01"
+        private const val version = "1.4.0"
         const val material = "com.google.android.material:material:$version"
     }
 
