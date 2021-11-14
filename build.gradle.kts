@@ -1,8 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
 
 plugins {
     id("com.github.ben-manes.versions")
+    id("org.jetbrains.dokka")
 }
 
 buildscript {
@@ -27,6 +29,11 @@ allprojects {
 
 tasks.create("clean", Delete::class) {
     delete(rootProject.buildDir)
+}
+
+tasks.withType(DokkaMultiModuleTask::class.java) {
+    outputDirectory.set(rootProject.file("dokka-docs"))
+    failOnWarning.set(false)
 }
 
 tasks.named(
