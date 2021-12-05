@@ -23,8 +23,9 @@ import co.anitrend.arch.data.request.report.contract.IRequestStatusReport
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.flow.callbackFlow
+import timber.log.Timber
 
 private fun IRequestStatusReport.getRequestError(): RequestError {
     return Request.Type.values().mapNotNull {
@@ -59,7 +60,8 @@ internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<LoadState> 
                 report.hasSuccess() -> LoadState.Success(position)
                 else -> LoadState.Idle(position)
             }
-            sendBlocking(state)
+            trySend(state)
+                .onFailure { Timber.e(it) }
         }
     }
     addListener(requestListener)

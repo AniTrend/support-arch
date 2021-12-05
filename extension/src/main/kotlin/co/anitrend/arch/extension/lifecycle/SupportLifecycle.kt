@@ -16,9 +16,8 @@
 
 package co.anitrend.arch.extension.lifecycle
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import timber.log.Timber
 
 /**
@@ -29,65 +28,76 @@ import timber.log.Timber
  *
  * @since v1.2.0
  */
-interface SupportLifecycle : LifecycleObserver {
+interface SupportLifecycle : DefaultLifecycleObserver {
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onCreate state
+     * Notifies that `ON_CREATE` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called after the [LifecycleOwner]'s `onCreate`
+     * method returns.
+     *
+     * @param owner the component, whose state was changed
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreate() {
-        Timber.v("onCreate")
+    override fun onCreate(owner: LifecycleOwner) {
+        Timber.v("onCreate($owner)")
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onStart state
+     * Notifies that `ON_START` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called after the [LifecycleOwner]'s `onStart` method returns.
+     *
+     * @param owner the component, whose state was changed
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onStart() {
-        Timber.v("onStart")
+    override fun onStart(owner: LifecycleOwner) {
+        Timber.v("onStart($owner)")
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onStop state
+     * Notifies that `ON_RESUME` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called after the [LifecycleOwner]'s `onResume`
+     * method returns.
+     *
+     * @param owner the component, whose state was changed
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onStop() {
-        Timber.v("onStop")
+    override fun onResume(owner: LifecycleOwner) {
+        Timber.v("onResume($owner)")
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onResume state
+     * Notifies that `ON_PAUSE` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called before the [LifecycleOwner]'s `onPause` method
+     * is called.
+     *
+     * @param owner the component, whose state was changed
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onResume() {
-        Timber.v("onResume")
+    override fun onPause(owner: LifecycleOwner) {
+        Timber.v("onPause($owner)")
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onPause state
+     * Notifies that `ON_STOP` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called before the [LifecycleOwner]'s `onStop` method
+     * is called.
+     *
+     * @param owner the component, whose state was changed
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onPause() {
-        Timber.v("onPause")
+    override fun onStop(owner: LifecycleOwner) {
+        Timber.v("onStop($owner)")
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onDestroy state
+     * Notifies that `ON_DESTROY` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called before the [LifecycleOwner]'s `onDestroy` method
+     * is called.
+     *
+     * @param owner the component, whose state was changed
      */
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onDestroy() {
-        Timber.v("onDestroy")
+    override fun onDestroy(owner: LifecycleOwner) {
+        Timber.v("onDestroy($owner)")
     }
 }

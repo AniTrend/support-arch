@@ -20,6 +20,7 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -164,8 +165,16 @@ open class SupportLoadStateAdapter(
         notifyItemChanged(0)
     }
 
-    override fun onPause() {
-        super.onPause()
+    /**
+     * Notifies that `ON_PAUSE` event occurred.
+     *
+     * This method will be called before the [LifecycleOwner]'s `onPause` method
+     * is called.
+     *
+     * @param owner the component, whose state was changed
+     */
+    override fun onPause(owner: LifecycleOwner) {
+        super.onPause(owner)
         clickableFlow.value = ClickableItem.None
     }
 
