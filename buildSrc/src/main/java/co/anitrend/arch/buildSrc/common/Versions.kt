@@ -17,9 +17,9 @@ internal object Versions {
 
     private const val channel = "rc"
 
-    const val versionCode = major * 100_000 + minor * 10_000 + patch * 1_000 + revision * 100
+    const val versionCode = major * 10_000_000 + minor * 10_000 + patch * 100 + revision * 1
     val versionName = if (revision > 0) 
-        "$major.$minor.$patch-rc${revision.toVersion()}"
+        "$major.$minor.$patch-$channel${revision.toVersion()}"
     else "$major.$minor.$patch"
 
     const val mockk = "1.12.0"
