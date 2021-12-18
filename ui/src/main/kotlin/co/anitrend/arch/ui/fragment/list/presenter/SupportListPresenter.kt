@@ -17,6 +17,7 @@
 package co.anitrend.arch.ui.fragment.list.presenter
 
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import co.anitrend.arch.domain.entities.LoadState
@@ -89,23 +90,29 @@ abstract class SupportListPresenter<T> : ISupportListPresenter<T> {
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onStop state
+     * Notifies that `ON_STOP` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called before the [LifecycleOwner]'s `onStop` method
+     * is called.
+     *
+     * @param owner the component, whose state was changed
      */
-    override fun onStop() {
-        super.onStop()
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
         swipeRefreshLayout?.setOnRefreshListener(null)
     }
 
     /**
-     * Triggered when the lifecycleOwner reaches it's onDestroy state
+     * Notifies that `ON_DESTROY` event occurred.
      *
-     * @see [androidx.lifecycle.LifecycleOwner]
+     * This method will be called before the [LifecycleOwner]'s `onDestroy` method
+     * is called.
+     *
+     * @param owner the component, whose state was changed
      */
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
         if (recyclerView is SupportLifecycle)
-            (recyclerView as SupportLifecycle).onDestroy()
+            (recyclerView as SupportLifecycle).onDestroy(owner)
     }
 }
