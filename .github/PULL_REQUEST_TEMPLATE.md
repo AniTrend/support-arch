@@ -13,7 +13,7 @@ Before opening a pull request, please ensure:
 
 - [ ] You have followed our [**contributing guidelines**](https://github.com/AniTrend/support-app/blob/master/CONTRIBUTING.md)
 - [ ] double-check your branch is based on `develop` and targets `develop`
-- [ ] Pull request has tests
+- [ ] Pull request has tests (If applicable)
 - [ ] Code is well-commented, linted and follows project conventions
 - [ ] Documentation is updated (if necessary)
 - [ ] Description explains the issue/use-case resolved
@@ -43,4 +43,4 @@ Before opening a pull request, please ensure:
 <!--- Be kind to code reviewers, please try to keep pull requests as small and focused as possible :) -->
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project
-owners to license your work under the terms of the [MIT License](https://github.com/AniTrend/support-app/blob/master/LICENSE.md).
+owners to license your work under the terms of the [Apache License](https://github.com/AniTrend/support-app/blob/master/LICENSE).

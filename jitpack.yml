@@ -1,12 +1,10 @@
 jdk:
-  - openjdk8
+  - openjdk11
 #before_install:
 #   - ./custom_setup.sh
 install:
    - echo "Running build commands"
-   - ./gradlew clean build --stacktrace
-   # - ./gradlew dokkaHtml
-   - ./gradlew dependencyUpdates
+   - ./gradlew build --stacktrace
    - ./gradlew publishMavenPublicationToMavenLocal
 env:
   CI: "true"

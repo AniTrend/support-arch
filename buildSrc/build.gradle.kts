@@ -7,18 +7,16 @@ repositories {
     google()
     jcenter()
     mavenCentral()
-    maven {
-        setUrl("https://www.jitpack.io")
-    }
+    gradlePluginPortal()
     maven {
         setUrl("https://plugins.gradle.org/m2/")
     }
 }
 
-val kotlinVersion = "1.4.32"
-val buildToolsVersion = "4.1.3"
-val dokkaVersion = "1.4.30"
-val manesVersion = "0.33.0"
+val kotlinVersion = "1.5.31"
+val buildToolsVersion = "7.0.4"
+val dokkaVersion = "1.5.31"
+val manesVersion = "0.38.0"
 val spotlessVersion = "5.12.1"
 
 dependencies {
