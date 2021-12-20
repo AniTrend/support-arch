@@ -33,11 +33,6 @@ import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 abstract class AbstractDataSource : IDataSource, ISource, ISupportCoroutine by Default() {
 
     /**
-     * Module tag for the current context
-     */
-    protected val moduleTag: String = javaClass.simpleName
-
-    /**
      * Contract for multiple types of [coroutineDispatcher]
      */
     protected abstract val dispatcher: ISupportDispatcher

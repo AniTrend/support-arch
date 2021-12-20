@@ -6,18 +6,19 @@ internal object Versions {
         return if (this < 9) "0$this" else "$this"
     }
 
-    const val compileSdk = 30
-    const val targetSdk = 30
+    const val compileSdk = 31
+    const val targetSdk = 31
     const val minSdk = 21
 
     private const val major = 1
-    private const val minor = 3
+    private const val minor = 4
     private const val patch = 0
-    private const val revision = 0
+    private const val revision = 2
 
-    private const val channel = "rc"
+    private const val channel = "alpha"
 
     const val versionCode = major * 10_000_000 + minor * 10_000 + patch * 100 + revision * 1
+
     val versionName = if (revision > 0) 
         "$major.$minor.$patch-$channel${revision.toVersion()}"
     else "$major.$minor.$patch"
