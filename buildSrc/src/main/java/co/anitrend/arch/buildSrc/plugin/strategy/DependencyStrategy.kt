@@ -19,6 +19,7 @@ internal class DependencyStrategy(
 
     private fun DependencyHandler.applyDefaultDependencies() {
         implementation(Libraries.JetBrains.Kotlin.stdlib)
+        implementation(Libraries.JetBrains.Kotlin.reflect)
 
         // Testing libraries
         test(Libraries.junit)

@@ -23,7 +23,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import co.anitrend.arch.extension.ext.empty
 import co.anitrend.arch.extension.ext.getStringList
-import java.util.Locale
 import timber.log.Timber
 
 /**
@@ -81,7 +80,7 @@ abstract class SupportPageAdapter(
      */
     override fun getPageTitle(position: Int): CharSequence {
         if (position <= titles.size)
-            return titles[position].toUpperCase(Locale.getDefault())
+            return titles[position].uppercase()
         Timber.w("Position: $position doesn't have a corresponding title")
         return String.empty()
     }

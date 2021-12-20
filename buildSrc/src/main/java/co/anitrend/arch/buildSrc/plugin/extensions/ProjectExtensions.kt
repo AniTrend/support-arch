@@ -3,7 +3,6 @@ package co.anitrend.arch.buildSrc.plugin.extensions
 import co.anitrend.arch.buildSrc.module.Modules
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.api.BaseVariantOutput
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.Project
 import org.gradle.api.internal.plugins.DefaultArtifactPublicationSet
@@ -63,9 +62,6 @@ internal fun Project.sourceSetContainer() =
 
 internal fun Project.javaPluginExtension() =
     extensions.getByType<JavaPluginExtension>()
-
-internal fun Project.variantOutput() =
-    extensions.getByType<BaseVariantOutput>()
 
 internal fun Project.libraryExtension() =
     extensions.getByType<LibraryExtension>()

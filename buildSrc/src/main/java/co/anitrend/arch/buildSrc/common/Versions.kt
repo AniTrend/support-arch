@@ -13,14 +13,12 @@ internal object Versions {
     private const val major = 1
     private const val minor = 4
     private const val patch = 0
-    private const val revision = 1
+    private const val revision = 2
 
     private const val channel = "alpha"
 
-    const val versionCode = major * 100_000 + minor * 10_000 + patch * 1_000 + revision * 100
-    val versionName = "$major.$minor.$patch-${channel}${revision.toVersion()}"
-
     const val versionCode = major * 10_000_000 + minor * 10_000 + patch * 100 + revision * 1
+
     val versionName = if (revision > 0) 
         "$major.$minor.$patch-$channel${revision.toVersion()}"
     else "$major.$minor.$patch"
