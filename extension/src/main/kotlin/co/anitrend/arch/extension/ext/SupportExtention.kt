@@ -61,7 +61,13 @@ fun String?.capitalizeWords(exceptions: List<String>? = null): String = when {
                 true -> {
                     if (!exceptions.isNullOrEmpty() && exceptions.contains(word))
                         result.append(word)
-                    else result.append(word.capitalize(Locale.ROOT))
+                    else result.append(
+                        word.replaceFirstChar {
+                            if (it.isLowerCase()) it.titlecase(
+                                Locale.ROOT
+                            ) else it.toString()
+                        }
+                    )
                 }
             }
             if (index != words.size - 1)

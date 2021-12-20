@@ -31,11 +31,6 @@ abstract class SupportRepository(
 ) : ISupportRepository {
 
     /**
-     * Module tag for the current context
-     */
-    protected val moduleTag: String = javaClass.simpleName
-
-    /**
      * Deals with cancellation of any pending or on going operations that the repository
      * might be working on
      */

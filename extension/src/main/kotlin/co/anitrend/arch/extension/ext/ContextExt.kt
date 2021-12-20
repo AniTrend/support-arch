@@ -37,7 +37,6 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.view.animation.Interpolator
-import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ArrayRes
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
@@ -51,19 +50,25 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.FragmentActivity
 import java.util.Calendar
+import kotlin.jvm.Throws
 import kotlin.system.exitProcess
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import timber.log.Timber
 
 /**
- * Extension for getting system services
+ * Extension for getting system services from [Context]
  */
-inline fun <reified T> Context.systemServiceOf(): T? =
-    ContextCompat.getSystemService(this, T::class.java)
+inline fun <reified T> Context.systemServiceOf(): T? {
+    val targetService = T::class.java
+    val systemService = ContextCompat.getSystemService(this, targetService)
+    if (systemService == null)
+        Timber.w("Unable to locate service of type: $targetService")
+    return systemService
+}
 
 /**
  * Starts a foreground service using the specified type and action
@@ -111,17 +116,18 @@ inline fun <reified T> Context.stopServiceMatching(intentAction: String): Boolea
 /**
  * Extension helper for context that helps us restart the application
  *
+ * @param intent Intent to start
  * @param intentId Id of the pending intent which will be used
  */
-inline fun <reified T> Context.restartApplication(intentId: Int = 1510, delayDuration: Int = 100) {
+fun Context.restartWithIntent(intent: Intent, intentId: Int = 1510, delayDuration: Int = 100) {
     runCatching {
-        val startTargetIntent = Intent(this, T::class.java)
-        val pendingIntent = PendingIntent.getActivity(
-            this, intentId, startTargetIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT
-        )
-        val alarmManager = systemServiceOf<AlarmManager>()
-        alarmManager?.set(
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+        val pendingIntent = PendingIntent.getActivity(this, intentId, intent, flags)
+        systemServiceOf<AlarmManager>()?.set(
             AlarmManager.RTC,
             System.currentTimeMillis() + delayDuration,
             pendingIntent
@@ -133,6 +139,17 @@ inline fun <reified T> Context.restartApplication(intentId: Int = 1510, delayDur
 }
 
 /**
+ * Extension helper for context that helps us restart the application
+ *
+ * @param intentId Id of the pending intent which will be used
+ */
+inline fun <reified T> Context.restartApplication() {
+    val startTargetIntent = Intent(this, T::class.java)
+    startTargetIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    restartWithIntent(startTargetIntent)
+}
+
+/**
  * Schedule a repeating alarm that has inexact trigger time requirements.
  *
  * @param enabled schedules or cancels the scheduled task
@@ -140,14 +157,13 @@ inline fun <reified T> Context.restartApplication(intentId: Int = 1510, delayDur
  */
 inline fun <reified T> Context.scheduleWithAlarm(enabled: Boolean, interval: Long) {
     val intent = Intent(this, T::class.java)
-    val pendingIntent: PendingIntent? = PendingIntent.getBroadcast(
-        this,
-        0,
-        intent,
+    val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+    } else {
         PendingIntent.FLAG_UPDATE_CURRENT
-    )
-    val alarmManager = systemServiceOf<AlarmManager>()
-    alarmManager?.run {
+    }
+    val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, flags)
+    systemServiceOf<AlarmManager>()?.run {
         if (!enabled) {
             cancel(pendingIntent)
         } else {
@@ -173,38 +189,6 @@ fun Context.copyToClipboard(label: String, content: String) {
 }
 
 /**
-* Request to show or hide the soft input window from the context of the window that is currently
- * accepting input.
- *
- * This should be called as a result of the user doing some actually than fairly explicitly
- * requests to have the input window shown or hidden.
- *
- * @param show True if the keyboard should be shown otherwise False to hide it
-*/
-@Deprecated(
-    message = "Use View.toggleKeyboard(show) extension instead",
-    level = DeprecationLevel.WARNING
-)
-fun Context.toggleKeyboard(show: Boolean) {
-    runCatching {
-        val windowToken = (this as FragmentActivity).window.decorView.windowToken
-        val inputMethodManager = systemServiceOf<InputMethodManager>()
-        if (inputMethodManager != null && windowToken != null)
-            if (show)
-                inputMethodManager.toggleSoftInput(
-                    InputMethodManager.SHOW_FORCED,
-                    0
-                )
-            else
-                inputMethodManager.hideSoftInputFromWindow(
-                    windowToken, 0
-                )
-    }.onFailure {
-        Timber.e(it)
-    }
-}
-
-/**
  * Exactly whether a device is low-RAM is ultimately up to the device configuration, but currently
  * it generally means something in the class of a 512MB device with about a 800x480 or less screen.
  * This is mostly intended to be used by apps to determine whether they should
@@ -212,8 +196,8 @@ fun Context.toggleKeyboard(show: Boolean) {
  *
  * @return true if this is a low-RAM device.
  */
-fun Context?.isLowRamDevice(): Boolean {
-    val activityManager = this?.systemServiceOf<ActivityManager>()
+fun Context.isLowRamDevice(): Boolean {
+    val activityManager = systemServiceOf<ActivityManager>()
     return if (activityManager != null)
         ActivityManagerCompat.isLowRamDevice(activityManager)
     else false
@@ -250,11 +234,23 @@ fun Context.getStringList(@ArrayRes arrayRes: Int): List<String> {
     return array.toList()
 }
 
+/**
+ * Retrieves a [LayoutInflater] from [Context] by querying system services
+ *
+ * @throws IllegalArgumentException when a layout inflater cannot be acquired
+ */
+@Throws(IllegalArgumentException::class)
+fun Context.getLayoutInflater(): LayoutInflater =
+    requireNotNull(systemServiceOf<LayoutInflater>())
+
+/**
+ * Retrieves a [LayoutInflater] from [View].[Context] by querying system services
+ *
+ * @throws IllegalArgumentException when a layout inflater cannot be acquired
+ */
+@Throws(IllegalArgumentException::class)
 fun View.getLayoutInflater(): LayoutInflater =
     context.getLayoutInflater()
-
-fun Context.getLayoutInflater(): LayoutInflater =
-    systemServiceOf<LayoutInflater>()!!
 
 /**
  * Gets the size of the display, in pixels. Value returned by this method does
@@ -494,7 +490,8 @@ fun Context.flowOfBroadcast(
 ): Flow<Intent> = callbackFlow {
     val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            offer(intent)
+            trySend(intent)
+                .onFailure { Timber.e(it) }
         }
     }
     registerReceiver(receiver, intentFilter)

@@ -23,8 +23,10 @@ import android.net.NetworkRequest
 import co.anitrend.arch.extension.network.contract.ISupportConnectivity
 import co.anitrend.arch.extension.network.model.ConnectivityState
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import timber.log.Timber
 
 /**
  * Inspired by [ConnectivityChecker](https://github.com/android/plaid/blob/master/core/src/main/java/io/plaidapp/core/ui/ConnectivityChecker.kt)
@@ -61,7 +63,7 @@ class SupportConnectivity(
      * @see ConnectivityState
      */
     override val connectivityStateFlow = callbackFlow<ConnectivityState> {
-        val callback = object : ConnectivityManager.NetworkCallback() {
+        val networkCallback = object : ConnectivityManager.NetworkCallback() {
             /**
              * Called when the framework connects and has declared a new network ready for use.
              *
@@ -97,7 +99,8 @@ class SupportConnectivity(
              */
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
-                offer(ConnectivityState.Connected)
+                trySend(ConnectivityState.Connected)
+                    .onFailure { Timber.w(it) }
             }
 
             /**
@@ -123,7 +126,8 @@ class SupportConnectivity(
              * @param network The [Network] lost.
              */
             override fun onLost(network: Network) {
-                offer(ConnectivityState.Disconnected)
+                trySend(ConnectivityState.Disconnected)
+                    .onFailure { Timber.w(it) }
             }
 
             /**
@@ -135,7 +139,8 @@ class SupportConnectivity(
              * [.unregisterNetworkCallback] had been called.
              */
             override fun onUnavailable() {
-                offer(ConnectivityState.Unknown)
+                trySend(ConnectivityState.Unknown)
+                    .onFailure { Timber.w(it) }
             }
         }
 
@@ -143,11 +148,11 @@ class SupportConnectivity(
             NetworkRequest.Builder()
                 .addCapability(connectivityCapabilities)
                 .build(),
-            callback
+            networkCallback
         )
 
         awaitClose {
-            connectivityManager?.unregisterNetworkCallback(callback)
+            connectivityManager?.unregisterNetworkCallback(networkCallback)
         }
     }
 }
