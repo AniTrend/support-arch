@@ -63,11 +63,16 @@ import timber.log.Timber
  * Extension for getting system services from [Context]
  */
 inline fun <reified T> Context.systemServiceOf(): T? {
-    val targetService = T::class.java
-    val systemService = ContextCompat.getSystemService(this, targetService)
-    if (systemService == null)
-        Timber.w("Unable to locate service of type: $targetService")
-    return systemService
+    return runCatching {
+        val targetService = T::class.java
+        val systemService = ContextCompat.getSystemService(this, targetService)
+        if (systemService == null)
+            Timber.w("Unable to locate service of type: $targetService")
+        systemService
+    }.getOrElse {
+        Timber.w(it, "Platform may not support requested service")
+        null
+    }
 }
 
 /**
