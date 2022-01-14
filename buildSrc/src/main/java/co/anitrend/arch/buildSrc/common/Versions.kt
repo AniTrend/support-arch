@@ -13,7 +13,7 @@ internal object Versions {
     private const val major = 1
     private const val minor = 4
     private const val patch = 0
-    private const val revision = 2
+    private const val revision = 3
 
     private const val channel = "alpha"
 
