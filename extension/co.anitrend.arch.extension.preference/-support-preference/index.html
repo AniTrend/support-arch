@@ -1,276 +1,279 @@
+<!doctype html>
 <html>
-  <head>
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>SupportPreference</title>
-</head><body><link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script><script type="text/javascript" src="../../../scripts/main.js" async></script>
-  
-    <div id="container">
-      <div id="leftColumn"><a href="../../../index.html">
-            <div id="logo"></div>
-          </a>
-        <div id="paneSearch"></div>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../index.html">
+<span>support-arch</span>            </a>    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
         <div id="sideMenu"></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="extension::co.anitrend.arch.extension.preference/SupportPreference///PointingToDeclaration//-37320058">
+  <div class="breadcrumbs"><a href="../../index.html">extension</a><span class="delimiter">/</span><a href="../index.html">co.anitrend.arch.extension.preference</a><span class="delimiter">/</span><a href="index.html">SupportPreference</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Support</span><wbr><span><span>Preference</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">SupportPreference</a>&nbsp;<span><span class="token annotation">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation">JvmOverloads</span></a>&nbsp;</span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">sharedPreferences<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.html">SharedPreferences</a><span class="token operator"> = </span>PreferenceManager.getDefaultSharedPreferences(context)</span></span><span class="token punctuation">)</span> : <a href="../../co.anitrend.arch.extension.preference.contract/-i-support-preference/index.html">ISupportPreference</a>, <a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.html">SharedPreferences</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Core abstract implementation for application preferences</p><h4 class="">Since</h4><p class="paragraph">v0.9.X</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="See also">See also</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">See also</h2>
+      <div data-togglable="See also">
+        <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="See also"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div data-togglable="See also"><div class="table" data-togglable="See also"><div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><a href="../../co.anitrend.arch.extension.settings.contract/-abstract-setting/index.html"><span>co.</span><wbr><span>anitrend.</span><wbr><span>arch.</span><wbr><span>extension.</span><wbr><span>settings.</span><wbr><span>contract.</span><wbr><span>Abstract</span><wbr><span><span>Setting</span></span></a></div></span></div><div><div class="title"><div data-togglable="See also"></div></div></div></div></div></div></div></div></div>
       </div>
-      <div id="main">
-        <script type="text/javascript" src="../../../scripts/main.js"></script><div id="leftToggler"><span class="icon-toggler"></span></div>
-
-        <div class="main-content" id="content" pageids="extension::co.anitrend.arch.extension.preference/SupportPreference///PointingToDeclaration//-37320058">
-          <div class="navigation-wrapper" id="navigation-wrapper">
-            <div class="breadcrumbs"><a href="../../index.html">extension</a>/<a href="../index.html">co.anitrend.arch.extension.preference</a>/<a href="index.html">SupportPreference</a></div>
-            <div class="pull-right d-flex">
-              <div id="searchBar"></div>
-            </div>
-          </div>
-          <div class="cover ">
-            <h1 class="cover"><span>Support</span><wbr><span><span>Preference</span></span></h1>
-            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">abstract class <a href="index.html">SupportPreference</a>&nbsp;<span>@<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html">JvmOverloads</a>&nbsp;</span>constructor(context: <a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a>, sharedPreferences: <a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.html">SharedPreferences</a>) : <a href="../../co.anitrend.arch.extension.preference.contract/-i-support-preference/index.html">ISupportPreference</a>, <a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.html">SharedPreferences</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Core abstract implementation for application preferences</p><h4 class="">Since</h4><p class="paragraph">v0.9.X</p></div></div>
-          </div>
-          <div class="tabbedcontent">
-            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="See also">See also</button></div>
-            <div class="tabs-section-body">
-              <h2 class="">See also</h2>
-              <div data-togglable="See also">
-                <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="See also"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div data-togglable="See also"><div class="table" data-togglable="See also"><div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="main-subrow keyValue WithExtraAttributes RowTitle"><div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.extension.settings.contract/-abstract-setting/index.html"><span>co.</span><wbr><span>anitrend.</span><wbr><span>arch.</span><wbr><span>extension.</span><wbr><span>settings.</span><wbr><span>contract.</span><wbr><span>Abstract</span><wbr><span><span>Setting</span></span></a></span><span class="inline-flex"><div data-togglable="See also"></div></span></div><div></div></div></div></div></div></div></div>
-              </div>
-              <h2 class="tabbedcontent">Constructors</h2>
-              <div class="table" data-togglable="Constructors"><a data-name="1910319931%2FConstructors%2F-37320058" anchor-label="SupportPreference" id="1910319931%2FConstructors%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue TabbedContent">
-                    <div class=""><span class="inline-flex"><a href="-support-preference.html">SupportPreference</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1910319931%2FConstructors%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block">@<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html">JvmOverloads</a></div></div>fun <a href="-support-preference.html">SupportPreference</a>(context: <a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a>, sharedPreferences: <a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.html">SharedPreferences</a> = PreferenceManager.getDefaultSharedPreferences(context))<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <h2 class="">Functions</h2>
-              <div class="table" data-togglable="Functions"><a data-name="228792087%2FFunctions%2F-37320058" anchor-label="contains" id="228792087%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#228792087%2FFunctions%2F-37320058"><span><span>contains</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="228792087%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open operator override fun <a href="index.html#228792087%2FFunctions%2F-37320058">contains</a>(p0: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1914924290%2FFunctions%2F-37320058" anchor-label="edit" id="1914924290%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#1914924290%2FFunctions%2F-37320058"><span><span>edit</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1914924290%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#1914924290%2FFunctions%2F-37320058">edit</a>(): <a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.Editor.html">SharedPreferences.Editor</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="2072045569%2FFunctions%2F-37320058" anchor-label="getAll" id="2072045569%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#2072045569%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>All</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2072045569%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#2072045569%2FFunctions%2F-37320058">getAll</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, *&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="303009754%2FFunctions%2F-37320058" anchor-label="getBoolean" id="303009754%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#303009754%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>Boolean</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="303009754%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#303009754%2FFunctions%2F-37320058">getBoolean</a>(p0: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, p1: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1755957746%2FFunctions%2F-37320058" anchor-label="getFloat" id="1755957746%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#1755957746%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>Float</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1755957746%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#1755957746%2FFunctions%2F-37320058">getFloat</a>(p0: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, p1: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="920909388%2FFunctions%2F-37320058" anchor-label="getInt" id="920909388%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#920909388%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>Int</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="920909388%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#920909388%2FFunctions%2F-37320058">getInt</a>(p0: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, p1: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-774545598%2FFunctions%2F-37320058" anchor-label="getLong" id="-774545598%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#-774545598%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>Long</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-774545598%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#-774545598%2FFunctions%2F-37320058">getLong</a>(p0: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, p1: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a>): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="433391745%2FFunctions%2F-37320058" anchor-label="getString" id="433391745%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#433391745%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>String</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="433391745%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#433391745%2FFunctions%2F-37320058">getString</a>(p0: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, p1: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>?): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>?<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="599136655%2FFunctions%2F-37320058" anchor-label="getStringSet" id="599136655%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#599136655%2FFunctions%2F-37320058"><span>get</span><wbr><span>String</span><wbr><span><span>Set</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="599136655%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#599136655%2FFunctions%2F-37320058">getStringSet</a>(p0: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>, p1: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>&gt;?): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>&gt;?<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-7511084%2FFunctions%2F-37320058" anchor-label="registerOnSharedPreferenceChangeListener" id="-7511084%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#-7511084%2FFunctions%2F-37320058"><span>register</span><wbr><span>On</span><wbr><span>Shared</span><wbr><span>Preference</span><wbr><span>Change</span><wbr><span><span>Listener</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-7511084%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#-7511084%2FFunctions%2F-37320058">registerOnSharedPreferenceChangeListener</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.OnSharedPreferenceChangeListener.html">SharedPreferences.OnSharedPreferenceChangeListener</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1988052261%2FFunctions%2F-37320058" anchor-label="unregisterOnSharedPreferenceChangeListener" id="-1988052261%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#-1988052261%2FFunctions%2F-37320058"><span>unregister</span><wbr><span>On</span><wbr><span>Shared</span><wbr><span>Preference</span><wbr><span>Change</span><wbr><span><span>Listener</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1988052261%2FFunctions%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#-1988052261%2FFunctions%2F-37320058">unregisterOnSharedPreferenceChangeListener</a>(p0: <a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.OnSharedPreferenceChangeListener.html">SharedPreferences.OnSharedPreferenceChangeListener</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <h2 class="">Properties</h2>
-              <div class="table" data-togglable="Properties"><a data-name="-1954216683%2FProperties%2F-37320058" anchor-label="isNewInstallation" id="-1954216683%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.extension.preference.contract/-i-support-preference/is-new-installation.html">isNewInstallation</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1954216683%2FProperties%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><a data-name="-1954216683%2FProperties%2F-37320058" anchor-label="isNewInstallation" id="-1954216683%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a><div class="symbol monospace">abstract val <a href="../../co.anitrend.arch.extension.preference.contract/-i-support-preference/is-new-installation.html">isNewInstallation</a>: <a href="../../co.anitrend.arch.extension.settings.contract/-abstract-setting/index.html">AbstractSetting</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1217191104%2FProperties%2F-37320058" anchor-label="versionCode" id="-1217191104%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.extension.preference.contract/-i-support-preference/version-code.html">versionCode</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1217191104%2FProperties%2F-37320058"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><a data-name="-1217191104%2FProperties%2F-37320058" anchor-label="versionCode" id="-1217191104%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a><div class="symbol monospace">abstract val <a href="../../co.anitrend.arch.extension.preference.contract/-i-support-preference/version-code.html">versionCode</a>: <a href="../../co.anitrend.arch.extension.settings.contract/-abstract-setting/index.html">AbstractSetting</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="1910319931%2FConstructors%2F-37320058" anchor-label="SupportPreference" id="1910319931%2FConstructors%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-support-preference.html"><span>Support</span><wbr><span><span>Preference</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1910319931%2FConstructors%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html"><span class="token annotation">JvmOverloads</span></a></div></div><span class="token keyword"></span><span class="token keyword">fun </span><a href="-support-preference.html"><span class="token function">SupportPreference</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/Context.html">Context</a><span class="token punctuation">, </span></span><span class="parameter ">sharedPreferences<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.html">SharedPreferences</a><span class="token operator"> = </span>PreferenceManager.getDefaultSharedPreferences(context)</span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="228792087%2FFunctions%2F-37320058" anchor-label="contains" id="228792087%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#228792087%2FFunctions%2F-37320058"><span><span>contains</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="228792087%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><a href="index.html#228792087%2FFunctions%2F-37320058"><span class="token function">contains</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1914924290%2FFunctions%2F-37320058" anchor-label="edit" id="1914924290%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#1914924290%2FFunctions%2F-37320058"><span><span>edit</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1914924290%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#1914924290%2FFunctions%2F-37320058"><span class="token function">edit</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.Editor.html">SharedPreferences.Editor</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="2072045569%2FFunctions%2F-37320058" anchor-label="getAll" id="2072045569%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#2072045569%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>All</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2072045569%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#2072045569%2FFunctions%2F-37320058"><span class="token function">getAll</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="303009754%2FFunctions%2F-37320058" anchor-label="getBoolean" id="303009754%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#303009754%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>Boolean</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="303009754%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#303009754%2FFunctions%2F-37320058"><span class="token function">getBoolean</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1755957746%2FFunctions%2F-37320058" anchor-label="getFloat" id="1755957746%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#1755957746%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>Float</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1755957746%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#1755957746%2FFunctions%2F-37320058"><span class="token function">getFloat</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html">Float</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="920909388%2FFunctions%2F-37320058" anchor-label="getInt" id="920909388%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#920909388%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>Int</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="920909388%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#920909388%2FFunctions%2F-37320058"><span class="token function">getInt</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-774545598%2FFunctions%2F-37320058" anchor-label="getLong" id="-774545598%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-774545598%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>Long</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-774545598%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#-774545598%2FFunctions%2F-37320058"><span class="token function">getLong</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="433391745%2FFunctions%2F-37320058" anchor-label="getString" id="433391745%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#433391745%2FFunctions%2F-37320058"><span>get</span><wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="433391745%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#433391745%2FFunctions%2F-37320058"><span class="token function">getString</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="599136655%2FFunctions%2F-37320058" anchor-label="getStringSet" id="599136655%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#599136655%2FFunctions%2F-37320058"><span>get</span><wbr><span>String</span><wbr><span><span>Set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="599136655%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#599136655%2FFunctions%2F-37320058"><span class="token function">getStringSet</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">p1<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-7511084%2FFunctions%2F-37320058" anchor-label="registerOnSharedPreferenceChangeListener" id="-7511084%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-7511084%2FFunctions%2F-37320058"><span>register</span><wbr><span>On</span><wbr><span>Shared</span><wbr><span>Preference</span><wbr><span>Change</span><wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-7511084%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#-7511084%2FFunctions%2F-37320058"><span class="token function">registerOnSharedPreferenceChangeListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.OnSharedPreferenceChangeListener.html">SharedPreferences.OnSharedPreferenceChangeListener</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1988052261%2FFunctions%2F-37320058" anchor-label="unregisterOnSharedPreferenceChangeListener" id="-1988052261%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-1988052261%2FFunctions%2F-37320058"><span>unregister</span><wbr><span>On</span><wbr><span>Shared</span><wbr><span>Preference</span><wbr><span>Change</span><wbr><span><span>Listener</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1988052261%2FFunctions%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#-1988052261%2FFunctions%2F-37320058"><span class="token function">unregisterOnSharedPreferenceChangeListener</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">p0<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/SharedPreferences.OnSharedPreferenceChangeListener.html">SharedPreferences.OnSharedPreferenceChangeListener</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="-1954216683%2FProperties%2F-37320058" anchor-label="isNewInstallation" id="-1954216683%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.extension.preference.contract/-i-support-preference/is-new-installation.html">isNewInstallation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1954216683%2FProperties%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><a data-name="-1954216683%2FProperties%2F-37320058" anchor-label="isNewInstallation" id="-1954216683%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../co.anitrend.arch.extension.preference.contract/-i-support-preference/is-new-installation.html">isNewInstallation</a><span class="token operator">: </span><a href="../../co.anitrend.arch.extension.settings.contract/-abstract-setting/index.html">AbstractSetting</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1217191104%2FProperties%2F-37320058" anchor-label="versionCode" id="-1217191104%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.extension.preference.contract/-i-support-preference/version-code.html">versionCode</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1217191104%2FProperties%2F-37320058"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><a data-name="-1217191104%2FProperties%2F-37320058" anchor-label="versionCode" id="-1217191104%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../co.anitrend.arch.extension.preference.contract/-i-support-preference/version-code.html">versionCode</a><span class="token operator">: </span><a href="../../co.anitrend.arch.extension.settings.contract/-abstract-setting/index.html">AbstractSetting</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  
-</body></html>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
 
+</body></html>
 

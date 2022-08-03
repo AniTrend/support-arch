@@ -1,431 +1,436 @@
+<!doctype html>
 <html>
-  <head>
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>ISupportAdapter</title>
-</head><body><link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script><script type="text/javascript" src="../../../scripts/main.js" async></script>
-  
-    <div id="container">
-      <div id="leftColumn"><a href="../../../index.html">
-            <div id="logo"></div>
-          </a>
-        <div id="paneSearch"></div>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../index.html">
+<span>support-arch</span>            </a>    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
         <div id="sideMenu"></div>
-      </div>
-      <div id="main">
-        <script type="text/javascript" src="../../../scripts/main.js"></script><div id="leftToggler"><span class="icon-toggler"></span></div>
-
-        <div class="main-content" id="content" pageids="recycler::co.anitrend.arch.recycler.adapter.contract/ISupportAdapter///PointingToDeclaration//49020980">
-          <div class="navigation-wrapper" id="navigation-wrapper">
-            <div class="breadcrumbs"><a href="../../index.html">recycler</a>/<a href="../index.html">co.anitrend.arch.recycler.adapter.contract</a>/<a href="index.html">ISupportAdapter</a></div>
-            <div class="pull-right d-flex">
-              <div id="searchBar"></div>
-            </div>
-          </div>
-          <div class="cover ">
-            <h1 class="cover"><span>ISupport</span><wbr><span><span>Adapter</span></span></h1>
-            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">interface <a href="index.html">ISupportAdapter</a>&lt;<a href="index.html">T</a>&gt; : <a href="../../../extension/co.anitrend.arch.extension.lifecycle/-support-lifecycle/index.html">SupportLifecycle</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Contract for recycler view adapters</p></div></div>
-          </div>
-          <div class="tabbedcontent">
-            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Extensions">Extensions</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
-            <div class="tabs-section-body">
-              <h2 class="">Types</h2>
-              <div class="table" data-togglable="Types"><a data-name="-517015194%2FClasslikes%2F49020980" anchor-label="Companion" id="-517015194%2FClasslikes%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="-companion/index.html"><span><span>Companion</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-517015194%2FClasslikes%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">object <a href="-companion/index.html">Companion</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="recycler::co.anitrend.arch.recycler.adapter.contract/ISupportAdapter///PointingToDeclaration//49020980">
+  <div class="breadcrumbs"><a href="../../index.html">recycler</a><span class="delimiter">/</span><a href="../index.html">co.anitrend.arch.recycler.adapter.contract</a><span class="delimiter">/</span><a href="index.html">ISupportAdapter</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>ISupport</span><wbr><span><span>Adapter</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">ISupportAdapter</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">T</a><span class="token operator">&gt;</span> : <a href="../../../extension/co.anitrend.arch.extension.lifecycle/-support-lifecycle/index.html">SupportLifecycle</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Contract for recycler view adapters</p></div></div>
   </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <h2 class="">Functions</h2>
-              <div class="table" data-togglable="Functions"><a data-name="35042055%2FFunctions%2F49020980" anchor-label="animateViewHolder" id="35042055%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="animate-view-holder.html"><span>animate</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="35042055%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open fun <a href="animate-view-holder.html">animateViewHolder</a>(holder: <a href="../../co.anitrend.arch.recycler.holder/-support-view-holder/index.html">SupportViewHolder</a>?, position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Applies an animation on a <a href="../../co.anitrend.arch.recycler.holder/-support-view-holder/index.html">SupportViewHolder</a> when it is seen for the first time</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1762573661%2FFunctions%2F49020980" anchor-label="bindViewHolderByType" id="1762573661%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="bind-view-holder-by-type.html"><span>bind</span><wbr><span>View</span><wbr><span>Holder</span><wbr><span>By</span><wbr><span><span>Type</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1762573661%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open fun <a href="bind-view-holder-by-type.html">bindViewHolderByType</a>(holder: <a href="../../co.anitrend.arch.recycler.holder/-support-view-holder/index.html">SupportViewHolder</a>, position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, payloads: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a>&gt; = emptyList())<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Binds view holder by view type at <a href="bind-view-holder-by-type.html">position</a></p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1589634440%2FFunctions%2F49020980" anchor-label="createDefaultViewHolder" id="1589634440%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="create-default-view-holder.html"><span>create</span><wbr><span>Default</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1589634440%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">abstract fun <a href="create-default-view-holder.html">createDefaultViewHolder</a>(parent: <a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a>, <span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/LayoutRes.html">LayoutRes</a>&nbsp;</span>viewType: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, layoutInflater: <a href="https://developer.android.com/reference/kotlin/android/view/LayoutInflater.html">LayoutInflater</a>): <a href="../../co.anitrend.arch.recycler.holder/-support-view-holder/index.html">SupportViewHolder</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Should provide the required view holder, this function is a substitute for <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html#oncreateviewholder">androidx.recyclerview.widget.RecyclerView.Adapter.onCreateViewHolder</a> which now has extended functionality</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="683242993%2FFunctions%2F49020980" anchor-label="getSpanSizeForItemAt" id="683242993%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="get-span-size-for-item-at.html"><span>get</span><wbr><span>Span</span><wbr><span>Size</span><wbr><span>For</span><wbr><span>Item</span><wbr><span><span>At</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="683242993%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open fun <a href="get-span-size-for-item-at.html">getSpanSizeForItemAt</a>(position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>, spanCount: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>?): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>?<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Should return the span size for the item at <a href="get-span-size-for-item-at.html">position</a>, when called from <a href="get-span-size-for-item-at.html">androidx.recyclerview.widget.GridLayoutManager</a> will be the span size for the item at the <a href="get-span-size-for-item-at.html">position</a>.</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1529335267%2FFunctions%2F49020980" anchor-label="getStableIdFor" id="1529335267%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="get-stable-id-for.html"><span>get</span><wbr><span>Stable</span><wbr><span>Id</span><wbr><span><span>For</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1529335267%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open fun <a href="get-stable-id-for.html">getStableIdFor</a>(item: <a href="index.html">T</a>?): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Used to get stable ids for <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html">androidx.recyclerview.widget.RecyclerView.Adapter</a> but only if <a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#1991189249%2FFunctions%2F49020980">androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds</a> is set to true.</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1731393306%2FFunctions%2F49020980" anchor-label="notifyDataSetNeedsRefreshing" id="-1731393306%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="notify-data-set-needs-refreshing.html"><span>notify</span><wbr><span>Data</span><wbr><span>Set</span><wbr><span>Needs</span><wbr><span><span>Refreshing</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1731393306%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">abstract fun <a href="notify-data-set-needs-refreshing.html">notifyDataSetNeedsRefreshing</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Informs view adapter of changes related to it's view holder</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="563487521%2FFunctions%2F49020980" anchor-label="onCreate" id="563487521%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#563487521%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Create</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="563487521%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#563487521%2FFunctions%2F49020980">onCreate</a>(owner: <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1302581755%2FFunctions%2F49020980" anchor-label="onDestroy" id="1302581755%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#1302581755%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Destroy</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1302581755%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#1302581755%2FFunctions%2F49020980">onDestroy</a>(owner: <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1309818999%2FFunctions%2F49020980" anchor-label="onPause" id="1309818999%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#1309818999%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Pause</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1309818999%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#1309818999%2FFunctions%2F49020980">onPause</a>(owner: <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1384400110%2FFunctions%2F49020980" anchor-label="onResume" id="-1384400110%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#-1384400110%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Resume</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1384400110%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#-1384400110%2FFunctions%2F49020980">onResume</a>(owner: <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1932148765%2FFunctions%2F49020980" anchor-label="onStart" id="-1932148765%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#-1932148765%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Start</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1932148765%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#-1932148765%2FFunctions%2F49020980">onStart</a>(owner: <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="800361255%2FFunctions%2F49020980" anchor-label="onStop" id="800361255%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#800361255%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Stop</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="800361255%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#800361255%2FFunctions%2F49020980">onStop</a>(owner: <a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="61581669%2FFunctions%2F49020980" anchor-label="requireItem" id="61581669%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="require-item.html"><span>require</span><wbr><span><span>Item</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="61581669%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">abstract fun <a href="require-item.html">requireItem</a>(position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>): <a href="index.html">T</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Returns the non-nullable item for this adapter</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-709524287%2FFunctions%2F49020980" anchor-label="setLayoutSpanSize" id="-709524287%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="set-layout-span-size.html"><span>set</span><wbr><span>Layout</span><wbr><span>Span</span><wbr><span><span>Size</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-709524287%2FFunctions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">open fun <a href="set-layout-span-size.html">setLayoutSpanSize</a>(layoutManager: <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/GridLayoutManager.html">GridLayoutManager</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="symbol monospace">open fun <a href="set-layout-span-size.html">setLayoutSpanSize</a>(layoutParams: <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/StaggeredGridLayoutManager.LayoutParams.html">StaggeredGridLayoutManager.LayoutParams</a>, position: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Initial implementation is only specific for group types of recyclers, in order to customize this an override is required.</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <h2 class="">Properties</h2>
-              <div class="table" data-togglable="Properties"><a data-name="347771375%2FProperties%2F49020980" anchor-label="clickableFlow" id="347771375%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="clickable-flow.html">clickableFlow</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="347771375%2FProperties%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="347771375%2FProperties%2F49020980" anchor-label="clickableFlow" id="347771375%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace">abstract val <a href="clickable-flow.html">clickableFlow</a>: <span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span>&lt;<a href="../../co.anitrend.arch.recycler.common/-clickable-item/index.html">ClickableItem</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="347771375%2FProperties%2F49020980" anchor-label="clickableFlow" id="347771375%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><p class="paragraph">An observer to listen for clicks on clickable items</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1555194726%2FProperties%2F49020980" anchor-label="customSupportAnimator" id="-1555194726%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="custom-support-animator.html">customSupportAnimator</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1555194726%2FProperties%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="-1555194726%2FProperties%2F49020980" anchor-label="customSupportAnimator" id="-1555194726%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace">abstract val <a href="custom-support-animator.html">customSupportAnimator</a>: <a href="../../../theme/co.anitrend.arch.theme.animator.contract/-abstract-animator/index.html">AbstractAnimator</a>?<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-1555194726%2FProperties%2F49020980" anchor-label="customSupportAnimator" id="-1555194726%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><p class="paragraph">Get currently set animation type for recycler view holder items</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1059097017%2FProperties%2F49020980" anchor-label="lastAnimatedPosition" id="1059097017%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="last-animated-position.html">lastAnimatedPosition</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1059097017%2FProperties%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="1059097017%2FProperties%2F49020980" anchor-label="lastAnimatedPosition" id="1059097017%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace">abstract var <a href="last-animated-position.html">lastAnimatedPosition</a>: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1651742854%2FProperties%2F49020980" anchor-label="mapper" id="-1651742854%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="mapper.html">mapper</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1651742854%2FProperties%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="-1651742854%2FProperties%2F49020980" anchor-label="mapper" id="-1651742854%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace">abstract val <a href="mapper.html">mapper</a>: (<a href="index.html">T</a>) -&gt; <a href="../../co.anitrend.arch.recycler.model.contract/-i-recycler-item/index.html">IRecyclerItem</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-1651742854%2FProperties%2F49020980" anchor-label="mapper" id="-1651742854%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><p class="paragraph">Mapper for adapters to converting models to recycler items</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1132450406%2FProperties%2F49020980" anchor-label="resources" id="-1132450406%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="resources.html">resources</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1132450406%2FProperties%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="-1132450406%2FProperties%2F49020980" anchor-label="resources" id="-1132450406%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace">abstract val <a href="resources.html">resources</a>: <a href="https://developer.android.com/reference/kotlin/android/content/res/Resources.html">Resources</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-622062250%2FProperties%2F49020980" anchor-label="stateConfiguration" id="-622062250%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="state-configuration.html">stateConfiguration</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-622062250%2FProperties%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="-622062250%2FProperties%2F49020980" anchor-label="stateConfiguration" id="-622062250%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace">abstract val <a href="state-configuration.html">stateConfiguration</a>: <a href="../../../core/co.anitrend.arch.core.model/-i-state-layout-config/index.html">IStateLayoutConfig</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-622062250%2FProperties%2F49020980" anchor-label="stateConfiguration" id="-622062250%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><p class="paragraph">Configuration for the state based footer</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="697249754%2FProperties%2F49020980" anchor-label="supportAction" id="697249754%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="support-action.html">supportAction</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="697249754%2FProperties%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="697249754%2FProperties%2F49020980" anchor-label="supportAction" id="697249754%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace">abstract val <a href="support-action.html">supportAction</a>: <a href="../../co.anitrend.arch.recycler.action.contract/-i-support-selection-mode/index.html">ISupportSelectionMode</a>&lt;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a>&gt;?<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="697249754%2FProperties%2F49020980" anchor-label="supportAction" id="697249754%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><p class="paragraph">Assigned if the current adapter supports needs to supports action mode</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <h2 class="">Inheritors</h2>
-              <div class="table" data-togglable="Inheritors"><a data-name="-1887890033%2FInheritors%2F49020980" anchor-label="SupportAdapter" id="-1887890033%2FInheritors%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.recycler.adapter/-support-adapter/index.html">SupportAdapter</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1887890033%2FInheritors%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div></div>
-                  </div>
-                </div>
-<a data-name="2136731941%2FInheritors%2F49020980" anchor-label="SupportLoadStateAdapter" id="2136731941%2FInheritors%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html">SupportLoadStateAdapter</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2136731941%2FInheritors%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div></div>
-                  </div>
-                </div>
-              </div>
-              <h2 class="tabbedcontent">Extensions</h2>
-              <div class="table" data-togglable="Extensions"><a data-name="-1463676980%2FExtensions%2F49020980" anchor-label="isEmpty" id="-1463676980%2FExtensions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.recycler.extensions/is-empty.html"><span>is</span><wbr><span><span>Empty</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1463676980%2FExtensions%2F49020980"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace">fun <a href="index.html">ISupportAdapter</a>&lt;*&gt;.<a href="../../co.anitrend.arch.recycler.extensions/is-empty.html">isEmpty</a>(): <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Check if adapter is empty</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Extensions">Extensions</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
+    <div class="tabs-section-body">
+      <h2 class="">Types</h2>
+      <div class="table" data-togglable="Types"><a data-name="-517015194%2FClasslikes%2F49020980" anchor-label="Companion" id="-517015194%2FClasslikes%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-517015194%2FClasslikes%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="35042055%2FFunctions%2F49020980" anchor-label="animateViewHolder" id="35042055%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="animate-view-holder.html"><span>animate</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="35042055%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="animate-view-holder.html"><span class="token function">animateViewHolder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">holder<span class="token operator">: </span><a href="../../co.anitrend.arch.recycler.holder/-support-view-holder/index.html">SupportViewHolder</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Applies an animation on a <a href="../../co.anitrend.arch.recycler.holder/-support-view-holder/index.html">SupportViewHolder</a> when it is seen for the first time</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1762573661%2FFunctions%2F49020980" anchor-label="bindViewHolderByType" id="1762573661%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="bind-view-holder-by-type.html"><span>bind</span><wbr><span>View</span><wbr><span>Holder</span><wbr><span>By</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1762573661%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="bind-view-holder-by-type.html"><span class="token function">bindViewHolderByType</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;holder<span class="token operator">: </span><a href="../../co.anitrend.arch.recycler.holder/-support-view-holder/index.html">SupportViewHolder</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;payloads<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()</span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Binds view holder by view type at <a href="bind-view-holder-by-type.html">position</a></p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1589634440%2FFunctions%2F49020980" anchor-label="createDefaultViewHolder" id="1589634440%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="create-default-view-holder.html"><span>create</span><wbr><span>Default</span><wbr><span>View</span><wbr><span><span>Holder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1589634440%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="create-default-view-holder.html"><span class="token function">createDefaultViewHolder</span></a><span class="token punctuation">(</span><span class="parameters wrapped"><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;parent<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/ViewGroup.html">ViewGroup</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;<span><span class="token annotation">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/LayoutRes.html"><span class="token annotation">LayoutRes</span></a>&nbsp;</span>viewType<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter indented">&nbsp;&nbsp;&nbsp;&nbsp;layoutInflater<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/view/LayoutInflater.html">LayoutInflater</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../co.anitrend.arch.recycler.holder/-support-view-holder/index.html">SupportViewHolder</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Should provide the required view holder, this function is a substitute for <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html#oncreateviewholder">androidx.recyclerview.widget.RecyclerView.Adapter.onCreateViewHolder</a> which now has extended functionality</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="683242993%2FFunctions%2F49020980" anchor-label="getSpanSizeForItemAt" id="683242993%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get-span-size-for-item-at.html"><span>get</span><wbr><span>Span</span><wbr><span>Size</span><wbr><span>For</span><wbr><span>Item</span><wbr><span><span>At</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="683242993%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-span-size-for-item-at.html"><span class="token function">getSpanSizeForItemAt</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">spanCount<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Should return the span size for the item at <a href="get-span-size-for-item-at.html">position</a>, when called from <a href="get-span-size-for-item-at.html">androidx.recyclerview.widget.GridLayoutManager</a> will be the span size for the item at the <a href="get-span-size-for-item-at.html">position</a>.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1529335267%2FFunctions%2F49020980" anchor-label="getStableIdFor" id="1529335267%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="get-stable-id-for.html"><span>get</span><wbr><span>Stable</span><wbr><span>Id</span><wbr><span><span>For</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1529335267%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="get-stable-id-for.html"><span class="token function">getStableIdFor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">item<span class="token operator">: </span><a href="index.html">T</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Used to get stable ids for <a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/RecyclerView.Adapter.html">androidx.recyclerview.widget.RecyclerView.Adapter</a> but only if <a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#1991189249%2FFunctions%2F49020980">androidx.recyclerview.widget.RecyclerView.Adapter.setHasStableIds</a> is set to true.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1731393306%2FFunctions%2F49020980" anchor-label="notifyDataSetNeedsRefreshing" id="-1731393306%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="notify-data-set-needs-refreshing.html"><span>notify</span><wbr><span>Data</span><wbr><span>Set</span><wbr><span>Needs</span><wbr><span><span>Refreshing</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1731393306%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="notify-data-set-needs-refreshing.html"><span class="token function">notifyDataSetNeedsRefreshing</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Informs view adapter of changes related to it's view holder</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="563487521%2FFunctions%2F49020980" anchor-label="onCreate" id="563487521%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#563487521%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Create</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="563487521%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#563487521%2FFunctions%2F49020980"><span class="token function">onCreate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1302581755%2FFunctions%2F49020980" anchor-label="onDestroy" id="1302581755%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#1302581755%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Destroy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1302581755%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#1302581755%2FFunctions%2F49020980"><span class="token function">onDestroy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1309818999%2FFunctions%2F49020980" anchor-label="onPause" id="1309818999%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#1309818999%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Pause</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1309818999%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#1309818999%2FFunctions%2F49020980"><span class="token function">onPause</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1384400110%2FFunctions%2F49020980" anchor-label="onResume" id="-1384400110%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#-1384400110%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Resume</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1384400110%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#-1384400110%2FFunctions%2F49020980"><span class="token function">onResume</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1932148765%2FFunctions%2F49020980" anchor-label="onStart" id="-1932148765%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#-1932148765%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Start</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1932148765%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#-1932148765%2FFunctions%2F49020980"><span class="token function">onStart</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="800361255%2FFunctions%2F49020980" anchor-label="onStop" id="800361255%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#800361255%2FFunctions%2F49020980"><span>on</span><wbr><span><span>Stop</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="800361255%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html#800361255%2FFunctions%2F49020980"><span class="token function">onStop</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">owner<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/LifecycleOwner.html">LifecycleOwner</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="61581669%2FFunctions%2F49020980" anchor-label="requireItem" id="61581669%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="require-item.html"><span>require</span><wbr><span><span>Item</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="61581669%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="require-item.html"><span class="token function">requireItem</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">T</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Returns the non-nullable item for this adapter</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-709524287%2FFunctions%2F49020980" anchor-label="setLayoutSpanSize" id="-709524287%2FFunctions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="set-layout-span-size.html"><span>set</span><wbr><span>Layout</span><wbr><span>Span</span><wbr><span><span>Size</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-709524287%2FFunctions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-layout-span-size.html"><span class="token function">setLayoutSpanSize</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">layoutManager<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/GridLayoutManager.html">GridLayoutManager</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="set-layout-span-size.html"><span class="token function">setLayoutSpanSize</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">layoutParams<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/recyclerview/widget/StaggeredGridLayoutManager.LayoutParams.html">StaggeredGridLayoutManager.LayoutParams</a><span class="token punctuation">, </span></span><span class="parameter ">position<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Initial implementation is only specific for group types of recyclers, in order to customize this an override is required.</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="347771375%2FProperties%2F49020980" anchor-label="clickableFlow" id="347771375%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="clickable-flow.html">clickableFlow</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="347771375%2FProperties%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="347771375%2FProperties%2F49020980" anchor-label="clickableFlow" id="347771375%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="clickable-flow.html">clickableFlow</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../co.anitrend.arch.recycler.common/-clickable-item/index.html">ClickableItem</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="347771375%2FProperties%2F49020980" anchor-label="clickableFlow" id="347771375%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><p class="paragraph">An observer to listen for clicks on clickable items</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1555194726%2FProperties%2F49020980" anchor-label="customSupportAnimator" id="-1555194726%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="custom-support-animator.html">customSupportAnimator</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1555194726%2FProperties%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="-1555194726%2FProperties%2F49020980" anchor-label="customSupportAnimator" id="-1555194726%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="custom-support-animator.html">customSupportAnimator</a><span class="token operator">: </span><a href="../../../theme/co.anitrend.arch.theme.animator.contract/-abstract-animator/index.html">AbstractAnimator</a><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-1555194726%2FProperties%2F49020980" anchor-label="customSupportAnimator" id="-1555194726%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><p class="paragraph">Get currently set animation type for recycler view holder items</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1059097017%2FProperties%2F49020980" anchor-label="lastAnimatedPosition" id="1059097017%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="last-animated-position.html">lastAnimatedPosition</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1059097017%2FProperties%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="1059097017%2FProperties%2F49020980" anchor-label="lastAnimatedPosition" id="1059097017%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">var </span><a href="last-animated-position.html">lastAnimatedPosition</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1651742854%2FProperties%2F49020980" anchor-label="mapper" id="-1651742854%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="mapper.html">mapper</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1651742854%2FProperties%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="-1651742854%2FProperties%2F49020980" anchor-label="mapper" id="-1651742854%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="mapper.html">mapper</a><span class="token operator">: </span><span class="token punctuation">(</span><span class="token keyword"></span><a href="index.html">T</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="../../co.anitrend.arch.recycler.model.contract/-i-recycler-item/index.html">IRecyclerItem</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-1651742854%2FProperties%2F49020980" anchor-label="mapper" id="-1651742854%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><p class="paragraph">Mapper for adapters to converting models to recycler items</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1132450406%2FProperties%2F49020980" anchor-label="resources" id="-1132450406%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="resources.html">resources</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1132450406%2FProperties%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="-1132450406%2FProperties%2F49020980" anchor-label="resources" id="-1132450406%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="resources.html">resources</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/Resources.html">Resources</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-622062250%2FProperties%2F49020980" anchor-label="stateConfiguration" id="-622062250%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="state-configuration.html">stateConfiguration</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-622062250%2FProperties%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="-622062250%2FProperties%2F49020980" anchor-label="stateConfiguration" id="-622062250%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="state-configuration.html">stateConfiguration</a><span class="token operator">: </span><a href="../../../core/co.anitrend.arch.core.model/-i-state-layout-config/index.html">IStateLayoutConfig</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-622062250%2FProperties%2F49020980" anchor-label="stateConfiguration" id="-622062250%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><p class="paragraph">Configuration for the state based footer</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="697249754%2FProperties%2F49020980" anchor-label="supportAction" id="697249754%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="support-action.html">supportAction</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="697249754%2FProperties%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><a data-name="697249754%2FProperties%2F49020980" anchor-label="supportAction" id="697249754%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="support-action.html">supportAction</a><span class="token operator">: </span><a href="../../co.anitrend.arch.recycler.action.contract/-i-support-selection-mode/index.html">ISupportSelectionMode</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html">Long</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="697249754%2FProperties%2F49020980" anchor-label="supportAction" id="697249754%2FProperties%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a><p class="paragraph">Assigned if the current adapter supports needs to supports action mode</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Inheritors</h2>
+      <div class="table" data-togglable="Inheritors"><a data-name="-1887890033%2FInheritors%2F49020980" anchor-label="SupportAdapter" id="-1887890033%2FInheritors%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.recycler.adapter/-support-adapter/index.html">SupportAdapter</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1887890033%2FInheritors%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+<a data-name="2136731941%2FInheritors%2F49020980" anchor-label="SupportLoadStateAdapter" id="2136731941%2FInheritors%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.recycler.shared.adapter/-support-load-state-adapter/index.html">SupportLoadStateAdapter</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2136731941%2FInheritors%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+      <h2 class="tabbedcontent">Extensions</h2>
+      <div class="table" data-togglable="Extensions"><a data-name="-1463676980%2FExtensions%2F49020980" anchor-label="isEmpty" id="-1463676980%2FExtensions%2F49020980" data-filterable-set=":recycler:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":recycler:dokkaHtmlPartial/release" data-filterable-set=":recycler:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.recycler.extensions/is-empty.html"><span>is</span><wbr><span><span>Empty</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1463676980%2FExtensions%2F49020980"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html">ISupportAdapter</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../../co.anitrend.arch.recycler.extensions/is-empty.html"><span class="token function">isEmpty</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Check if adapter is empty</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  
-</body></html>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
 
+</body></html>
 

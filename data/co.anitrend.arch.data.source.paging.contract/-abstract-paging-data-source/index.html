@@ -1,269 +1,303 @@
+<!doctype html>
 <html>
-  <head>
+<head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>AbstractPagingDataSource</title>
-</head><body><link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script><script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script><link href="../../../styles/style.css" rel="Stylesheet"><link href="../../../styles/logo-styles.css" rel="Stylesheet"><link href="../../../styles/jetbrains-mono.css" rel="Stylesheet"><link href="../../../styles/main.css" rel="Stylesheet"><script type="text/javascript" src="../../../scripts/clipboard.js" async></script><script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script><script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script><script type="text/javascript" src="../../../scripts/main.js" async></script>
-  
-    <div id="container">
-      <div id="leftColumn"><a href="../../../index.html">
-            <div id="logo"></div>
-          </a>
-        <div id="paneSearch"></div>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>    <script>const storage = localStorage.getItem("dokka-dark-mode")
+const savedDarkMode = storage ? JSON.parse(storage) : false
+if(savedDarkMode === true){
+    document.getElementsByTagName("html")[0].classList.add("theme-dark")
+}</script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script></head>
+<body>
+<div class="navigation-wrapper" id="navigation-wrapper">
+    <div id="leftToggler"><span class="icon-toggler"></span></div>
+    <div class="library-name">
+<a href="../../../index.html">
+<span>support-arch</span>            </a>    </div>
+    <div>
+    </div>
+    <div class="pull-right d-flex">
+        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
+        <div id="searchBar"></div>
+    </div>
+</div>
+<div id="container">
+    <div id="leftColumn">
         <div id="sideMenu"></div>
-      </div>
-      <div id="main">
-        <script type="text/javascript" src="../../../scripts/main.js"></script><div id="leftToggler"><span class="icon-toggler"></span></div>
-
-        <div class="main-content" id="content" pageids="data::co.anitrend.arch.data.source.paging.contract/AbstractPagingDataSource///PointingToDeclaration//862080361">
-          <div class="navigation-wrapper" id="navigation-wrapper">
-            <div class="breadcrumbs"><a href="../../index.html">data</a>/<a href="../index.html">co.anitrend.arch.data.source.paging.contract</a>/<a href="index.html">AbstractPagingDataSource</a></div>
-            <div class="pull-right d-flex">
-              <div id="searchBar"></div>
-            </div>
-          </div>
-          <div class="cover ">
-            <h1 class="cover"><span>Abstract</span><wbr><span>Paging</span><wbr><span>Data</span><wbr><span><span>Source</span></span></h1>
-            <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace">abstract class <a href="index.html">AbstractPagingDataSource</a>&lt;<a href="index.html">T</a>&gt; : <a href="https://developer.android.com/reference/kotlin/androidx/paging/PagedList.BoundaryCallback.html">PagedList.BoundaryCallback</a>&lt;<a href="index.html">T</a>&gt; , <a href="../../co.anitrend.arch.data.source.contract/-i-data-source/index.html">IDataSource</a>, <a href="../../co.anitrend.arch.data.source.contract/-i-source/index.html">ISource</a>, <a href="../../../extension/co.anitrend.arch.extension.coroutine/-i-support-coroutine/index.html">ISupportCoroutine</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-          </div>
-          <div class="tabbedcontent">
-            <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
-            <div class="tabs-section-body">
-              <h2 class="">Functions</h2>
-              <div class="table" data-togglable="Functions"><a data-name="298304103%2FFunctions%2F862080361" anchor-label="cancelAllChildren" id="298304103%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#298304103%2FFunctions%2F862080361"><span>cancel</span><wbr><span>All</span><wbr><span><span>Children</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="298304103%2FFunctions%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace">open override fun <a href="index.html#298304103%2FFunctions%2F862080361">cancelAllChildren</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+    </div>
+    <div id="main">
+<div class="main-content" id="content" pageids="data::co.anitrend.arch.data.source.paging.contract/AbstractPagingDataSource///PointingToDeclaration//862080361">
+  <div class="breadcrumbs"><a href="../../index.html">data</a><span class="delimiter">/</span><a href="../index.html">co.anitrend.arch.data.source.paging.contract</a><span class="delimiter">/</span><a href="index.html">AbstractPagingDataSource</a></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Abstract</span><wbr><span>Paging</span><wbr><span>Data</span><wbr><span><span>Source</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">AbstractPagingDataSource</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">T</a><span class="token operator">&gt;</span> : <a href="https://developer.android.com/reference/kotlin/androidx/paging/PagedList.BoundaryCallback.html">PagedList.BoundaryCallback</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">T</a><span class="token operator">&gt; </span>, <a href="../../co.anitrend.arch.data.source.contract/-i-data-source/index.html">IDataSource</a>, <a href="../../co.anitrend.arch.data.source.contract/-i-source/index.html">ISource</a>, <a href="../../../extension/co.anitrend.arch.extension.coroutine/-i-support-coroutine/index.html">ISupportCoroutine</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
   </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-47701420%2FFunctions%2F862080361" anchor-label="clearDataSource" id="-47701420%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.data.source.contract/-i-source/clear-data-source.html"><span>clear</span><wbr><span>Data</span><wbr><span><span>Source</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-47701420%2FFunctions%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace">abstract suspend fun <a href="../../co.anitrend.arch.data.source.contract/-i-source/clear-data-source.html">clearDataSource</a>(context: <span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Clears data sources (databases, preferences, e.t.c)</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1918125130%2FFunctions%2F862080361" anchor-label="invalidate" id="-1918125130%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.data.source.contract/-i-source/invalidate.html"><span><span>invalidate</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1918125130%2FFunctions%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace">abstract suspend fun <a href="../../co.anitrend.arch.data.source.contract/-i-source/invalidate.html">invalidate</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Informs the data source to invalidate itself and should invoke network refresh or reload</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1404786229%2FFunctions%2F862080361" anchor-label="onItemAtEndLoaded" id="1404786229%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#1404786229%2FFunctions%2F862080361"><span>on</span><wbr><span>Item</span><wbr><span>At</span><wbr><span>End</span><wbr><span><span>Loaded</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1404786229%2FFunctions%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace">open fun <a href="index.html#1404786229%2FFunctions%2F862080361">onItemAtEndLoaded</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>&nbsp;</span>p0: <a href="index.html">T</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-101985789%2FFunctions%2F862080361" anchor-label="onItemAtFrontLoaded" id="-101985789%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#-101985789%2FFunctions%2F862080361"><span>on</span><wbr><span>Item</span><wbr><span>At</span><wbr><span>Front</span><wbr><span><span>Loaded</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-101985789%2FFunctions%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace">open fun <a href="index.html#-101985789%2FFunctions%2F862080361">onItemAtFrontLoaded</a>(<span>@<a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html">NonNull</a>&nbsp;</span>p0: <a href="index.html">T</a>)<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="643307686%2FFunctions%2F862080361" anchor-label="onZeroItemsLoaded" id="643307686%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#643307686%2FFunctions%2F862080361"><span>on</span><wbr><span>Zero</span><wbr><span>Items</span><wbr><span><span>Loaded</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="643307686%2FFunctions%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace">open fun <a href="index.html#643307686%2FFunctions%2F862080361">onZeroItemsLoaded</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-</div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-1931305500%2FFunctions%2F862080361" anchor-label="refresh" id="-1931305500%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.data.source.contract/-i-data-source/refresh.html"><span><span>refresh</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1931305500%2FFunctions%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace">abstract suspend fun <a href="../../co.anitrend.arch.data.source.contract/-i-data-source/refresh.html">refresh</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Invalidate data source and, re-run the last successful or last failed request if applicable</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-424874502%2FFunctions%2F862080361" anchor-label="retryFailed" id="-424874502%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.data.source.contract/-i-data-source/retry-failed.html"><span>retry</span><wbr><span><span>Failed</span></span></a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-424874502%2FFunctions%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title"><div class="divergent-group" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release"><div class="with-platform-tags"><span class="pull-right"></span></div>
-
-  <div>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace">abstract suspend fun <a href="../../co.anitrend.arch.data.source.contract/-i-data-source/retry-failed.html">retryFailed</a>()<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-  </div>
-<div class="brief "><p class="paragraph">Performs the necessary operation to invoke a network retry request</p></div></div>
-</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <h2 class="">Properties</h2>
-              <div class="table" data-togglable="Properties"><a data-name="211216918%2FProperties%2F862080361" anchor-label="coroutineContext" id="211216918%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#211216918%2FProperties%2F862080361">coroutineContext</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="211216918%2FProperties%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="211216918%2FProperties%2F862080361" anchor-label="coroutineContext" id="211216918%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace">open override val <a href="index.html#211216918%2FProperties%2F862080361">coroutineContext</a>: <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-414414642%2FProperties%2F862080361" anchor-label="coroutineDispatcher" id="-414414642%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#-414414642%2FProperties%2F862080361">coroutineDispatcher</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-414414642%2FProperties%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="-414414642%2FProperties%2F862080361" anchor-label="coroutineDispatcher" id="-414414642%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace">open override val <a href="index.html#-414414642%2FProperties%2F862080361">coroutineDispatcher</a>: <span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="1341268471%2FProperties%2F862080361" anchor-label="loadState" id="1341268471%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="load-state.html">loadState</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1341268471%2FProperties%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="1341268471%2FProperties%2F862080361" anchor-label="loadState" id="1341268471%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace">open override val <a href="load-state.html">loadState</a>: <span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span>&lt;<a href="../../../domain/co.anitrend.arch.domain.entities/-load-state/index.html">LoadState</a>&gt;<span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1341268471%2FProperties%2F862080361" anchor-label="loadState" id="1341268471%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><p class="paragraph">Observable for network state during requests that the UI can monitor and act based on state changes</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-867254299%2FProperties%2F862080361" anchor-label="requestHelper" id="-867254299%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="request-helper.html">requestHelper</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-867254299%2FProperties%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="-867254299%2FProperties%2F862080361" anchor-label="requestHelper" id="-867254299%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace">open override val <a href="request-helper.html">requestHelper</a>: <a href="../../co.anitrend.arch.data.request.helper/-request-helper/index.html">RequestHelper</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-867254299%2FProperties%2F862080361" anchor-label="requestHelper" id="-867254299%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><p class="paragraph">Request helper that controls the flow of requests to the implementing data source to avoid multiple requests of the same type before others are completed for this instance</p></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="-131381319%2FProperties%2F862080361" anchor-label="scope" id="-131381319%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#-131381319%2FProperties%2F862080361">scope</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-131381319%2FProperties%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="-131381319%2FProperties%2F862080361" anchor-label="scope" id="-131381319%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace">open override val <a href="index.html#-131381319%2FProperties%2F862080361">scope</a>: <span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-<a data-name="512855544%2FProperties%2F862080361" anchor-label="supervisorJob" id="512855544%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="index.html#512855544%2FProperties%2F862080361">supervisorJob</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="512855544%2FProperties%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div>
-                      <div class="title">
-                        <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="512855544%2FProperties%2F862080361" anchor-label="supervisorJob" id="512855544%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace">open override val <a href="index.html#512855544%2FProperties%2F862080361">supervisorJob</a>: <span data-unresolved-link="kotlinx.coroutines/Job///PointingToDeclaration/">Job</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <h2 class="">Inheritors</h2>
-              <div class="table" data-togglable="Inheritors"><a data-name="1609497816%2FInheritors%2F862080361" anchor-label="SupportPagingDataSource" id="1609497816%2FInheritors%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-                <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-                  <div class="main-subrow keyValue ">
-                    <div class=""><span class="inline-flex"><a href="../../co.anitrend.arch.data.source.paging/-support-paging-data-source/index.html">SupportPagingDataSource</a><span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1609497816%2FInheritors%2F862080361"></span>
-                          <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                        </span></span></div>
-                    <div></div>
-                  </div>
-                </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Inheritors">Inheritors</button></div>
+    <div class="tabs-section-body">
+      <h2 class="tabbedcontent">Constructors</h2>
+      <div class="table" data-togglable="Constructors"><a data-name="-645352475%2FConstructors%2F862080361" anchor-label="AbstractPagingDataSource" id="-645352475%2FConstructors%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue TabbedContent">
+            <div class=""><span class="inline-flex">
+                <div><a href="-abstract-paging-data-source.html"><span>Abstract</span><wbr><span>Paging</span><wbr><span>Data</span><wbr><span><span>Source</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-645352475%2FConstructors%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-abstract-paging-data-source.html"><span class="token function">AbstractPagingDataSource</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
               </div>
             </div>
           </div>
         </div>
-        <div class="footer"><span class="go-to-top-icon"><a href="#content"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span></div>
+      </div>
+      <h2 class="">Functions</h2>
+      <div class="table" data-togglable="Functions"><a data-name="298304103%2FFunctions%2F862080361" anchor-label="cancelAllChildren" id="298304103%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#298304103%2FFunctions%2F862080361"><span>cancel</span><wbr><span>All</span><wbr><span><span>Children</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="298304103%2FFunctions%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="index.html#298304103%2FFunctions%2F862080361"><span class="token function">cancelAllChildren</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-47701420%2FFunctions%2F862080361" anchor-label="clearDataSource" id="-47701420%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.data.source.contract/-i-source/clear-data-source.html"><span>clear</span><wbr><span>Data</span><wbr><span><span>Source</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-47701420%2FFunctions%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.data.source.contract/-i-source/clear-data-source.html"><span class="token function">clearDataSource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Clears data sources (databases, preferences, e.t.c)</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1918125130%2FFunctions%2F862080361" anchor-label="invalidate" id="-1918125130%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.data.source.contract/-i-source/invalidate.html"><span><span>invalidate</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1918125130%2FFunctions%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.data.source.contract/-i-source/invalidate.html"><span class="token function">invalidate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Informs the data source to invalidate itself and should invoke network refresh or reload</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1404786229%2FFunctions%2F862080361" anchor-label="onItemAtEndLoaded" id="1404786229%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#1404786229%2FFunctions%2F862080361"><span>on</span><wbr><span>Item</span><wbr><span>At</span><wbr><span>End</span><wbr><span><span>Loaded</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1404786229%2FFunctions%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#1404786229%2FFunctions%2F862080361"><span class="token function">onItemAtEndLoaded</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation">NonNull</span></a>&nbsp;</span>p0<span class="token operator">: </span><a href="index.html">T</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-101985789%2FFunctions%2F862080361" anchor-label="onItemAtFrontLoaded" id="-101985789%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-101985789%2FFunctions%2F862080361"><span>on</span><wbr><span>Item</span><wbr><span>At</span><wbr><span>Front</span><wbr><span><span>Loaded</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-101985789%2FFunctions%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#-101985789%2FFunctions%2F862080361"><span class="token function">onItemAtFrontLoaded</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation">NonNull</span></a>&nbsp;</span>p0<span class="token operator">: </span><a href="index.html">T</a></span></span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="643307686%2FFunctions%2F862080361" anchor-label="onZeroItemsLoaded" id="643307686%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#643307686%2FFunctions%2F862080361"><span>on</span><wbr><span>Zero</span><wbr><span>Items</span><wbr><span><span>Loaded</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="643307686%2FFunctions%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html#643307686%2FFunctions%2F862080361"><span class="token function">onZeroItemsLoaded</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-1931305500%2FFunctions%2F862080361" anchor-label="refresh" id="-1931305500%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.data.source.contract/-i-data-source/refresh.html"><span><span>refresh</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1931305500%2FFunctions%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.data.source.contract/-i-data-source/refresh.html"><span class="token function">refresh</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Invalidate data source and, re-run the last successful or last failed request if applicable</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-424874502%2FFunctions%2F862080361" anchor-label="retryFailed" id="-424874502%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.data.source.contract/-i-data-source/retry-failed.html"><span>retry</span><wbr><span><span>Failed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-424874502%2FFunctions%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.data.source.contract/-i-data-source/retry-failed.html"><span class="token function">retryFailed</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Performs the necessary operation to invoke a network retry request</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Properties</h2>
+      <div class="table" data-togglable="Properties"><a data-name="211216918%2FProperties%2F862080361" anchor-label="coroutineContext" id="211216918%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#211216918%2FProperties%2F862080361">coroutineContext</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="211216918%2FProperties%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="211216918%2FProperties%2F862080361" anchor-label="coroutineContext" id="211216918%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#211216918%2FProperties%2F862080361">coroutineContext</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-414414642%2FProperties%2F862080361" anchor-label="coroutineDispatcher" id="-414414642%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-414414642%2FProperties%2F862080361">coroutineDispatcher</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-414414642%2FProperties%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="-414414642%2FProperties%2F862080361" anchor-label="coroutineDispatcher" id="-414414642%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-414414642%2FProperties%2F862080361">coroutineDispatcher</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineDispatcher///PointingToDeclaration/">CoroutineDispatcher</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="1341268471%2FProperties%2F862080361" anchor-label="loadState" id="1341268471%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="load-state.html">loadState</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1341268471%2FProperties%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="1341268471%2FProperties%2F862080361" anchor-label="loadState" id="1341268471%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="load-state.html">loadState</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../domain/co.anitrend.arch.domain.entities/-load-state/index.html">LoadState</a><span class="token operator">&gt;</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="1341268471%2FProperties%2F862080361" anchor-label="loadState" id="1341268471%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><p class="paragraph">Observable for network state during requests that the UI can monitor and act based on state changes</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-867254299%2FProperties%2F862080361" anchor-label="requestHelper" id="-867254299%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="request-helper.html">requestHelper</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-867254299%2FProperties%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="-867254299%2FProperties%2F862080361" anchor-label="requestHelper" id="-867254299%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="request-helper.html">requestHelper</a><span class="token operator">: </span><a href="../../co.anitrend.arch.data.request.helper/-request-helper/index.html">RequestHelper</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><a data-name="-867254299%2FProperties%2F862080361" anchor-label="requestHelper" id="-867254299%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><p class="paragraph">Request helper that controls the flow of requests to the implementing data source to avoid multiple requests of the same type before others are completed for this instance</p></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="-131381319%2FProperties%2F862080361" anchor-label="scope" id="-131381319%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#-131381319%2FProperties%2F862080361">scope</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-131381319%2FProperties%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="-131381319%2FProperties%2F862080361" anchor-label="scope" id="-131381319%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#-131381319%2FProperties%2F862080361">scope</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+<a data-name="512855544%2FProperties%2F862080361" anchor-label="supervisorJob" id="512855544%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="index.html#512855544%2FProperties%2F862080361">supervisorJob</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="512855544%2FProperties%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div>
+              <div class="title">
+                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><a data-name="512855544%2FProperties%2F862080361" anchor-label="supervisorJob" id="512855544%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="index.html#512855544%2FProperties%2F862080361">supervisorJob</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines/Job///PointingToDeclaration/">Job</span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2 class="">Inheritors</h2>
+      <div class="table" data-togglable="Inheritors"><a data-name="1609497816%2FInheritors%2F862080361" anchor-label="SupportPagingDataSource" id="1609497816%2FInheritors%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+        <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+          <div class="main-subrow keyValue ">
+            <div class=""><span class="inline-flex">
+                <div><a href="../../co.anitrend.arch.data.source.paging/-support-paging-data-source/index.html">SupportPagingDataSource</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1609497816%2FInheritors%2F862080361"></span>
+                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                </span></span></div>
+            <div></div>
+          </div>
+        </div>
       </div>
     </div>
-  
-</body></html>
+  </div>
+</div>
+        <div class="footer"><span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+        </div>
+    </div>
+</div>
 
+</body></html>
 
