@@ -5,12 +5,21 @@ import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.libraryExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.isDomainModule
 import co.anitrend.arch.buildSrc.plugin.extensions.isThemeModule
+import co.anitrend.arch.buildSrc.common.Configuration
 import co.anitrend.arch.buildSrc.common.Versions
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import java.io.File
+
+private fun Project.configureLint() = libraryExtension().run {
+    lint {
+        abortOnError = false
+        ignoreWarnings = false
+        ignoreTestSources = true
+    }
+}
 
 internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
     kotlin {
@@ -29,12 +38,12 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
 }
 
 internal fun Project.configureAndroid(): Unit = baseExtension().run {
-    compileSdkVersion(Versions.compileSdk)
+    compileSdkVersion(Configuration.compileSdk)
     defaultConfig {
-        minSdk = Versions.minSdk
-        targetSdk = Versions.targetSdk
-        versionCode = Versions.versionCode
-        versionName = Versions.versionName
+        minSdk = Configuration.minSdk
+        targetSdk = Configuration.targetSdk
+        versionCode = Configuration.versionCode
+        versionName = Configuration.versionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles.add(File("consumer-rules.pro"))
     }
@@ -59,9 +68,9 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     }
 
     packagingOptions {
-        excludes.add("META-INF/NOTICE.txt")
-        excludes.add("META-INF/LICENSE")
-        excludes.add("META-INF/LICENSE.txt")
+        resources.excludes.add("META-INF/NOTICE.txt")
+        resources.excludes.add("META-INF/LICENSE")
+        resources.excludes.add("META-INF/LICENSE.txt")
     }
 
     sourceSets {
@@ -77,15 +86,11 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         unitTests.isReturnDefaultValues = true
     }
 
-    lintOptions {
-        isAbortOnError = false
-        isIgnoreWarnings = false
-        isIgnoreTestSources = true
-    }
+    configureLint()
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     tasks.withType(KotlinCompile::class.java) {
@@ -95,14 +100,14 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
             // Filter out modules that won't be using coroutines
             freeCompilerArgs = if (!project.isThemeModule() || !project.isDomainModule()) {
                 listOf(
-                    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    "-Xopt-in=kotlinx.coroutines.FlowPreview",
-                    "-Xopt-in=kotlin.time.ExperimentalTime",
-                    "-Xopt-in=kotlin.Experimental"
+                    "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                    "-opt-in=kotlinx.coroutines.FlowPreview",
+                    "-opt-in=kotlin.time.ExperimentalTime",
+                    "-opt-in=kotlin.Experimental"
                 )
             } else {
                 listOf(
-                    "-Xopt-in=kotlin.Experimental"
+                    "-opt-in=kotlin.Experimental"
                 )
             }
         }
@@ -110,7 +115,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
 
     tasks.withType(KotlinJvmCompile::class.java) {
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = "11"
         }
     }
 }

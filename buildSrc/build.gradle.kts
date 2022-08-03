@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
+
 plugins {
     `kotlin-dsl`
     `maven-publish`
@@ -13,9 +16,20 @@ repositories {
     }
 }
 
-val kotlinVersion = "1.5.31"
-val buildToolsVersion = "7.0.4"
-val dokkaVersion = "1.5.31"
+tasks.withType(KotlinCompile::class) {
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
+}
+
+tasks.withType(KotlinJvmCompile::class) {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+val buildToolsVersion = "7.2.1"
+val kotlinVersion = "1.6.21"
+val dokkaVersion = "1.6.21"
 val manesVersion = "0.38.0"
 val spotlessVersion = "5.12.1"
 
