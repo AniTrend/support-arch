@@ -23,7 +23,8 @@ internal class DependencyStrategy(
 
         // Testing libraries
         test(Libraries.junit)
-        test(Libraries.mockk)
+        test(Libraries.Mockk.mockk)
+        androidTest(Libraries.Mockk.mockkAndroid)
     }
 
     private fun DependencyHandler.applyTestDependencies() {
