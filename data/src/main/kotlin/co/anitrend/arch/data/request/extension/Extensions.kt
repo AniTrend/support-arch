@@ -40,7 +40,7 @@ internal fun IRequestStatusReport.getTypeLoadPosition() = when (getType()) {
 /**
  * Creates a live data observable on the paging request helper
  */
-internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow<LoadState> {
+internal fun AbstractRequestHelper.createStatusFlow() = callbackFlow {
     val requestListener = RequestHelperListener(scope = this)
     addListener(requestListener)
     awaitClose { removeListener(requestListener) }

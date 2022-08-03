@@ -1,6 +1,6 @@
 # Pull Request Template
 
-Thank you for contributing! Please take a moment to review our [**contributing guidelines**](https://github.com/AniTrend/support-app/blob/master/CONTRIBUTING.md)
+Thank you for contributing! Please take a moment to review our [**contributing guidelines**](https://github.com/AniTrend/support-arch/blob/master/CONTRIBUTING.md)
 to make the process easy and effective for everyone involved.
 
 **Please open an issue** before embarking on any significant pull request, especially those that
@@ -11,7 +11,7 @@ Before opening a pull request, please ensure:
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 
-- [ ] You have followed our [**contributing guidelines**](https://github.com/AniTrend/support-app/blob/master/CONTRIBUTING.md)
+- [ ] You have followed our [**contributing guidelines**](https://github.com/AniTrend/support-arch/blob/master/CONTRIBUTING.md)
 - [ ] double-check your branch is based on `develop` and targets `develop`
 - [ ] Pull request has tests (If applicable)
 - [ ] Code is well-commented, linted and follows project conventions
@@ -23,16 +23,11 @@ Before opening a pull request, please ensure:
 ## Description
 <!--- Describe your changes in detail -->
 
-## Motivation and Context
-<!--- Why is this change required? What problem does it solve? -->
-<!--- If it fixes an open issue, please link to the issue here. -->
-
 ## How Has This Been Tested?
 <!--- Please describe in detail how you tested your changes. -->
 <!--- Include details of your testing environment, tests ran to see how -->
 <!--- your change affects other areas of the code, etc. -->
 
-## Screenshots (if appropriate):
 
 ## Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
@@ -43,4 +38,4 @@ Before opening a pull request, please ensure:
 <!--- Be kind to code reviewers, please try to keep pull requests as small and focused as possible :) -->
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project
-owners to license your work under the terms of the [Apache License](https://github.com/AniTrend/support-app/blob/master/LICENSE).
+owners to license your work under the terms of the [Apache License](https://github.com/AniTrend/support-arch/blob/master/LICENSE).

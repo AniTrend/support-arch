@@ -62,7 +62,7 @@ class SupportConnectivity(
      *
      * @see ConnectivityState
      */
-    override val connectivityStateFlow = callbackFlow<ConnectivityState> {
+    override val connectivityStateFlow = callbackFlow {
         val networkCallback = object : ConnectivityManager.NetworkCallback() {
             /**
              * Called when the framework connects and has declared a new network ready for use.

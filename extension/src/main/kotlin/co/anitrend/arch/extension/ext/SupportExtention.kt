@@ -69,6 +69,7 @@ fun String?.capitalizeWords(exceptions: List<String>? = null): String = when {
                         }
                     )
                 }
+                else -> {}
             }
             if (index != words.size - 1)
                 result.append(" ")
