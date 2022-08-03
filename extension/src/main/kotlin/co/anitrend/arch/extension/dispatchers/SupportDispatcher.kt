@@ -17,7 +17,10 @@
 package co.anitrend.arch.extension.dispatchers
 
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.newSingleThreadContext
 
 /**
  * @param main Context that is confined to the Main thread operating with UI objects
