@@ -193,24 +193,18 @@ class SupportStateLayout @JvmOverloads constructor(
         super.onAttachedToWindow()
         launch {
             loadStateFlow
-                .onEach {
-                    updateUsingLoadState(it)
-                }
+                .onEach(::updateUsingLoadState)
                 .catch { cause: Throwable ->
                     Timber.w(cause)
-                }
-                .collect()
+                }.collect()
         }
         launch {
             stateConfigFlow
                 .filterNotNull()
-                .onEach {
-                    updateUsing(it)
-                }
+                .onEach(::updateUsing)
                 .catch { cause: Throwable ->
                     Timber.w(cause)
-                }
-                .collect()
+                }.collect()
         }
     }
 
