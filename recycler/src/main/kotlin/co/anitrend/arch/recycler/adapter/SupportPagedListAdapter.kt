@@ -130,6 +130,7 @@ abstract class SupportPagedListAdapter<T>(
 
             when (it is StaggeredGridLayoutManager.LayoutParams) {
                 true -> setLayoutSpanSize(it, position)
+                else -> {}
             }
         }
     }

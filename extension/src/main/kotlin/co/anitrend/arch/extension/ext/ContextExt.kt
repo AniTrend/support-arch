@@ -63,11 +63,16 @@ import timber.log.Timber
  * Extension for getting system services from [Context]
  */
 inline fun <reified T> Context.systemServiceOf(): T? {
-    val targetService = T::class.java
-    val systemService = ContextCompat.getSystemService(this, targetService)
-    if (systemService == null)
-        Timber.w("Unable to locate service of type: $targetService")
-    return systemService
+    return runCatching {
+        val targetService = T::class.java
+        val systemService = ContextCompat.getSystemService(this, targetService)
+        if (systemService == null)
+            Timber.w("Unable to locate service of type: $targetService")
+        systemService
+    }.getOrElse {
+        Timber.w(it, "Platform may not support requested service")
+        null
+    }
 }
 
 /**
@@ -209,14 +214,17 @@ fun Context.isLowRamDevice(): Boolean {
  * @param params Bundle of extras to add to the target activity
  * @param options Additional options for how the Activity should be started from
  */
-inline fun <reified T> Context?.startNewActivity(params: Bundle? = null, options: Bundle? = null) {
+inline fun <reified T> Context.startNewActivity(
+    params: Bundle = Bundle.EMPTY,
+    options: Bundle = Bundle.EMPTY
+) {
     runCatching {
         val intent = Intent(this, T::class.java)
         with(intent) {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            params?.also { putExtras(it) }
+            putExtras(params)
         }
-        this?.startActivity(intent, options)
+        startActivity(intent, options)
     }.onFailure {
         Timber.e(it)
     }

@@ -130,6 +130,9 @@ class RequestHelper(
     /**
      * Retries all request types for a given [status].
      *
+     * @param status Status for request to retry
+     * @param action Action to run when [status is satisfied]
+     *
      * @return True if any request is retried, false otherwise.
      */
     override suspend fun retryWithStatus(
@@ -154,7 +157,7 @@ class RequestHelper(
                 }
             }
 
-            if (!pendingRetries.isNullOrEmpty())
+            if (pendingRetries.isNotEmpty())
                 action()
             else Timber.i("No requests for status: $status to retry")
 

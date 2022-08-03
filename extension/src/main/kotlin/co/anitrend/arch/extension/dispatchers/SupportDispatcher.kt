@@ -17,10 +17,7 @@
 package co.anitrend.arch.extension.dispatchers
 
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.*
 
 /**
  * @param main Context that is confined to the Main thread operating with UI objects
@@ -36,6 +33,6 @@ data class SupportDispatcher(
     override val main: CoroutineDispatcher = Dispatchers.Main,
     override val computation: CoroutineDispatcher = Dispatchers.Default,
     override val io: CoroutineDispatcher = Dispatchers.IO,
-    @OptIn(ObsoleteCoroutinesApi::class)
+    @OptIn(DelicateCoroutinesApi::class)
     override val confined: CoroutineDispatcher = newSingleThreadContext("ConfinedContext")
 ) : ISupportDispatcher

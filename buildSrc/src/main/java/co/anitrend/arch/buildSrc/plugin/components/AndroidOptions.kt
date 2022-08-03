@@ -6,14 +6,11 @@ import org.gradle.kotlin.dsl.get
 import org.jetbrains.dokka.gradle.DokkaTask
 import co.anitrend.arch.buildSrc.module.Modules
 import co.anitrend.arch.buildSrc.plugin.extensions.*
-import co.anitrend.arch.buildSrc.common.Versions
-import org.gradle.api.file.DuplicatesStrategy
+import co.anitrend.arch.buildSrc.common.Configuration
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.named
-import java.io.File
 import java.net.URL
 
 private fun Project.dependenciesOfProject(): List<Modules.Module> {
@@ -52,7 +49,7 @@ private fun Project.createMavenPublicationUsing(sources: Jar) {
         create("maven", MavenPublication::class.java) {
             groupId = "co.anitrend.arch"
             artifactId = project.name
-            version = Versions.versionName
+            version = Configuration.versionName
 
             artifact(sources)
             artifact("${project.buildDir}/outputs/aar/${project.name}-release.aar")
