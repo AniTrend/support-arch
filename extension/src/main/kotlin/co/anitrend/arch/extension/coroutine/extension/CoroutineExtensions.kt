@@ -16,6 +16,7 @@
 
 package co.anitrend.arch.extension.coroutine.extension
 
+import androidx.annotation.VisibleForTesting
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
@@ -24,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 
+@VisibleForTesting
 internal class Coroutine(
     override val supervisorJob: Job,
     override val coroutineDispatcher: CoroutineDispatcher

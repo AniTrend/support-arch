@@ -161,6 +161,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
                         }
                     }
                 }
+                else -> {}
             }
             lastAnimatedPosition = position
         }

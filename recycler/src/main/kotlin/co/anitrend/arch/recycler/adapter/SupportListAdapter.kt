@@ -131,6 +131,7 @@ abstract class SupportListAdapter<T>(
 
             when (it is StaggeredGridLayoutManager.LayoutParams) {
                 true -> setLayoutSpanSize(it, position)
+                else -> {}
             }
         }
     }

@@ -20,13 +20,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.view.View
-import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
@@ -79,17 +79,16 @@ fun FragmentActivity.makeStatusBarTransparent() {
 fun FragmentActivity.hideStatusBarAndNavigationBar() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         WindowCompat.setDecorFitsSystemWindows(window, true)
-        val controller = ViewCompat.getWindowInsetsController(window.decorView)
+        val controller = WindowCompat.getInsetsController(window, window.decorView)
 
         // swipe in system bars, this is now sticky immersive
-        controller?.systemBarsBehavior =
+        controller.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 
         // hide status and navigation bar
-        controller?.hide(WindowInsets.Type.systemBars())
+        controller.hide(WindowInsetsCompat.Type.systemBars())
     } else {
         // TODO: Figure out how to hide status bar and nav pre android R using insets
-        @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LOW_PROFILE or
             View.SYSTEM_UI_FLAG_FULLSCREEN or
