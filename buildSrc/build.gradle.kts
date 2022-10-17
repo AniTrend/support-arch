@@ -30,7 +30,7 @@ tasks.withType(KotlinJvmCompile::class) {
 val buildToolsVersion = "7.2.1"
 val kotlinVersion = "1.6.21"
 val dokkaVersion = "1.6.21"
-val manesVersion = "0.38.0"
+val manesVersion = "0.42.0"
 val spotlessVersion = "5.12.1"
 
 dependencies {
