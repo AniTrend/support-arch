@@ -16,10 +16,12 @@
 
 package co.anitrend.arch.extension.ext
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
+import androidx.annotation.StringRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import co.anitrend.arch.extension.annotation.SupportExperimental
@@ -94,7 +96,7 @@ fun View.updateMargins(margin: Int) {
  * @return [Snackbar]
  */
 fun View.snackBar(
-    text: String,
+    @StringRes text: Int,
     duration: Int = Snackbar.LENGTH_SHORT,
 ) = Snackbar.make(this, text, duration)
 
@@ -109,8 +111,8 @@ fun View.snackBar(
  * @return [Snackbar]
  */
 inline fun View.snackBar(
-    text: String,
-    actionText: String,
+    @StringRes text: Int,
+    @StringRes actionText: Int,
     duration: Int,
     crossinline action: (Snackbar) -> Unit
 ): Snackbar {
@@ -171,8 +173,12 @@ fun View.navigationBarHeight(): Int? {
  *
  * @author hamakn
  */
+@SuppressLint("InternalInsetResource")
 @SupportExperimental
-@Deprecated("Use View.statusBarHeight extension instead")
+@Deprecated(
+    message = "Use View.statusBarHeight() extension instead",
+    level = DeprecationLevel.ERROR
+)
 fun Resources.getStatusBarHeight(): Int? {
     val resourceId = getIdentifier(
         "status_bar_height",
@@ -191,8 +197,12 @@ fun Resources.getStatusBarHeight(): Int? {
  *
  * @author hamakn
  */
+@SuppressLint("InternalInsetResource")
 @SupportExperimental
-@Deprecated("Use View.navigationBarHeight extension instead")
+@Deprecated(
+    message = "Use View.navigationBarHeight() extension instead",
+    level = DeprecationLevel.ERROR
+)
 fun Resources.getNavigationBarHeight(): Int? {
     val resourceId = getIdentifier(
         "navigation_bar_height",

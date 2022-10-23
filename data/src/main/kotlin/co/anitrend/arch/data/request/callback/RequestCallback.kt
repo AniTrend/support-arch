@@ -17,6 +17,7 @@
 package co.anitrend.arch.data.request.callback
 
 import co.anitrend.arch.data.request.contract.IRequestHelper
+import co.anitrend.arch.data.request.exception.RequestException
 import co.anitrend.arch.data.request.wrapper.RequestWrapper
 import co.anitrend.arch.domain.entities.RequestError
 import java.util.concurrent.atomic.AtomicBoolean
@@ -38,14 +39,14 @@ class RequestCallback(
     /**
      * Call this method when the request succeeds and new data is fetched.
      *
-     * @throws IllegalStateException when [recordFailure]/[recordSuccess] has already been called
+     * @throws RequestError when [recordFailure]/[recordSuccess] has already been called
      */
-    @Throws(IllegalStateException::class)
+    @Throws(RequestException::class)
     suspend fun recordSuccess() {
         if (called.compareAndSet(false, true))
             helper.recordResult(wrapper, null)
         else
-            throw IllegalStateException("already called recordSuccess or recordFailure")
+            throw RequestException.ResultAlreadyRecorded("already called recordSuccess or recordFailure")
     }
 
     /**
@@ -54,13 +55,13 @@ class RequestCallback(
      *
      * @param throwable The error that occurred while carrying out the request.
      *
-     * @throws IllegalStateException when [recordFailure]/[recordSuccess] has already been called
+     * @throws RequestError when [recordFailure]/[recordSuccess] has already been called
      */
-    @Throws(IllegalStateException::class)
+    @Throws(RequestException::class)
     suspend fun recordFailure(throwable: RequestError) {
         if (called.compareAndSet(false, true))
             helper.recordResult(wrapper, throwable)
         else
-            throw IllegalStateException("already called recordSuccess or recordFailure")
+            throw RequestException.ResultAlreadyRecorded("already called recordSuccess or recordFailure")
     }
 }
