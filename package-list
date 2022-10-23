@@ -21,6 +21,7 @@ co.anitrend.arch.data.repository.contract
 co.anitrend.arch.data.request
 co.anitrend.arch.data.request.callback
 co.anitrend.arch.data.request.contract
+co.anitrend.arch.data.request.exception
 co.anitrend.arch.data.request.helper
 co.anitrend.arch.data.request.model
 co.anitrend.arch.data.request.queue
