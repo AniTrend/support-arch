@@ -30,6 +30,15 @@ sealed class RequestException(
     cause: Throwable? = null
 ) : IllegalStateException(message, cause) {
 
+    /**
+     * An exception that represents a duplicate call to update a request status
+     *
+     * @param message Optional message regarding the exception
+     * @param cause Optional exception for additional context
+     *
+     * @see RequestException
+     * @since v1.4.1-alpha02
+     */
     class ResultAlreadyRecorded(
         override val message: String? = null,
         override val cause: Throwable? = null
