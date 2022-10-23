@@ -8,7 +8,7 @@ object Configuration {
 
     private const val major = 1
     private const val minor = 4
-    private const val patch = 1
+    private const val patch = 2
     private const val revision = 0
 
     private const val channel = "alpha"

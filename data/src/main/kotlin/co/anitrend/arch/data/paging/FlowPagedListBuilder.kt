@@ -16,7 +16,6 @@
 
 package co.anitrend.arch.data.paging
 
-import android.annotation.SuppressLint
 import androidx.paging.DataSource
 import androidx.paging.PagedList
 import co.anitrend.arch.data.paging.builder.AbstractFlowPagedListBuilder
@@ -25,10 +24,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.onFailure
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * Builder for `Flow<PagedList>` given a [DataSource.Factory] and a [PagedList.Config].
@@ -58,9 +59,7 @@ class FlowPagedListBuilder<K, V>(
      *
      * @return The Flow of PagedLists
      */
-    @SuppressLint("RestrictedApi")
     override fun buildFlow(): Flow<PagedList<V>> = channelFlow {
-
         val invalidateCallback = object : ClearInvalidatedCallback {
             private var prevList: PagedList<V>? = null
             private var dataSource: DataSource<K, V>? = null
@@ -78,12 +77,13 @@ class FlowPagedListBuilder<K, V>(
 
                     withContext(notifyDispatcher) {
                         // Send on the notify dispatcher
-                        send(list)
+                        trySend(list).onFailure {
+                            Timber.w(it)
+                        }
                     }
                 }
             }
 
-            @Suppress("UNCHECKED_CAST")
             private fun createPagedList(): PagedList<V> {
                 do {
                     dataSource?.removeInvalidatedCallback(this)
@@ -101,7 +101,7 @@ class FlowPagedListBuilder<K, V>(
                         .also { prevList = it }
                 } while (list.isDetached)
 
-                return prevList!!
+                return requireNotNull(prevList)
             }
         }
 
