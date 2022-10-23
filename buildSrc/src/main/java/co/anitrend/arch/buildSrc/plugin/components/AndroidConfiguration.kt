@@ -68,9 +68,9 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     }
 
     packagingOptions {
-        resources.excludes.add("META-INF/NOTICE.txt")
+        resources.excludes.add("META-INF/NOTICE.*")
+        resources.excludes.add("META-INF/LICENSE.*")
         resources.excludes.add("META-INF/LICENSE")
-        resources.excludes.add("META-INF/LICENSE.txt")
     }
 
     sourceSets {
