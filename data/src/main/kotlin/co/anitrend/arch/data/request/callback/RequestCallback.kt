@@ -46,7 +46,9 @@ class RequestCallback(
         if (called.compareAndSet(false, true))
             helper.recordResult(wrapper, null)
         else
-            throw RequestException.ResultAlreadyRecorded("already called recordSuccess or recordFailure")
+            throw RequestException.ResultAlreadyRecorded(
+                "already called recordSuccess or recordFailure"
+            )
     }
 
     /**
@@ -62,6 +64,8 @@ class RequestCallback(
         if (called.compareAndSet(false, true))
             helper.recordResult(wrapper, throwable)
         else
-            throw RequestException.ResultAlreadyRecorded("already called recordSuccess or recordFailure")
+            throw RequestException.ResultAlreadyRecorded(
+                "already called recordSuccess or recordFailure"
+            )
     }
 }
