@@ -28,7 +28,7 @@ object Libraries {
         }
 
         object Lifecycle {
-            private const val version = "2.5.2"
+            private const val version = "2.5.1"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
             const val runTimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
@@ -130,7 +130,7 @@ object Libraries {
     }
 
     object Mockk {
-        private const val version = "1.12.6"
+        private const val version = "1.13.2"
         const val mockk = "io.mockk:mockk:$version"
         const val mockkAndroid = "io.mockk:mockk-android:$version"
     }
