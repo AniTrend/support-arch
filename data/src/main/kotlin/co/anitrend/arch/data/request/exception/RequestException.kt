@@ -16,6 +16,15 @@
 
 package co.anitrend.arch.data.request.exception
 
+/**
+ * An explicit request exception for any [co.anitrend.arch.data.request.callback.RequestCallback]
+ * operations
+ *
+ * @param message Optional message regarding the exception
+ * @param cause Optional exception for additional context
+ *
+ * @since v1.4.1-alpha02
+ */
 sealed class RequestException(
     message: String? = null,
     cause: Throwable? = null
