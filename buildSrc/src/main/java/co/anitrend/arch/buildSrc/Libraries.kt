@@ -28,7 +28,7 @@ object Libraries {
         }
 
         object Lifecycle {
-            private const val version = "2.5.1"
+            private const val version = "2.5.2"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
             const val runTimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
             const val liveDataKtx = "androidx.lifecycle:lifecycle-livedata-ktx:$version"
@@ -101,12 +101,12 @@ object Libraries {
 
     object JetBrains {
         object Dokka {
-            private const val version = "1.6.21"
+            private const val version = "1.7.20"
             const val gradlePlugin = "org.jetbrains.dokka:dokka-gradle-plugin:$version"
         }
 
         object Kotlin {
-            private const val version = "1.6.21"
+            private const val version = "1.7.20"
             const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
             const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -130,7 +130,7 @@ object Libraries {
     }
 
     object Mockk {
-        private const val version = "1.12.5"
+        private const val version = "1.12.6"
         const val mockk = "io.mockk:mockk:$version"
         const val mockkAndroid = "io.mockk:mockk-android:$version"
     }
