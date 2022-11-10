@@ -27,7 +27,7 @@ tasks.withType(KotlinJvmCompile::class) {
     }
 }
 
-val buildToolsVersion = "7.2.1"
+val buildToolsVersion = "7.3.1"
 val kotlinVersion = "1.7.21"
 val dokkaVersion = "1.7.20"
 val manesVersion = "0.43.0"
