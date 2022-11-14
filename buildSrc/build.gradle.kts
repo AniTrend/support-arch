@@ -28,11 +28,11 @@ tasks.withType(KotlinJvmCompile::class) {
     }
 }
 
-val buildToolsVersion = "7.3.1"
-val kotlinVersion = "1.7.21"
-val dokkaVersion = "1.7.20"
-val manesVersion = "0.44.0"
-val spotlessVersion = "6.11.0"
+fun Project.library(alias: String) =
+    extensions.getByType<VersionCatalogsExtension>()
+        .named("libs")
+        .findLibrary(alias)
+        .get()
 
 dependencies {
     /* Depend on the android gradle plugin, since we want to access it in our plugin */
