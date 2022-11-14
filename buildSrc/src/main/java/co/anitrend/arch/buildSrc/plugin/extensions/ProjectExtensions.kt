@@ -81,6 +81,9 @@ internal fun Project.publishingExtension() =
 internal fun Project.spotlessExtension() =
     extensions.getByType<SpotlessExtension>()
 
+internal fun Project.versionCatalogExtension() =
+    extensions.getByType<VersionCatalogsExtension>()
+
 internal fun Project.containsBasePlugin(): Boolean {
     return project.plugins.toList().any { plugin ->
         plugin is BasePlugin

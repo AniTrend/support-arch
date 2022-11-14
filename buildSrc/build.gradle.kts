@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 plugins {
     `kotlin-dsl`
     `maven-publish`
+    `version-catalog`
 }
 
 repositories {
