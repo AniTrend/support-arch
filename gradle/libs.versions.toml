@@ -3,7 +3,7 @@ ktlint = "0.40.0"
 
 gradle-plugin = "7.3.1"
 
-androidx-core = "1.8.0"
+androidx-core = "1.9.0"
 androix-lifecycle = "2.5.1"
 androidx-paging = "2.1.2"
 androidx-preference = "1.2.0"
