@@ -19,7 +19,7 @@ jetbrains-kotlinx-coroutines = "1.6.4"
 io-mockk = "1.13.2"
 
 [libraries]
-threeTenBp = "com.jakewharton.threetenabp:threetenabp:1.4.0"
+threeTenBp = "com.jakewharton.threetenabp:threetenabp:1.4.3"
 timber = "com.jakewharton.timber:timber:5.0.1"
 junit = "junit:junit:4.13.2"
 
