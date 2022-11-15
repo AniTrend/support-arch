@@ -63,7 +63,7 @@ androidx-work-runtimeKtx = { module = "androidx.work:work-runtime-ktx", version.
 androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "androidx-work" }
 androidx-work-test = { module = "androidx.work:work-test", version.ref = "androidx-work" }
 
-cash-turbine = "app.cash.turbine:turbine:0.8.0"
+cash-turbine = "app.cash.turbine:turbine:0.12.1"
 
 google-android-material = "com.google.android.material:material:1.7.0"
 
