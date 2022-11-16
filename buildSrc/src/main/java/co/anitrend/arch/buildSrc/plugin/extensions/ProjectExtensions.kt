@@ -5,10 +5,15 @@ import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.api.Project
+import org.gradle.api.artifacts.MinimalExternalModuleDependency
+import org.gradle.api.artifacts.VersionCatalog
+import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.internal.plugins.DefaultArtifactPublicationSet
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.provider.Provider
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.SourceSetContainer
@@ -45,6 +50,20 @@ fun Project.isThemeModule() =
 fun Project.isUiModule() =
     name == Modules.Support.Ui.id
 
+fun Project.versionCatalog(): VersionCatalog =
+    versionCatalogExtension()
+        .named("libs")
+
+fun Project.library(alias: String): Provider<MinimalExternalModuleDependency> =
+    versionCatalog()
+        .findLibrary(alias)
+        .get()
+
+fun Project.version(alias: String): VersionConstraint =
+    versionCatalog()
+        .findVersion(alias)
+        .get()
+
 internal fun Project.baseExtension() =
     extensions.getByType<BaseExtension>()
 
@@ -80,6 +99,9 @@ internal fun Project.publishingExtension() =
 
 internal fun Project.spotlessExtension() =
     extensions.getByType<SpotlessExtension>()
+
+internal fun Project.versionCatalogExtension() =
+    extensions.getByType<VersionCatalogsExtension>()
 
 internal fun Project.containsBasePlugin(): Boolean {
     return project.plugins.toList().any { plugin ->

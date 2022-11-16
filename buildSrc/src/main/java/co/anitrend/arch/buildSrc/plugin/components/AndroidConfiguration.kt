@@ -5,8 +5,8 @@ import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.libraryExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.isDomainModule
 import co.anitrend.arch.buildSrc.plugin.extensions.isThemeModule
+import co.anitrend.arch.buildSrc.plugin.extensions.version
 import co.anitrend.arch.buildSrc.common.Configuration
-import co.anitrend.arch.buildSrc.common.Versions
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
@@ -30,7 +30,7 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
             "**/test/**/*.kt",
             "bin/**/*.kt"
         )
-        ktlint(Versions.ktlint).userData(
+        ktlint(version("ktlint").toString()).userData(
             mapOf("android" to "true")
         )
         licenseHeaderFile(rootProject.file("spotless/copyright.kt"))

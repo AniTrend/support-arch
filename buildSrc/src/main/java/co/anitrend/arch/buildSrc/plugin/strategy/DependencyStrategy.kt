@@ -1,6 +1,6 @@
 package co.anitrend.arch.buildSrc.plugin.strategy
 
-import co.anitrend.arch.buildSrc.Libraries
+import co.anitrend.arch.buildSrc.plugin.extensions.library
 import co.anitrend.arch.buildSrc.plugin.extensions.hasDependencies
 import co.anitrend.arch.buildSrc.plugin.extensions.isUiModule
 import co.anitrend.arch.buildSrc.plugin.extensions.implementation
@@ -9,43 +9,42 @@ import co.anitrend.arch.buildSrc.plugin.extensions.test
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
-internal class DependencyStrategy(
-    private val project: Project
-) {
+internal class DependencyStrategy(private val project: Project) {
 
     private fun DependencyHandler.applyLoggingDependencies() {
-        implementation(Libraries.timber)
+        implementation(project.library("timber"))
     }
 
     private fun DependencyHandler.applyDefaultDependencies() {
-        implementation(Libraries.JetBrains.Kotlin.stdlib)
-        implementation(Libraries.JetBrains.Kotlin.reflect)
+        implementation(project.library("jetbrains-kotlin-stdlib-jdk8"))
+        implementation(project.library("jetbrains-kotlin-reflect"))
 
         // Testing libraries
-        test(Libraries.junit)
-        test(Libraries.Mockk.mockk)
-        androidTest(Libraries.Mockk.mockkAndroid)
+        test(project.library("junit"))
+        test(project.library("mockk"))
+        androidTest(project.library("mockk-android"))
     }
 
     private fun DependencyHandler.applyTestDependencies() {
-        androidTest(Libraries.AndroidX.Test.core)
-        androidTest(Libraries.AndroidX.Test.rules)
-        androidTest(Libraries.AndroidX.Test.runner)
+        androidTest(project.library("androidx-test-core"))
+        androidTest(project.library("androidx-test-coreKtx"))
+        androidTest(project.library("androidx-test-runner"))
+        androidTest(project.library("androidx-test-rules"))
     }
 
     private fun DependencyHandler.applyLifeCycleDependencies() {
-        implementation(Libraries.AndroidX.Lifecycle.liveDataCoreKtx)
-        implementation(Libraries.AndroidX.Lifecycle.runTimeKtx)
-        implementation(Libraries.AndroidX.Lifecycle.liveDataKtx)
-        implementation(Libraries.AndroidX.Lifecycle.extensions)
+        implementation(project.library("androidx-lifecycle-extensions"))
+        implementation(project.library("androidx-lifecycle-runTimeKtx"))
+        implementation(project.library("androidx-lifecycle-liveDataKtx"))
+        implementation(project.library("androidx-lifecycle-viewModelKtx"))
     }
 
     private fun DependencyHandler.applyCoroutinesDependencies() {
         if (project.isUiModule())
-            implementation(Libraries.JetBrains.KotlinX.Coroutines.android)
-        implementation(Libraries.JetBrains.KotlinX.Coroutines.core)
-        test(Libraries.JetBrains.KotlinX.Coroutines.test)
-        androidTest(Libraries.CashApp.Turbine.turbine)
+            implementation(project.library("jetbrains-kotlinx-coroutines-android"))
+        implementation(project.library("jetbrains-kotlinx-coroutines-core"))
+        test(project.library("jetbrains-kotlinx-coroutines-test"))
+        androidTest(project.library("cash-turbine"))
     }
 
     fun applyDependenciesOn(handler: DependencyHandler) {

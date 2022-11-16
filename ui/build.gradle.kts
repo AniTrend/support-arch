@@ -1,5 +1,3 @@
-import co.anitrend.arch.buildSrc.Libraries
-
 plugins {
     id("co.anitrend.arch")
 }
@@ -11,9 +9,9 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":recycler"))
 
-    implementation(Libraries.Google.material)
+    implementation(libs.google.android.material)
 
-    implementation(Libraries.AndroidX.Core.coreKtx)
-    implementation(Libraries.AndroidX.SwipeRefresh.swipeRefreshLayout)
-    implementation(Libraries.AndroidX.Paging.runtimeKtx)
+    implementation(libs.androidx.coreKtx)
+    implementation(libs.androidx.swipeRefreshLayout)
+    implementation(libs.androidx.paging.runtimeKtx)
 }
