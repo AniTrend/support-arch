@@ -12,6 +12,25 @@ categories:
   - title: '🧰 Maintenance'
     labels: 
       - 'refactor'
+autolabeler:
+  - label: 'refactor'
+    files:
+      - '*.md'
+    branch:
+      - '/docs{0,1}\/.+/'
+  - label: 'bugfix'
+    branch:
+      - '/bugfix\/.+/'
+      - '/hotfix\/.+/'
+    title:
+      - '/fix/i'
+  - label: 'enhancement'
+    branch:
+      - '/feature\/.+/'
+  - label: 'dependencies'
+    branch:
+      - '/dependencies\/.+/'
+      - '/renovate\/.+/'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
