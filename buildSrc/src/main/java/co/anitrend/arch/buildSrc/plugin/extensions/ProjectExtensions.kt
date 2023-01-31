@@ -4,6 +4,7 @@ import co.anitrend.arch.buildSrc.module.Modules
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.VersionCatalog
@@ -50,19 +51,8 @@ fun Project.isThemeModule() =
 fun Project.isUiModule() =
     name == Modules.Support.Ui.id
 
-fun Project.versionCatalog(): VersionCatalog =
-    versionCatalogExtension()
-        .named("libs")
-
-fun Project.library(alias: String): Provider<MinimalExternalModuleDependency> =
-    versionCatalog()
-        .findLibrary(alias)
-        .get()
-
-fun Project.version(alias: String): VersionConstraint =
-    versionCatalog()
-        .findVersion(alias)
-        .get()
+internal val Project.libs: LibrariesForLibs
+    get() = extensions.getByType<LibrariesForLibs>()
 
 internal fun Project.baseExtension() =
     extensions.getByType<BaseExtension>()
@@ -99,9 +89,6 @@ internal fun Project.publishingExtension() =
 
 internal fun Project.spotlessExtension() =
     extensions.getByType<SpotlessExtension>()
-
-internal fun Project.versionCatalogExtension() =
-    extensions.getByType<VersionCatalogsExtension>()
 
 internal fun Project.containsBasePlugin(): Boolean {
     return project.plugins.toList().any { plugin ->

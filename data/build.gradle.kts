@@ -8,5 +8,5 @@ dependencies {
 
     implementation(libs.androidx.paging.common)
     implementation(libs.androidx.paging.runtime)
-    implementation(libs.androidx.paging.runtimeKtx)
+    implementation(libs.androidx.paging.runtime.ktx)
 }
