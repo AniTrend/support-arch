@@ -30,7 +30,7 @@ import androidx.recyclerview.widget.RecyclerView
  */
 class SupportObserverProxy(
     private val adapterDataObserver: RecyclerView.AdapterDataObserver,
-    private val additionalViewAdapterViewCount: Int
+    private val additionalViewAdapterViewCount: Int,
 ) : RecyclerView.AdapterDataObserver() {
 
     override fun onChanged() {
@@ -40,7 +40,7 @@ class SupportObserverProxy(
     override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
         adapterDataObserver.onItemRangeRemoved(
             positionStart + additionalViewAdapterViewCount,
-            itemCount
+            itemCount,
         )
     }
 
@@ -48,21 +48,21 @@ class SupportObserverProxy(
         adapterDataObserver.onItemRangeMoved(
             fromPosition + additionalViewAdapterViewCount,
             toPosition,
-            itemCount
+            itemCount,
         )
     }
 
     override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
         adapterDataObserver.onItemRangeInserted(
             positionStart + additionalViewAdapterViewCount,
-            itemCount
+            itemCount,
         )
     }
 
     override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
         adapterDataObserver.onItemRangeChanged(
             positionStart + additionalViewAdapterViewCount,
-            itemCount
+            itemCount,
         )
     }
 
@@ -70,7 +70,7 @@ class SupportObserverProxy(
         adapterDataObserver.onItemRangeChanged(
             positionStart + additionalViewAdapterViewCount,
             itemCount,
-            payload
+            payload,
         )
     }
 }

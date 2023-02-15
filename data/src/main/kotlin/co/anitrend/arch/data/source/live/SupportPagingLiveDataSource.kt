@@ -35,7 +35,7 @@ abstract class SupportPagingLiveDataSource<K, V> : AbstractPagingLiveDataSource<
      */
     protected open val supportPagingHelper = SupportPagingHelper(
         isPagingLimit = false,
-        pageSize = DEFAULT_PAGE_SIZE
+        pageSize = DEFAULT_PAGE_SIZE,
     )
 
     /**
@@ -53,7 +53,7 @@ abstract class SupportPagingLiveDataSource<K, V> : AbstractPagingLiveDataSource<
      */
     override suspend fun retryFailed() {
         requestHelper.retryWithStatus(
-            Request.Status.FAILED
+            Request.Status.FAILED,
         ) {}
     }
 

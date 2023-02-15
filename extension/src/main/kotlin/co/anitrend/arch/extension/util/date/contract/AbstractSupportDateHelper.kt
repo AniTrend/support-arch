@@ -19,13 +19,13 @@ package co.anitrend.arch.extension.util.date.contract
 import android.annotation.TargetApi
 import android.os.Build
 import co.anitrend.arch.extension.util.attribute.SeasonType
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 /**
  * Contract for date helper
@@ -81,12 +81,13 @@ abstract class AbstractSupportDateHelper {
         unixTimeStamp: Long,
         locale: Locale = Locale.getDefault(),
         outputDatePattern: String = defaultOutputDatePattern,
-        targetTimeZone: TimeZone = TimeZone.getDefault()
+        targetTimeZone: TimeZone = TimeZone.getDefault(),
     ): String {
         val originDate = Instant.ofEpochMilli(unixTimeStamp)
 
         val outputDateFormat = DateTimeFormatter.ofPattern(
-            outputDatePattern, locale
+            outputDatePattern,
+            locale,
         ).withZone(ZoneId.of(targetTimeZone.id))
 
         return outputDateFormat.format(originDate)
@@ -109,10 +110,11 @@ abstract class AbstractSupportDateHelper {
         originDate: String,
         locale: Locale = Locale.getDefault(),
         inputPattern: String = defaultInputDatePattern,
-        targetTimeZone: TimeZone = TimeZone.getDefault()
+        targetTimeZone: TimeZone = TimeZone.getDefault(),
     ): Long {
         val dateFormatter = DateTimeFormatter.ofPattern(
-            inputPattern, locale
+            inputPattern,
+            locale,
         ).withZone(ZoneId.of(targetTimeZone.id))
 
         val parsedDate = dateFormatter.parse(originDate)
@@ -136,7 +138,7 @@ abstract class AbstractSupportDateHelper {
     fun convertToUnixTimeStamp(
         originDate: String,
         dateTimeFormatter: DateTimeFormatter,
-        targetTimeZone: TimeZone = TimeZone.getDefault()
+        targetTimeZone: TimeZone = TimeZone.getDefault(),
     ): Long {
         val parsedDate = dateTimeFormatter
             .withZone(ZoneId.of(targetTimeZone.id))
@@ -166,17 +168,19 @@ abstract class AbstractSupportDateHelper {
         locale: Locale = Locale.getDefault(),
         inputPattern: String = defaultInputDatePattern,
         outputDatePattern: String = defaultOutputDatePattern,
-        targetTimeZone: TimeZone = TimeZone.getDefault()
+        targetTimeZone: TimeZone = TimeZone.getDefault(),
     ): String {
         val dateFormatter = DateTimeFormatter.ofPattern(
-            inputPattern, locale
+            inputPattern,
+            locale,
         ).withZone(ZoneId.of(targetTimeZone.id))
 
         val parsedDate = dateFormatter.parse(originDate)
         val zonedDateTime = ZonedDateTime.from(parsedDate).toOffsetDateTime()
 
         val outputDateFormat = DateTimeFormatter.ofPattern(
-            outputDatePattern, locale
+            outputDatePattern,
+            locale,
         )
         return zonedDateTime.format(outputDateFormat)
     }
@@ -200,7 +204,7 @@ abstract class AbstractSupportDateHelper {
         locale: Locale = Locale.getDefault(),
         dateTimeFormatter: DateTimeFormatter,
         outputDatePattern: String = defaultOutputDatePattern,
-        targetTimeZone: TimeZone = TimeZone.getDefault()
+        targetTimeZone: TimeZone = TimeZone.getDefault(),
     ): String {
         val parsedDate = dateTimeFormatter
             .withZone(ZoneId.of(targetTimeZone.id))
@@ -209,7 +213,8 @@ abstract class AbstractSupportDateHelper {
         val zonedDateTime = ZonedDateTime.from(parsedDate).toOffsetDateTime()
 
         val outputDateFormat = DateTimeFormatter.ofPattern(
-            outputDatePattern, locale
+            outputDatePattern,
+            locale,
         )
         return zonedDateTime.format(outputDateFormat)
     }

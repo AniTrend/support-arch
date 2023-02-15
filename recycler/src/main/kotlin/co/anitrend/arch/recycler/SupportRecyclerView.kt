@@ -35,7 +35,7 @@ import timber.log.Timber
 open class SupportRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyle: Int = 0
+    defStyle: Int = 0,
 ) : RecyclerView(context, attrs, defStyle), SupportLifecycle {
 
     /**

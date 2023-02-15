@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
 @SupportExperimental
 class SupportTimeHelper(
     private val currentTimeInstant: SupportTimeInstant,
-    private val referenceTimeInstant: SupportTime
+    private val referenceTimeInstant: SupportTime,
 ) {
     private val defaultSystemUnit = TimeUnit.MILLISECONDS
 
@@ -42,26 +42,26 @@ class SupportTimeHelper(
         return when (referenceTimeInstant.unit) {
             SupportDateTimeUnit.TIME_UNIT_DAYS ->
                 defaultSystemUnit.toDays(
-                    currentTimeInstant - timeInstant
+                    currentTimeInstant - timeInstant,
                 ) >= referenceTimeInstant.instant
             SupportDateTimeUnit.TIME_UNIT_HOURS ->
                 defaultSystemUnit.toHours(
-                    currentTimeInstant - timeInstant
+                    currentTimeInstant - timeInstant,
                 ) >= referenceTimeInstant.instant
             SupportDateTimeUnit.TIME_UNIT_MINUTES ->
                 defaultSystemUnit.toMinutes(
-                    currentTimeInstant - timeInstant
+                    currentTimeInstant - timeInstant,
                 ) >= referenceTimeInstant.instant
             SupportDateTimeUnit.TIME_UNIT_SECONDS ->
                 defaultSystemUnit.toSeconds(
-                    currentTimeInstant - timeInstant
+                    currentTimeInstant - timeInstant,
                 ) >= referenceTimeInstant.instant
         }
     }
 
     data class SupportTime(
         val instant: Int,
-        val unit: SupportDateTimeUnit
+        val unit: SupportDateTimeUnit,
     )
 }
 

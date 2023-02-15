@@ -27,7 +27,7 @@ data class SupportPagingHelper(
     var page: Int = 1,
     var pageOffset: Int = 0,
     val pageSize: Int,
-    var isPagingLimit: Boolean
+    var isPagingLimit: Boolean,
 ) : ISupportPagingHelper {
 
     /**

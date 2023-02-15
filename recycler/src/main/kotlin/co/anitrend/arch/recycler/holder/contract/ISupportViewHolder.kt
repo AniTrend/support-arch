@@ -36,7 +36,7 @@ interface ISupportViewHolder {
         payloads: List<Any>,
         model: IRecyclerItem,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>? = null
+        selectionMode: ISupportSelectionMode<Long>? = null,
     )
 
     /**

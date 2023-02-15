@@ -42,7 +42,7 @@ abstract class SupportCoreDataSource : AbstractDataSource() {
      */
     override suspend fun retryFailed() {
         requestHelper.retryWithStatus(
-            Request.Status.FAILED
+            Request.Status.FAILED,
         ) {}
     }
 
@@ -51,10 +51,11 @@ abstract class SupportCoreDataSource : AbstractDataSource() {
      */
     override suspend fun refresh() {
         val ran = requestHelper.retryWithStatus(
-            Request.Status.SUCCESS
+            Request.Status.SUCCESS,
         ) { invalidate() }
 
-        if (!ran)
+        if (!ran) {
             retryFailed()
+        }
     }
 }

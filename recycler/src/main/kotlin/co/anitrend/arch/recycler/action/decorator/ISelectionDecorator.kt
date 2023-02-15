@@ -41,7 +41,7 @@ interface ISelectionDecorator {
     fun decorateUsing(
         view: View,
         isSelected: Boolean,
-        @DrawableRes drawableRes: Int = R.drawable.selection_frame
+        @DrawableRes drawableRes: Int = R.drawable.selection_frame,
     ) = when (isSelected) {
         true -> when (view) {
             is CheckBox -> view.isChecked = true

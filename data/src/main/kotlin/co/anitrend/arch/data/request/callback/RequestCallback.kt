@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean
  */
 class RequestCallback(
     private val wrapper: RequestWrapper,
-    private val helper: IRequestHelper
+    private val helper: IRequestHelper,
 ) {
     private val called = AtomicBoolean()
 
@@ -43,12 +43,13 @@ class RequestCallback(
      */
     @Throws(RequestException::class)
     suspend fun recordSuccess() {
-        if (called.compareAndSet(false, true))
+        if (called.compareAndSet(false, true)) {
             helper.recordResult(wrapper, null)
-        else
+        } else {
             throw RequestException.ResultAlreadyRecorded(
-                "already called recordSuccess or recordFailure"
+                "already called recordSuccess or recordFailure",
             )
+        }
     }
 
     /**
@@ -61,11 +62,12 @@ class RequestCallback(
      */
     @Throws(RequestException::class)
     suspend fun recordFailure(throwable: RequestError) {
-        if (called.compareAndSet(false, true))
+        if (called.compareAndSet(false, true)) {
             helper.recordResult(wrapper, throwable)
-        else
+        } else {
             throw RequestException.ResultAlreadyRecorded(
-                "already called recordSuccess or recordFailure"
+                "already called recordSuccess or recordFailure",
             )
+        }
     }
 }

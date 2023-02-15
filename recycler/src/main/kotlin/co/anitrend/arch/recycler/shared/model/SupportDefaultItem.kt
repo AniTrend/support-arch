@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
  */
 class SupportDefaultItem(
     private val loadState: LoadState,
-    private val stateConfig: IStateLayoutConfig
+    private val stateConfig: IStateLayoutConfig,
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
     private var binding: SupportLayoutStateDefaultBinding? = null
@@ -50,14 +50,16 @@ class SupportDefaultItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = SupportLayoutStateDefaultBinding.bind(view)
         val defaultMessage = stateConfig.defaultMessage
         if (loadState is LoadState.Success && defaultMessage != null) {
             binding?.root?.visible()
             binding?.stateDefaultText?.setText(defaultMessage)
-        } else binding?.root?.gone()
+        } else {
+            binding?.root?.gone()
+        }
     }
 
     override fun unbind(view: View) {
@@ -67,7 +69,7 @@ class SupportDefaultItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ) = resources.getInteger(R.integer.single_list_size)
 
     companion object {
@@ -79,10 +81,12 @@ class SupportDefaultItem(
          */
         internal fun createViewHolder(
             viewGroup: ViewGroup,
-            layoutInflater: LayoutInflater
+            layoutInflater: LayoutInflater,
         ): SupportViewHolder {
             val binding = SupportLayoutStateDefaultBinding.inflate(
-                layoutInflater, viewGroup, false
+                layoutInflater,
+                viewGroup,
+                false,
             )
             return SupportViewHolder(binding)
         }

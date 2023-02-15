@@ -34,7 +34,7 @@ import timber.log.Timber
  * @see IRequestStatusReport
  */
 internal class RequestHelperListener(
-    private val scope: ProducerScope<LoadState>
+    private val scope: ProducerScope<LoadState>,
 ) : IRequestHelper.Listener {
 
     /**

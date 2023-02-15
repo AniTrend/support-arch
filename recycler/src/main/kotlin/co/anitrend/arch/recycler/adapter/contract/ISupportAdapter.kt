@@ -31,10 +31,10 @@ import co.anitrend.arch.recycler.holder.SupportViewHolder
 import co.anitrend.arch.recycler.model.contract.IRecyclerItem
 import co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
 import co.anitrend.arch.theme.animator.contract.AbstractAnimator
-import kotlin.jvm.Throws
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
+import kotlin.jvm.Throws
 
 /**
  * Contract for recycler view adapters
@@ -103,7 +103,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
     fun createDefaultViewHolder(
         parent: ViewGroup,
         @LayoutRes viewType: Int,
-        layoutInflater: LayoutInflater
+        layoutInflater: LayoutInflater,
     ): SupportViewHolder
 
     /**
@@ -141,7 +141,8 @@ interface ISupportAdapter<T> : SupportLifecycle {
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int =
                 getSpanSizeForItemAt(
-                    position, layoutManager.spanCount
+                    position,
+                    layoutManager.spanCount,
                 ) ?: layoutManager.spanCount
         }
     }
@@ -176,7 +177,8 @@ interface ISupportAdapter<T> : SupportLifecycle {
     fun setLayoutSpanSize(layoutParams: StaggeredGridLayoutManager.LayoutParams, position: Int) {
         if (position != RecyclerView.NO_POSITION) {
             val spanCount = getSpanSizeForItemAt(
-                position, layoutParams.spanIndex
+                position,
+                layoutParams.spanIndex,
             ) ?: 0
             layoutParams.isFullSpan = spanCount == FULL_SPAN_SIZE
         } else {
@@ -195,7 +197,7 @@ interface ISupportAdapter<T> : SupportLifecycle {
     fun bindViewHolderByType(
         holder: SupportViewHolder,
         position: Int,
-        payloads: List<Any> = emptyList()
+        payloads: List<Any> = emptyList(),
     ) {
         runCatching {
             if (position != RecyclerView.NO_POSITION) {
@@ -206,15 +208,16 @@ interface ISupportAdapter<T> : SupportLifecycle {
                     payloads = payloads,
                     model = recyclerItem,
                     stateFlow = mutableFlow,
-                    selectionMode = supportAction
+                    selectionMode = supportAction,
                 )
-                if (payloads.isEmpty())
+                if (payloads.isEmpty()) {
                     animateViewHolder(holder, position)
+                }
             }
         }.onFailure { throwable ->
             Timber.w(
                 throwable,
-                "holder: $holder, position: $position, payloads: [${payloads.joinToString()}]"
+                "holder: $holder, position: $position, payloads: [${payloads.joinToString()}]",
             )
         }
     }

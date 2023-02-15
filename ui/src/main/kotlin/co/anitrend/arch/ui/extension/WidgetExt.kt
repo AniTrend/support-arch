@@ -26,7 +26,7 @@ import co.anitrend.arch.ui.R
 private fun setUpRecyclerConfiguration(
     vertical: Boolean,
     recyclerView: SupportRecyclerView,
-    recyclerLayoutManager: RecyclerView.LayoutManager?
+    recyclerLayoutManager: RecyclerView.LayoutManager?,
 ) {
     with(recyclerView) {
         setHasFixedSize(true)
@@ -36,12 +36,12 @@ private fun setUpRecyclerConfiguration(
                 vertical ->
                     StaggeredGridLayoutManager(
                         context.resources.getInteger(R.integer.grid_list_x3),
-                        StaggeredGridLayoutManager.VERTICAL
+                        StaggeredGridLayoutManager.VERTICAL,
                     )
                 else ->
                     StaggeredGridLayoutManager(
                         context.resources.getInteger(R.integer.single_list_size),
-                        StaggeredGridLayoutManager.HORIZONTAL
+                        StaggeredGridLayoutManager.HORIZONTAL,
                     )
             }
     }
@@ -60,7 +60,7 @@ private fun setUpRecyclerConfiguration(
 fun SupportRecyclerView.setUpWith(
     vertical: Boolean = true,
     supportAdapter: RecyclerView.Adapter<*>,
-    recyclerLayoutManager: RecyclerView.LayoutManager? = null
+    recyclerLayoutManager: RecyclerView.LayoutManager? = null,
 ) {
     setUpRecyclerConfiguration(vertical, this, recyclerLayoutManager)
     adapter = supportAdapter

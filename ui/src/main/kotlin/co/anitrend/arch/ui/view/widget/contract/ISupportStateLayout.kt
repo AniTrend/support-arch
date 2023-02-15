@@ -52,8 +52,10 @@ interface ISupportStateLayout : CustomView {
     companion object {
         /** First view inflated index which is loading view */
         const val LOADING_VIEW = 0
+
         /** Second view inflated in this case the error view */
         const val ERROR_VIEW = 1
+
         /** Third inflated view should be the current view wrapped by this layout */
         const val CONTENT_VIEW = 2
     }

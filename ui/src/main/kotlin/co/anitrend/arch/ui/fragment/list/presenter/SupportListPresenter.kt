@@ -68,7 +68,7 @@ abstract class SupportListPresenter<T> : ISupportListPresenter<T> {
      */
     override fun onNetworkObserverChanged(
         fragmentList: ISupportFragmentList<T>,
-        loadState: LoadState
+        loadState: LoadState,
     ) {
         if (
             !fragmentList.supportViewAdapter.isEmpty() ||
@@ -112,7 +112,8 @@ abstract class SupportListPresenter<T> : ISupportListPresenter<T> {
      */
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)
-        if (recyclerView is SupportLifecycle)
+        if (recyclerView is SupportLifecycle) {
             (recyclerView as SupportLifecycle).onDestroy(owner)
+        }
     }
 }

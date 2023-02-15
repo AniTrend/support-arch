@@ -57,7 +57,7 @@ interface SupportAdapter<T> : ISupportAdapter<T> {
      * @see AdapterController.withLoadStateHeader
      */
     fun withLoadStateHeader(
-        header: SupportLoadStateAdapter
+        header: SupportLoadStateAdapter,
     ): ConcatAdapter {
         isUsingConcatAdapter = true
         return controller.withLoadStateHeader(header)
@@ -69,7 +69,7 @@ interface SupportAdapter<T> : ISupportAdapter<T> {
      * @see AdapterController.withLoadStateFooter
      */
     fun withLoadStateFooter(
-        footer: SupportLoadStateAdapter
+        footer: SupportLoadStateAdapter,
     ): ConcatAdapter {
         isUsingConcatAdapter = true
         return controller.withLoadStateFooter(footer)
@@ -82,7 +82,7 @@ interface SupportAdapter<T> : ISupportAdapter<T> {
      */
     fun withLoadStateHeaderAndFooter(
         header: SupportLoadStateAdapter,
-        footer: SupportLoadStateAdapter
+        footer: SupportLoadStateAdapter,
     ): ConcatAdapter {
         isUsingConcatAdapter = true
         return controller.withLoadStateHeaderAndFooter(header, footer)
