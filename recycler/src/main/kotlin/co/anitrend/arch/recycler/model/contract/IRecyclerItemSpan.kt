@@ -35,7 +35,7 @@ interface IRecyclerItemSpan {
     fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ): Int
 
     companion object {

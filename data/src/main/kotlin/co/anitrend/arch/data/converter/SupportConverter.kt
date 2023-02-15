@@ -32,6 +32,7 @@ abstract class SupportConverter<M, E> : ISupportConverter<M, E> {
      * be called by [convertFrom]
      */
     protected abstract val fromType: (M) -> E
+
     /**
      * Function reference from converting from [E] to [M] which will
      * be called by [convertTo]

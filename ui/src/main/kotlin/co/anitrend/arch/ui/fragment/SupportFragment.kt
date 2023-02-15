@@ -45,7 +45,7 @@ import kotlinx.coroutines.MainScope
  */
 abstract class SupportFragment(
     @MenuRes protected open val inflateMenu: Int = NO_MENU_ITEM,
-    @LayoutRes protected open val inflateLayout: Int = NO_LAYOUT_ITEM
+    @LayoutRes protected open val inflateLayout: Int = NO_LAYOUT_ITEM,
 ) : Fragment(), ILifecycleController, CoroutineScope by MainScope() {
 
     /**
@@ -102,11 +102,13 @@ abstract class SupportFragment(
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return if (inflateLayout != NO_LAYOUT_ITEM) {
             inflater.inflate(inflateLayout, container, false)
-        } else super.onCreateView(inflater, container, savedInstanceState)
+        } else {
+            super.onCreateView(inflater, container, savedInstanceState)
+        }
     }
 
     /**
@@ -138,8 +140,9 @@ abstract class SupportFragment(
      * @see SupportFragment.onOptionsItemSelected
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (inflateMenu != NO_MENU_ITEM)
+        if (inflateMenu != NO_MENU_ITEM) {
             inflater.inflate(inflateMenu, menu)
+        }
     }
 
     companion object {

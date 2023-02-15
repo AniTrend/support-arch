@@ -91,10 +91,11 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
                 .debounce(16)
                 .filterIsInstance<ClickableItem.State>()
                 .onEach {
-                    if (it.state !is LoadState.Loading)
+                    if (it.state !is LoadState.Loading) {
                         viewModelState()?.retry()
-                    else
+                    } else {
                         Timber.d("retry -> state is loading? current state: ${it.state}")
+                    }
                 }.collect()
         }
     }
@@ -105,7 +106,7 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
     override fun provideLayoutManager(): RecyclerView.LayoutManager {
         return StaggeredGridLayoutManager(
             resources.getInteger(defaultSpanSize),
-            StaggeredGridLayoutManager.VERTICAL
+            StaggeredGridLayoutManager.VERTICAL,
         )
     }
 
@@ -113,8 +114,9 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
      * Sets a layout manager to the recycler view
      */
     override fun setRecyclerLayoutManager(recyclerView: SupportRecyclerView) {
-        if (recyclerView.layoutManager == null)
+        if (recyclerView.layoutManager == null) {
             recyclerView.layoutManager = provideLayoutManager()
+        }
     }
 
     /**
@@ -135,7 +137,8 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
             }
 
             recyclerView.adapter = supportViewAdapter.withLoadStateHeaderAndFooter(
-                header = header, footer = footer
+                header = header,
+                footer = footer,
             )
         }
     }
@@ -154,15 +157,17 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
                 .debounce(16)
                 .filterIsInstance<ClickableItem.State>()
                 .onEach {
-                    if (it.state !is LoadState.Loading)
+                    if (it.state !is LoadState.Loading) {
                         viewModelState()?.retry()
-                    else
+                    } else {
                         Timber.d("state is loading? current state: ${it.state}")
+                    }
                 }.collect()
         }
         lifecycleScope.launchWhenResumed {
-            if (supportViewAdapter.isEmpty())
+            if (supportViewAdapter.isEmpty()) {
                 onFetchDataInitialize()
+            }
         }
     }
 
@@ -188,7 +193,7 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         listPresenter.onCreateView(this, view)

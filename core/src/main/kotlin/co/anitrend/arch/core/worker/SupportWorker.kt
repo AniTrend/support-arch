@@ -41,7 +41,7 @@ import androidx.work.WorkerParameters
  */
 abstract class SupportWorker(
     context: Context,
-    workerParameters: WorkerParameters
+    workerParameters: WorkerParameters,
 ) : Worker(context, workerParameters) {
 
     /**

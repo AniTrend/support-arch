@@ -34,7 +34,7 @@ sealed class ClickableItem {
     data class Data<T>(
         val data: T,
         val view: View,
-        override val clickType: ClickType = ClickType.SHORT
+        override val clickType: ClickType = ClickType.SHORT,
     ) : ClickableItem()
 
     /**
@@ -42,7 +42,7 @@ sealed class ClickableItem {
      */
     data class Default(
         val view: View,
-        override val clickType: ClickType = ClickType.SHORT
+        override val clickType: ClickType = ClickType.SHORT,
     ) : ClickableItem()
 
     /**
@@ -50,7 +50,7 @@ sealed class ClickableItem {
      */
     data class State(
         val state: LoadState,
-        val view: View
+        val view: View,
     ) : ClickableItem()
 
     enum class ClickType {

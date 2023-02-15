@@ -82,7 +82,7 @@ abstract class AdapterController {
      */
     abstract fun withLoadStateHeaderAndFooter(
         header: SupportLoadStateAdapter,
-        footer: SupportLoadStateAdapter
+        footer: SupportLoadStateAdapter,
     ): ConcatAdapter
 
     fun onPause() {

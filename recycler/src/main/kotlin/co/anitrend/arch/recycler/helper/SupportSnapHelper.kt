@@ -26,17 +26,18 @@ import co.anitrend.arch.recycler.helper.contract.SnapPositionListener
  * @since v1.3.0
  */
 open class SupportSnapHelper(
-    private val snapPositionListener: SnapPositionListener
+    private val snapPositionListener: SnapPositionListener,
 ) : PagerSnapHelper() {
 
     override fun findTargetSnapPosition(
         layoutManager: RecyclerView.LayoutManager,
         velocityX: Int,
-        velocityY: Int
+        velocityY: Int,
     ): Int {
         val position = super.findTargetSnapPosition(layoutManager, velocityX, velocityY)
-        if (position != RecyclerView.NO_POSITION)
+        if (position != RecyclerView.NO_POSITION) {
             snapPositionListener.onPageChanged(position + 1)
+        }
         return position
     }
 }

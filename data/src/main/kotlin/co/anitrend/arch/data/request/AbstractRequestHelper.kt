@@ -50,7 +50,7 @@ abstract class AbstractRequestHelper : IRequestHelper {
      * @return True if it is added, false otherwise (e.g. it already exists in the list).
      */
     override fun addListener(
-        listener: IRequestHelper.Listener
+        listener: IRequestHelper.Listener,
     ) = listeners.add(listener)
 
     /**
@@ -60,7 +60,7 @@ abstract class AbstractRequestHelper : IRequestHelper {
      * @return True if the listener is removed, false otherwise (e.g. it never existed)
      */
     override fun removeListener(
-        listener: IRequestHelper.Listener
+        listener: IRequestHelper.Listener,
     ) = listeners.remove(listener)
 
     /*

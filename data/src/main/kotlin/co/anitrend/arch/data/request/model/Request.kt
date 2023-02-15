@@ -64,7 +64,7 @@ sealed class Request {
     enum class Type {
         INITIAL,
         BEFORE,
-        AFTER
+        AFTER,
     }
 
     /**
@@ -73,12 +73,15 @@ sealed class Request {
     enum class Status {
         /** The request has not yet been started */
         IDLE,
+
         /** There is current a running request. */
         RUNNING,
+
         /** The last request has succeeded or no such requests have ever been run. */
         SUCCESS,
+
         /** The last request has failed. */
-        FAILED
+        FAILED,
     }
 
     class Default(

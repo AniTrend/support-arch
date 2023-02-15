@@ -36,7 +36,7 @@ import co.anitrend.arch.ui.view.contract.CustomView
 open class SupportImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : AppCompatImageView(context, attrs, defStyleAttr), CustomView {
 
     protected open var aspectRatio = DEFAULT_ASPECT_RATIO
@@ -55,7 +55,7 @@ open class SupportImageView @JvmOverloads constructor(
             context.obtainStyledAttributes(attrs, R.styleable.SupportImageView).use {
                 aspectRatio = it.getFloat(
                     R.styleable.SupportImageView_aspectRatio,
-                    DEFAULT_ASPECT_RATIO
+                    DEFAULT_ASPECT_RATIO,
                 )
             }
         }
@@ -66,8 +66,9 @@ open class SupportImageView @JvmOverloads constructor(
         var width = measuredWidth
         var height = measuredHeight
 
-        if (width == 0 && height == 0)
+        if (width == 0 && height == 0) {
             return
+        }
 
         when (width > 0) {
             true -> height = (width * aspectRatio).toInt()
@@ -84,8 +85,9 @@ open class SupportImageView @JvmOverloads constructor(
      * Consider calling this in [android.view.View.onDetachedFromWindow]
      */
     override fun onViewRecycled() {
-        if (hasOnClickListeners())
+        if (hasOnClickListeners()) {
             setOnClickListener(null)
+        }
     }
 
     override fun onDetachedFromWindow() {

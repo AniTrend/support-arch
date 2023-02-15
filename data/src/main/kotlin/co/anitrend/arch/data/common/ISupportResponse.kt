@@ -35,6 +35,6 @@ interface ISupportResponse<in RESOURCE, out RESPONSE> {
      */
     suspend operator fun invoke(
         resource: RESOURCE,
-        requestCallback: RequestCallback
+        requestCallback: RequestCallback,
     ): RESPONSE?
 }

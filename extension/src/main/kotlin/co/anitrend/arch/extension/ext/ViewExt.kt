@@ -65,12 +65,13 @@ fun View.updateMargins(
     start: Int = 0,
     top: Int = 0,
     end: Int = 0,
-    bottom: Int = 0
+    bottom: Int = 0,
 ) {
-    if (layoutParams !is ViewGroup.MarginLayoutParams)
+    if (layoutParams !is ViewGroup.MarginLayoutParams) {
         throw UnsupportedOperationException(
-            "Expected layoutParams of ViewGroup.MarginLayoutParams but was $layoutParams instead"
+            "Expected layoutParams of ViewGroup.MarginLayoutParams but was $layoutParams instead",
         )
+    }
     val marginLayoutParams = layoutParams as ViewGroup.MarginLayoutParams
     marginLayoutParams.setMargins(start, top, end, bottom)
     requestLayout()
@@ -114,7 +115,7 @@ inline fun View.snackBar(
     @StringRes text: Int,
     @StringRes actionText: Int,
     duration: Int,
-    crossinline action: (Snackbar) -> Unit
+    crossinline action: (Snackbar) -> Unit,
 ): Snackbar {
     val snackBar = snackBar(text, duration)
     snackBar.setAction(actionText) { action(snackBar) }
@@ -177,16 +178,17 @@ fun View.navigationBarHeight(): Int? {
 @SupportExperimental
 @Deprecated(
     message = "Use View.statusBarHeight() extension instead",
-    level = DeprecationLevel.ERROR
+    level = DeprecationLevel.ERROR,
 )
 fun Resources.getStatusBarHeight(): Int? {
     val resourceId = getIdentifier(
         "status_bar_height",
         "dimen",
-        "android"
+        "android",
     )
-    if (resourceId > 0)
+    if (resourceId > 0) {
         return getDimensionPixelSize(resourceId)
+    }
     return null
 }
 
@@ -201,15 +203,16 @@ fun Resources.getStatusBarHeight(): Int? {
 @SupportExperimental
 @Deprecated(
     message = "Use View.navigationBarHeight() extension instead",
-    level = DeprecationLevel.ERROR
+    level = DeprecationLevel.ERROR,
 )
 fun Resources.getNavigationBarHeight(): Int? {
     val resourceId = getIdentifier(
         "navigation_bar_height",
         "dimen",
-        "android"
+        "android",
     )
-    if (resourceId > 0)
+    if (resourceId > 0) {
         return getDimensionPixelSize(resourceId)
+    }
     return null
 }

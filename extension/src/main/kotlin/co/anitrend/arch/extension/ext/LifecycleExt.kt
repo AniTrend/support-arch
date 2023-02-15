@@ -51,10 +51,11 @@ suspend fun <T> Lifecycle.whenDestroyed(block: suspend CoroutineScope.() -> T): 
  * @see Lifecycle.coroutineScope
  */
 fun LifecycleCoroutineScope.launchWhenDestroyed(
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend CoroutineScope.() -> Unit,
 ): Job = launch {
-    if (this is LifecycleOwner)
+    if (this is LifecycleOwner) {
         whenDestroyed(block)
-    else
+    } else {
         error("${javaClass.simpleName} is not a LifecycleOwner")
+    }
 }

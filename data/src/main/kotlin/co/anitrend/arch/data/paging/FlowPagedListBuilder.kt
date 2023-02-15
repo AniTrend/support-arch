@@ -51,7 +51,7 @@ class FlowPagedListBuilder<K, V>(
     override var initialLoadKey: K? = null,
     override var boundaryCallback: PagedList.BoundaryCallback<*>? = null,
     override var notifyDispatcher: CoroutineDispatcher = Dispatchers.Main,
-    override var fetchDispatcher: CoroutineDispatcher = Dispatchers.IO
+    override var fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AbstractFlowPagedListBuilder<K, V>() {
 
     /**

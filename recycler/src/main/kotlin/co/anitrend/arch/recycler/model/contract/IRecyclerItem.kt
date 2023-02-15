@@ -62,7 +62,7 @@ interface IRecyclerItem : IRecyclerItemSpan {
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     )
 
     /**

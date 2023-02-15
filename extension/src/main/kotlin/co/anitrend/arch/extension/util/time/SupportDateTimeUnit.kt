@@ -25,5 +25,5 @@ enum class SupportDateTimeUnit {
     TIME_UNIT_DAYS,
     TIME_UNIT_HOURS,
     TIME_UNIT_MINUTES,
-    TIME_UNIT_SECONDS
+    TIME_UNIT_SECONDS,
 }

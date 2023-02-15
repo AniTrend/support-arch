@@ -36,16 +36,22 @@ import androidx.annotation.StringRes
 interface IStateLayoutConfig {
     @get:DrawableRes
     val loadingDrawable: Int?
+
     @get:DrawableRes
     val errorDrawable: Int?
+
     @get:StringRes
     val loadingMessage: Int?
+
     @get:StringRes
     val defaultMessage: Int?
+
     @get:StringRes
     val retryAction: Int?
+
     @get:AnimRes
     val inAnimation: Int
+
     @get:AnimRes
     val outAnimation: Int
 }

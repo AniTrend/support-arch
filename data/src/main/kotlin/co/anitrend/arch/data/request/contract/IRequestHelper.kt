@@ -56,7 +56,7 @@ interface IRequestHelper {
      */
     suspend fun runIfNotRunning(
         request: Request,
-        handleCallback: suspend (RequestCallback) -> Unit
+        handleCallback: suspend (RequestCallback) -> Unit,
     ): Boolean
 
     /**
@@ -67,7 +67,7 @@ interface IRequestHelper {
      */
     suspend fun recordResult(
         wrapper: RequestWrapper,
-        throwable: RequestError?
+        throwable: RequestError?,
     )
 
     /**
@@ -80,7 +80,7 @@ interface IRequestHelper {
      */
     suspend fun retryWithStatus(
         status: Request.Status = Request.Status.FAILED,
-        action: suspend () -> Unit
+        action: suspend () -> Unit,
     ): Boolean
 
     /**

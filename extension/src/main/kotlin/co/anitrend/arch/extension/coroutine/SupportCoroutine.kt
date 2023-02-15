@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 AniTrend
+ * Copyright 2023 AniTrend
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,35 +19,19 @@ package co.anitrend.arch.extension.coroutine
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
 import kotlin.coroutines.CoroutineContext
 
-/**
- * Contract for implementing coroutine scope preference on [SupervisorJob](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-supervisor-job.html)
- *
- * @since v1.1.0
- */
-interface ISupportCoroutine : CoroutineScope {
-
-    /**
-     * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
-     */
-    val supervisorJob: Job
-
-    /**
-     * Coroutine dispatcher specification
-     *
-     * @return one of the sub-types of [kotlinx.coroutines.Dispatchers]
-     */
-    val coroutineDispatcher: CoroutineDispatcher
-
+internal class SupportCoroutine(
+    override val supervisorJob: Job,
+    override val coroutineDispatcher: CoroutineDispatcher,
+) : ISupportCoroutine {
     /**
      * Persistent context for the coroutine
      *
      * @return [kotlin.coroutines.CoroutineContext] preferably built from
      * [supervisorJob] + [coroutineDispatcher]
      */
-    override val coroutineContext: CoroutineContext
+    override val coroutineContext: CoroutineContext = supervisorJob + coroutineDispatcher
 
     /**
      * A failure or cancellation of a child does not cause the supervisor job
@@ -55,13 +39,5 @@ interface ISupportCoroutine : CoroutineScope {
      *
      * @return [kotlinx.coroutines.CoroutineScope]
      */
-    val scope: CoroutineScope
-
-    /**
-     * For more details regarding how cancellation is handled
-     *
-     * @see [kotlinx.coroutines.Job.cancelChildren]
-     */
-    fun cancelAllChildren() =
-        scope.coroutineContext.cancelChildren()
+    override val scope: CoroutineScope = CoroutineScope(coroutineContext)
 }

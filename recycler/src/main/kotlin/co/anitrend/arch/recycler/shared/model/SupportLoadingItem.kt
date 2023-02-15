@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * @since v0.9.X
  */
 open class SupportLoadingItem(
-    private val configuration: IStateLayoutConfig
+    private val configuration: IStateLayoutConfig,
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
     private var binding: SupportLayoutStateLoadingBinding? = null
@@ -48,15 +48,16 @@ open class SupportLoadingItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = SupportLayoutStateLoadingBinding.bind(view)
         val message = configuration.loadingMessage
         if (message != null) {
             binding?.stateLoadingText?.visible()
             binding?.stateLoadingText?.setText(message)
-        } else
+        } else {
             binding?.stateLoadingText?.gone()
+        }
     }
 
     override fun unbind(view: View) {
@@ -66,7 +67,7 @@ open class SupportLoadingItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ) = resources.getInteger(R.integer.single_list_size)
 
     companion object {
@@ -78,10 +79,12 @@ open class SupportLoadingItem(
          */
         internal fun createViewHolder(
             viewGroup: ViewGroup,
-            layoutInflater: LayoutInflater
+            layoutInflater: LayoutInflater,
         ): SupportViewHolder {
             val binding = SupportLayoutStateLoadingBinding.inflate(
-                layoutInflater, viewGroup, false
+                layoutInflater,
+                viewGroup,
+                false,
             )
             return SupportViewHolder(binding)
         }

@@ -22,5 +22,5 @@ package co.anitrend.arch.theme.animator.contract
 enum class SupportAnimatorDuration(val runtime: Long) {
     SHORT(250),
     MEDIUM(500),
-    LONG(750)
+    LONG(750),
 }

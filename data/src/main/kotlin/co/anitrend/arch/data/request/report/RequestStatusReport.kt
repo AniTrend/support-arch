@@ -25,7 +25,7 @@ import co.anitrend.arch.domain.entities.RequestError
  * using this helper.
  */
 data class RequestStatusReport internal constructor(
-    private val request: Request
+    private val request: Request,
 ) : IRequestStatusReport {
 
     /**
@@ -73,8 +73,9 @@ data class RequestStatusReport internal constructor(
      * `null` if the request for the given type did not fail.
      */
     override fun getErrorFor(type: Request.Type): RequestError? {
-        if (request.type == type)
+        if (request.type == type) {
             return request.lastError
+        }
         return null
     }
 

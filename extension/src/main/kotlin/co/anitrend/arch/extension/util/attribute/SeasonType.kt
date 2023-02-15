@@ -20,5 +20,5 @@ enum class SeasonType {
     WINTER,
     SPRING,
     SUMMER,
-    FALL
+    FALL,
 }
