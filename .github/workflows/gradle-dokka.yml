@@ -1,14 +1,12 @@
-name: dokka-html
+name: gradle-dokka
 
 on:
   push:
     branches: [ develop ]
 
 jobs:
-  build:
-
+  gradle-dokka:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: set up JDK 11

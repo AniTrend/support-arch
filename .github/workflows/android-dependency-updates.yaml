@@ -1,4 +1,4 @@
-name: Android dependency updates
+name: android-dependency-updates
 
 on:
   schedule:
@@ -9,7 +9,7 @@ permissions:
   repository-projects: write
 
 jobs:
-  build:
+  android-dependency-updates:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3

@@ -1,4 +1,4 @@
-name: Run unit tests
+name: android-unit-test
 
 on: 
   push:
@@ -8,10 +8,8 @@ on:
       - '*'
 
 jobs:
-  build:
-
+  android-unit-test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: set up JDK 11

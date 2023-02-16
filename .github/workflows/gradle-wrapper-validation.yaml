@@ -1,8 +1,8 @@
-name: "Validate Gradle Wrapper"
+name: gradle-wrapper-validation
 on: [push, pull_request]
 
 jobs:
-  validation:
+  gradle-wrapper-validation:
     name: "Validation"
     runs-on: ubuntu-latest
     steps:
