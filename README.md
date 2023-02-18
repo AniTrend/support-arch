@@ -1,7 +1,7 @@
-# [ :biohazard: WIP :biohazard: ] Support Arch Library
+# Support Arch Library
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b6b86af662304c2e9f7f8625d5980fe0)](https://www.codacy.com/gh/AniTrend/support-arch/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AniTrend/support-arch&amp;utm_campaign=Badge_Grade) &nbsp; [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAniTrend%2Fsupport-arch.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FAniTrend%2Fsupport-arch?ref=badge_shield)
-&nbsp; [![Run unit tests](https://github.com/AniTrend/support-arch/actions/workflows/android-test.yml/badge.svg?branch=develop)](https://github.com/AniTrend/support-arch/actions/workflows/android-test.yml) &nbsp; [![Run spotless checks](https://github.com/AniTrend/support-arch/actions/workflows/android-spotless.yml/badge.svg?branch=develop)](https://github.com/AniTrend/support-arch/actions/workflows/android-spotless.yml)
+[![Run unit tests](https://github.com/AniTrend/support-arch/actions/workflows/android-test.yml/badge.svg?branch=develop)](https://github.com/AniTrend/support-arch/actions/workflows/android-test.yml) &nbsp; [![Run spotless checks](https://github.com/AniTrend/support-arch/actions/workflows/android-spotless.yml/badge.svg?branch=develop)](https://github.com/AniTrend/support-arch/actions/workflows/android-spotless.yml) &nbsp; [![gradle-dokka](https://github.com/AniTrend/support-arch/actions/workflows/gradle-dokka.yml/badge.svg)](https://github.com/AniTrend/support-arch/actions/workflows/gradle-dokka.yml) &nbsp; [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b6b86af662304c2e9f7f8625d5980fe0)](https://www.codacy.com/gh/AniTrend/support-arch/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AniTrend/support-arch&amp;utm_campaign=Badge_Grade)
+&nbsp; [![](https://jitpack.io/v/anitrend/support-arch.svg)](https://jitpack.io/#anitrend/support-arch) &nbsp; [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FAniTrend%2Fsupport-arch.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2FAniTrend%2Fsupport-arch?ref=badge_small)
 
 This project is an attempt to create a reusable mobile architecture that follows some of the aspects of [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), [Guide to App Architecture](https://developer.android.com/jetpack/docs/guide) and is mostly written in Kotlin and makes use of [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/) bundled with a couple of libraries.
 
@@ -61,6 +61,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FAniTrend%2Fsupport-arch.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FAniTrend%2Fsupport-arch?ref=badge_large)
