@@ -31,7 +31,7 @@ autolabeler:
     branch:
       - '/dependencies\/.+/'
       - '/renovate\/.+/'
-change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-template: '- #$NUMBER: $TITLE | authored by @$AUTHOR'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
@@ -40,11 +40,19 @@ version-resolver:
   minor:
     labels:
       - 'minor'
+      - 'enhancement'
+      - 'feature'
   patch:
     labels:
       - 'patch'
+      - 'bugfix'
+      - 'hotfix'
+      - 'dependencies'
+      - 'refactor'
   default: patch 
 template: |
-  ## What's Changed
+  # What's Changed
 
   $CHANGES
+  
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
