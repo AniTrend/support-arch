@@ -1,4 +1,4 @@
-name: Release builder
+name: release-builder
 
 on:
   push:
@@ -6,9 +6,8 @@ on:
       - '*' 
 
 jobs:
-  build:
+  release-builder:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Fetch tags

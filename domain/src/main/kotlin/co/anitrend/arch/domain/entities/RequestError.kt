@@ -28,11 +28,11 @@ package co.anitrend.arch.domain.entities
 data class RequestError(
     val topic: String? = null,
     val description: String? = null,
-    val throwable: Throwable? = null
+    val throwable: Throwable? = null,
 ) : Throwable(description, throwable) {
     constructor(cause: Throwable?) : this(
         cause?.javaClass?.simpleName,
         cause?.toString(),
-        cause
+        cause,
     )
 }

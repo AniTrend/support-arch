@@ -31,13 +31,14 @@ import timber.log.Timber
  */
 inline fun <reified T> SavedStateHandle.extra(
     key: String,
-    default: T
+    default: T,
 ): Lazy<T> = lazy(PUBLICATION) {
     try {
-        if (contains(key))
+        if (contains(key)) {
             requireNotNull(get(key) as? T)
-        else
+        } else {
             default
+        }
     } catch (e: Exception) {
         error(e)
     }
@@ -51,13 +52,14 @@ inline fun <reified T> SavedStateHandle.extra(
  * @return [Lazy] of the target type
  */
 inline fun <reified T> SavedStateHandle.extra(
-    key: String
+    key: String,
 ): Lazy<T?> = lazy(PUBLICATION) {
     try {
-        if (contains(key))
+        if (contains(key)) {
             get(key) as? T
-        else
+        } else {
             null
+        }
     } catch (e: Exception) {
         error(e)
     }
@@ -73,12 +75,12 @@ inline fun <reified T> SavedStateHandle.extra(
  */
 inline fun <reified T> FragmentActivity.extra(
     key: String,
-    default: T
+    default: T,
 ): Lazy<T> = lazy(PUBLICATION) {
     try {
-        if (intent?.extras?.containsKey(key) == true)
+        if (intent?.extras?.containsKey(key) == true) {
             intent?.extras?.get(key) as T
-        else {
+        } else {
             Timber.w("$this does not have an argument with key: $key")
             default
         }
@@ -95,12 +97,12 @@ inline fun <reified T> FragmentActivity.extra(
  * @return [Lazy] of the target type
  */
 inline fun <reified T> FragmentActivity.extra(
-    key: String
+    key: String,
 ): Lazy<T?> = lazy(PUBLICATION) {
     try {
-        if (intent?.extras?.containsKey(key) == true)
+        if (intent?.extras?.containsKey(key) == true) {
             intent?.extras?.get(key) as T
-        else {
+        } else {
             Timber.w("$this does not have an argument with key: $key")
             null
         }
@@ -119,12 +121,12 @@ inline fun <reified T> FragmentActivity.extra(
  */
 inline fun <reified T> Fragment.argument(
     key: String,
-    default: T
+    default: T,
 ): Lazy<T> = lazy(PUBLICATION) {
     try {
-        if (arguments?.containsKey(key) == true)
+        if (arguments?.containsKey(key) == true) {
             arguments?.get(key) as T
-        else {
+        } else {
             Timber.w("$this does not have an argument with key: $key")
             default
         }
@@ -141,12 +143,12 @@ inline fun <reified T> Fragment.argument(
  * @return [Lazy] of the target type
  */
 inline fun <reified T> Fragment.argument(
-    key: String
+    key: String,
 ): Lazy<T?> = lazy(PUBLICATION) {
     try {
-        if (arguments?.containsKey(key) == true)
+        if (arguments?.containsKey(key) == true) {
             arguments?.get(key) as T
-        else {
+        } else {
             Timber.w("$this does not have an argument with key: $key")
             null
         }

@@ -48,8 +48,10 @@ class SupportDateHelper : AbstractSupportDateHelper() {
      */
     override fun getCurrentYear(delta: Int): Int {
         val calendar = Calendar.getInstance()
-        return if (calendar.get(Calendar.MONTH) >= 11 && currentSeason == SeasonType.WINTER)
+        return if (calendar.get(Calendar.MONTH) >= 11 && currentSeason == SeasonType.WINTER) {
             calendar.get(Calendar.YEAR) + delta
-        else calendar.get(Calendar.YEAR)
+        } else {
+            calendar.get(Calendar.YEAR)
+        }
     }
 }

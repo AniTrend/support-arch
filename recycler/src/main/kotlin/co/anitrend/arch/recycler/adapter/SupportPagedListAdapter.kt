@@ -43,7 +43,7 @@ import timber.log.Timber
  */
 abstract class SupportPagedListAdapter<T>(
     differCallback: DiffUtil.ItemCallback<T>,
-    supportsStableIds: Boolean = false
+    supportsStableIds: Boolean = false,
 ) : SupportAdapter<T>, PagedListAdapter<T, SupportViewHolder>(differCallback) {
 
     init {
@@ -106,7 +106,7 @@ abstract class SupportPagedListAdapter<T>(
      */
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        @LayoutRes viewType: Int
+        @LayoutRes viewType: Int,
     ): SupportViewHolder {
         val layoutInflater = parent.context.getLayoutInflater()
         return createDefaultViewHolder(parent, viewType, layoutInflater)
@@ -124,9 +124,11 @@ abstract class SupportPagedListAdapter<T>(
     override fun onViewAttachedToWindow(holder: SupportViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.itemView.layoutParams?.also {
-            val position = if (isUsingConcatAdapter)
+            val position = if (isUsingConcatAdapter) {
                 holder.bindingAdapterPosition
-            else holder.absoluteAdapterPosition
+            } else {
+                holder.absoluteAdapterPosition
+            }
 
             when (it is StaggeredGridLayoutManager.LayoutParams) {
                 true -> setLayoutSpanSize(it, position)
@@ -186,12 +188,13 @@ abstract class SupportPagedListAdapter<T>(
     override fun onBindViewHolder(
         holder: SupportViewHolder,
         position: Int,
-        payloads: MutableList<Any>
+        payloads: MutableList<Any>,
     ) {
-        if (payloads.isEmpty())
+        if (payloads.isEmpty()) {
             onBindViewHolder(holder, position)
-        else
+        } else {
             bindViewHolderByType(holder, position, payloads)
+        }
     }
 
     /**

@@ -30,13 +30,13 @@ import androidx.core.view.iterator
 inline fun Menu.addItems(
     menu: Menu,
     group: Int = Menu.NONE,
-    flagFor: (MenuItem) -> Int = { MenuItem.SHOW_AS_ACTION_IF_ROOM }
+    flagFor: (MenuItem) -> Int = { MenuItem.SHOW_AS_ACTION_IF_ROOM },
 ) {
     menu.iterator().forEach { item ->
         add(group, item.itemId, item.order, item.title)
             .setIcon(item.icon)
             .setShowAsActionFlags(
-                flagFor(item)
+                flagFor(item),
             )
     }
 }
@@ -49,13 +49,14 @@ inline fun Menu.addItems(
  */
 fun Menu.removeItems(
     menu: Menu,
-    group: Int = Menu.NONE
+    group: Int = Menu.NONE,
 ) {
     menu.iterator().forEach { item ->
         removeItem(item.itemId)
     }
-    if (group != Menu.NONE)
+    if (group != Menu.NONE) {
         removeGroup(group)
+    }
 }
 
 /**
@@ -66,7 +67,7 @@ fun Menu.removeItems(
  */
 fun Menu.setVisibilityForAllItems(
     shouldShow: Boolean,
-    filter: (MenuItem) -> Boolean
+    filter: (MenuItem) -> Boolean,
 ) {
     iterator().asSequence()
         .filter(filter)

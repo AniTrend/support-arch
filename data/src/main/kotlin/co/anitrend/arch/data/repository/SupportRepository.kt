@@ -27,7 +27,7 @@ import co.anitrend.arch.extension.coroutine.ISupportCoroutine
  * @since v1.1.0
  */
 abstract class SupportRepository(
-    private val source: ISupportCoroutine?
+    private val source: ISupportCoroutine?,
 ) : ISupportRepository {
 
     /**

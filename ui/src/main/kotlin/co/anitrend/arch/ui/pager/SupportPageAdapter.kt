@@ -41,7 +41,7 @@ import timber.log.Timber
  */
 abstract class SupportPageAdapter(
     fragmentManager: FragmentManager,
-    defaultBehavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+    defaultBehavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
 ) : FragmentStatePagerAdapter(fragmentManager, defaultBehavior) {
 
     val titles = ArrayList<String>()
@@ -52,8 +52,9 @@ abstract class SupportPageAdapter(
      * @param titleRes array resource of which titles to use
      */
     open fun setPagerTitles(context: Context, @ArrayRes titleRes: Int) {
-        if (titles.isNotEmpty())
+        if (titles.isNotEmpty()) {
             titles.clear()
+        }
         titles.addAll(context.getStringList(titleRes))
     }
 
@@ -79,8 +80,9 @@ abstract class SupportPageAdapter(
      * @return A title for the requested page
      */
     override fun getPageTitle(position: Int): CharSequence {
-        if (position <= titles.size)
+        if (position <= titles.size) {
             return titles[position].uppercase()
+        }
         Timber.w("Position: $position doesn't have a corresponding title")
         return String.empty()
     }

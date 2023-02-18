@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.Flow
  */
 abstract class AbstractSetting<T>(
     internal val preference: SharedPreferences,
-    internal val default: T
+    internal val default: T,
 ) {
     /**
      * Key identifier for the setting

@@ -34,21 +34,21 @@ sealed class LoadState {
      * Load state is idle
      */
     data class Idle(
-        override val position: Position = Position.UNDEFINED
+        override val position: Position = Position.UNDEFINED,
     ) : LoadState()
 
     /**
      * Load state is successful
      */
     data class Success(
-        override val position: Position = Position.UNDEFINED
+        override val position: Position = Position.UNDEFINED,
     ) : LoadState()
 
     /**
      * Load state is loading
      */
     data class Loading(
-        override val position: Position = Position.UNDEFINED
+        override val position: Position = Position.UNDEFINED,
     ) : LoadState()
 
     /**
@@ -58,6 +58,6 @@ sealed class LoadState {
      */
     data class Error(
         val details: Throwable,
-        override val position: Position = Position.UNDEFINED
+        override val position: Position = Position.UNDEFINED,
     ) : LoadState()
 }

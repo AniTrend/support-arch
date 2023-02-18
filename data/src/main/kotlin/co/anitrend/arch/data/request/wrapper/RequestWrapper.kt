@@ -32,7 +32,7 @@ import co.anitrend.arch.data.request.model.Request
 class RequestWrapper internal constructor(
     val handleCallback: suspend (RequestCallback) -> Unit,
     val helper: IRequestHelper,
-    val request: Request
+    val request: Request,
 ) {
     /**
      * Retries a request if it is not already running
@@ -41,8 +41,8 @@ class RequestWrapper internal constructor(
         handleCallback(
             RequestCallback(
                 wrapper = this,
-                helper = helper
-            )
+                helper = helper,
+            ),
         )
     }
 

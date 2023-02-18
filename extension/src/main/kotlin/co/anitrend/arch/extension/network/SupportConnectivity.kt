@@ -40,7 +40,7 @@ import timber.log.Timber
  */
 class SupportConnectivity(
     private val connectivityManager: ConnectivityManager?,
-    private val connectivityCapabilities: Int = NetworkCapabilities.NET_CAPABILITY_INTERNET
+    private val connectivityCapabilities: Int = NetworkCapabilities.NET_CAPABILITY_INTERNET,
 ) : ISupportConnectivity {
 
     /**
@@ -148,7 +148,7 @@ class SupportConnectivity(
             NetworkRequest.Builder()
                 .addCapability(connectivityCapabilities)
                 .build(),
-            networkCallback
+            networkCallback,
         )
 
         awaitClose {

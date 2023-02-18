@@ -45,7 +45,7 @@ private fun Project.createMavenPublicationUsing(sources: Jar) {
     publishingExtension().publications {
         val component = components.findByName("android")
 
-        println("Configuring maven publication options for ${project.path}:maven with component -> ${component?.name}")
+        logger.lifecycle("Configuring maven publication options for ${project.path}:maven with component -> ${component?.name}")
         create("maven", MavenPublication::class.java) {
             groupId = "co.anitrend.arch"
             artifactId = project.name
@@ -192,11 +192,11 @@ private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtm
 @Suppress("UnstableApiUsage")
 internal fun Project.configureOptions() {
     if (containsBasePlugin()) {
-        println("Applying extension options for ${project.path}")
+        logger.lifecycle("Applying extension options for ${project.path}")
 
         val baseExt = baseExtension()
 
-        println("Applying additional tasks options for dokka and javadoc on ${project.path}")
+        logger.lifecycle("Applying additional tasks options for dokka and javadoc on ${project.path}")
 
         createDokkaTaskProvider()
 

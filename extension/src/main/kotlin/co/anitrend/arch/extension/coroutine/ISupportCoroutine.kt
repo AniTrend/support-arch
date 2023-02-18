@@ -16,11 +16,11 @@
 
 package co.anitrend.arch.extension.coroutine
 
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Contract for implementing coroutine scope preference on [SupervisorJob](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-supervisor-job.html)

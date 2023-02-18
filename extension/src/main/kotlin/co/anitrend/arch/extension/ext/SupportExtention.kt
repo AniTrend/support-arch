@@ -59,20 +59,27 @@ fun String?.capitalizeWords(exceptions: List<String>? = null): String = when {
         for ((index, word) in words.withIndex()) {
             when (word.isNotEmpty()) {
                 true -> {
-                    if (!exceptions.isNullOrEmpty() && exceptions.contains(word))
+                    if (!exceptions.isNullOrEmpty() && exceptions.contains(word)) {
                         result.append(word)
-                    else result.append(
-                        word.replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(
-                                Locale.ROOT
-                            ) else it.toString()
-                        }
-                    )
+                    } else {
+                        result.append(
+                            word.replaceFirstChar {
+                                if (it.isLowerCase()) {
+                                    it.titlecase(
+                                        Locale.ROOT,
+                                    )
+                                } else {
+                                    it.toString()
+                                }
+                            },
+                        )
+                    }
                 }
                 else -> {}
             }
-            if (index != words.size - 1)
+            if (index != words.size - 1) {
                 result.append(" ")
+            }
         }
         result.toString()
     }

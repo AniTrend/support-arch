@@ -30,7 +30,7 @@ fun ISupportAdapter<*>.isEmpty(): Boolean {
         is PagedListAdapter<*, *> -> itemCount
         is RecyclerView.Adapter<*> -> itemCount
         else -> throw NotImplementedError(
-            "Not sure how to request item count from: $this"
+            "Not sure how to request item count from: $this",
         )
     }
     return count < 1

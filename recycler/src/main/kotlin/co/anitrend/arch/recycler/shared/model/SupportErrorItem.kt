@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
  */
 class SupportErrorItem(
     private val loadState: LoadState,
-    private val configuration: IStateLayoutConfig
+    private val configuration: IStateLayoutConfig,
 ) : RecyclerItem(RecyclerView.NO_ID) {
 
     private var binding: SupportLayoutStateErrorBinding? = null
@@ -50,11 +50,12 @@ class SupportErrorItem(
         position: Int,
         payloads: List<Any>,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         binding = SupportLayoutStateErrorBinding.bind(view)
-        if (loadState is LoadState.Error)
+        if (loadState is LoadState.Error) {
             binding?.stateErrorText?.text = loadState.details.message
+        }
 
         if (configuration.retryAction != null) {
             binding?.stateErrorAction?.visible()
@@ -62,8 +63,9 @@ class SupportErrorItem(
                 stateFlow.value = ClickableItem.State(loadState, it)
             }
             binding?.stateErrorAction?.setText(configuration.retryAction!!)
-        } else
+        } else {
             binding?.stateErrorAction?.gone()
+        }
     }
 
     override fun unbind(view: View) {
@@ -74,7 +76,7 @@ class SupportErrorItem(
     override fun getSpanSize(
         spanCount: Int,
         position: Int,
-        resources: Resources
+        resources: Resources,
     ) = resources.getInteger(R.integer.single_list_size)
 
     companion object {
@@ -86,10 +88,12 @@ class SupportErrorItem(
          */
         internal fun createViewHolder(
             viewGroup: ViewGroup,
-            layoutInflater: LayoutInflater
+            layoutInflater: LayoutInflater,
         ): SupportViewHolder {
             val binding = SupportLayoutStateErrorBinding.inflate(
-                layoutInflater, viewGroup, false
+                layoutInflater,
+                viewGroup,
+                false,
             )
             return SupportViewHolder(binding)
         }

@@ -51,7 +51,7 @@ import timber.log.Timber
  */
 class SupportStateLayout @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null
+    attrs: AttributeSet? = null,
 ) : ViewFlipper(context, attrs), ISupportStateLayout, ISupportCoroutine by Main() {
 
     private val loadingBinding: SupportStateLayoutLaodingBinding by lazy(UNSAFE) {
@@ -93,29 +93,33 @@ class SupportStateLayout @JvmOverloads constructor(
     private fun updateUsing(config: StateLayoutConfig) {
         setInAnimation(context, config.inAnimation)
         setOutAnimation(context, config.outAnimation)
-        if (config.errorDrawable != null)
+        if (config.errorDrawable != null) {
             errorBinding.stateLayoutErrorImage.setImageDrawable(
-                context.getCompatDrawable(config.errorDrawable)
+                context.getCompatDrawable(config.errorDrawable),
             )
-        else
+        } else {
             errorBinding.stateLayoutErrorImage.gone()
+        }
 
-        if (config.loadingDrawable != null)
+        if (config.loadingDrawable != null) {
             loadingBinding.stateLayoutLoadingImage.setImageDrawable(
-                context.getCompatDrawable(config.loadingDrawable)
+                context.getCompatDrawable(config.loadingDrawable),
             )
-        else
+        } else {
             loadingBinding.stateLayoutLoadingImage.gone()
+        }
 
-        if (config.retryAction != null)
+        if (config.retryAction != null) {
             errorBinding.stateLayoutErrorRetryAction.setText(config.retryAction)
-        else
+        } else {
             errorBinding.stateLayoutErrorRetryAction.gone()
+        }
 
-        if (config.loadingMessage != null)
+        if (config.loadingMessage != null) {
             loadingBinding.stateLayoutLoadingText.setText(config.loadingMessage)
-        else
+        } else {
             loadingBinding.stateLayoutLoadingText.gone()
+        }
     }
 
     /**
@@ -123,20 +127,21 @@ class SupportStateLayout @JvmOverloads constructor(
      * additional attribute initialization
      */
     override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        if (!isInEditMode)
+        if (!isInEditMode) {
             setupAdditionalViews()
+        }
 
         context.obtainStyledAttributes(attrs, R.styleable.SupportStateLayout).use {
             displayedChild = it.getInt(
                 R.styleable.SupportStateLayout_showState,
-                ISupportStateLayout.CONTENT_VIEW
+                ISupportStateLayout.CONTENT_VIEW,
             )
         }
 
         errorBinding.stateLayoutErrorRetryAction.setOnClickListener {
             interactionFlow.value = ClickableItem.State(
                 state = loadStateFlow.value,
-                view = it
+                view = it,
             )
         }
     }
@@ -162,8 +167,9 @@ class SupportStateLayout @JvmOverloads constructor(
     private fun updateUsingLoadState(loadState: LoadState) {
         when (loadState) {
             is LoadState.Loading -> {
-                if (!isLoading)
+                if (!isLoading) {
                     displayedChild = ISupportStateLayout.LOADING_VIEW
+                }
             }
             is LoadState.Error -> {
                 if (loadState.details is RequestError) {
@@ -176,17 +182,21 @@ class SupportStateLayout @JvmOverloads constructor(
                     errorBinding.stateLayoutErrorMessage.text =
                         loadState.details.message
                 }
-                if (!isError)
+                if (!isError) {
                     displayedChild = ISupportStateLayout.ERROR_VIEW
+                }
             }
             is LoadState.Idle,
-            is LoadState.Success -> {
-                if (!isContent)
+            is LoadState.Success,
+            -> {
+                if (!isContent) {
                     displayedChild = ISupportStateLayout.CONTENT_VIEW
+                }
             }
         }
-        if (!isInLayout)
+        if (!isInLayout) {
             requestLayout()
+        }
     }
 
     override fun onAttachedToWindow() {

@@ -8,5 +8,5 @@ dependencies {
     implementation(project(":domain"))
 
     implementation(libs.google.android.material)
-    implementation(libs.androidx.work.runtimeKtx)
+    implementation(libs.androidx.work.runtime.ktx)
 }

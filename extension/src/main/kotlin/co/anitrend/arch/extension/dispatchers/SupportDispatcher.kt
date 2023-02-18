@@ -37,5 +37,5 @@ data class SupportDispatcher(
     override val computation: CoroutineDispatcher = Dispatchers.Default,
     override val io: CoroutineDispatcher = Dispatchers.IO,
     @OptIn(DelicateCoroutinesApi::class)
-    override val confined: CoroutineDispatcher = newSingleThreadContext("ConfinedContext")
+    override val confined: CoroutineDispatcher = newSingleThreadContext("ConfinedContext"),
 ) : ISupportDispatcher

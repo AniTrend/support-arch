@@ -62,8 +62,9 @@ abstract class SupportActivity :
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home)
-            onBackPressed()
+        if (item.itemId == android.R.id.home) {
+            onBackPressedDispatcher.onBackPressed()
+        }
         return super.onOptionsItemSelected(item)
     }
 }

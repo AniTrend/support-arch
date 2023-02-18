@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * @since 1.3.0
  */
 open class SupportViewHolder(
-    binding: ViewBinding
+    binding: ViewBinding,
 ) : ISupportViewHolder, RecyclerView.ViewHolder(binding.root) {
 
     private var recyclerItem: IRecyclerItem? = null
@@ -44,14 +44,15 @@ open class SupportViewHolder(
         payloads: List<Any>,
         model: IRecyclerItem,
         stateFlow: MutableStateFlow<ClickableItem>,
-        selectionMode: ISupportSelectionMode<Long>?
+        selectionMode: ISupportSelectionMode<Long>?,
     ) {
         recyclerItem = model
         model.bind(itemView, position, payloads, stateFlow, selectionMode)
         if (model.supportsSelectionMode && model.id != RecyclerView.NO_ID) {
             val isSelected = selectionMode?.containsItem(model.id)
             model.decorator.decorateUsing(
-                itemView, isSelected ?: false
+                itemView,
+                isSelected ?: false,
             )
         }
     }

@@ -33,5 +33,5 @@ import co.anitrend.arch.extension.preference.SupportPreference
  */
 abstract class SupportPresenter<S : SupportPreference>(
     protected val context: Context,
-    override val settings: S
+    override val settings: S,
 ) : ISupportPresenter, SupportLifecycle

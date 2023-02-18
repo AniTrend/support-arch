@@ -21,8 +21,8 @@ package co.anitrend.arch.domain.entities
     level = DeprecationLevel.WARNING,
     replaceWith = ReplaceWith(
         "LoadState",
-        "co.anitrend.arch.domain.entities.LoadState"
-    )
+        "co.anitrend.arch.domain.entities.LoadState",
+    ),
 )
 /**
  * State representing ongoing, completed or failed requests
@@ -58,6 +58,6 @@ sealed class NetworkState {
     data class Error(
         val code: Int? = null,
         val heading: String? = null,
-        val message: String? = null
+        val message: String? = null,
     ) : NetworkState()
 }

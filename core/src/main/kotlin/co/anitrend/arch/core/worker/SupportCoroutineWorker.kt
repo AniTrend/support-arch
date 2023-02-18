@@ -34,7 +34,7 @@ import androidx.work.WorkerParameters
  */
 abstract class SupportCoroutineWorker(
     context: Context,
-    workerParameters: WorkerParameters
+    workerParameters: WorkerParameters,
 ) : CoroutineWorker(context, workerParameters) {
 
     /**
