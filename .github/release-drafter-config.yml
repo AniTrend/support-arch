@@ -12,6 +12,7 @@ categories:
   - title: '🧰 Maintenance'
     labels: 
       - 'refactor'
+      - 'dependencies'
 autolabeler:
   - label: 'docs'
     files:
