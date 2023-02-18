@@ -13,7 +13,7 @@ categories:
     labels: 
       - 'refactor'
 autolabeler:
-  - label: 'refactor'
+  - label: 'docs'
     files:
       - '*.md'
     branch:
@@ -45,6 +45,6 @@ version-resolver:
       - 'patch'
   default: patch 
 template: |
-  ## What’s Changed
+  ## What's Changed
 
   $CHANGES
