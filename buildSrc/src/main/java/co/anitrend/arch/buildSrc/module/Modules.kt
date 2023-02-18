@@ -12,6 +12,7 @@ internal object Modules {
     }
 
     enum class Support(override val id: String) : Module {
+        Analytics("analytics"),
         Core("core"),
         Data("data"),
         Domain("domain"),

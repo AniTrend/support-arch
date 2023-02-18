@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package co.anitrend.arch.core.analytic.contract
+package co.anitrend.arch.analytics.contract
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
 
 /**
  * Contract for analytics or crash reporting
@@ -26,10 +25,6 @@ import androidx.fragment.app.FragmentActivity
  * @since v1.0.X
  */
 interface ISupportAnalytics {
-    /**
-     * Handles logging the current state of a visited screen
-     */
-    fun logCurrentScreen(context: FragmentActivity, tag: String)
 
     /**
      * Handles logging the current state of a visited screen using an explicit [bundle]
