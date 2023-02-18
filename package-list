@@ -1,8 +1,9 @@
 $dokka.format:html-v1
 $dokka.linkExtension:html
 
+module:analytics
+co.anitrend.arch.analytics.contract
 module:core
-co.anitrend.arch.core.analytic.contract
 co.anitrend.arch.core.model
 co.anitrend.arch.core.presenter
 co.anitrend.arch.core.presenter.contract
