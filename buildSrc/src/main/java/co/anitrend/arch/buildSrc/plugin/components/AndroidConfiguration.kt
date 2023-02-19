@@ -1,5 +1,6 @@
 package co.anitrend.arch.buildSrc.plugin.components
 
+import co.anitrend.arch.buildSrc.plugin.extensions.releaseProperties
 import co.anitrend.arch.buildSrc.plugin.extensions.spotlessExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.libraryExtension
@@ -42,8 +43,8 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     defaultConfig {
         minSdk = Configuration.minSdk
         targetSdk = Configuration.targetSdk
-        versionCode = Configuration.versionCode
-        versionName = Configuration.versionName
+        versionCode = releaseProperties["code"] as? Int
+        versionName = releaseProperties["version"] as? String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles.add(File("consumer-rules.pro"))
     }

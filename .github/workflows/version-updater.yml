@@ -29,9 +29,9 @@ jobs:
           echo "name=v$(cat VERSION)" >> gradle/version.properties
 
       - name: Show version
-        run: cat gradle/version.properties
+        run: cat gradle/release.properties
 
-      - name: Commit version.properties
+      - name: Commit release.properties
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"

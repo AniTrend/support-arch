@@ -6,7 +6,6 @@ import org.gradle.kotlin.dsl.get
 import org.jetbrains.dokka.gradle.DokkaTask
 import co.anitrend.arch.buildSrc.module.Modules
 import co.anitrend.arch.buildSrc.plugin.extensions.*
-import co.anitrend.arch.buildSrc.common.Configuration
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.invoke
@@ -45,14 +44,16 @@ private fun Project.createMavenPublicationUsing(sources: Jar) {
     publishingExtension().publications {
         val component = components.findByName("android")
 
-        logger.lifecycle("Configuring maven publication options for ${project.path}:maven with component -> ${component?.name}")
+        val projectName = this@createMavenPublicationUsing.name
+
+        logger.lifecycle("Configuring maven publication options for ${path}:maven with component -> ${component?.name}")
         create("maven", MavenPublication::class.java) {
             groupId = "co.anitrend.arch"
-            artifactId = project.name
-            version = Configuration.versionName
+            artifactId = projectName
+            version = releaseProperties["version"] as String
 
             artifact(sources)
-            artifact("${project.buildDir}/outputs/aar/${project.name}-release.aar")
+            artifact("${buildDir}/outputs/aar/${projectName}-release.aar")
             from(component)
 
             pom {
@@ -81,7 +82,7 @@ private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtm
     outputDirectory.set(buildDir.resolve("docs/dokka"))
 
     // Set module name displayed in the final output
-    moduleName.set(project.name)
+    moduleName.set(this@createDokkaTaskProvider.name)
 
     // Use default or set to custom path to cache directory
     // to enable package-list caching
@@ -192,11 +193,11 @@ private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtm
 @Suppress("UnstableApiUsage")
 internal fun Project.configureOptions() {
     if (containsBasePlugin()) {
-        logger.lifecycle("Applying extension options for ${project.path}")
+        logger.lifecycle("Applying extension options for ${path}")
 
         val baseExt = baseExtension()
 
-        logger.lifecycle("Applying additional tasks options for dokka and javadoc on ${project.path}")
+        logger.lifecycle("Applying additional tasks options for dokka and javadoc on ${path}")
 
         createDokkaTaskProvider()
 

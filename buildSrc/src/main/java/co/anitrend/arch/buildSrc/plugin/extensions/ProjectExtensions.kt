@@ -22,6 +22,8 @@ import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
 import org.jetbrains.kotlin.gradle.testing.internal.KotlinTestsRegistry
+import java.io.File
+import java.util.Properties
 
 fun Project.hasDependencies() =
     name == Modules.Support.Core.id ||
@@ -50,6 +52,18 @@ fun Project.isThemeModule() =
 
 fun Project.isUiModule() =
     name == Modules.Support.Ui.id
+
+internal val Project.releaseProperties: Properties
+    get() {
+        val releaseFile = File(rootDir, "gradle/release.properties")
+        if (!releaseFile.exists()) {
+            logger.error("Release file cannot be found in path: $releaseFile")
+        }
+
+        return Properties(2).apply {
+            load(releaseFile.inputStream())
+        }
+    }
 
 internal val Project.libs: LibrariesForLibs
     get() = extensions.getByType<LibrariesForLibs>()
