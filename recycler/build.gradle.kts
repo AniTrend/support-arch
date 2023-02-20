@@ -2,6 +2,10 @@ plugins {
     id("co.anitrend.arch")
 }
 
+android {
+    namespace = "co.anitrend.arch.recycler"
+}
+
 dependencies {
     implementation(project(":extension"))
     implementation(project(":core"))

@@ -58,18 +58,16 @@ fun FragmentActivity.disableToolbarTitle() {
 fun FragmentActivity.makeStatusBarTransparent() {
     // TODO: Figure out how to make status bar transparent pre android R using insets
     @Suppress("DEPRECATION")
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        window.apply {
-            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            } else {
-                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            }
-            statusBarColor = Color.TRANSPARENT
+    window.apply {
+        clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        } else {
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         }
+        statusBarColor = Color.TRANSPARENT
     }
 }
 
@@ -77,9 +75,9 @@ fun FragmentActivity.makeStatusBarTransparent() {
  * Hides both status bar and navigation bar
  */
 fun FragmentActivity.hideStatusBarAndNavigationBar() {
+    val controller = WindowCompat.getInsetsController(window, window.decorView)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
         WindowCompat.setDecorFitsSystemWindows(window, true)
-        val controller = WindowCompat.getInsetsController(window, window.decorView)
 
         // swipe in system bars, this is now sticky immersive
         controller.systemBarsBehavior =
@@ -89,6 +87,7 @@ fun FragmentActivity.hideStatusBarAndNavigationBar() {
         controller.hide(WindowInsetsCompat.Type.systemBars())
     } else {
         // TODO: Figure out how to hide status bar and nav pre android R using insets
+        @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LOW_PROFILE or
             View.SYSTEM_UI_FLAG_FULLSCREEN or

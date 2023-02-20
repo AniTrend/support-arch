@@ -103,7 +103,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                     "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                     "-opt-in=kotlinx.coroutines.FlowPreview",
                     "-opt-in=kotlin.time.ExperimentalTime",
-                    "-opt-in=kotlin.Experimental"
                 )
             } else {
                 listOf(

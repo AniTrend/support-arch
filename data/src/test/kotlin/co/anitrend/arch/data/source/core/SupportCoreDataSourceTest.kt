@@ -1,6 +1,6 @@
 package co.anitrend.arch.data.source.core
 
-import co.anitrend.arch.data.request.model.Request
+import co.anitrend.arch.request.model.Request
 import co.anitrend.arch.data.state.DataState.Companion.create
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError

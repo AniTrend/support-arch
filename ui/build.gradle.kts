@@ -2,6 +2,10 @@ plugins {
     id("co.anitrend.arch")
 }
 
+android {
+    namespace = "co.anitrend.arch.ui"
+}
+
 dependencies {
     implementation(project(":extension"))
     implementation(project(":core"))

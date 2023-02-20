@@ -17,7 +17,9 @@ internal object Modules {
         Data("data"),
         Domain("domain"),
         Extensions("extension"),
+        PagingLegacy("paging-legacy"),
         Recycler("recycler"),
+        Request("request"),
         Theme("theme"),
         Ui("ui")
     }

@@ -16,8 +16,8 @@
 
 package co.anitrend.arch.data.source.contract
 
-import co.anitrend.arch.data.request.AbstractRequestHelper
 import co.anitrend.arch.domain.entities.LoadState
+import co.anitrend.arch.request.AbstractRequestHelper
 import kotlinx.coroutines.flow.Flow
 
 interface IDataSource {

@@ -16,14 +16,14 @@
 
 package co.anitrend.arch.data.source.core.contract
 
-import co.anitrend.arch.data.request.AbstractRequestHelper
-import co.anitrend.arch.data.request.extension.createStatusFlow
-import co.anitrend.arch.data.request.helper.RequestHelper
 import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.data.source.contract.ISource
 import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 import co.anitrend.arch.extension.coroutine.extension.Default
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
+import co.anitrend.arch.request.AbstractRequestHelper
+import co.anitrend.arch.request.extension.createStatusFlow
+import co.anitrend.arch.request.helper.RequestHelper
 
 /**
  * Contract for data sources
