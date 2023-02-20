@@ -9,4 +9,5 @@ include(
     ":recycler",
     ":paging-legacy",
     ":request",
+    ":recycler-paging-legacy",
 )

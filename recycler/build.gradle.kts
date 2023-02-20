@@ -15,6 +15,5 @@ dependencies {
     implementation(libs.google.android.material)
 
     implementation(libs.androidx.swipeRefreshLayout)
-    implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.androidx.recyclerView)
 }

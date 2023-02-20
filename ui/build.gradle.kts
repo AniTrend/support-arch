@@ -12,6 +12,7 @@ dependencies {
     implementation(project(":theme"))
     implementation(project(":domain"))
     implementation(project(":recycler"))
+    implementation(project(":recycler-paging-legacy"))
 
     implementation(libs.google.android.material)
 

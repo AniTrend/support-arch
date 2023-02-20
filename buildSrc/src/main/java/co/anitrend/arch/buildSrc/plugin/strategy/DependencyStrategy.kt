@@ -35,7 +35,6 @@ internal class DependencyStrategy(private val project: Project) {
         implementation(project.libs.androidx.lifecycle.extensions)
         implementation(project.libs.androidx.lifecycle.runTime.ktx)
         implementation(project.libs.androidx.lifecycle.liveData.ktx)
-        //implementation(project.libs.androidx.lifecycle.viewModel.ktx)
     }
 
     private fun DependencyHandler.applyCoroutinesDependencies() {
@@ -43,7 +42,7 @@ internal class DependencyStrategy(private val project: Project) {
             implementation(project.libs.jetbrains.kotlinx.coroutines.android)
         implementation(project.libs.jetbrains.kotlinx.coroutines.core)
         test(project.libs.jetbrains.kotlinx.coroutines.test)
-        androidTest(project.libs.cash.turbine)
+        test(project.libs.cash.turbine)
     }
 
     fun applyDependenciesOn(handler: DependencyHandler) {

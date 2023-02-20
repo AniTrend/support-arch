@@ -47,19 +47,19 @@ internal class RequestHelperListener(
         Timber.d("Updating state for -> type: ${report.getType()} | position: $position")
         val state = when {
             report.hasRunning() -> {
-                LoadState.Loading(position)
+                LoadState.Loading(position = position)
             }
             report.hasError() -> {
                 val error = report.getRequestError()
-                LoadState.Error(error, position)
+                LoadState.Error(details = error, position = position)
             }
             report.hasSuccess() -> {
-                LoadState.Success(position)
+                LoadState.Success(position = position)
             }
-            else -> LoadState.Idle(position)
+            else -> LoadState.Idle(position = position)
         }
         scope.trySend(state).onFailure {
-            Timber.e(it, "Failed to send status change report state to scope")
+            Timber.e(it, "Failed to send status change report state to $scope")
         }
     }
 }

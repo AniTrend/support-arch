@@ -32,7 +32,8 @@ fun Project.hasDependencies() =
             name == Modules.Support.Recycler.id ||
             name == Modules.Support.Ui.id ||
             name == Modules.Support.Request.id ||
-            name == Modules.Support.PagingLegacy.id
+            name == Modules.Support.PagingLegacy.id ||
+            name == Modules.Support.RecyclerPagingLegacy.id
 
 fun Project.isCoreModule() =
     name == Modules.Support.Core.id
@@ -60,6 +61,9 @@ fun Project.isPagingModule() =
 
 fun Project.isRequestModule() =
     name == Modules.Support.Request.id
+
+fun Project.isRecyclerPagingLegacyModule() =
+    name == Modules.Support.RecyclerPagingLegacy.id
 
 internal val Project.releaseProperties: Properties
     get() {

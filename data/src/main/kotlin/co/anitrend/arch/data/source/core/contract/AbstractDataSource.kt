@@ -44,7 +44,10 @@ abstract class AbstractDataSource : IDataSource, ISource, ISupportCoroutine by D
      * @see AbstractRequestHelper
      */
     override val requestHelper by lazy {
-        RequestHelper(dispatcher)
+        RequestHelper(
+            main = dispatcher.main,
+            io = dispatcher.io,
+        )
     }
 
     /**

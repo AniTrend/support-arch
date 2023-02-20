@@ -21,6 +21,7 @@ internal object Modules {
         Recycler("recycler"),
         Request("request"),
         Theme("theme"),
-        Ui("ui")
+        Ui("ui"),
+        RecyclerPagingLegacy("recycler-paging-legacy"),
     }
 }

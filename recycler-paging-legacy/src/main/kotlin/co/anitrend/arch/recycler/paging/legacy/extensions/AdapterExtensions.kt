@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 AniTrend
+ * Copyright 2023 AniTrend
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package co.anitrend.arch.recycler.extensions
+package co.anitrend.arch.recycler.paging.legacy.extensions
 
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import co.anitrend.arch.recycler.adapter.SupportListAdapter
+import androidx.paging.PagedListAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 
 /**
- * Check if [ISupportAdapter] -> [SupportListAdapter] contains any list items
+ * Check if [ISupportAdapter] -> [PagedListAdapter] contains any list items
  *
  * @return [Boolean] indicating if internal list is empty
  */
 fun ISupportAdapter<*>.isEmpty(): Boolean {
     val count = when (this) {
-        is ListAdapter<*, *> -> itemCount
-        is RecyclerView.Adapter<*> -> itemCount
+        is PagedListAdapter<*, *> -> itemCount
         else -> throw NotImplementedError(
             "Not sure how to request item count from: $this",
         )

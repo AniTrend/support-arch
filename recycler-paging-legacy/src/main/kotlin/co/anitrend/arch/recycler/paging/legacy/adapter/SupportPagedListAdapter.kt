@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.anitrend.arch.recycler.adapter
+package co.anitrend.arch.recycler.paging.legacy.adapter
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.extension.ext.getLayoutInflater
+import co.anitrend.arch.recycler.adapter.SupportAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 import co.anitrend.arch.recycler.adapter.controller.SupportAdapterController
 import co.anitrend.arch.recycler.common.ClickableItem

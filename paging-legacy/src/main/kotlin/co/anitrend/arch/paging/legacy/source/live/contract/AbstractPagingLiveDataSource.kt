@@ -47,7 +47,10 @@ abstract class AbstractPagingLiveDataSource<K, V> :
      * @see AbstractRequestHelper
      */
     override val requestHelper by lazy {
-        RequestHelper(dispatcher)
+        RequestHelper(
+            main = dispatcher.main,
+            io = dispatcher.io,
+        )
     }
 
     /**

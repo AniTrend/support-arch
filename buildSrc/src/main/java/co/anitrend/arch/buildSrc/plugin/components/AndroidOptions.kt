@@ -35,7 +35,8 @@ private fun Project.dependenciesOfProject(): List<Modules.Module> {
             Modules.Support.Core,
             Modules.Support.Theme,
             Modules.Support.Domain,
-            Modules.Support.Recycler
+            Modules.Support.Recycler,
+            Modules.Support.RecyclerPagingLegacy
         )
         project.isPagingModule() -> listOf(
             Modules.Support.Extensions,
@@ -45,6 +46,13 @@ private fun Project.dependenciesOfProject(): List<Modules.Module> {
         project.isRequestModule() -> listOf(
             Modules.Support.Extensions,
             Modules.Support.Domain,
+        )
+        project.isRecyclerPagingLegacyModule() -> listOf(
+            Modules.Support.Extensions,
+            Modules.Support.Core,
+            Modules.Support.Theme,
+            Modules.Support.Domain,
+            Modules.Support.Recycler
         )
         else -> emptyList()
     }

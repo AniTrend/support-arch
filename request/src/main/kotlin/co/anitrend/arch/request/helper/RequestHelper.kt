@@ -17,13 +17,13 @@
 package co.anitrend.arch.request.helper
 
 import co.anitrend.arch.domain.entities.RequestError
-import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.AbstractRequestHelper
 import co.anitrend.arch.request.callback.RequestCallback
 import co.anitrend.arch.request.model.Request
 import co.anitrend.arch.request.queue.RequestQueue
 import co.anitrend.arch.request.report.contract.IRequestStatusReport
 import co.anitrend.arch.request.wrapper.RequestWrapper
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
@@ -37,7 +37,8 @@ import java.util.concurrent.atomic.AtomicReference
  * @since v1.3.0
  */
 class RequestHelper(
-    private val dispatcher: ISupportDispatcher,
+    private val main: CoroutineDispatcher,
+    private val io: CoroutineDispatcher,
 ) : AbstractRequestHelper() {
 
     private fun addOrReuseRequest(request: Request): RequestQueue {
@@ -65,7 +66,7 @@ class RequestHelper(
         val report = AtomicReference<IRequestStatusReport?>(null)
         val ran = AtomicBoolean(false)
 
-        withContext(dispatcher.confined) {
+        withContext(main) {
             val queue = addOrReuseRequest(request)
             if (queue.running == null) {
                 queue.running = handleCallback
@@ -79,7 +80,7 @@ class RequestHelper(
                 }
                 report.get()?.dispatchReport()
 
-                withContext(dispatcher.io) {
+                withContext(io) {
                     val wrapper = RequestWrapper(
                         handleCallback = handleCallback,
                         helper = this@RequestHelper,
@@ -105,7 +106,7 @@ class RequestHelper(
         wrapper: RequestWrapper,
         throwable: RequestError?,
     ) {
-        withContext(dispatcher.confined) {
+        withContext(main) {
             val isSuccessful = throwable == null
             var report: IRequestStatusReport? = null
             val queue = addOrReuseRequest(wrapper.request)
@@ -142,7 +143,7 @@ class RequestHelper(
         action: suspend () -> Unit,
     ): Boolean {
         val retried = AtomicBoolean(false)
-        withContext(dispatcher.confined) {
+        withContext(main) {
             val pendingRetries = mutableListOf<RequestWrapper?>()
 
             requestQueue.forEach { queue ->
@@ -165,7 +166,7 @@ class RequestHelper(
                 Timber.i("No requests for status: $status to retry")
             }
 
-            withContext(dispatcher.io) {
+            withContext(io) {
                 pendingRetries.filterNotNull()
                     .forEach { wrapper ->
                         wrapper.retry()
@@ -182,7 +183,7 @@ class RequestHelper(
      * @return True if a match is found, false otherwise.
      */
     override suspend fun hasAnyWithStatus(status: Request.Status): Boolean {
-        return withContext(dispatcher.confined) {
+        return withContext(main) {
             val queue = requestQueue.firstOrNull {
                 it.request.status == status
             }
