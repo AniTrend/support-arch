@@ -6,5 +6,8 @@ include(
     ":data",
     ":domain",
     ":theme",
-    ":recycler"
+    ":recycler",
+    ":paging-legacy",
+    ":request",
+    ":recycler-paging-legacy",
 )

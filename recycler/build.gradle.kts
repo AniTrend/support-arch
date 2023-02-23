@@ -2,6 +2,10 @@ plugins {
     id("co.anitrend.arch")
 }
 
+android {
+    namespace = "co.anitrend.arch.recycler"
+}
+
 dependencies {
     implementation(project(":extension"))
     implementation(project(":core"))
@@ -11,6 +15,5 @@ dependencies {
     implementation(libs.google.android.material)
 
     implementation(libs.androidx.swipeRefreshLayout)
-    implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.androidx.recyclerView)
 }

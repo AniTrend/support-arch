@@ -2,6 +2,6 @@ plugins {
     id("co.anitrend.arch")
 }
 
-dependencies {
-
+android {
+    namespace = "co.anitrend.arch.analytics"
 }

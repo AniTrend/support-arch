@@ -2,6 +2,10 @@ plugins {
     id("co.anitrend.arch")
 }
 
+android {
+    namespace = "co.anitrend.arch.extension"
+}
+
 dependencies {
     implementation(libs.google.android.material)
 

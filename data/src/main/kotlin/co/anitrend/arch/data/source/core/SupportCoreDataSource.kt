@@ -16,8 +16,8 @@
 
 package co.anitrend.arch.data.source.core
 
-import co.anitrend.arch.data.request.model.Request
 import co.anitrend.arch.data.source.core.contract.AbstractDataSource
+import co.anitrend.arch.request.model.Request
 
 /**
  * A data source that depends on [kotlinx.coroutines.flow.Flow] to publish results.

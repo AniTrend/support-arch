@@ -19,7 +19,6 @@ package co.anitrend.arch.recycler.adapter
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleOwner
-import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
