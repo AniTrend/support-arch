@@ -37,6 +37,9 @@
     <div>
     </div>
     <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":extension:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
     </div>
@@ -46,151 +49,157 @@
         <div id="sideMenu"></div>
     </div>
     <div id="main">
-<div class="main-content" id="content" pageids="extension::co.anitrend.arch.extension.util.pagination/SupportPagingHelper///PointingToDeclaration//-37320058">
+<div class="main-content" data-page-type="classlike" id="content" pageids="extension::co.anitrend.arch.extension.util.pagination/SupportPagingHelper///PointingToDeclaration//-37320058">
   <div class="breadcrumbs"><a href="../../index.html">extension</a><span class="delimiter">/</span><a href="../index.html">co.anitrend.arch.extension.util.pagination</a><span class="delimiter">/</span><span class="current">SupportPagingHelper</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Support</span><wbr><span>Paging</span><wbr><span><span>Helper</span></span></h1>
     <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">SupportPagingHelper</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">var </span>page<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>pageOffset<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>pageSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">var </span>isPagingLimit<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span> : <a href="../../co.anitrend.arch.extension.util.pagination.contract/-i-support-paging-helper/index.html">ISupportPagingHelper</a></div><p class="paragraph">Paging helper, makes the manipulating of paging related variables easier</p><span class="kdoc-tag"><h4 class="">Since</h4><p class="paragraph">v1.1.0</p></span></div></div>
   </div>
   <div class="tabbedcontent">
-    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Constructors">Constructors</button><button class="section-tab" data-togglable="Functions">Functions</button><button class="section-tab" data-togglable="Properties">Properties</button></div>
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,FUNCTION,PROPERTY">Members</button></div>
     <div class="tabs-section-body">
-      <h2 class="tabbedcontent">Constructors</h2>
-      <div class="table" data-togglable="Constructors"><a data-name="160567591%2FConstructors%2F-37320058" anchor-label="SupportPagingHelper" id="160567591%2FConstructors%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-          <div class="main-subrow keyValue TabbedContent">
-            <div class=""><span class="inline-flex">
-                <div><a href="-support-paging-helper.html"><span>Support</span><wbr><span>Paging</span><wbr><span><span>Helper</span></span></a></div>
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="160567591%2FConstructors%2F-37320058" anchor-label="SupportPagingHelper" id="160567591%2FConstructors%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-support-paging-helper.html"><span>Support</span><wbr><span>Paging</span><wbr><span><span>Helper</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="160567591%2FConstructors%2F-37320058"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-support-paging-helper.html"><span class="token function">SupportPagingHelper</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">page<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span><span class="token punctuation">, </span></span><span class="parameter ">pageOffset<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">pageSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">isPagingLimit<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">page<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span><span class="token punctuation">, </span></span><span class="parameter ">pageOffset<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter ">pageSize<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">isPagingLimit<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <h2 class="">Functions</h2>
-      <div class="table" data-togglable="Functions"><a data-name="-1099840877%2FFunctions%2F-37320058" anchor-label="isFirstPage" id="-1099840877%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="is-first-page.html"><span>is</span><wbr><span>First</span><wbr><span><span>Page</span></span></a></div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1099840877%2FFunctions%2F-37320058" anchor-label="isFirstPage" id="-1099840877%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-first-page.html"><span>is</span><wbr><span>First</span><wbr><span><span>Page</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1099840877%2FFunctions%2F-37320058"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="is-first-page.html"><span class="token function">isFirstPage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the current page and offset is the first</p></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="is-first-page.html"><span class="token function">isFirstPage</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Checks if the current page and offset is the first</p></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-2010161199%2FFunctions%2F-37320058" anchor-label="onPageNext" id="-2010161199%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="on-page-next.html"><span>on</span><wbr><span>Page</span><wbr><span><span>Next</span></span></a></div>
+          <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-page-next.html"><span>on</span><wbr><span>Page</span><wbr><span><span>Next</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2010161199%2FFunctions%2F-37320058"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-page-next.html"><span class="token function">onPageNext</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Calculates the next page offset and index</p></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-page-next.html"><span class="token function">onPageNext</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Calculates the next page offset and index</p></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-1672195891%2FFunctions%2F-37320058" anchor-label="onPagePrevious" id="-1672195891%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="on-page-previous.html"><span>on</span><wbr><span>Page</span><wbr><span><span>Previous</span></span></a></div>
+          <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-page-previous.html"><span>on</span><wbr><span>Page</span><wbr><span><span>Previous</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1672195891%2FFunctions%2F-37320058"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-page-previous.html"><span class="token function">onPagePrevious</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Calculates the previous page offset and index</p></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-page-previous.html"><span class="token function">onPagePrevious</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Calculates the previous page offset and index</p></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-1580672965%2FFunctions%2F-37320058" anchor-label="onPageRefresh" id="-1580672965%2FFunctions%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="on-page-refresh.html"><span>on</span><wbr><span>Page</span><wbr><span><span>Refresh</span></span></a></div>
+          <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="on-page-refresh.html"><span>on</span><wbr><span>Page</span><wbr><span><span>Refresh</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1580672965%2FFunctions%2F-37320058"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-page-refresh.html"><span class="token function">onPageRefresh</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Resets the paging parameters to their default</p></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="on-page-refresh.html"><span class="token function">onPageRefresh</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Resets the paging parameters to their default</p></div></div></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <h2 class="">Properties</h2>
-      <div class="table" data-togglable="Properties"><a data-name="-1664299741%2FProperties%2F-37320058" anchor-label="isPagingLimit" id="-1664299741%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="is-paging-limit.html"><span>is</span><wbr><span>Paging</span><wbr><span><span>Limit</span></span></a></div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1664299741%2FProperties%2F-37320058" anchor-label="isPagingLimit" id="-1664299741%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-paging-limit.html"><span>is</span><wbr><span>Paging</span><wbr><span><span>Limit</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1664299741%2FProperties%2F-37320058"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><a data-name="-1664299741%2FProperties%2F-37320058" anchor-label="isPagingLimit" id="-1664299741%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="is-paging-limit.html">isPagingLimit</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="is-paging-limit.html">isPagingLimit</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="416247267%2FProperties%2F-37320058" anchor-label="page" id="416247267%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="page.html"><span><span>page</span></span></a></div>
+          <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="page.html"><span><span>page</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="416247267%2FProperties%2F-37320058"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><a data-name="416247267%2FProperties%2F-37320058" anchor-label="page" id="416247267%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="page.html">page</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">1</span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="page.html">page</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="407865360%2FProperties%2F-37320058" anchor-label="pageOffset" id="407865360%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="page-offset.html"><span>page</span><wbr><span><span>Offset</span></span></a></div>
+          <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="page-offset.html"><span>page</span><wbr><span><span>Offset</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="407865360%2FProperties%2F-37320058"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><a data-name="407865360%2FProperties%2F-37320058" anchor-label="pageOffset" id="407865360%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="page-offset.html">pageOffset</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="page-offset.html">pageOffset</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="469028322%2FProperties%2F-37320058" anchor-label="pageSize" id="469028322%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a>
-        <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="page-size.html"><span>page</span><wbr><span><span>Size</span></span></a></div>
+          <div class="table-row" data-filterable-current=":extension:dokkaHtmlPartial/release" data-filterable-set=":extension:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="page-size.html"><span>page</span><wbr><span><span>Size</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="469028322%2FProperties%2F-37320058"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><a data-name="469028322%2FProperties%2F-37320058" anchor-label="pageSize" id="469028322%2FProperties%2F-37320058" data-filterable-set=":extension:dokkaHtmlPartial/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="page-size.html">pageSize</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":extension:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="page-size.html">pageSize</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
@@ -204,6 +213,6 @@
       </div>
     </div>
 </div>
-
-</body></html>
+</body>
+</html>
 

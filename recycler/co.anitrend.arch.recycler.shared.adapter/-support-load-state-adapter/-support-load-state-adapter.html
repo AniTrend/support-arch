@@ -37,6 +37,9 @@
     <div>
     </div>
     <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":recycler:dokkaHtmlPartial/release">androidJvm</button>
+        </div>
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
     </div>
@@ -46,12 +49,12 @@
         <div id="sideMenu"></div>
     </div>
     <div id="main">
-<div class="main-content" id="content" pageids="recycler::co.anitrend.arch.recycler.shared.adapter/SupportLoadStateAdapter/SupportLoadStateAdapter/#android.content.res.Resources#co.anitrend.arch.core.model.IStateLayoutConfig#kotlin.Function1[co.anitrend.arch.domain.entities.LoadState,co.anitrend.arch.recycler.model.contract.IRecyclerItem]#co.anitrend.arch.theme.animator.contract.AbstractAnimator?#co.anitrend.arch.recycler.action.contract.ISupportSelectionMode[kotlin.Long]?/PointingToDeclaration//49020980">
+<div class="main-content" data-page-type="member" id="content" pageids="recycler::co.anitrend.arch.recycler.shared.adapter/SupportLoadStateAdapter/SupportLoadStateAdapter/#android.content.res.Resources#co.anitrend.arch.core.model.IStateLayoutConfig#kotlin.Function1[co.anitrend.arch.domain.entities.LoadState,co.anitrend.arch.recycler.model.contract.IRecyclerItem]#co.anitrend.arch.theme.animator.contract.AbstractAnimator?#co.anitrend.arch.recycler.action.contract.ISupportSelectionMode[kotlin.Long]?/PointingToDeclaration//49020980">
   <div class="breadcrumbs"><a href="../../index.html">recycler</a><span class="delimiter">/</span><a href="../index.html">co.anitrend.arch.recycler.shared.adapter</a><span class="delimiter">/</span><a href="index.html">SupportLoadStateAdapter</a><span class="delimiter">/</span><span class="current">SupportLoadStateAdapter</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Support</span><wbr><span>Load</span><wbr><span>State</span><wbr><span><span>Adapter</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="-support-load-state-adapter.html"><span class="token function">SupportLoadStateAdapter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resources<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/Resources.html">Resources</a><span class="token punctuation">, </span></span><span class="parameter ">stateConfiguration<span class="token operator">: </span><a href="../../../core/co.anitrend.arch.core.model/-i-state-layout-config/index.html">IStateLayoutConfig</a><span class="token punctuation">, </span></span><span class="parameter ">mapper<span class="token operator">: </span><span class="token punctuation">(</span><span class="token keyword"></span><a href="../../../domain/co.anitrend.arch.domain.entities/-load-state/index.html">LoadState</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="../../co.anitrend.arch.recycler.model.contract/-i-recycler-item/index.html">IRecyclerItem</a><span class="token operator"> = </span>{
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":recycler:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resources<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/content/res/Resources.html">Resources</a><span class="token punctuation">, </span></span><span class="parameter ">stateConfiguration<span class="token operator">: </span><a href="../../../core/co.anitrend.arch.core.model/-i-state-layout-config/index.html">IStateLayoutConfig</a><span class="token punctuation">, </span></span><span class="parameter ">mapper<span class="token operator">: </span><span class="token punctuation">(</span><span class="token keyword"></span><a href="../../../domain/co.anitrend.arch.domain.entities/-load-state/index.html">LoadState</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span class="token keyword"></span><a href="../../co.anitrend.arch.recycler.model.contract/-i-recycler-item/index.html">IRecyclerItem</a><span class="token operator"> = </span>{
         when (it) {
             is LoadState.Loading -&gt; SupportLoadingItem(stateConfiguration)
             is LoadState.Error -&gt; SupportErrorItem(it, stateConfiguration)
@@ -64,6 +67,6 @@
       </div>
     </div>
 </div>
-
-</body></html>
+</body>
+</html>
 
