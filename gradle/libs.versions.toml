@@ -11,7 +11,7 @@ androidx-recycler = "1.3.0-rc01"
 androidx-test-ext = "1.1.5"
 androidx-work = "2.8.0"
 
-jetbrains-dokka = "1.7.20"
+jetbrains-dokka = "1.8.10"
 jetbrains-kotlin = "1.8.10"
 jetbrains-kotlinx-coroutines = "1.6.4"
 
