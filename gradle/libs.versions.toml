@@ -9,7 +9,7 @@ androidx-paging = "2.1.2"
 androidx-preference = "1.2.0"
 androidx-recycler = "1.3.0"
 androidx-test-ext = "1.1.5"
-androidx-work = "2.8.0"
+androidx-work = "2.8.1"
 
 jetbrains-dokka = "1.8.10"
 jetbrains-kotlin = "1.8.10"
