@@ -16,10 +16,7 @@
 
 package co.anitrend.arch.extension.ext
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleCoroutineScope
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.whenStateAtLeast
+import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -30,17 +27,20 @@ import kotlinx.coroutines.launch
  *
  * @see Lifecycle.whenStateAtLeast for details
  */
-suspend fun <T> LifecycleOwner.whenDestroyed(block: suspend CoroutineScope.() -> T): T =
-    lifecycle.whenDestroyed(block)
+suspend fun LifecycleOwner.repeatOn(
+    state: Lifecycle.State, block:
+    suspend CoroutineScope.() -> Unit
+) = lifecycle.repeatOn(state, block)
 
 /**
  * Runs the given block when the [Lifecycle] is at least in [Lifecycle.State.DESTROYED] state.
  *
  * @see Lifecycle.whenStateAtLeast for details
  */
-suspend fun <T> Lifecycle.whenDestroyed(block: suspend CoroutineScope.() -> T): T {
-    return whenStateAtLeast(Lifecycle.State.DESTROYED, block)
-}
+suspend fun Lifecycle.repeatOn(
+    state: Lifecycle.State,
+    block: suspend CoroutineScope.() -> Unit
+) = repeatOnLifecycle(state, block)
 
 /**
  * Launches and runs the given block when the [Lifecycle] controlling this
@@ -50,11 +50,12 @@ suspend fun <T> Lifecycle.whenDestroyed(block: suspend CoroutineScope.() -> T): 
  * @see Lifecycle.whenDestroyed
  * @see Lifecycle.coroutineScope
  */
-fun LifecycleCoroutineScope.launchWhenDestroyed(
+fun LifecycleCoroutineScope.repeatOn(
+    state: Lifecycle.State,
     block: suspend CoroutineScope.() -> Unit,
 ): Job = launch {
     if (this is LifecycleOwner) {
-        whenDestroyed(block)
+        repeatOn(state, block)
     } else {
         error("${javaClass.simpleName} is not a LifecycleOwner")
     }
