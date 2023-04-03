@@ -19,42 +19,49 @@ package co.anitrend.arch.extension.ext
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.whenStateAtLeast
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /**
- * Runs the given block when the [LifecycleOwner]'s [Lifecycle] is at least in
- * [Lifecycle.State.DESTROYED] state.
+ * Launches a coroutine for [block] when the [LifecycleOwner] matches [state]
  *
- * @see Lifecycle.whenStateAtLeast for details
+ * @see Lifecycle.repeatOn
  */
-suspend fun <T> LifecycleOwner.whenDestroyed(block: suspend CoroutineScope.() -> T): T =
-    lifecycle.whenDestroyed(block)
+suspend fun LifecycleOwner.repeatOn(
+    state: Lifecycle.State,
+    block:
+    suspend CoroutineScope.() -> Unit,
+) = lifecycle.repeatOn(state, block)
 
 /**
- * Runs the given block when the [Lifecycle] is at least in [Lifecycle.State.DESTROYED] state.
+ * Launches a coroutine for [block] when the [Lifecycle] matches [state]
  *
- * @see Lifecycle.whenStateAtLeast for details
+ * @see LifecycleCoroutineScope.repeatOn
  */
-suspend fun <T> Lifecycle.whenDestroyed(block: suspend CoroutineScope.() -> T): T {
-    return whenStateAtLeast(Lifecycle.State.DESTROYED, block)
-}
+suspend fun Lifecycle.repeatOn(
+    state: Lifecycle.State,
+    block: suspend CoroutineScope.() -> Unit,
+) = repeatOnLifecycle(state, block)
 
 /**
  * Launches and runs the given block when the [Lifecycle] controlling this
- * [LifecycleCoroutineScope] is at least in [Lifecycle.State.DESTROYED] state.
+ * [LifecycleCoroutineScope] is goes into the the matching state.
  *
- * The returned [Job] will be cancelled when the [Lifecycle] is destroyed.
- * @see Lifecycle.whenDestroyed
- * @see Lifecycle.coroutineScope
+ * @param state Lifecycle state to repeat on
+ * @param block The block of suspend code to invoke
+ *
+ * @return [Job] of the launching scope
+ *
+ * @see Lifecycle.repeatOn
  */
-fun LifecycleCoroutineScope.launchWhenDestroyed(
+fun LifecycleCoroutineScope.repeatOn(
+    state: Lifecycle.State,
     block: suspend CoroutineScope.() -> Unit,
 ): Job = launch {
     if (this is LifecycleOwner) {
-        whenDestroyed(block)
+        repeatOn(state, block)
     } else {
         error("${javaClass.simpleName} is not a LifecycleOwner")
     }

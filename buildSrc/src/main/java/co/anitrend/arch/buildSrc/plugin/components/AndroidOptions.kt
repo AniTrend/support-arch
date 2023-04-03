@@ -68,7 +68,7 @@ private fun Project.createMavenPublicationUsing(sources: Jar) {
         create("maven", MavenPublication::class.java) {
             groupId = "co.anitrend.arch"
             artifactId = projectName
-            version = releaseProperties["version"] as String
+            version = props[PropertyTypes.VERSION]
 
             artifact(sources)
             artifact("${buildDir}/outputs/aar/${projectName}-release.aar")

@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IntegerRes
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
@@ -30,6 +31,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.attachComponent
 import co.anitrend.arch.extension.ext.detachComponent
+import co.anitrend.arch.extension.ext.repeatOn
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
@@ -86,7 +88,7 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
     }
 
     protected open fun ISupportAdapter<*>.registerFlowListener() {
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.repeatOn(Lifecycle.State.RESUMED) {
             clickableFlow
                 .debounce(16)
                 .filterIsInstance<ClickableItem.State>()
@@ -152,7 +154,7 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
     override fun initializeComponents(savedInstanceState: Bundle?) {
         attachComponent(supportViewAdapter)
         attachComponent(listPresenter)
-        lifecycleScope.launchWhenResumed {
+        lifecycleScope.repeatOn(Lifecycle.State.RESUMED) {
             listPresenter.stateLayout.interactionFlow
                 .debounce(16)
                 .filterIsInstance<ClickableItem.State>()
@@ -164,7 +166,8 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
                     }
                 }.collect()
         }
-        lifecycleScope.launchWhenResumed {
+
+        lifecycleScope.repeatOn(Lifecycle.State.RESUMED) {
             if (supportViewAdapter.isEmpty()) {
                 onFetchDataInitialize()
             }

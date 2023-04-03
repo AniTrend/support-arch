@@ -1,13 +1,12 @@
 package co.anitrend.arch.buildSrc.plugin.components
 
-import co.anitrend.arch.buildSrc.plugin.extensions.releaseProperties
 import co.anitrend.arch.buildSrc.plugin.extensions.spotlessExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.libraryExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.isDomainModule
 import co.anitrend.arch.buildSrc.plugin.extensions.isThemeModule
+import co.anitrend.arch.buildSrc.plugin.extensions.props
 import co.anitrend.arch.buildSrc.plugin.extensions.libs
-import co.anitrend.arch.buildSrc.common.Configuration
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
@@ -39,12 +38,12 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
 }
 
 internal fun Project.configureAndroid(): Unit = baseExtension().run {
-    compileSdkVersion(Configuration.compileSdk)
+    compileSdkVersion(33)
     defaultConfig {
-        minSdk = Configuration.minSdk
-        targetSdk = Configuration.targetSdk
-        versionCode = releaseProperties["code"] as? Int
-        versionName = releaseProperties["version"] as? String
+        minSdk = 23
+        targetSdk = 33
+        versionCode = props[PropertyTypes.CODE].toInt()
+        versionName = props[PropertyTypes.VERSION]
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles.add(File("consumer-rules.pro"))
     }
