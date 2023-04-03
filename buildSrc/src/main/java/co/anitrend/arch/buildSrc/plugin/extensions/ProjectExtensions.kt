@@ -1,6 +1,7 @@
 package co.anitrend.arch.buildSrc.plugin.extensions
 
 import co.anitrend.arch.buildSrc.module.Modules
+import co.anitrend.arch.buildSrc.plugin.components.PropertiesReader
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
@@ -65,17 +66,8 @@ fun Project.isRequestModule() =
 fun Project.isRecyclerPagingLegacyModule() =
     name == Modules.Support.RecyclerPagingLegacy.id
 
-internal val Project.releaseProperties: Properties
-    get() {
-        val releaseFile = File(rootDir, "gradle/release.properties")
-        if (!releaseFile.exists()) {
-            logger.error("Release file cannot be found in path: $releaseFile")
-        }
-
-        return Properties(2).apply {
-            load(releaseFile.inputStream())
-        }
-    }
+internal val Project.props: PropertiesReader
+    get() = PropertiesReader(this)
 
 internal val Project.libs: LibrariesForLibs
     get() = extensions.getByType<LibrariesForLibs>()
