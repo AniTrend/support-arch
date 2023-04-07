@@ -79,4 +79,4 @@ mockk-android = { module = "io.mockk:mockk-android", version.ref = "io-mockk" }
 
 gradle-versions = "com.github.ben-manes:gradle-versions-plugin:0.46.0"
 
-spotless-gradle = "com.diffplug.spotless:spotless-plugin-gradle:6.17.0"
+spotless-gradle = "com.diffplug.spotless:spotless-plugin-gradle:6.18.0"
