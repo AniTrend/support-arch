@@ -24,6 +24,7 @@ import androidx.annotation.IntegerRes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
@@ -31,7 +32,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.extension.ext.attachComponent
 import co.anitrend.arch.extension.ext.detachComponent
-import co.anitrend.arch.extension.ext.repeatOn
 import co.anitrend.arch.recycler.SupportRecyclerView
 import co.anitrend.arch.recycler.adapter.SupportListAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
@@ -88,17 +88,19 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
     }
 
     protected open fun ISupportAdapter<*>.registerFlowListener() {
-        lifecycleScope.repeatOn(Lifecycle.State.RESUMED) {
-            clickableFlow
-                .debounce(16)
-                .filterIsInstance<ClickableItem.State>()
-                .onEach {
-                    if (it.state !is LoadState.Loading) {
-                        viewModelState()?.retry()
-                    } else {
-                        Timber.d("retry -> state is loading? current state: ${it.state}")
-                    }
-                }.collect()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                clickableFlow
+                    .debounce(16)
+                    .filterIsInstance<ClickableItem.State>()
+                    .onEach {
+                        if (it.state !is LoadState.Loading) {
+                            viewModelState()?.retry()
+                        } else {
+                            Timber.d("retry -> state is loading? current state: ${it.state}")
+                        }
+                    }.collect()
+            }
         }
     }
 
@@ -154,22 +156,26 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
     override fun initializeComponents(savedInstanceState: Bundle?) {
         attachComponent(supportViewAdapter)
         attachComponent(listPresenter)
-        lifecycleScope.repeatOn(Lifecycle.State.RESUMED) {
-            listPresenter.stateLayout.interactionFlow
-                .debounce(16)
-                .filterIsInstance<ClickableItem.State>()
-                .onEach {
-                    if (it.state !is LoadState.Loading) {
-                        viewModelState()?.retry()
-                    } else {
-                        Timber.d("state is loading? current state: ${it.state}")
-                    }
-                }.collect()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                listPresenter.stateLayout.interactionFlow
+                    .debounce(16)
+                    .filterIsInstance<ClickableItem.State>()
+                    .onEach {
+                        if (it.state !is LoadState.Loading) {
+                            viewModelState()?.retry()
+                        } else {
+                            Timber.d("state is loading? current state: ${it.state}")
+                        }
+                    }.collect()
+            }
         }
 
-        lifecycleScope.repeatOn(Lifecycle.State.RESUMED) {
-            if (supportViewAdapter.isEmpty()) {
-                onFetchDataInitialize()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                if (supportViewAdapter.isEmpty()) {
+                    onFetchDataInitialize()
+                }
             }
         }
     }
