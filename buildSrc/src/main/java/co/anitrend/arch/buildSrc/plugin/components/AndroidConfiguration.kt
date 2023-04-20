@@ -87,11 +87,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
 
     configureLint()
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
     tasks.withType(KotlinCompile::class.java) {
         kotlinOptions {
             allWarningsAsErrors = false
@@ -108,12 +103,6 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
                     "-opt-in=kotlin.Experimental"
                 )
             }
-        }
-    }
-
-    tasks.withType(KotlinJvmCompile::class.java) {
-        kotlinOptions {
-            jvmTarget = "11"
         }
     }
 }
