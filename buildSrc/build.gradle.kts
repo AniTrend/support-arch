@@ -1,5 +1,4 @@
 import org.gradle.accessors.dm.LibrariesForLibs
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 
 plugins {
     `kotlin-dsl`
@@ -9,23 +8,11 @@ plugins {
 
 repositories {
     google()
-    jcenter()
     mavenCentral()
     gradlePluginPortal()
     maven {
         setUrl("https://plugins.gradle.org/m2/")
     }
-}
-
-tasks.withType(KotlinJvmCompile::class.java) {
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
 }
 
 val libs = extensions.getByType<LibrariesForLibs>()
