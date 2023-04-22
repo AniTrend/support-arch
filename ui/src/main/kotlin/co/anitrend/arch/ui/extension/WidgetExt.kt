@@ -35,12 +35,12 @@ private fun setUpRecyclerConfiguration(
             ?: when {
                 vertical ->
                     StaggeredGridLayoutManager(
-                        context.resources.getInteger(R.integer.grid_list_x3),
+                        context.resources.getInteger(co.anitrend.arch.theme.R.integer.grid_list_x3),
                         StaggeredGridLayoutManager.VERTICAL,
                     )
                 else ->
                     StaggeredGridLayoutManager(
-                        context.resources.getInteger(R.integer.single_list_size),
+                        context.resources.getInteger(co.anitrend.arch.theme.R.integer.single_list_size),
                         StaggeredGridLayoutManager.HORIZONTAL,
                     )
             }
@@ -71,8 +71,8 @@ fun SupportRecyclerView.setUpWith(
  * things like direction, colors, behavior etc.
  */
 fun SwipeRefreshLayout.configureWidgetBehaviorWith() {
-    setProgressBackgroundColorSchemeColor(context.getColorFromAttr(R.attr.colorOnPrimary))
-    setColorSchemeColors(context.getColorFromAttr(R.attr.colorOnBackground))
+    setProgressBackgroundColorSchemeColor(context.getColorFromAttr(com.google.android.material.R.attr.colorOnPrimary))
+    setColorSchemeColors(context.getColorFromAttr(com.google.android.material.R.attr.colorOnBackground))
 }
 
 /**

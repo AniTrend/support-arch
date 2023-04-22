@@ -16,15 +16,12 @@
 
 package co.anitrend.arch.extension.ext
 
-import android.annotation.SuppressLint
-import android.content.res.Resources
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import androidx.annotation.StringRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import co.anitrend.arch.extension.annotation.SupportExperimental
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -128,7 +125,7 @@ inline fun View.snackBar(
  * @param show True if the keyboard should be shown otherwise False to hide it
  */
 fun View.toggleIme(show: Boolean) {
-    val controller = ViewCompat.getWindowInsetsController(this)
+    val controller = let(ViewCompat::getWindowInsetsController)
     when (show) {
         true -> controller?.show(WindowInsetsCompat.Type.ime())
         else -> controller?.hide(WindowInsetsCompat.Type.ime())
@@ -139,7 +136,7 @@ fun View.toggleIme(show: Boolean) {
  * @return Visibility status of the [WindowInsets.Type.ime] or null
  */
 fun View.isImeVisible(): Boolean? {
-    val insets = ViewCompat.getRootWindowInsets(this)
+    val insets = let(ViewCompat::getRootWindowInsets)
     return insets?.isVisible(WindowInsetsCompat.Type.ime())
 }
 
@@ -147,7 +144,7 @@ fun View.isImeVisible(): Boolean? {
  * @return Height of the [WindowInsets.Type.ime] or null if not shown
  */
 fun View.imeHeight(): Int? {
-    val insets = ViewCompat.getRootWindowInsets(this)
+    val insets = let(ViewCompat::getRootWindowInsets)
     return insets?.getInsets(WindowInsetsCompat.Type.ime())?.bottom
 }
 
@@ -155,7 +152,7 @@ fun View.imeHeight(): Int? {
  * @return Height of the [WindowInsets.Type.systemBars] top
  */
 fun View.statusBarHeight(): Int? {
-    val insets = ViewCompat.getRootWindowInsets(this)
+    val insets = let(ViewCompat::getRootWindowInsets)
     return insets?.getInsets(WindowInsetsCompat.Type.systemBars())?.top
 }
 
@@ -163,56 +160,6 @@ fun View.statusBarHeight(): Int? {
  * @return Height of the [WindowInsets.Type.systemBars] bottom
  */
 fun View.navigationBarHeight(): Int? {
-    val insets = ViewCompat.getRootWindowInsets(this)
+    val insets = let(ViewCompat::getRootWindowInsets)
     return insets?.getInsets(WindowInsetsCompat.Type.systemBars())?.bottom
-}
-
-/**
- * Gets status bar height, [credits](https://gist.github.com/hamakn/8939eb68a920a6d7a498)
- *
- * @return Height in pixels otherwise null if it cannot resolve
- *
- * @author hamakn
- */
-@SuppressLint("InternalInsetResource")
-@SupportExperimental
-@Deprecated(
-    message = "Use View.statusBarHeight() extension instead",
-    level = DeprecationLevel.ERROR,
-)
-fun Resources.getStatusBarHeight(): Int? {
-    val resourceId = getIdentifier(
-        "status_bar_height",
-        "dimen",
-        "android",
-    )
-    if (resourceId > 0) {
-        return getDimensionPixelSize(resourceId)
-    }
-    return null
-}
-
-/**
- * Gets status navigation bar height, [credits](https://gist.github.com/hamakn/8939eb68a920a6d7a498)
- *
- * @return Height in pixels otherwise null if it cannot resolve
- *
- * @author hamakn
- */
-@SuppressLint("InternalInsetResource")
-@SupportExperimental
-@Deprecated(
-    message = "Use View.navigationBarHeight() extension instead",
-    level = DeprecationLevel.ERROR,
-)
-fun Resources.getNavigationBarHeight(): Int? {
-    val resourceId = getIdentifier(
-        "navigation_bar_height",
-        "dimen",
-        "android",
-    )
-    if (resourceId > 0) {
-        return getDimensionPixelSize(resourceId)
-    }
-    return null
 }

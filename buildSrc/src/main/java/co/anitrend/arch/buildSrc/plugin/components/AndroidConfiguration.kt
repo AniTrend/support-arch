@@ -5,11 +5,13 @@ import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.libraryExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.isDomainModule
 import co.anitrend.arch.buildSrc.plugin.extensions.isThemeModule
+import co.anitrend.arch.buildSrc.plugin.extensions.kotlinAndroidProjectExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.props
 import co.anitrend.arch.buildSrc.plugin.extensions.libs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+import org.jetbrains.kotlin.gradle.model.KotlinAndroidExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import java.io.File
 
@@ -88,14 +90,13 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
     configureLint()
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     tasks.withType(KotlinCompile::class.java) {
         kotlinOptions {
             allWarningsAsErrors = false
-
             // Filter out modules that won't be using coroutines
             freeCompilerArgs = if (!project.isThemeModule() || !project.isDomainModule()) {
                 listOf(
@@ -111,9 +112,7 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         }
     }
 
-    tasks.withType(KotlinJvmCompile::class.java) {
-        kotlinOptions {
-            jvmTarget = "11"
-        }
+    kotlinAndroidProjectExtension().run {
+        jvmToolchain(17)
     }
 }
