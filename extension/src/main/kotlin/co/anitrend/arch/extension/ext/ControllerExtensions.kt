@@ -16,6 +16,7 @@
 
 package co.anitrend.arch.extension.ext
 
+import android.os.Build
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.SavedStateHandle
@@ -79,7 +80,12 @@ inline fun <reified T> FragmentActivity.extra(
 ): Lazy<T> = lazy(PUBLICATION) {
     try {
         if (intent?.extras?.containsKey(key) == true) {
-            intent?.extras?.get(key) as T
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent?.extras?.getParcelable(key, T::class.java) as T
+            } else {
+                @Suppress("DEPRECATION")
+                intent?.extras?.get(key) as T
+            }
         } else {
             Timber.w("$this does not have an argument with key: $key")
             default
@@ -101,7 +107,12 @@ inline fun <reified T> FragmentActivity.extra(
 ): Lazy<T?> = lazy(PUBLICATION) {
     try {
         if (intent?.extras?.containsKey(key) == true) {
-            intent?.extras?.get(key) as T
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent?.extras?.getParcelable(key, T::class.java) as T
+            } else {
+                @Suppress("DEPRECATION")
+                intent?.extras?.get(key) as T
+            }
         } else {
             Timber.w("$this does not have an argument with key: $key")
             null
@@ -125,7 +136,12 @@ inline fun <reified T> Fragment.argument(
 ): Lazy<T> = lazy(PUBLICATION) {
     try {
         if (arguments?.containsKey(key) == true) {
-            arguments?.get(key) as T
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arguments?.getParcelable(key, T::class.java) as T
+            } else {
+                @Suppress("DEPRECATION")
+                arguments?.get(key) as T
+            }
         } else {
             Timber.w("$this does not have an argument with key: $key")
             default
@@ -147,7 +163,12 @@ inline fun <reified T> Fragment.argument(
 ): Lazy<T?> = lazy(PUBLICATION) {
     try {
         if (arguments?.containsKey(key) == true) {
-            arguments?.get(key) as T
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arguments?.getParcelable(key, T::class.java) as T
+            } else {
+                @Suppress("DEPRECATION")
+                arguments?.get(key) as T
+            }
         } else {
             Timber.w("$this does not have an argument with key: $key")
             null

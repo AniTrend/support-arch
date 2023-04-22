@@ -77,7 +77,7 @@ class SupportErrorItem(
         spanCount: Int,
         position: Int,
         resources: Resources,
-    ) = resources.getInteger(R.integer.single_list_size)
+    ) = resources.getInteger(co.anitrend.arch.theme.R.integer.single_list_size)
 
     companion object {
         /**
