@@ -91,6 +91,6 @@ data class RequestStatusReport internal constructor(
                 StatusReport {
                     request: $request
                 }
-        """.trimIndent()
+            """.trimIndent()
     }
 }

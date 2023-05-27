@@ -64,8 +64,8 @@ abstract class AbstractRequestHelper : IRequestHelper {
     ) = listeners.remove(listener)
 
     /*
-    * Helper extension to dispatch changes to all listeners
-    */
+     * Helper extension to dispatch changes to all listeners
+     */
     protected fun IRequestStatusReport.dispatchReport() {
         listeners.forEach {
             it.onStatusChange(this)
