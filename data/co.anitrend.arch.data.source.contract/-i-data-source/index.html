@@ -56,8 +56,42 @@
     <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">interface </span><a href="index.html">IDataSource</a></div><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../co.anitrend.arch.data.source.core.contract/-abstract-data-source/index.html">AbstractDataSource</a></div></span></div><div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
-    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,FUNCTION,PROPERTY">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,FUNCTION,PROPERTY,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
     <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-553828620%2FProperties%2F862080361" anchor-label="loadState" id="-553828620%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="load-state.html"><span>load</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-553828620%2FProperties%2F862080361"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="load-state.html">loadState</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../domain/co.anitrend.arch.domain.entities/-load-state/index.html">LoadState</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Observable for network state during requests that the UI can monitor and act based on state changes</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1985549922%2FProperties%2F862080361" anchor-label="requestHelper" id="1985549922%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="request-helper.html"><span>request</span><wbr><span><span>Helper</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1985549922%2FProperties%2F862080361"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="request-helper.html">requestHelper</a><span class="token operator">: </span><a href="../../../request/co.anitrend.arch.request/-abstract-request-helper/index.html">AbstractRequestHelper</a></div><div class="brief "><p class="paragraph">Request helper that controls the flow of requests to the implementing data source to avoid multiple requests of the same type before others are completed for this instance</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div data-togglable="FUNCTION">
         <h2 class="">Functions</h2>
         <div class="table"><a data-name="-1909331880%2FFunctions%2F862080361" anchor-label="create" id="-1909331880%2FFunctions%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
@@ -101,40 +135,6 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="retry-failed.html"><span class="token function">retryFailed</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Performs the necessary operation to invoke a network retry request</p></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="-553828620%2FProperties%2F862080361" anchor-label="loadState" id="-553828620%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="load-state.html"><span>load</span><wbr><span><span>State</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-553828620%2FProperties%2F862080361"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="load-state.html">loadState</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../../domain/co.anitrend.arch.domain.entities/-load-state/index.html">LoadState</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Observable for network state during requests that the UI can monitor and act based on state changes</p></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1985549922%2FProperties%2F862080361" anchor-label="requestHelper" id="1985549922%2FProperties%2F862080361" data-filterable-set=":data:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":data:dokkaHtmlPartial/release" data-filterable-set=":data:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="request-helper.html"><span>request</span><wbr><span><span>Helper</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1985549922%2FProperties%2F862080361"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":data:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">val </span><a href="request-helper.html">requestHelper</a><span class="token operator">: </span><a href="../../../request/co.anitrend.arch.request/-abstract-request-helper/index.html">AbstractRequestHelper</a></div><div class="brief "><p class="paragraph">Request helper that controls the flow of requests to the implementing data source to avoid multiple requests of the same type before others are completed for this instance</p></div></div></div>
                 </div>
               </div>
             </div>

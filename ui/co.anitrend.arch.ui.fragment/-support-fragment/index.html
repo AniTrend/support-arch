@@ -56,7 +56,7 @@
     <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">SupportFragment</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/MenuRes.html"><span class="token annotation builtin">MenuRes</span></a>&nbsp;</span>inflateMenu<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>NO_MENU_ITEM<span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/LayoutRes.html"><span class="token annotation builtin">LayoutRes</span></a>&nbsp;</span>inflateLayout<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>NO_LAYOUT_ITEM</span></span><span class="token punctuation">)</span> : <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/Fragment.html">Fragment</a>, <a href="../../co.anitrend.arch.ui.common/-i-lifecycle-controller/index.html">ILifecycleController</a>, <span data-unresolved-link="kotlinx.coroutines/CoroutineScope///PointingToDeclaration/">CoroutineScope</span></div><p class="paragraph">Core implementation contract for fragments, which automatically retains instance, see <a href="../../../ui/co.anitrend.arch.ui.fragment/-support-fragment/set-retain-instance.html">setRetainInstance</a> for behavior changes</p><span class="kdoc-tag"><h4 class="">Since</h4><p class="paragraph">v0.9.X</p></span><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>inflate</span><wbr><span><span>Menu</span></span></u></div></span></div><div><div class="title"><p class="paragraph">setting this to anything other than ISupportFragment.NO_MENU_ITEM will automatically inflate the given menu in <a href="on-create-options-menu.html">onCreateOptionsMenu</a> and set <a href="../../../ui/co.anitrend.arch.ui.fragment/-support-fragment/set-has-options-menu.html">setHasOptionsMenu</a> to true.</p></div></div></div></div><div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>inflate</span><wbr><span><span>Layout</span></span></u></div></span></div><div><div class="title"><p class="paragraph">settings this to anything other than ISupportFragment.NO_LAYOUT_ITEM will inflate the given layout automatically in <a href="on-create-view.html">onCreateView</a>.</p></div></div></div></div></div><h4 class="">See also</h4><div class="table"><div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><span>ISupport</span><wbr><span><span>Fragment</span></span></div></span></div><div></div></div></div></div><h4 class="">Inheritors</h4><div class="table"><div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html">SupportFragmentList</a></div></span></div><div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
-    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,FUNCTION,PROPERTY">Members</button></div>
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="">Constructors</h2>
@@ -90,6 +90,100 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1654120400%2FProperties%2F-587146753" anchor-label="coroutineContext" id="-1654120400%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-1654120400%2FProperties%2F-587146753"><span>coroutine</span><wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1654120400%2FProperties%2F-587146753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-1654120400%2FProperties%2F-587146753">coroutineContext</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-783863057%2FProperties%2F-587146753" anchor-label="defaultViewModelCreationExtras" id="-783863057%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-783863057%2FProperties%2F-587146753"><span>default</span><wbr><span>View</span><wbr><span>Model</span><wbr><span>Creation</span><wbr><span><span>Extras</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-783863057%2FProperties%2F-587146753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-783863057%2FProperties%2F-587146753">defaultViewModelCreationExtras</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/viewmodel/CreationExtras.html">CreationExtras</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="755975487%2FProperties%2F-587146753" anchor-label="defaultViewModelProviderFactory" id="755975487%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#755975487%2FProperties%2F-587146753"><span>default</span><wbr><span>View</span><wbr><span>Model</span><wbr><span>Provider</span><wbr><span><span>Factory</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="755975487%2FProperties%2F-587146753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#755975487%2FProperties%2F-587146753">defaultViewModelProviderFactory</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModelProvider.Factory.html">ViewModelProvider.Factory</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-568864917%2FProperties%2F-587146753" anchor-label="lifecycle" id="-568864917%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-568864917%2FProperties%2F-587146753"><span><span>lifecycle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-568864917%2FProperties%2F-587146753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-568864917%2FProperties%2F-587146753">lifecycle</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.html">Lifecycle</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2039995422%2FProperties%2F-587146753" anchor-label="savedStateRegistry" id="2039995422%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#2039995422%2FProperties%2F-587146753"><span>saved</span><wbr><span>State</span><wbr><span><span>Registry</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2039995422%2FProperties%2F-587146753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#2039995422%2FProperties%2F-587146753">savedStateRegistry</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/savedstate/SavedStateRegistry.html">SavedStateRegistry</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1033415224%2FProperties%2F-587146753" anchor-label="viewModelStore" id="-1033415224%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
+          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-1033415224%2FProperties%2F-587146753"><span>view</span><wbr><span>Model</span><wbr><span><span>Store</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1033415224%2FProperties%2F-587146753"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-1033415224%2FProperties%2F-587146753">viewModelStore</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModelStore.html">ViewModelStore</a></div></div></div>
                 </div>
               </div>
             </div>
@@ -618,7 +712,7 @@
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.ui.common/-i-lifecycle-controller/initialize-components.html"><span class="token function">initializeComponents</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">savedInstanceState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Additional initialization to be done in this method, this is called in during <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentActivity.html#onPostCreate-android.os.Bundle?-">androidx.fragment.app.FragmentActivity.onPostCreate</a></p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.ui.common/-i-lifecycle-controller/initialize-components.html"><span class="token function">initializeComponents</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">savedInstanceState<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/os/Bundle.html">Bundle</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Additional initialization to be done in this method, this is called in during <a href="https://developer.android.com/reference/kotlin/androidx/fragment/app/FragmentActivity.html#onpostcreate">androidx.fragment.app.FragmentActivity.onPostCreate</a></p></div></div></div>
                 </div>
               </div>
             </div>
@@ -1804,100 +1898,6 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword"></span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.ui.common/-i-lifecycle-controller/view-model-state.html"><span class="token function">viewModelState</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../core/co.anitrend.arch.core.model/-i-support-view-model-state/index.html">ISupportViewModelState</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Proxy for a view model state if one exists</p></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="-1654120400%2FProperties%2F-587146753" anchor-label="coroutineContext" id="-1654120400%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-1654120400%2FProperties%2F-587146753"><span>coroutine</span><wbr><span><span>Context</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1654120400%2FProperties%2F-587146753"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-1654120400%2FProperties%2F-587146753">coroutineContext</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html">CoroutineContext</a></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-783863057%2FProperties%2F-587146753" anchor-label="defaultViewModelCreationExtras" id="-783863057%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-783863057%2FProperties%2F-587146753"><span>default</span><wbr><span>View</span><wbr><span>Model</span><wbr><span>Creation</span><wbr><span><span>Extras</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-783863057%2FProperties%2F-587146753"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword"></span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-783863057%2FProperties%2F-587146753">defaultViewModelCreationExtras</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/viewmodel/CreationExtras.html">CreationExtras</a></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="755975487%2FProperties%2F-587146753" anchor-label="defaultViewModelProviderFactory" id="755975487%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#755975487%2FProperties%2F-587146753"><span>default</span><wbr><span>View</span><wbr><span>Model</span><wbr><span>Provider</span><wbr><span><span>Factory</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="755975487%2FProperties%2F-587146753"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#755975487%2FProperties%2F-587146753">defaultViewModelProviderFactory</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModelProvider.Factory.html">ViewModelProvider.Factory</a></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-568864917%2FProperties%2F-587146753" anchor-label="lifecycle" id="-568864917%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-568864917%2FProperties%2F-587146753"><span><span>lifecycle</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-568864917%2FProperties%2F-587146753"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-568864917%2FProperties%2F-587146753">lifecycle</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/Lifecycle.html">Lifecycle</a></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="2039995422%2FProperties%2F-587146753" anchor-label="savedStateRegistry" id="2039995422%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#2039995422%2FProperties%2F-587146753"><span>saved</span><wbr><span>State</span><wbr><span><span>Registry</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2039995422%2FProperties%2F-587146753"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#2039995422%2FProperties%2F-587146753">savedStateRegistry</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/savedstate/SavedStateRegistry.html">SavedStateRegistry</a></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1033415224%2FProperties%2F-587146753" anchor-label="viewModelStore" id="-1033415224%2FProperties%2F-587146753" data-filterable-set=":ui:dokkaHtmlPartial/release"></a>
-          <div class="table-row" data-filterable-current=":ui:dokkaHtmlPartial/release" data-filterable-set=":ui:dokkaHtmlPartial/release">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-1033415224%2FProperties%2F-587146753"><span>view</span><wbr><span>Model</span><wbr><span><span>Store</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1033415224%2FProperties%2F-587146753"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":ui:dokkaHtmlPartial/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/NonNull.html"><span class="token annotation builtin">NonNull</span></a></div></div><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.ui.fragment.list/-support-fragment-list/index.html#-1033415224%2FProperties%2F-587146753">viewModelStore</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/lifecycle/ViewModelStore.html">ViewModelStore</a></div></div></div>
                 </div>
               </div>
             </div>
