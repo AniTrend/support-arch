@@ -1,7 +1,7 @@
 ---
 name: Question
 about: Ask any general question regarding the project, also if you use this if you don't know what category to use
-
+labels: ["question"]
 ---
 
 # Issue Guidelines

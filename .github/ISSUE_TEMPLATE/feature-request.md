@@ -1,7 +1,7 @@
 ---
 name: Feature Request
 about: Got a suggestion? Then this is what you should use
-
+labels: ["feature request"]
 ---
 
 # Issue Guidelines
