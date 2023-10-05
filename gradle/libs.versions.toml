@@ -63,7 +63,7 @@ androidx-work-test = { module = "androidx.work:work-test", version.ref = "androi
 
 cash-turbine = "app.cash.turbine:turbine:1.0.0"
 
-google-android-material = "com.google.android.material:material:1.9.0"
+google-android-material = "com.google.android.material:material:1.10.0"
 
 jetbrains-dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "jetbrains-dokka" }
 jetbrains-kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "jetbrains-kotlin" }
