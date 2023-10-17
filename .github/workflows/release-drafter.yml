@@ -18,7 +18,7 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: release-drafter/release-drafter@v5.24.0
+      - uses: release-drafter/release-drafter@v5.25.0
         id: release_drafter
         with:
           config-name: release-drafter-config.yml
