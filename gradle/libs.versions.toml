@@ -77,6 +77,6 @@ jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-co
 mockk = { module = "io.mockk:mockk", version.ref = "io-mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "io-mockk" }
 
-gradle-versions = "com.github.ben-manes:gradle-versions-plugin:0.48.0"
+gradle-versions = "com.github.ben-manes:gradle-versions-plugin:0.50.0"
 
 spotless-gradle = "com.diffplug.spotless:spotless-plugin-gradle:6.22.0"
