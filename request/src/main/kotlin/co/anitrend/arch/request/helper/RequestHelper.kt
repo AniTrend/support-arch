@@ -40,7 +40,6 @@ class RequestHelper(
     private val main: CoroutineDispatcher,
     private val io: CoroutineDispatcher,
 ) : AbstractRequestHelper() {
-
     private fun addOrReuseRequest(request: Request): RequestQueue {
         var queue = requestQueue.firstOrNull { it.request == request }
         if (queue == null) {
@@ -81,11 +80,12 @@ class RequestHelper(
                 report.get()?.dispatchReport()
 
                 withContext(io) {
-                    val wrapper = RequestWrapper(
-                        handleCallback = handleCallback,
-                        helper = this@RequestHelper,
-                        request = queue.request,
-                    )
+                    val wrapper =
+                        RequestWrapper(
+                            handleCallback = handleCallback,
+                            helper = this@RequestHelper,
+                            request = queue.request,
+                        )
                     wrapper.invoke()
                 }
 
@@ -184,9 +184,10 @@ class RequestHelper(
      */
     override suspend fun hasAnyWithStatus(status: Request.Status): Boolean {
         return withContext(main) {
-            val queue = requestQueue.firstOrNull {
-                it.request.status == status
-            }
+            val queue =
+                requestQueue.firstOrNull {
+                    it.request.status == status
+                }
             return@withContext queue != null
         }
     }

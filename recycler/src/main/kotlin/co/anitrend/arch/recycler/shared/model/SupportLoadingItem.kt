@@ -40,7 +40,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 open class SupportLoadingItem(
     private val configuration: IStateLayoutConfig,
 ) : RecyclerItem(RecyclerView.NO_ID) {
-
     private var binding: SupportLayoutStateLoadingBinding? = null
 
     override fun bind(
@@ -81,11 +80,12 @@ open class SupportLoadingItem(
             viewGroup: ViewGroup,
             layoutInflater: LayoutInflater,
         ): SupportViewHolder {
-            val binding = SupportLayoutStateLoadingBinding.inflate(
-                layoutInflater,
-                viewGroup,
-                false,
-            )
+            val binding =
+                SupportLayoutStateLoadingBinding.inflate(
+                    layoutInflater,
+                    viewGroup,
+                    false,
+                )
             return SupportViewHolder(binding)
         }
     }

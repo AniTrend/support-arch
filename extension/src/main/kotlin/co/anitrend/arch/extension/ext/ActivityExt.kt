@@ -38,10 +38,14 @@ import co.anitrend.arch.extension.lifecycle.SupportLifecycle
  * @param target The view from the calling activity with transition name
  * @param data Intent with bundle and or activity to start
  */
-fun FragmentActivity.startSharedTransitionActivity(target: View, data: Intent) {
+fun FragmentActivity.startSharedTransitionActivity(
+    target: View,
+    data: Intent,
+) {
     val participants = Pair(target, ViewCompat.getTransitionName(target))
-    val transitionActivityOptions = ActivityOptionsCompat
-        .makeSceneTransitionAnimation(this, participants)
+    val transitionActivityOptions =
+        ActivityOptionsCompat
+            .makeSceneTransitionAnimation(this, participants)
     ActivityCompat.startActivity(this, data, transitionActivityOptions.toBundle())
 }
 
@@ -104,8 +108,7 @@ fun FragmentActivity.hideStatusBarAndNavigationBar() {
  *
  * @param supportLifecycle Observer notify of owner lifecycle state changes
  */
-fun LifecycleOwner.attachComponent(supportLifecycle: SupportLifecycle) =
-    lifecycle.addObserver(supportLifecycle)
+fun LifecycleOwner.attachComponent(supportLifecycle: SupportLifecycle) = lifecycle.addObserver(supportLifecycle)
 
 /**
  * Removes an observer on the lifecycle owner. This **must** be un-registered later than the lifecycle
@@ -113,5 +116,4 @@ fun LifecycleOwner.attachComponent(supportLifecycle: SupportLifecycle) =
  *
  * @param supportLifecycle Observer notify of owner lifecycle state changes
  */
-fun LifecycleOwner.detachComponent(supportLifecycle: SupportLifecycle) =
-    lifecycle.removeObserver(supportLifecycle)
+fun LifecycleOwner.detachComponent(supportLifecycle: SupportLifecycle) = lifecycle.removeObserver(supportLifecycle)

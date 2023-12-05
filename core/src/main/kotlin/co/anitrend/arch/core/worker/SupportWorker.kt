@@ -43,7 +43,6 @@ abstract class SupportWorker(
     context: Context,
     workerParameters: WorkerParameters,
 ) : Worker(context, workerParameters) {
-
     /**
      * Override this method to do your actual background processing.  This method is called on a
      * background thread - you are required to **synchronously** do your work and return the

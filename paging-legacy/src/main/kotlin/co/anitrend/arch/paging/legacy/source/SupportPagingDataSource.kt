@@ -29,14 +29,14 @@ import co.anitrend.arch.request.model.Request
  * @since v1.1.0
  */
 abstract class SupportPagingDataSource<T> : AbstractPagingDataSource<T>() {
-
     /**
      * Representation of the paging state
      */
-    protected open val supportPagingHelper = SupportPagingHelper(
-        isPagingLimit = false,
-        pageSize = DEFAULT_PAGE_SIZE,
-    )
+    protected open val supportPagingHelper =
+        SupportPagingHelper(
+            isPagingLimit = false,
+            pageSize = DEFAULT_PAGE_SIZE,
+        )
 
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload

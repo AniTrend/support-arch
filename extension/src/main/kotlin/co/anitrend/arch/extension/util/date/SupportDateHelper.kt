@@ -26,7 +26,6 @@ import java.util.Calendar
  * @since v1.1.0
  */
 class SupportDateHelper : AbstractSupportDateHelper() {
-
     /**
      * @return current seasons name
      */

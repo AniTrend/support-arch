@@ -52,39 +52,40 @@ fun String.Companion.empty() = ""
  *
  * @param exceptions words or characters to exclude during capitalization
  */
-fun String?.capitalizeWords(exceptions: List<String>? = null): String = when {
-    !this.isNullOrEmpty() -> {
-        val result = StringBuilder(length)
-        val words = split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }
-        for ((index, word) in words.withIndex()) {
-            when (word.isNotEmpty()) {
-                true -> {
-                    if (!exceptions.isNullOrEmpty() && exceptions.contains(word)) {
-                        result.append(word)
-                    } else {
-                        result.append(
-                            word.replaceFirstChar {
-                                if (it.isLowerCase()) {
-                                    it.titlecase(
-                                        Locale.ROOT,
-                                    )
-                                } else {
-                                    it.toString()
-                                }
-                            },
-                        )
+fun String?.capitalizeWords(exceptions: List<String>? = null): String =
+    when {
+        !this.isNullOrEmpty() -> {
+            val result = StringBuilder(length)
+            val words = split("_|\\s".toRegex()).dropLastWhile { it.isEmpty() }
+            for ((index, word) in words.withIndex()) {
+                when (word.isNotEmpty()) {
+                    true -> {
+                        if (!exceptions.isNullOrEmpty() && exceptions.contains(word)) {
+                            result.append(word)
+                        } else {
+                            result.append(
+                                word.replaceFirstChar {
+                                    if (it.isLowerCase()) {
+                                        it.titlecase(
+                                            Locale.ROOT,
+                                        )
+                                    } else {
+                                        it.toString()
+                                    }
+                                },
+                            )
+                        }
                     }
+                    else -> {}
                 }
-                else -> {}
+                if (index != words.size - 1) {
+                    result.append(" ")
+                }
             }
-            if (index != words.size - 1) {
-                result.append(" ")
-            }
+            result.toString()
         }
-        result.toString()
+        else -> String.empty()
     }
-    else -> String.empty()
-}
 
 /**
  * Convert this receiver as DP to PX

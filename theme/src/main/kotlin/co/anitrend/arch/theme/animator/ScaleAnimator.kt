@@ -31,7 +31,6 @@ class ScaleAnimator(
     private val from: Float = .85f,
     private val to: Float = 1f,
 ) : AbstractAnimator() {
-
     override val interpolator = LinearInterpolator()
 
     override fun getAnimators(view: View): Array<Animator> {

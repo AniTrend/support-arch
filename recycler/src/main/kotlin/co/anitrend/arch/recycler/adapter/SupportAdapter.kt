@@ -27,7 +27,6 @@ import co.anitrend.arch.recycler.shared.adapter.SupportLoadStateAdapter
  * Additional contract for common adapter behaviour
  */
 interface SupportAdapter<T> : ISupportAdapter<T> {
-
     /**
      * Internal use only indicator for checking against the use of a
      * concat adapter for headers and footers, which is in turn used
@@ -56,9 +55,7 @@ interface SupportAdapter<T> : ISupportAdapter<T> {
      *
      * @see AdapterController.withLoadStateHeader
      */
-    fun withLoadStateHeader(
-        header: SupportLoadStateAdapter,
-    ): ConcatAdapter {
+    fun withLoadStateHeader(header: SupportLoadStateAdapter): ConcatAdapter {
         isUsingConcatAdapter = true
         return controller.withLoadStateHeader(header)
     }
@@ -68,9 +65,7 @@ interface SupportAdapter<T> : ISupportAdapter<T> {
      *
      * @see AdapterController.withLoadStateFooter
      */
-    fun withLoadStateFooter(
-        footer: SupportLoadStateAdapter,
-    ): ConcatAdapter {
+    fun withLoadStateFooter(footer: SupportLoadStateAdapter): ConcatAdapter {
         isUsingConcatAdapter = true
         return controller.withLoadStateFooter(footer)
     }

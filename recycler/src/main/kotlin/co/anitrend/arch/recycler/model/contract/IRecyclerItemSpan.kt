@@ -24,7 +24,6 @@ import android.content.res.Resources
  * @since v1.3.0
  */
 interface IRecyclerItemSpan {
-
     /**
      * Provides a preferred span size for the item
      *

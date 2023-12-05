@@ -29,7 +29,6 @@ data class SupportPagingHelper(
     val pageSize: Int,
     var isPagingLimit: Boolean,
 ) : ISupportPagingHelper {
-
     /**
      * Resets the paging parameters to their default
      */
@@ -58,6 +57,5 @@ data class SupportPagingHelper(
     /**
      * Checks if the current page and offset is the first
      */
-    override fun isFirstPage() =
-        page == 1 && pageOffset == 0
+    override fun isFirstPage() = page == 1 && pageOffset == 0
 }

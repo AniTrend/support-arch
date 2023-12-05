@@ -58,7 +58,6 @@ import timber.log.Timber
  * @see ISupportFragmentList
  */
 abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<M> {
-
     protected abstract val listPresenter: SupportListPresenter<M>
 
     /**
@@ -79,13 +78,15 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
      */
     abstract fun onFetchDataInitialize()
 
-    override val onRefreshObserver = Observer<LoadState> { loadState ->
-        listPresenter.onRefreshObserverChanged(loadState)
-    }
+    override val onRefreshObserver =
+        Observer<LoadState> { loadState ->
+            listPresenter.onRefreshObserverChanged(loadState)
+        }
 
-    override val onNetworkObserver = Observer<LoadState> { loadState ->
-        listPresenter.onNetworkObserverChanged(this, loadState)
-    }
+    override val onNetworkObserver =
+        Observer<LoadState> { loadState ->
+            listPresenter.onNetworkObserverChanged(this, loadState)
+        }
 
     protected open fun ISupportAdapter<*>.registerFlowListener() {
         lifecycleScope.launch {
@@ -128,22 +129,25 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
      */
     override fun setRecyclerAdapter(recyclerView: SupportRecyclerView) {
         if (recyclerView.adapter == null) {
-            val header = SupportLoadStateAdapter(resources, stateConfig).apply {
-                registerFlowListener()
-            }
-            val footer = SupportLoadStateAdapter(resources, stateConfig).apply {
-                registerFlowListener()
-            }
+            val header =
+                SupportLoadStateAdapter(resources, stateConfig).apply {
+                    registerFlowListener()
+                }
+            val footer =
+                SupportLoadStateAdapter(resources, stateConfig).apply {
+                    registerFlowListener()
+                }
 
             if (supportViewAdapter is RecyclerView.Adapter<*>) {
                 (supportViewAdapter as RecyclerView.Adapter<*>)
                     .stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }
 
-            recyclerView.adapter = supportViewAdapter.withLoadStateHeaderAndFooter(
-                header = header,
-                footer = footer,
-            )
+            recyclerView.adapter =
+                supportViewAdapter.withLoadStateHeaderAndFooter(
+                    header = header,
+                    footer = footer,
+                )
         }
     }
 
@@ -219,7 +223,10 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModelObserver()
         viewModelState()?.loadState?.observe(viewLifecycleOwner, onNetworkObserver)

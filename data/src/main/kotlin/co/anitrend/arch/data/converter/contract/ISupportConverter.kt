@@ -33,8 +33,7 @@ interface ISupportConverter<M, E> {
     /**
      * Convert from [Collection] types of [M] to [E]
      */
-    fun convertFrom(items: Collection<M>) =
-        items.map { convertFrom(it) }
+    fun convertFrom(items: Collection<M>) = items.map { convertFrom(it) }
 
     /**
      * Convert from a single type [E] to [M]
@@ -44,6 +43,5 @@ interface ISupportConverter<M, E> {
     /**
      * Convert to [Collection] types of [E] to [M]
      */
-    fun convertTo(items: Collection<E>) =
-        items.map { convertTo(it) }
+    fun convertTo(items: Collection<E>) = items.map { convertTo(it) }
 }

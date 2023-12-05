@@ -40,9 +40,7 @@ data class DataState<T> internal constructor(
     override val refresh: suspend () -> Unit,
     override val retry: suspend () -> Unit,
 ) : UiState<Flow<LoadState>>() {
-
     companion object {
-
         /**
          * Helper for creating a user interface state using a data source
          *
@@ -50,9 +48,7 @@ data class DataState<T> internal constructor(
          *
          * @see AbstractDataSource
          */
-        infix fun <T> IDataSource.create(
-            model: Flow<T>,
-        ): DataState<T> {
+        infix fun <T> IDataSource.create(model: Flow<T>): DataState<T> {
             val refreshTrigger: MutableStateFlow<LoadState> = MutableStateFlow(LoadState.Idle())
 
             return DataState(

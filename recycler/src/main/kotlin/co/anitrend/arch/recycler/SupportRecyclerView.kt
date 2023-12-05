@@ -32,60 +32,61 @@ import timber.log.Timber
  *
  * @since v0.9.X
  */
-open class SupportRecyclerView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0,
-) : RecyclerView(context, attrs, defStyle), SupportLifecycle {
+open class SupportRecyclerView
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyle: Int = 0,
+    ) : RecyclerView(context, attrs, defStyle), SupportLifecycle {
+        /**
+         * Tells this recycler to set it's adapters instance to false when [SupportLifecycle.onDestroy]
+         * is triggered, assuming you've called [co.anitrend.arch.extension.ext.attachComponent] on this
+         */
+        open var autoClearAdapter: Boolean = true
 
-    /**
-     * Tells this recycler to set it's adapters instance to false when [SupportLifecycle.onDestroy]
-     * is triggered, assuming you've called [co.anitrend.arch.extension.ext.attachComponent] on this
-     */
-    open var autoClearAdapter: Boolean = true
+        /**
+         * Indicates whether or not a scroll listener has already been added to this recycler
+         */
+        protected open var hasScrollListener: Boolean = false
 
-    /**
-     * Indicates whether or not a scroll listener has already been added to this recycler
-     */
-    protected open var hasScrollListener: Boolean = false
+        /**
+         * Add a listener that will be notified of any changes in scroll state or position.
+         *
+         * Components that add a listener should take care to remove it when finished.
+         * Other components that take ownership of a view may call [.clearOnScrollListeners]
+         * to remove all attached listeners.
+         *
+         * @param listener listener to set or null to clear
+         */
+        override fun addOnScrollListener(listener: OnScrollListener) {
+            if (!hasScrollListener) {
+                super.addOnScrollListener(listener)
+                hasScrollListener = true
+            }
+        }
 
-    /**
-     * Add a listener that will be notified of any changes in scroll state or position.
-     *
-     * Components that add a listener should take care to remove it when finished.
-     * Other components that take ownership of a view may call [.clearOnScrollListeners]
-     * to remove all attached listeners.
-     *
-     * @param listener listener to set or null to clear
-     */
-    override fun addOnScrollListener(listener: OnScrollListener) {
-        if (!hasScrollListener) {
-            super.addOnScrollListener(listener)
-            hasScrollListener = true
+        /**
+         * Remove all secondary listener that were notified of any changes in scroll state or position.
+         */
+        override fun clearOnScrollListeners() {
+            super.clearOnScrollListeners()
+            hasScrollListener = false
+        }
+
+        /**
+         * Notifies that `ON_DESTROY` event occurred.
+         *
+         * This method will be called before the [LifecycleOwner]'s `onDestroy` method
+         * is called.
+         *
+         * @param owner the component, whose state was changed
+         */
+        override fun onDestroy(owner: LifecycleOwner) {
+            super.onDestroy(owner)
+            if (autoClearAdapter) {
+                Timber.v("Clearing adapter reference for this recycler to avoid potential leaks")
+                adapter = null
+            }
         }
     }
-
-    /**
-     * Remove all secondary listener that were notified of any changes in scroll state or position.
-     */
-    override fun clearOnScrollListeners() {
-        super.clearOnScrollListeners()
-        hasScrollListener = false
-    }
-
-    /**
-     * Notifies that `ON_DESTROY` event occurred.
-     *
-     * This method will be called before the [LifecycleOwner]'s `onDestroy` method
-     * is called.
-     *
-     * @param owner the component, whose state was changed
-     */
-    override fun onDestroy(owner: LifecycleOwner) {
-        super.onDestroy(owner)
-        if (autoClearAdapter) {
-            Timber.v("Clearing adapter reference for this recycler to avoid potential leaks")
-            adapter = null
-        }
-    }
-}

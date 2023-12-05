@@ -30,17 +30,19 @@ internal fun IRequestStatusReport.getRequestError(): RequestError {
     }.first()
 }
 
-internal fun IRequestStatusReport.getTypeLoadPosition() = when (getType()) {
-    co.anitrend.arch.request.model.Request.Type.INITIAL -> LoadState.Position.UNDEFINED
-    co.anitrend.arch.request.model.Request.Type.BEFORE -> LoadState.Position.TOP
-    co.anitrend.arch.request.model.Request.Type.AFTER -> LoadState.Position.BOTTOM
-}
+internal fun IRequestStatusReport.getTypeLoadPosition() =
+    when (getType()) {
+        co.anitrend.arch.request.model.Request.Type.INITIAL -> LoadState.Position.UNDEFINED
+        co.anitrend.arch.request.model.Request.Type.BEFORE -> LoadState.Position.TOP
+        co.anitrend.arch.request.model.Request.Type.AFTER -> LoadState.Position.BOTTOM
+    }
 
 /**
  * Creates a live data observable on the paging request helper
  */
-fun AbstractRequestHelper.createStatusFlow() = callbackFlow {
-    val requestListener = RequestHelperListener(scope = this)
-    addListener(requestListener)
-    awaitClose { removeListener(requestListener) }
-}
+fun AbstractRequestHelper.createStatusFlow() =
+    callbackFlow {
+        val requestListener = RequestHelperListener(scope = this)
+        addListener(requestListener)
+        awaitClose { removeListener(requestListener) }
+    }

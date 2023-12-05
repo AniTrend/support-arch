@@ -24,7 +24,6 @@ import co.anitrend.arch.request.callback.RequestCallback
  * @since v1.1.0
  */
 interface ISupportResponse<in RESOURCE, out RESPONSE> {
-
     /**
      * Response handler for coroutine contexts which need to observe [NetworkState]
      *

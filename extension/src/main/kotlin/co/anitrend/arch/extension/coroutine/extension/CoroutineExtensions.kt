@@ -22,13 +22,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
 @Suppress("FunctionName")
-fun Default(): ISupportCoroutine =
-    SupportCoroutine(SupervisorJob(), Dispatchers.Default)
+fun Default(): ISupportCoroutine = SupportCoroutine(SupervisorJob(), Dispatchers.Default)
 
 @Suppress("FunctionName")
-fun Main(): ISupportCoroutine =
-    SupportCoroutine(SupervisorJob(), Dispatchers.Main)
+fun Main(): ISupportCoroutine = SupportCoroutine(SupervisorJob(), Dispatchers.Main)
 
 @Suppress("FunctionName")
-fun Io(): ISupportCoroutine =
-    SupportCoroutine(SupervisorJob(), Dispatchers.IO)
+fun Io(): ISupportCoroutine = SupportCoroutine(SupervisorJob(), Dispatchers.IO)

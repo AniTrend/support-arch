@@ -28,7 +28,6 @@ import co.anitrend.arch.recycler.helper.contract.SnapPositionListener
 open class SupportSnapHelper(
     private val snapPositionListener: SnapPositionListener,
 ) : PagerSnapHelper() {
-
     override fun findTargetSnapPosition(
         layoutManager: RecyclerView.LayoutManager,
         velocityX: Int,

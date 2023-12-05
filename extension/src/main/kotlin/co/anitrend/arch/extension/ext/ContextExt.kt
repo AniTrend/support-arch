@@ -82,10 +82,11 @@ inline fun <reified T> Context.systemServiceOf(): T? {
  * @see stopServiceMatching
  */
 inline fun <reified T> Context.startServiceInForeground(intentAction: String) {
-    val intent = Intent(this, T::class.java).apply {
-        action = intentAction
-        setClass(this@startServiceInForeground, T::class.java)
-    }
+    val intent =
+        Intent(this, T::class.java).apply {
+            action = intentAction
+            setClass(this@startServiceInForeground, T::class.java)
+        }
     ContextCompat.startForegroundService(this, intent)
 }
 
@@ -95,10 +96,11 @@ inline fun <reified T> Context.startServiceInForeground(intentAction: String) {
  * @see stopServiceMatching
  */
 inline fun <reified T> Context.startServiceInBackground(intentAction: String): ComponentName? {
-    val intent = Intent(this, T::class.java).apply {
-        action = intentAction
-        setClass(this@startServiceInBackground, T::class.java)
-    }
+    val intent =
+        Intent(this, T::class.java).apply {
+            action = intentAction
+            setClass(this@startServiceInBackground, T::class.java)
+        }
     return startService(intent)
 }
 
@@ -112,10 +114,11 @@ inline fun <reified T> Context.startServiceInBackground(intentAction: String): C
  * @see Context.stopService
  */
 inline fun <reified T> Context.stopServiceMatching(intentAction: String): Boolean {
-    val intent = Intent(this, T::class.java).apply {
-        action = intentAction
-        setClass(this@stopServiceMatching, T::class.java)
-    }
+    val intent =
+        Intent(this, T::class.java).apply {
+            action = intentAction
+            setClass(this@stopServiceMatching, T::class.java)
+        }
     return stopService(intent)
 }
 
@@ -125,13 +128,18 @@ inline fun <reified T> Context.stopServiceMatching(intentAction: String): Boolea
  * @param intent Intent to start
  * @param intentId Id of the pending intent which will be used
  */
-fun Context.restartWithIntent(intent: Intent, intentId: Int = 1510, delayDuration: Int = 100) {
+fun Context.restartWithIntent(
+    intent: Intent,
+    intentId: Int = 1510,
+    delayDuration: Int = 100,
+) {
     runCatching {
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
+        val flags =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+            } else {
+                PendingIntent.FLAG_UPDATE_CURRENT
+            }
         val pendingIntent = PendingIntent.getActivity(this, intentId, intent, flags)
         systemServiceOf<AlarmManager>()?.set(
             AlarmManager.RTC,
@@ -161,13 +169,17 @@ inline fun <reified T> Context.restartApplication() {
  * @param enabled schedules or cancels the scheduled task
  * @param interval duration between each alarm event in milliseconds
  */
-inline fun <reified T> Context.scheduleWithAlarm(enabled: Boolean, interval: Long) {
+inline fun <reified T> Context.scheduleWithAlarm(
+    enabled: Boolean,
+    interval: Long,
+) {
     val intent = Intent(this, T::class.java)
-    val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-    } else {
-        PendingIntent.FLAG_UPDATE_CURRENT
-    }
+    val flags =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
     val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, flags)
     systemServiceOf<AlarmManager>()?.run {
         if (!enabled) {
@@ -189,7 +201,10 @@ inline fun <reified T> Context.scheduleWithAlarm(enabled: Boolean, interval: Lon
 /**
  * Sets the given [content] into clipboard.
  */
-fun Context.copyToClipboard(label: String, content: String) {
+fun Context.copyToClipboard(
+    label: String,
+    content: String,
+) {
     val clipboardManager = systemServiceOf<ClipboardManager>()
     val clip = ClipData.newPlainText(label, content)
     clipboardManager?.setPrimaryClip(clip)
@@ -241,7 +256,9 @@ inline fun <reified T> Context.startNewActivity(
  *
  * @throws Exception if the given ID does not exist.
  */
-fun Context.getStringList(@ArrayRes arrayRes: Int): List<String> {
+fun Context.getStringList(
+    @ArrayRes arrayRes: Int,
+): List<String> {
     val array = resources.getStringArray(arrayRes)
     return array.toList()
 }
@@ -252,8 +269,7 @@ fun Context.getStringList(@ArrayRes arrayRes: Int): List<String> {
  * @throws IllegalArgumentException when a layout inflater cannot be acquired
  */
 @Throws(IllegalArgumentException::class)
-fun Context.getLayoutInflater(): LayoutInflater =
-    requireNotNull(systemServiceOf<LayoutInflater>())
+fun Context.getLayoutInflater(): LayoutInflater = requireNotNull(systemServiceOf<LayoutInflater>())
 
 /**
  * Retrieves a [LayoutInflater] from [View].[Context] by querying system services
@@ -261,8 +277,7 @@ fun Context.getLayoutInflater(): LayoutInflater =
  * @throws IllegalArgumentException when a layout inflater cannot be acquired
  */
 @Throws(IllegalArgumentException::class)
-fun View.getLayoutInflater(): LayoutInflater =
-    context.getLayoutInflater()
+fun View.getLayoutInflater(): LayoutInflater = context.getLayoutInflater()
 
 /**
  * Gets the size of the display, in pixels. Value returned by this method does
@@ -280,18 +295,20 @@ fun Context.getScreenDimens(): Point {
 
         if (metrics != null) {
             val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(metrics.windowInsets)
-            val insets = windowInsets.getInsetsIgnoringVisibility(
-                WindowInsetsCompat.Type.navigationBars() or
-                    WindowInsetsCompat.Type.displayCutout(),
-            )
+            val insets =
+                windowInsets.getInsetsIgnoringVisibility(
+                    WindowInsetsCompat.Type.navigationBars() or
+                        WindowInsetsCompat.Type.displayCutout(),
+                )
             val insetsWidth = insets.right + insets.left
             val insetsHeight = insets.top + insets.bottom
             // Legacy size that Display#getSize reports
             val bounds = metrics.bounds
-            val legacySize = Size(
-                bounds.width() - insetsWidth,
-                bounds.height() - insetsHeight,
-            )
+            val legacySize =
+                Size(
+                    bounds.width() - insetsWidth,
+                    bounds.height() - insetsHeight,
+                )
             deviceDimens.x = legacySize.width
             deviceDimens.y - legacySize.height
         }
@@ -314,7 +331,9 @@ fun Context.getScreenDimens(): Point {
  * @throws UnsupportedOperationException if the attribute is defined but is
  *         not a color or drawable resource.
  */
-fun Context.getDrawableAttr(@AttrRes drawableAttr: Int): Drawable? {
+fun Context.getDrawableAttr(
+    @AttrRes drawableAttr: Int,
+): Drawable? {
     val drawableAttribute = obtainStyledAttributes(intArrayOf(drawableAttr))
     val drawable = drawableAttribute.getDrawable(0)
     drawableAttribute.recycle()
@@ -332,7 +351,10 @@ fun Context.getDrawableAttr(@AttrRes drawableAttr: Int): Drawable? {
  * @throws UnsupportedOperationException if the attribute is defined but is
  *         not a color or drawable resource.
  */
-fun Context.getColorFromAttr(@AttrRes colorAttr: Int, defaultColor: Int = 0): Int {
+fun Context.getColorFromAttr(
+    @AttrRes colorAttr: Int,
+    defaultColor: Int = 0,
+): Int {
     val colorAttribute = obtainStyledAttributes(intArrayOf(colorAttr))
 
     @ColorInt val color = colorAttribute.getColor(0, defaultColor)
@@ -348,8 +370,9 @@ fun Context.getColorFromAttr(@AttrRes colorAttr: Int, defaultColor: Int = 0): In
  *
  * @see android.os.Build.VERSION_CODES.M
  */
-fun Context.getCompatColor(@ColorRes colorRes: Int) =
-    ContextCompat.getColor(this, colorRes)
+fun Context.getCompatColor(
+    @ColorRes colorRes: Int,
+) = ContextCompat.getColor(this, colorRes)
 
 /**
  * Avoids resource not found when using vector drawables in API levels < Lollipop
@@ -364,8 +387,9 @@ fun Context.getCompatColor(@ColorRes colorRes: Int) =
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getCompatDrawable(@DrawableRes resource: Int) =
-    AppCompatResources.getDrawable(this, resource)
+fun Context.getCompatDrawable(
+    @DrawableRes resource: Int,
+) = AppCompatResources.getDrawable(this, resource)
 
 /**
  * Avoids resource not found when using vector drawables in API levels < Lollipop
@@ -380,7 +404,10 @@ fun Context.getCompatDrawable(@DrawableRes resource: Int) =
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getCompatDrawable(@DrawableRes resource: Int, @ColorRes colorTint: Int): Drawable? {
+fun Context.getCompatDrawable(
+    @DrawableRes resource: Int,
+    @ColorRes colorTint: Int,
+): Drawable? {
     val drawableResource = getCompatDrawable(resource)
     if (drawableResource != null) {
         val drawableResult = DrawableCompat.wrap(drawableResource).mutate()
@@ -459,10 +486,13 @@ fun Context.getCompatDrawableTintAttr(
  * @see Drawable
  * @see DrawableRes
  */
-fun Context.getCompatDrawableAttr(@AttrRes attribute: Int): Drawable? {
-    val typedValue = TypedValue().apply {
-        theme.resolveAttribute(attribute, this, true)
-    }
+fun Context.getCompatDrawableAttr(
+    @AttrRes attribute: Int,
+): Drawable? {
+    val typedValue =
+        TypedValue().apply {
+            theme.resolveAttribute(attribute, this, true)
+        }
     return getCompatDrawable(typedValue.resourceId)
 }
 
@@ -470,7 +500,9 @@ fun Context.getCompatDrawableAttr(@AttrRes attribute: Int): Drawable? {
  * Retrieve a style from the current [android.content.res.Resources.Theme].
  */
 @StyleRes
-fun Context.themeStyle(@AttrRes attributeResource: Int): Int {
+fun Context.themeStyle(
+    @AttrRes attributeResource: Int,
+): Int {
     val typedValue = TypedValue()
     theme.resolveAttribute(
         attributeResource,
@@ -499,17 +531,20 @@ fun Context.themeInterpolator(
  *
  * @return [Flow] of [Intent]
  */
-fun Context.flowOfBroadcast(
-    intentFilter: IntentFilter,
-): Flow<Intent> = callbackFlow {
-    val receiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            trySend(intent)
-                .onFailure { Timber.e(it) }
+fun Context.flowOfBroadcast(intentFilter: IntentFilter): Flow<Intent> =
+    callbackFlow {
+        val receiver =
+            object : BroadcastReceiver() {
+                override fun onReceive(
+                    context: Context,
+                    intent: Intent,
+                ) {
+                    trySend(intent)
+                        .onFailure { Timber.e(it) }
+                }
+            }
+        registerReceiver(receiver, intentFilter)
+        awaitClose {
+            unregisterReceiver(receiver)
         }
     }
-    registerReceiver(receiver, intentFilter)
-    awaitClose {
-        unregisterReceiver(receiver)
-    }
-}

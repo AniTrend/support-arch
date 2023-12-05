@@ -25,11 +25,12 @@ import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
  * @return [Boolean] indicating if internal list is empty
  */
 fun ISupportAdapter<*>.isEmpty(): Boolean {
-    val count = when (this) {
-        is PagedListAdapter<*, *> -> itemCount
-        else -> throw NotImplementedError(
-            "Not sure how to request item count from: $this",
-        )
-    }
+    val count =
+        when (this) {
+            is PagedListAdapter<*, *> -> itemCount
+            else -> throw NotImplementedError(
+                "Not sure how to request item count from: $this",
+            )
+        }
     return count < 1
 }

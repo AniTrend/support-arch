@@ -29,7 +29,6 @@ import co.anitrend.arch.extension.coroutine.ISupportCoroutine
 abstract class SupportRepository(
     private val source: ISupportCoroutine?,
 ) : ISupportRepository {
-
     /**
      * Deals with cancellation of any pending or on going operations that the repository
      * might be working on

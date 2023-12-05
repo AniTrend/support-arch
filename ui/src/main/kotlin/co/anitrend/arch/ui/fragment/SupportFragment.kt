@@ -47,7 +47,6 @@ abstract class SupportFragment(
     @MenuRes protected open val inflateMenu: Int = NO_MENU_ITEM,
     @LayoutRes protected open val inflateLayout: Int = NO_LAYOUT_ITEM,
 ) : Fragment(), ILifecycleController, CoroutineScope by MainScope() {
-
     /**
      * Invoke view model observer to watch for changes, this will be called
      * called in [onViewCreated]
@@ -122,7 +121,10 @@ abstract class SupportFragment(
      * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
      * saved state as given here.
      */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setUpViewModelObserver()
     }
@@ -139,14 +141,16 @@ abstract class SupportFragment(
      * @see SupportFragment.onPrepareOptionsMenu
      * @see SupportFragment.onOptionsItemSelected
      */
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(
+        menu: Menu,
+        inflater: MenuInflater,
+    ) {
         if (inflateMenu != NO_MENU_ITEM) {
             inflater.inflate(inflateMenu, menu)
         }
     }
 
     companion object {
-
         /**
          * Constant value that indicates that no dynamic menu will be inflated for a [CustomView]
          *

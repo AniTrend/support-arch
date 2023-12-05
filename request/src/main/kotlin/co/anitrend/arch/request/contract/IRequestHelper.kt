@@ -28,7 +28,6 @@ import co.anitrend.arch.request.wrapper.RequestWrapper
  * @since v1.3.0
  */
 interface IRequestHelper {
-
     /**
      * Adds a new listener that will be notified when any request changes [Request.Status].
      *

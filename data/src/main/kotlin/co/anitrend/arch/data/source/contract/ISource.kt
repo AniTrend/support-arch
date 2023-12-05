@@ -19,7 +19,6 @@ package co.anitrend.arch.data.source.contract
 import kotlinx.coroutines.CoroutineDispatcher
 
 interface ISource {
-
     /**
      * Informs the data source to invalidate itself and should invoke network refresh or reload
      */

@@ -27,7 +27,6 @@ import co.anitrend.arch.request.model.Request
  * @since v1.1.0
  */
 abstract class SupportCoreDataSource : AbstractDataSource() {
-
     /**
      * Invokes [clearDataSource] and should invoke network refresh or reload
      */
@@ -50,9 +49,10 @@ abstract class SupportCoreDataSource : AbstractDataSource() {
      * Invalidate data source and, re-run the last successful or last failed request if applicable
      */
     override suspend fun refresh() {
-        val ran = requestHelper.retryWithStatus(
-            Request.Status.SUCCESS,
-        ) { invalidate() }
+        val ran =
+            requestHelper.retryWithStatus(
+                Request.Status.SUCCESS,
+            ) { invalidate() }
 
         if (!ran) {
             retryFailed()

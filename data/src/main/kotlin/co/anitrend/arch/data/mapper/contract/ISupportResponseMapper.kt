@@ -22,7 +22,6 @@ package co.anitrend.arch.data.mapper.contract
  * @since v1.1.0
  */
 interface ISupportResponseMapper<in S, D> {
-
     /**
      * Creates mapped objects and handles the database operations which may be required to map various objects,
      *

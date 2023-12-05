@@ -36,7 +36,6 @@ import timber.log.Timber
 internal class RequestHelperListener(
     private val scope: ProducerScope<LoadState>,
 ) : IRequestHelper.Listener {
-
     /**
      * Called when the status for any of the requests has changed.
      *
@@ -45,19 +44,20 @@ internal class RequestHelperListener(
     override fun onStatusChange(report: IRequestStatusReport) {
         val position = report.getTypeLoadPosition()
         Timber.d("Updating state for -> type: ${report.getType()} | position: $position")
-        val state = when {
-            report.hasRunning() -> {
-                LoadState.Loading(position = position)
+        val state =
+            when {
+                report.hasRunning() -> {
+                    LoadState.Loading(position = position)
+                }
+                report.hasError() -> {
+                    val error = report.getRequestError()
+                    LoadState.Error(details = error, position = position)
+                }
+                report.hasSuccess() -> {
+                    LoadState.Success(position = position)
+                }
+                else -> LoadState.Idle(position = position)
             }
-            report.hasError() -> {
-                val error = report.getRequestError()
-                LoadState.Error(details = error, position = position)
-            }
-            report.hasSuccess() -> {
-                LoadState.Success(position = position)
-            }
-            else -> LoadState.Idle(position = position)
-        }
         scope.trySend(state).onFailure {
             Timber.e(it, "Failed to send status change report state to $scope")
         }

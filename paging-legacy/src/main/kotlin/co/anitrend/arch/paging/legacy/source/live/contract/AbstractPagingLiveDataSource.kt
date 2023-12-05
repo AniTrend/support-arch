@@ -29,7 +29,6 @@ abstract class AbstractPagingLiveDataSource<K, V> :
     PageKeyedDataSource<K, V>(),
     IDataSource,
     ISupportCoroutine by Default() {
-
     /**
      * Module tag for the current context
      */

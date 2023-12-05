@@ -29,7 +29,6 @@ sealed class RequestException(
     message: String? = null,
     cause: Throwable? = null,
 ) : IllegalStateException(message, cause) {
-
     /**
      * An exception that represents a duplicate call to update a request status
      *

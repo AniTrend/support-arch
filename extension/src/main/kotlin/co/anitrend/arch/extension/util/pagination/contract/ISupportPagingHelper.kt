@@ -22,7 +22,6 @@ package co.anitrend.arch.extension.util.pagination.contract
  * @since v1.1.0
  */
 interface ISupportPagingHelper {
-
     /**
      * Resets the paging parameters to their default
      */

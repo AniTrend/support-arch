@@ -34,12 +34,14 @@ import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
  * Presenter for list fragments
  */
 abstract class SupportListPresenter<T> : ISupportListPresenter<T> {
-
     abstract val recyclerView: RecyclerView
     abstract val stateLayout: ISupportStateLayout
     abstract val swipeRefreshLayout: SwipeRefreshLayout?
 
-    override fun onCreateView(fragmentList: ISupportFragmentList<T>, view: View?) {
+    override fun onCreateView(
+        fragmentList: ISupportFragmentList<T>,
+        view: View?,
+    ) {
         stateLayout.stateConfigFlow.value = fragmentList.stateConfig
 
         swipeRefreshLayout?.apply {

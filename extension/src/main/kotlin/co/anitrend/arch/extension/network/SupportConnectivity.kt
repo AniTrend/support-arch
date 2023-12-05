@@ -42,7 +42,6 @@ class SupportConnectivity(
     private val connectivityManager: ConnectivityManager?,
     private val connectivityCapabilities: Int = NetworkCapabilities.NET_CAPABILITY_INTERNET,
 ) : ISupportConnectivity {
-
     /**
      * Check if the device is connected to any network with internet capabilities, this is only
      * a snapshot of the state at the time of request
@@ -50,11 +49,12 @@ class SupportConnectivity(
      * @return true if a internet activity is present otherwise false
      */
     override val isConnected
-        get() = (
-            connectivityManager?.allNetworks?.filter {
-                val network = connectivityManager.getNetworkCapabilities(it)
-                network?.hasCapability(connectivityCapabilities) ?: false
-            }?.size ?: 0
+        get() =
+            (
+                connectivityManager?.allNetworks?.filter {
+                    val network = connectivityManager.getNetworkCapabilities(it)
+                    network?.hasCapability(connectivityCapabilities) ?: false
+                }?.size ?: 0
             ) > 0
 
     /**
@@ -62,97 +62,99 @@ class SupportConnectivity(
      *
      * @see ConnectivityState
      */
-    override val connectivityStateFlow = callbackFlow {
-        val networkCallback = object : ConnectivityManager.NetworkCallback() {
-            /**
-             * Called when the framework connects and has declared a new network ready for use.
-             *
-             *
-             * For callbacks registered with [.registerNetworkCallback], multiple networks may
-             * be available at the same time, and onAvailable will be called for each of these as they
-             * appear.
-             *
-             *
-             * For callbacks registered with [.requestNetwork] and
-             * [.registerDefaultNetworkCallback], this means the network passed as an argument
-             * is the new best network for this request and is now tracked by this callback ; this
-             * callback will no longer receive method calls about other networks that may have been
-             * passed to this method previously. The previously-best network may have disconnected, or
-             * it may still be around and the newly-best network may simply be better.
-             *
-             *
-             * Starting with [android.os.Build.VERSION_CODES.O], this will always immediately
-             * be followed by a call to [.onCapabilitiesChanged]
-             * then by a call to [.onLinkPropertiesChanged], and a call
-             * to [.onBlockedStatusChanged].
-             *
-             *
-             * Do NOT call [.getNetworkCapabilities] or
-             * [.getLinkProperties] or other synchronous ConnectivityManager methods in
-             * this callback as this is prone to race conditions (there is no guarantee the objects
-             * returned by these methods will be current). Instead, wait for a call to
-             * [.onCapabilitiesChanged] and
-             * [.onLinkPropertiesChanged] whose arguments are guaranteed
-             * to be well-ordered with respect to other callbacks.
-             *
-             * @param network The [Network] of the satisfying network.
-             */
-            override fun onAvailable(network: Network) {
-                super.onAvailable(network)
-                trySend(ConnectivityState.Connected)
-                    .onFailure { Timber.w(it) }
-            }
+    override val connectivityStateFlow =
+        callbackFlow {
+            val networkCallback =
+                object : ConnectivityManager.NetworkCallback() {
+                    /**
+                     * Called when the framework connects and has declared a new network ready for use.
+                     *
+                     *
+                     * For callbacks registered with [.registerNetworkCallback], multiple networks may
+                     * be available at the same time, and onAvailable will be called for each of these as they
+                     * appear.
+                     *
+                     *
+                     * For callbacks registered with [.requestNetwork] and
+                     * [.registerDefaultNetworkCallback], this means the network passed as an argument
+                     * is the new best network for this request and is now tracked by this callback ; this
+                     * callback will no longer receive method calls about other networks that may have been
+                     * passed to this method previously. The previously-best network may have disconnected, or
+                     * it may still be around and the newly-best network may simply be better.
+                     *
+                     *
+                     * Starting with [android.os.Build.VERSION_CODES.O], this will always immediately
+                     * be followed by a call to [.onCapabilitiesChanged]
+                     * then by a call to [.onLinkPropertiesChanged], and a call
+                     * to [.onBlockedStatusChanged].
+                     *
+                     *
+                     * Do NOT call [.getNetworkCapabilities] or
+                     * [.getLinkProperties] or other synchronous ConnectivityManager methods in
+                     * this callback as this is prone to race conditions (there is no guarantee the objects
+                     * returned by these methods will be current). Instead, wait for a call to
+                     * [.onCapabilitiesChanged] and
+                     * [.onLinkPropertiesChanged] whose arguments are guaranteed
+                     * to be well-ordered with respect to other callbacks.
+                     *
+                     * @param network The [Network] of the satisfying network.
+                     */
+                    override fun onAvailable(network: Network) {
+                        super.onAvailable(network)
+                        trySend(ConnectivityState.Connected)
+                            .onFailure { Timber.w(it) }
+                    }
 
-            /**
-             * Called when a network disconnects or otherwise no longer satisfies this request or
-             * callback.
-             *
-             *
-             * If the callback was registered with requestNetwork() or
-             * registerDefaultNetworkCallback(), it will only be invoked against the last network
-             * returned by onAvailable() when that network is lost and no other network satisfies
-             * the criteria of the request.
-             *
-             *
-             * If the callback was registered with registerNetworkCallback() it will be called for
-             * each network which no longer satisfies the criteria of the callback.
-             *
-             *
-             * Do NOT call [.getNetworkCapabilities] or
-             * [.getLinkProperties] or other synchronous ConnectivityManager methods in
-             * this callback as this is prone to race conditions ; calling these methods while in a
-             * callback may return an outdated or even a null object.
-             *
-             * @param network The [Network] lost.
-             */
-            override fun onLost(network: Network) {
-                trySend(ConnectivityState.Disconnected)
-                    .onFailure { Timber.w(it) }
-            }
+                    /**
+                     * Called when a network disconnects or otherwise no longer satisfies this request or
+                     * callback.
+                     *
+                     *
+                     * If the callback was registered with requestNetwork() or
+                     * registerDefaultNetworkCallback(), it will only be invoked against the last network
+                     * returned by onAvailable() when that network is lost and no other network satisfies
+                     * the criteria of the request.
+                     *
+                     *
+                     * If the callback was registered with registerNetworkCallback() it will be called for
+                     * each network which no longer satisfies the criteria of the callback.
+                     *
+                     *
+                     * Do NOT call [.getNetworkCapabilities] or
+                     * [.getLinkProperties] or other synchronous ConnectivityManager methods in
+                     * this callback as this is prone to race conditions ; calling these methods while in a
+                     * callback may return an outdated or even a null object.
+                     *
+                     * @param network The [Network] lost.
+                     */
+                    override fun onLost(network: Network) {
+                        trySend(ConnectivityState.Disconnected)
+                            .onFailure { Timber.w(it) }
+                    }
 
-            /**
-             * Called if no network is found within the timeout time specified in
-             * [.requestNetwork] call or if the
-             * requested network request cannot be fulfilled (whether or not a timeout was
-             * specified). When this callback is invoked the associated
-             * [NetworkRequest] will have already been removed and released, as if
-             * [.unregisterNetworkCallback] had been called.
-             */
-            override fun onUnavailable() {
-                trySend(ConnectivityState.Unknown)
-                    .onFailure { Timber.w(it) }
+                    /**
+                     * Called if no network is found within the timeout time specified in
+                     * [.requestNetwork] call or if the
+                     * requested network request cannot be fulfilled (whether or not a timeout was
+                     * specified). When this callback is invoked the associated
+                     * [NetworkRequest] will have already been removed and released, as if
+                     * [.unregisterNetworkCallback] had been called.
+                     */
+                    override fun onUnavailable() {
+                        trySend(ConnectivityState.Unknown)
+                            .onFailure { Timber.w(it) }
+                    }
+                }
+
+            connectivityManager?.registerNetworkCallback(
+                NetworkRequest.Builder()
+                    .addCapability(connectivityCapabilities)
+                    .build(),
+                networkCallback,
+            )
+
+            awaitClose {
+                connectivityManager?.unregisterNetworkCallback(networkCallback)
             }
         }
-
-        connectivityManager?.registerNetworkCallback(
-            NetworkRequest.Builder()
-                .addCapability(connectivityCapabilities)
-                .build(),
-            networkCallback,
-        )
-
-        awaitClose {
-            connectivityManager?.unregisterNetworkCallback(networkCallback)
-        }
-    }
 }

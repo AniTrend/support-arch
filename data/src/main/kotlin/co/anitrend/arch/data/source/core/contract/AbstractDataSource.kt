@@ -31,7 +31,6 @@ import co.anitrend.arch.request.helper.RequestHelper
  * @since v1.1.0
  */
 abstract class AbstractDataSource : IDataSource, ISource, ISupportCoroutine by Default() {
-
     /**
      * Contract for multiple types of [coroutineDispatcher]
      */

@@ -33,7 +33,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 open class SupportViewHolder(
     binding: ViewBinding,
 ) : ISupportViewHolder, RecyclerView.ViewHolder(binding.root) {
-
     private var recyclerItem: IRecyclerItem? = null
 
     /**

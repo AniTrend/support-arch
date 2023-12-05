@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * Contract for state layout
  */
 interface ISupportStateLayout : CustomView {
-
     val isLoading: Boolean
 
     val isError: Boolean

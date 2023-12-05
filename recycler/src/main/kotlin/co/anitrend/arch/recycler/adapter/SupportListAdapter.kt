@@ -45,7 +45,6 @@ abstract class SupportListAdapter<T>(
     differCallback: DiffUtil.ItemCallback<T>,
     supportsStableIds: Boolean = false,
 ) : SupportAdapter<T>, ListAdapter<T, SupportViewHolder>(differCallback) {
-
     init {
         this.setHasStableIds(supportsStableIds)
     }
@@ -92,11 +91,12 @@ abstract class SupportListAdapter<T>(
      */
     override fun getItemId(position: Int): Long {
         return when (hasStableIds()) {
-            true -> runCatching {
-                getStableIdFor(requireItem(position))
-            }.onFailure {
-                Timber.v(it, "get item id -> position: $position")
-            }.getOrDefault(RecyclerView.NO_ID)
+            true ->
+                runCatching {
+                    getStableIdFor(requireItem(position))
+                }.onFailure {
+                    Timber.v(it, "get item id -> position: $position")
+                }.getOrDefault(RecyclerView.NO_ID)
             else -> super.getItemId(position)
         }
     }
@@ -124,11 +124,12 @@ abstract class SupportListAdapter<T>(
     override fun onViewAttachedToWindow(holder: SupportViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.itemView.layoutParams?.also {
-            val position = if (isUsingConcatAdapter) {
-                holder.bindingAdapterPosition
-            } else {
-                holder.absoluteAdapterPosition
-            }
+            val position =
+                if (isUsingConcatAdapter) {
+                    holder.bindingAdapterPosition
+                } else {
+                    holder.absoluteAdapterPosition
+                }
 
             when (it is StaggeredGridLayoutManager.LayoutParams) {
                 true -> setLayoutSpanSize(it, position)
@@ -175,7 +176,10 @@ abstract class SupportListAdapter<T>(
      *
      * @see [SupportViewHolder.bind]
      */
-    override fun onBindViewHolder(holder: SupportViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: SupportViewHolder,
+        position: Int,
+    ) {
         bindViewHolderByType(holder, position)
     }
 

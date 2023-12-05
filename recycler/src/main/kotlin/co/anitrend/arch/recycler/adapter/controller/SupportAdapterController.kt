@@ -33,16 +33,16 @@ import java.util.concurrent.CopyOnWriteArrayList
 class SupportAdapterController<T>(
     private val adapter: ISupportAdapter<T>,
 ) : AdapterController() {
-
     override val loadStateListeners: MutableList<StateListener> = CopyOnWriteArrayList()
 
-    override val loadStateManager: LoadStateManager = object : LoadStateManager() {
-        override fun onStateChanged(state: LoadState) {
-            loadStateListeners.forEach {
-                it(state.position, state)
+    override val loadStateManager: LoadStateManager =
+        object : LoadStateManager() {
+            override fun onStateChanged(state: LoadState) {
+                loadStateListeners.forEach {
+                    it(state.position, state)
+                }
             }
         }
-    }
 
     /**
      * Create a [ConcatAdapter] with the provided [SupportLoadStateAdapter]s displaying the

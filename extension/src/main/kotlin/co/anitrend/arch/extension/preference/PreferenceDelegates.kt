@@ -30,14 +30,20 @@ internal class EnumPreference<T : Enum<*>>(
     override val key: String,
     override val default: T,
 ) : ISupportPreferenceDelegate<T> {
-
-    override fun getValue(thisRef: AbstractSetting<T>, property: KProperty<*>): T {
+    override fun getValue(
+        thisRef: AbstractSetting<T>,
+        property: KProperty<*>,
+    ): T {
         val name = thisRef.preference.getString(key, default.name)
-        val `class` = default::class.java
-        return `class`.enumConstants?.firstOrNull { it.name == name } ?: default
+        val clazz = default::class.java
+        return clazz.enumConstants?.firstOrNull { it.name == name } ?: default
     }
 
-    override fun setValue(thisRef: AbstractSetting<T>, property: KProperty<*>, value: T) {
+    override fun setValue(
+        thisRef: AbstractSetting<T>,
+        property: KProperty<*>,
+        value: T,
+    ) {
         thisRef.preference.edit {
             putString(key, value.name)
         }
@@ -53,8 +59,10 @@ internal class BooleanPreference(
     override val key: String,
     override val default: Boolean,
 ) : ISupportPreferenceDelegate<Boolean> {
-
-    override fun getValue(thisRef: AbstractSetting<Boolean>, property: KProperty<*>): Boolean {
+    override fun getValue(
+        thisRef: AbstractSetting<Boolean>,
+        property: KProperty<*>,
+    ): Boolean {
         return thisRef.preference.getBoolean(key, default)
     }
 
@@ -78,12 +86,18 @@ internal class IntPreference(
     override val key: String,
     override val default: Int,
 ) : ISupportPreferenceDelegate<Int> {
-
-    override fun getValue(thisRef: AbstractSetting<Int>, property: KProperty<*>): Int {
+    override fun getValue(
+        thisRef: AbstractSetting<Int>,
+        property: KProperty<*>,
+    ): Int {
         return thisRef.preference.getInt(key, default)
     }
 
-    override fun setValue(thisRef: AbstractSetting<Int>, property: KProperty<*>, value: Int) {
+    override fun setValue(
+        thisRef: AbstractSetting<Int>,
+        property: KProperty<*>,
+        value: Int,
+    ) {
         thisRef.preference.edit {
             putInt(key, value)
         }
@@ -99,12 +113,18 @@ internal class FloatPreference(
     override val key: String,
     override val default: Float,
 ) : ISupportPreferenceDelegate<Float> {
-
-    override fun getValue(thisRef: AbstractSetting<Float>, property: KProperty<*>): Float {
+    override fun getValue(
+        thisRef: AbstractSetting<Float>,
+        property: KProperty<*>,
+    ): Float {
         return thisRef.preference.getFloat(key, default)
     }
 
-    override fun setValue(thisRef: AbstractSetting<Float>, property: KProperty<*>, value: Float) {
+    override fun setValue(
+        thisRef: AbstractSetting<Float>,
+        property: KProperty<*>,
+        value: Float,
+    ) {
         thisRef.preference.edit {
             putFloat(key, value)
         }
@@ -120,12 +140,18 @@ internal class LongPreference(
     override val key: String,
     override val default: Long,
 ) : ISupportPreferenceDelegate<Long> {
-
-    override fun getValue(thisRef: AbstractSetting<Long>, property: KProperty<*>): Long {
+    override fun getValue(
+        thisRef: AbstractSetting<Long>,
+        property: KProperty<*>,
+    ): Long {
         return thisRef.preference.getLong(key, default)
     }
 
-    override fun setValue(thisRef: AbstractSetting<Long>, property: KProperty<*>, value: Long) {
+    override fun setValue(
+        thisRef: AbstractSetting<Long>,
+        property: KProperty<*>,
+        value: Long,
+    ) {
         thisRef.preference.edit {
             putLong(key, value)
         }
@@ -141,8 +167,10 @@ internal class StringPreference(
     override val key: String,
     override val default: String,
 ) : ISupportPreferenceDelegate<String> {
-
-    override fun getValue(thisRef: AbstractSetting<String>, property: KProperty<*>): String {
+    override fun getValue(
+        thisRef: AbstractSetting<String>,
+        property: KProperty<*>,
+    ): String {
         return thisRef.preference.getString(key, default) ?: default
     }
 
@@ -166,8 +194,10 @@ internal class NullableStringPreference(
     override val key: String,
     override val default: String? = null,
 ) : ISupportPreferenceDelegate<String?> {
-
-    override fun getValue(thisRef: AbstractSetting<String?>, property: KProperty<*>): String? {
+    override fun getValue(
+        thisRef: AbstractSetting<String?>,
+        property: KProperty<*>,
+    ): String? {
         return thisRef.preference.getString(key, default)
     }
 

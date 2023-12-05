@@ -42,7 +42,6 @@ class SupportDefaultItem(
     private val loadState: LoadState,
     private val stateConfig: IStateLayoutConfig,
 ) : RecyclerItem(RecyclerView.NO_ID) {
-
     private var binding: SupportLayoutStateDefaultBinding? = null
 
     override fun bind(
@@ -83,11 +82,12 @@ class SupportDefaultItem(
             viewGroup: ViewGroup,
             layoutInflater: LayoutInflater,
         ): SupportViewHolder {
-            val binding = SupportLayoutStateDefaultBinding.inflate(
-                layoutInflater,
-                viewGroup,
-                false,
-            )
+            val binding =
+                SupportLayoutStateDefaultBinding.inflate(
+                    layoutInflater,
+                    viewGroup,
+                    false,
+                )
             return SupportViewHolder(binding)
         }
     }

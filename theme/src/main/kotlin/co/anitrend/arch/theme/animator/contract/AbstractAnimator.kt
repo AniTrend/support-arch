@@ -26,7 +26,6 @@ import android.view.animation.Interpolator
  * @since v0.9.X
  */
 abstract class AbstractAnimator {
-
     open val animationDuration: SupportAnimatorDuration =
         SupportAnimatorDuration.SHORT
 

@@ -20,7 +20,6 @@ import co.anitrend.arch.extension.network.model.ConnectivityState
 import kotlinx.coroutines.flow.Flow
 
 interface ISupportConnectivity {
-
     /**
      * Check if the device is connected to any network with internet capabilities, this is only
      * a snapshot of the state at the time of request

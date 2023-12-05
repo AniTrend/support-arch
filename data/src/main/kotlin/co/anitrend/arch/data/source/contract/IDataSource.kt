@@ -21,7 +21,6 @@ import co.anitrend.arch.request.AbstractRequestHelper
 import kotlinx.coroutines.flow.Flow
 
 interface IDataSource {
-
     /**
      * Request helper that controls the flow of requests to the implementing data source to avoid
      * multiple requests of the same type before others are completed for this instance

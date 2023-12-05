@@ -31,7 +31,6 @@ import co.anitrend.arch.ui.view.widget.model.StateLayoutConfig
  * @since v0.9.X
  */
 interface ISupportFragmentList<T> : SwipeRefreshLayout.OnRefreshListener {
-
     val onRefreshObserver: Observer<LoadState>
     val onNetworkObserver: Observer<LoadState>
 

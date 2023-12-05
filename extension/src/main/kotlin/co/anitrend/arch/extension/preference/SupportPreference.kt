@@ -29,7 +29,9 @@ import co.anitrend.arch.extension.settings.contract.AbstractSetting
  *
  * @see AbstractSetting
  */
-abstract class SupportPreference @JvmOverloads constructor(
-    protected val context: Context,
-    sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context),
-) : ISupportPreference, SharedPreferences by sharedPreferences
+abstract class SupportPreference
+    @JvmOverloads
+    constructor(
+        protected val context: Context,
+        sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context),
+    ) : ISupportPreference, SharedPreferences by sharedPreferences

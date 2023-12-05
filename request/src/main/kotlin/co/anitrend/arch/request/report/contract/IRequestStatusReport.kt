@@ -23,7 +23,6 @@ import co.anitrend.arch.request.model.Request
  * Status report contract
  */
 interface IRequestStatusReport {
-
     /**
      * Convenience method to check if there are any running requests.
      *

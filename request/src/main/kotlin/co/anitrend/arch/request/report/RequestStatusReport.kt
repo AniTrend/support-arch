@@ -27,7 +27,6 @@ import co.anitrend.arch.request.report.contract.IRequestStatusReport
 data class RequestStatusReport internal constructor(
     private val request: Request,
 ) : IRequestStatusReport {
-
     /**
      * Convenience method to check if there are any running requests.
      *
@@ -88,9 +87,9 @@ data class RequestStatusReport internal constructor(
 
     override fun toString(): String {
         return """
-                StatusReport {
-                    request: $request
-                }
+            StatusReport {
+                request: $request
+            }
             """.trimIndent()
     }
 }
