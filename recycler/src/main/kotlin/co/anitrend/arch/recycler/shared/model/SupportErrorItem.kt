@@ -42,7 +42,6 @@ class SupportErrorItem(
     private val loadState: LoadState,
     private val configuration: IStateLayoutConfig,
 ) : RecyclerItem(RecyclerView.NO_ID) {
-
     private var binding: SupportLayoutStateErrorBinding? = null
 
     override fun bind(
@@ -90,11 +89,12 @@ class SupportErrorItem(
             viewGroup: ViewGroup,
             layoutInflater: LayoutInflater,
         ): SupportViewHolder {
-            val binding = SupportLayoutStateErrorBinding.inflate(
-                layoutInflater,
-                viewGroup,
-                false,
-            )
+            val binding =
+                SupportLayoutStateErrorBinding.inflate(
+                    layoutInflater,
+                    viewGroup,
+                    false,
+                )
             return SupportViewHolder(binding)
         }
     }

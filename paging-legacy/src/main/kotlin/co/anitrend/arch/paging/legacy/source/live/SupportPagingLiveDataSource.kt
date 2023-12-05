@@ -29,14 +29,14 @@ import co.anitrend.arch.request.model.Request
  * @since v1.3.0
  */
 abstract class SupportPagingLiveDataSource<K, V> : AbstractPagingLiveDataSource<K, V>() {
-
     /**
      * Representation of the paging state
      */
-    protected open val supportPagingHelper = SupportPagingHelper(
-        isPagingLimit = false,
-        pageSize = DEFAULT_PAGE_SIZE,
-    )
+    protected open val supportPagingHelper =
+        SupportPagingHelper(
+            isPagingLimit = false,
+            pageSize = DEFAULT_PAGE_SIZE,
+        )
 
     /**
      * Signal the data source to stop loading, and notify its callback.

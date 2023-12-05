@@ -53,7 +53,6 @@ open class SupportLoadStateAdapter(
     override val customSupportAnimator: AbstractAnimator? = ScaleAnimator(),
     override val supportAction: ISupportSelectionMode<Long>? = null,
 ) : ISupportAdapter<LoadState>, ListAdapter<LoadState, SupportViewHolder>(DIFF_CALLBACK) {
-
     var loadState: LoadState = LoadState.Idle()
         set(loadState) {
             if (field != loadState) {
@@ -137,7 +136,10 @@ open class SupportLoadStateAdapter(
      *
      * @see [SupportViewHolder.bind]
      */
-    override fun onBindViewHolder(holder: SupportViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: SupportViewHolder,
+        position: Int,
+    ) {
         bindViewHolderByType(holder, position)
     }
 
@@ -179,16 +181,17 @@ open class SupportLoadStateAdapter(
     }
 
     internal companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<LoadState>() {
-            override fun areItemsTheSame(
-                oldItem: LoadState,
-                newItem: LoadState,
-            ) = oldItem.position == newItem.position
+        val DIFF_CALLBACK =
+            object : DiffUtil.ItemCallback<LoadState>() {
+                override fun areItemsTheSame(
+                    oldItem: LoadState,
+                    newItem: LoadState,
+                ) = oldItem.position == newItem.position
 
-            override fun areContentsTheSame(
-                oldItem: LoadState,
-                newItem: LoadState,
-            ) = oldItem.hashCode() == newItem.hashCode()
-        }
+                override fun areContentsTheSame(
+                    oldItem: LoadState,
+                    newItem: LoadState,
+                ) = oldItem.hashCode() == newItem.hashCode()
+            }
     }
 }

@@ -25,7 +25,6 @@ import android.util.AttributeSet
  * @since v1.0.X
  */
 interface CustomView {
-
     /**
      * Callable in view constructors to perform view inflation and attribute initialization
      *
@@ -33,7 +32,11 @@ interface CustomView {
      * @param attrs view attributes if applicable
      * @param styleAttr style attribute if applicable
      */
-    fun onInit(context: Context, attrs: AttributeSet? = null, styleAttr: Int? = null)
+    fun onInit(
+        context: Context,
+        attrs: AttributeSet? = null,
+        styleAttr: Int? = null,
+    )
 
     /**
      * Should be called on a view's detach from window to unbind or release object references

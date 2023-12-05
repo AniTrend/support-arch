@@ -52,63 +52,66 @@ class FlowPagedListBuilder<K, V>(
     override var notifyDispatcher: CoroutineDispatcher = Dispatchers.Main,
     override var fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AbstractFlowPagedListBuilder<K, V>() {
-
     /**
      * Constructs a `Flow<PagedList>`.
      *
      * @return The Flow of PagedLists
      */
-    override fun buildFlow(): Flow<PagedList<V>> = channelFlow {
-        val invalidateCallback = object : ClearInvalidatedCallback {
-            private var prevList: PagedList<V>? = null
-            private var dataSource: DataSource<K, V>? = null
+    override fun buildFlow(): Flow<PagedList<V>> =
+        channelFlow {
+            val invalidateCallback =
+                object : ClearInvalidatedCallback {
+                    private var prevList: PagedList<V>? = null
+                    private var dataSource: DataSource<K, V>? = null
 
-            override fun onInvalidated() = sendNewList()
+                    override fun onInvalidated() = sendNewList()
 
-            override fun clear() {
-                dataSource?.removeInvalidatedCallback(this)
-            }
+                    override fun clear() {
+                        dataSource?.removeInvalidatedCallback(this)
+                    }
 
-            private fun sendNewList() {
-                launch(fetchDispatcher) {
-                    // Compute on the fetch dispatcher
-                    val list = createPagedList()
+                    private fun sendNewList() {
+                        launch(fetchDispatcher) {
+                            // Compute on the fetch dispatcher
+                            val list = createPagedList()
 
-                    withContext(notifyDispatcher) {
-                        // Send on the notify dispatcher
-                        trySend(list).onFailure {
-                            Timber.w(it)
+                            withContext(notifyDispatcher) {
+                                // Send on the notify dispatcher
+                                trySend(list).onFailure {
+                                    Timber.w(it)
+                                }
+                            }
                         }
                     }
-                }
-            }
 
-            private fun createPagedList(): PagedList<V> {
-                do {
-                    dataSource?.removeInvalidatedCallback(this)
+                    private fun createPagedList(): PagedList<V> {
+                        do {
+                            dataSource?.removeInvalidatedCallback(this)
 
-                    dataSource = dataSourceFactory.create().also {
-                        it.addInvalidatedCallback(this)
+                            dataSource =
+                                dataSourceFactory.create().also {
+                                    it.addInvalidatedCallback(this)
+                                }
+
+                            val list =
+                                PagedList.Builder(dataSource!!, config)
+                                    .setNotifyExecutor(notifyDispatcher.asExecutor())
+                                    .setFetchExecutor(fetchDispatcher.asExecutor())
+                                    .setBoundaryCallback(boundaryCallback)
+                                    .setInitialKey(prevList?.lastKey as? K ?: initialLoadKey)
+                                    .build()
+                                    .also { prevList = it }
+                        } while (list.isDetached)
+
+                        return requireNotNull(prevList)
                     }
+                }
 
-                    val list = PagedList.Builder(dataSource!!, config)
-                        .setNotifyExecutor(notifyDispatcher.asExecutor())
-                        .setFetchExecutor(fetchDispatcher.asExecutor())
-                        .setBoundaryCallback(boundaryCallback)
-                        .setInitialKey(prevList?.lastKey as? K ?: initialLoadKey)
-                        .build()
-                        .also { prevList = it }
-                } while (list.isDetached)
+            // Do the initial load
+            invalidateCallback.onInvalidated()
 
-                return requireNotNull(prevList)
+            awaitClose {
+                invalidateCallback.clear()
             }
         }
-
-        // Do the initial load
-        invalidateCallback.onInvalidated()
-
-        awaitClose {
-            invalidateCallback.clear()
-        }
-    }
 }

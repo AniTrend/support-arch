@@ -19,16 +19,16 @@ package co.anitrend.arch.domain.entities
 @Deprecated(
     "Replace with LoadState",
     level = DeprecationLevel.WARNING,
-    replaceWith = ReplaceWith(
-        "LoadState",
-        "co.anitrend.arch.domain.entities.LoadState",
-    ),
+    replaceWith =
+        ReplaceWith(
+            "LoadState",
+            "co.anitrend.arch.domain.entities.LoadState",
+        ),
 )
 /**
  * State representing ongoing, completed or failed requests
  */
 sealed class NetworkState {
-
     /**
      * Represents a state of idle
      */

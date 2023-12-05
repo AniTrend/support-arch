@@ -30,7 +30,6 @@ import java.io.File
  * @see FileProvider
  */
 open class SupportFileProvider : FileProvider() {
-
     companion object {
         /**
          * Proxy for [FileProvider.getUriForFile]
@@ -45,7 +44,11 @@ open class SupportFileProvider : FileProvider() {
          * by the provider.
          */
         @Throws(IllegalArgumentException::class)
-        fun uriForFile(context: Context, authority: String, file: File): Uri {
+        fun uriForFile(
+            context: Context,
+            authority: String,
+            file: File,
+        ): Uri {
             return getUriForFile(context, authority, file)
         }
     }

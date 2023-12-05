@@ -24,7 +24,6 @@ import co.anitrend.arch.recycler.state.LoadStateManager
 typealias StateListener = (LoadState.Position, LoadState) -> Unit
 
 abstract class AdapterController {
-
     protected abstract val loadStateListeners: MutableList<StateListener>
 
     protected abstract val loadStateManager: LoadStateManager
@@ -48,8 +47,7 @@ abstract class AdapterController {
     /**
      * Dispatches state changes to a state manager
      */
-    fun onLoadStateChanged(loadState: LoadState) =
-        loadStateManager.setState(loadState)
+    fun onLoadStateChanged(loadState: LoadState) = loadStateManager.setState(loadState)
 
     /**
      * Create a [ConcatAdapter] with the provided [SupportLoadStateAdapter]s displaying the

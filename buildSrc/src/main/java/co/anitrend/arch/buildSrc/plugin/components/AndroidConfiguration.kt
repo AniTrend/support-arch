@@ -32,9 +32,7 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
             "**/test/**/*.kt",
             "bin/**/*.kt"
         )
-        ktlint(libs.versions.ktlint.get()).userData(
-            mapOf("android" to "true")
-        )
+        ktlint(libs.versions.ktlint.get())
         licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
     }
 }

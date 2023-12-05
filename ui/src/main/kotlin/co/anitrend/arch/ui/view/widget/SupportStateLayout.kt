@@ -49,178 +49,185 @@ import timber.log.Timber
  *
  * @since v1.1.0
  */
-class SupportStateLayout @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-) : ViewFlipper(context, attrs), ISupportStateLayout, ISupportCoroutine by Main() {
-
-    private val loadingBinding: SupportStateLayoutLaodingBinding by lazy(UNSAFE) {
-        SupportStateLayoutLaodingBinding.inflate(getLayoutInflater())
-    }
-
-    private val errorBinding: SupportStateLayoutErrorBinding by lazy(UNSAFE) {
-        SupportStateLayoutErrorBinding.inflate(getLayoutInflater())
-    }
-
-    init {
-        onInit(context, attrs)
-    }
-
-    /**
-     * Observable for click interactions, which returns the current network state
-     */
-    override val interactionFlow = MutableStateFlow<ClickableItem>(ClickableItem.None)
-
-    /**
-     * Observable for publishing states to this widget
-     */
-    override val loadStateFlow = MutableStateFlow<LoadState>(LoadState.Success())
-
-    /**
-     * Configuration for that should be used by the different view states
-     */
-    override val stateConfigFlow = MutableStateFlow<StateLayoutConfig?>(null)
-
-    override val isLoading
-        get() = displayedChild == ISupportStateLayout.LOADING_VIEW
-
-    override val isError
-        get() = displayedChild == ISupportStateLayout.ERROR_VIEW
-
-    override val isContent
-        get() = displayedChild == ISupportStateLayout.CONTENT_VIEW
-
-    private fun updateUsing(config: StateLayoutConfig) {
-        setInAnimation(context, config.inAnimation)
-        setOutAnimation(context, config.outAnimation)
-        if (config.errorDrawable != null) {
-            errorBinding.stateLayoutErrorImage.setImageDrawable(
-                context.getCompatDrawable(config.errorDrawable),
-            )
-        } else {
-            errorBinding.stateLayoutErrorImage.gone()
+class SupportStateLayout
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+    ) : ViewFlipper(context, attrs), ISupportStateLayout, ISupportCoroutine by Main() {
+        private val loadingBinding: SupportStateLayoutLaodingBinding by lazy(UNSAFE) {
+            SupportStateLayoutLaodingBinding.inflate(getLayoutInflater())
         }
 
-        if (config.loadingDrawable != null) {
-            loadingBinding.stateLayoutLoadingImage.setImageDrawable(
-                context.getCompatDrawable(config.loadingDrawable),
-            )
-        } else {
-            loadingBinding.stateLayoutLoadingImage.gone()
+        private val errorBinding: SupportStateLayoutErrorBinding by lazy(UNSAFE) {
+            SupportStateLayoutErrorBinding.inflate(getLayoutInflater())
         }
 
-        if (config.retryAction != null) {
-            errorBinding.stateLayoutErrorRetryAction.setText(config.retryAction)
-        } else {
-            errorBinding.stateLayoutErrorRetryAction.gone()
+        init {
+            onInit(context, attrs)
         }
 
-        if (config.loadingMessage != null) {
-            loadingBinding.stateLayoutLoadingText.setText(config.loadingMessage)
-        } else {
-            loadingBinding.stateLayoutLoadingText.gone()
-        }
-    }
+        /**
+         * Observable for click interactions, which returns the current network state
+         */
+        override val interactionFlow = MutableStateFlow<ClickableItem>(ClickableItem.None)
 
-    /**
-     * Callable in view constructors to perform view inflation and
-     * additional attribute initialization
-     */
-    override fun onInit(context: Context, attrs: AttributeSet?, styleAttr: Int?) {
-        if (!isInEditMode) {
-            setupAdditionalViews()
-        }
+        /**
+         * Observable for publishing states to this widget
+         */
+        override val loadStateFlow = MutableStateFlow<LoadState>(LoadState.Success())
 
-        context.obtainStyledAttributes(attrs, R.styleable.SupportStateLayout).use {
-            displayedChild = it.getInt(
-                R.styleable.SupportStateLayout_showState,
-                ISupportStateLayout.CONTENT_VIEW,
-            )
-        }
+        /**
+         * Configuration for that should be used by the different view states
+         */
+        override val stateConfigFlow = MutableStateFlow<StateLayoutConfig?>(null)
 
-        errorBinding.stateLayoutErrorRetryAction.setOnClickListener {
-            interactionFlow.value = ClickableItem.State(
-                state = loadStateFlow.value,
-                view = it,
-            )
-        }
-    }
+        override val isLoading
+            get() = displayedChild == ISupportStateLayout.LOADING_VIEW
 
-    /**
-     * Should be called on a view's detach from window to unbind or
-     * release object references and cancel all running coroutine jobs if the current view
-     */
-    override fun onViewRecycled() {
-        errorBinding.stateLayoutErrorRetryAction.setOnClickListener(null)
-        interactionFlow.value = ClickableItem.None
-    }
+        override val isError
+            get() = displayedChild == ISupportStateLayout.ERROR_VIEW
 
-    @SuppressLint("InflateParams")
-    private fun setupAdditionalViews() {
-        addView(loadingBinding.root)
-        addView(errorBinding.root)
-    }
+        override val isContent
+            get() = displayedChild == ISupportStateLayout.CONTENT_VIEW
 
-    /**
-     * Updates the UI using the supplied [loadState]
-     */
-    private fun updateUsingLoadState(loadState: LoadState) {
-        when (loadState) {
-            is LoadState.Loading -> {
-                if (!isLoading) {
-                    displayedChild = ISupportStateLayout.LOADING_VIEW
-                }
+        private fun updateUsing(config: StateLayoutConfig) {
+            setInAnimation(context, config.inAnimation)
+            setOutAnimation(context, config.outAnimation)
+            if (config.errorDrawable != null) {
+                errorBinding.stateLayoutErrorImage.setImageDrawable(
+                    context.getCompatDrawable(config.errorDrawable),
+                )
+            } else {
+                errorBinding.stateLayoutErrorImage.gone()
             }
-            is LoadState.Error -> {
-                if (loadState.details is RequestError) {
-                    val requestError = loadState.details as RequestError
-                    errorBinding.stateLayoutErrorHeading.text = requestError.topic
-                    errorBinding.stateLayoutErrorMessage.text = requestError.message
-                } else {
-                    errorBinding.stateLayoutErrorHeading.text =
-                        loadState.details.javaClass.simpleName
-                    errorBinding.stateLayoutErrorMessage.text =
-                        loadState.details.message
-                }
-                if (!isError) {
-                    displayedChild = ISupportStateLayout.ERROR_VIEW
-                }
+
+            if (config.loadingDrawable != null) {
+                loadingBinding.stateLayoutLoadingImage.setImageDrawable(
+                    context.getCompatDrawable(config.loadingDrawable),
+                )
+            } else {
+                loadingBinding.stateLayoutLoadingImage.gone()
             }
-            is LoadState.Idle,
-            is LoadState.Success,
-            -> {
-                if (!isContent) {
-                    displayedChild = ISupportStateLayout.CONTENT_VIEW
-                }
+
+            if (config.retryAction != null) {
+                errorBinding.stateLayoutErrorRetryAction.setText(config.retryAction)
+            } else {
+                errorBinding.stateLayoutErrorRetryAction.gone()
+            }
+
+            if (config.loadingMessage != null) {
+                loadingBinding.stateLayoutLoadingText.setText(config.loadingMessage)
+            } else {
+                loadingBinding.stateLayoutLoadingText.gone()
             }
         }
-        if (!isInLayout) {
-            requestLayout()
-        }
-    }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        launch {
-            loadStateFlow
-                .onEach(::updateUsingLoadState)
-                .catch { cause: Throwable ->
-                    Timber.w(cause)
-                }.collect()
-        }
-        launch {
-            stateConfigFlow
-                .filterNotNull()
-                .onEach(::updateUsing)
-                .catch { cause: Throwable ->
-                    Timber.w(cause)
-                }.collect()
-        }
-    }
+        /**
+         * Callable in view constructors to perform view inflation and
+         * additional attribute initialization
+         */
+        override fun onInit(
+            context: Context,
+            attrs: AttributeSet?,
+            styleAttr: Int?,
+        ) {
+            if (!isInEditMode) {
+                setupAdditionalViews()
+            }
 
-    override fun onDetachedFromWindow() {
-        cancelAllChildren()
-        onViewRecycled()
-        super.onDetachedFromWindow()
+            context.obtainStyledAttributes(attrs, R.styleable.SupportStateLayout).use {
+                displayedChild =
+                    it.getInt(
+                        R.styleable.SupportStateLayout_showState,
+                        ISupportStateLayout.CONTENT_VIEW,
+                    )
+            }
+
+            errorBinding.stateLayoutErrorRetryAction.setOnClickListener {
+                interactionFlow.value =
+                    ClickableItem.State(
+                        state = loadStateFlow.value,
+                        view = it,
+                    )
+            }
+        }
+
+        /**
+         * Should be called on a view's detach from window to unbind or
+         * release object references and cancel all running coroutine jobs if the current view
+         */
+        override fun onViewRecycled() {
+            errorBinding.stateLayoutErrorRetryAction.setOnClickListener(null)
+            interactionFlow.value = ClickableItem.None
+        }
+
+        @SuppressLint("InflateParams")
+        private fun setupAdditionalViews() {
+            addView(loadingBinding.root)
+            addView(errorBinding.root)
+        }
+
+        /**
+         * Updates the UI using the supplied [loadState]
+         */
+        private fun updateUsingLoadState(loadState: LoadState) {
+            when (loadState) {
+                is LoadState.Loading -> {
+                    if (!isLoading) {
+                        displayedChild = ISupportStateLayout.LOADING_VIEW
+                    }
+                }
+                is LoadState.Error -> {
+                    if (loadState.details is RequestError) {
+                        val requestError = loadState.details as RequestError
+                        errorBinding.stateLayoutErrorHeading.text = requestError.topic
+                        errorBinding.stateLayoutErrorMessage.text = requestError.message
+                    } else {
+                        errorBinding.stateLayoutErrorHeading.text =
+                            loadState.details.javaClass.simpleName
+                        errorBinding.stateLayoutErrorMessage.text =
+                            loadState.details.message
+                    }
+                    if (!isError) {
+                        displayedChild = ISupportStateLayout.ERROR_VIEW
+                    }
+                }
+                is LoadState.Idle,
+                is LoadState.Success,
+                -> {
+                    if (!isContent) {
+                        displayedChild = ISupportStateLayout.CONTENT_VIEW
+                    }
+                }
+            }
+            if (!isInLayout) {
+                requestLayout()
+            }
+        }
+
+        override fun onAttachedToWindow() {
+            super.onAttachedToWindow()
+            launch {
+                loadStateFlow
+                    .onEach(::updateUsingLoadState)
+                    .catch { cause: Throwable ->
+                        Timber.w(cause)
+                    }.collect()
+            }
+            launch {
+                stateConfigFlow
+                    .filterNotNull()
+                    .onEach(::updateUsing)
+                    .catch { cause: Throwable ->
+                        Timber.w(cause)
+                    }.collect()
+            }
+        }
+
+        override fun onDetachedFromWindow() {
+            cancelAllChildren()
+            onViewRecycled()
+            super.onDetachedFromWindow()
+        }
     }
-}

@@ -32,19 +32,25 @@ class SupportObserverProxy(
     private val adapterDataObserver: RecyclerView.AdapterDataObserver,
     private val additionalViewAdapterViewCount: Int,
 ) : RecyclerView.AdapterDataObserver() {
-
     override fun onChanged() {
         adapterDataObserver.onChanged()
     }
 
-    override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+    override fun onItemRangeRemoved(
+        positionStart: Int,
+        itemCount: Int,
+    ) {
         adapterDataObserver.onItemRangeRemoved(
             positionStart + additionalViewAdapterViewCount,
             itemCount,
         )
     }
 
-    override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+    override fun onItemRangeMoved(
+        fromPosition: Int,
+        toPosition: Int,
+        itemCount: Int,
+    ) {
         adapterDataObserver.onItemRangeMoved(
             fromPosition + additionalViewAdapterViewCount,
             toPosition,
@@ -52,21 +58,31 @@ class SupportObserverProxy(
         )
     }
 
-    override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+    override fun onItemRangeInserted(
+        positionStart: Int,
+        itemCount: Int,
+    ) {
         adapterDataObserver.onItemRangeInserted(
             positionStart + additionalViewAdapterViewCount,
             itemCount,
         )
     }
 
-    override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+    override fun onItemRangeChanged(
+        positionStart: Int,
+        itemCount: Int,
+    ) {
         adapterDataObserver.onItemRangeChanged(
             positionStart + additionalViewAdapterViewCount,
             itemCount,
         )
     }
 
-    override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
+    override fun onItemRangeChanged(
+        positionStart: Int,
+        itemCount: Int,
+        payload: Any?,
+    ) {
         adapterDataObserver.onItemRangeChanged(
             positionStart + additionalViewAdapterViewCount,
             itemCount,

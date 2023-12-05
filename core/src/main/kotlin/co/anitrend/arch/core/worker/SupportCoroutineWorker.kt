@@ -36,7 +36,6 @@ abstract class SupportCoroutineWorker(
     context: Context,
     workerParameters: WorkerParameters,
 ) : CoroutineWorker(context, workerParameters) {
-
     /**
      * A suspending method to do your work.  This function runs on the coroutine context specified
      * by [coroutineContext].

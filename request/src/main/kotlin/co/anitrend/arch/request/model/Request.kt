@@ -22,7 +22,6 @@ import co.anitrend.arch.domain.entities.RequestError
  * Request type
  */
 sealed class Request {
-
     abstract val id: String
     abstract val type: Type
 

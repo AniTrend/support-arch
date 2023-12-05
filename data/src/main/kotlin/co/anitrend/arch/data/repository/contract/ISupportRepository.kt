@@ -22,7 +22,6 @@ package co.anitrend.arch.data.repository.contract
  * @since v1.1.0
  */
 interface ISupportRepository {
-
     /**
      * Deals with cancellation of any pending or on going operations that the repository
      * might be working on

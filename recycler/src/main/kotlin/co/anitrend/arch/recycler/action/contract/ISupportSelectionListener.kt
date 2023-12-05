@@ -25,11 +25,13 @@ import android.view.ActionMode.Callback
  * @since v1.3.0
  */
 interface ISupportSelectionListener : Callback {
-
     /**
      * Called when an item is selected or deselected.
      *
      * @param mode The current ActionMode being used
      */
-    fun onSelectionChanged(mode: ActionMode?, count: Int)
+    fun onSelectionChanged(
+        mode: ActionMode?,
+        count: Int,
+    )
 }

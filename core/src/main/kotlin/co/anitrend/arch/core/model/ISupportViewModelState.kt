@@ -31,7 +31,6 @@ import co.anitrend.arch.domain.entities.LoadState
  * @since v1.3.0
  */
 interface ISupportViewModelState<R> {
-
     val model: LiveData<R>
     val loadState: LiveData<LoadState>
     val refreshState: LiveData<LoadState>

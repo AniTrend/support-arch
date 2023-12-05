@@ -24,7 +24,6 @@ import com.jakewharton.threetenabp.AndroidThreeTen
  * Initialization of [Three Ten Android Backport](https://github.com/JakeWharton/ThreeTenABP)
  */
 class ThreeTenInitializer : Initializer<Unit> {
-
     /**
      * Initializes and a component given the application [Context]
      *

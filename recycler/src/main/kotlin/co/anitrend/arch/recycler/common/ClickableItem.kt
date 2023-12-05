@@ -23,7 +23,6 @@ import co.anitrend.arch.domain.entities.LoadState
  * Clickable item base class
  */
 sealed class ClickableItem {
-
     open val clickType: ClickType = ClickType.SHORT
 
     object None : ClickableItem()
@@ -54,6 +53,7 @@ sealed class ClickableItem {
     ) : ClickableItem()
 
     enum class ClickType {
-        SHORT, LONG
+        SHORT,
+        LONG,
     }
 }

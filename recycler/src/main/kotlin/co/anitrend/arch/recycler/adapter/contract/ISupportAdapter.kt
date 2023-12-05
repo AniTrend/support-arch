@@ -40,7 +40,6 @@ import kotlin.jvm.Throws
  * Contract for recycler view adapters
  */
 interface ISupportAdapter<T> : SupportLifecycle {
-
     var lastAnimatedPosition: Int
 
     val resources: Resources
@@ -119,7 +118,10 @@ interface ISupportAdapter<T> : SupportLifecycle {
      *
      * @see co.anitrend.arch.recycler.model.contract.IRecyclerItemSpan
      */
-    fun getSpanSizeForItemAt(position: Int, spanCount: Int?): Int? {
+    fun getSpanSizeForItemAt(
+        position: Int,
+        spanCount: Int?,
+    ): Int? {
         return try {
             val item = mapper(requireItem(position))
             val spanSize = spanCount ?: IRecyclerItemSpan.INVALID_SPAN_COUNT
@@ -138,30 +140,35 @@ interface ISupportAdapter<T> : SupportLifecycle {
      * @param layoutManager grid layout manage for your recycler
      */
     fun setLayoutSpanSize(layoutManager: GridLayoutManager) {
-        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int =
-                getSpanSizeForItemAt(
-                    position,
-                    layoutManager.spanCount,
-                ) ?: layoutManager.spanCount
-        }
+        layoutManager.spanSizeLookup =
+            object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int =
+                    getSpanSizeForItemAt(
+                        position,
+                        layoutManager.spanCount,
+                    ) ?: layoutManager.spanCount
+            }
     }
 
     /**
      * Applies an animation on a [SupportViewHolder] when it is seen for the first time
      */
-    fun animateViewHolder(holder: SupportViewHolder?, position: Int) {
+    fun animateViewHolder(
+        holder: SupportViewHolder?,
+        position: Int,
+    ) {
         holder?.apply {
             when (position > lastAnimatedPosition) {
-                true -> customSupportAnimator?.also { supportAnimator ->
-                    supportAnimator.getAnimators(itemView).forEach { animator ->
-                        with(animator) {
-                            duration = supportAnimator.animationDuration.runtime
-                            interpolator = supportAnimator.interpolator
-                            start()
+                true ->
+                    customSupportAnimator?.also { supportAnimator ->
+                        supportAnimator.getAnimators(itemView).forEach { animator ->
+                            with(animator) {
+                                duration = supportAnimator.animationDuration.runtime
+                                interpolator = supportAnimator.interpolator
+                                start()
+                            }
                         }
                     }
-                }
                 else -> {}
             }
             lastAnimatedPosition = position
@@ -174,12 +181,16 @@ interface ISupportAdapter<T> : SupportLifecycle {
      *
      * @param layoutParams StaggeredGridLayoutManager.LayoutParams for your recycler
      */
-    fun setLayoutSpanSize(layoutParams: StaggeredGridLayoutManager.LayoutParams, position: Int) {
+    fun setLayoutSpanSize(
+        layoutParams: StaggeredGridLayoutManager.LayoutParams,
+        position: Int,
+    ) {
         if (position != RecyclerView.NO_POSITION) {
-            val spanCount = getSpanSizeForItemAt(
-                position,
-                layoutParams.spanIndex,
-            ) ?: 0
+            val spanCount =
+                getSpanSizeForItemAt(
+                    position,
+                    layoutParams.spanIndex,
+                ) ?: 0
             layoutParams.isFullSpan = spanCount == FULL_SPAN_SIZE
         } else {
             Timber.d("Adapter position RecyclerView.NO_POSITION")

@@ -27,7 +27,6 @@ import co.anitrend.arch.core.model.ISupportViewModelState
  * @since v1.3.0
  */
 interface ILifecycleController {
-
     /**
      * Additional initialization to be done in this method, this is called in during
      * [androidx.fragment.app.FragmentActivity.onPostCreate]

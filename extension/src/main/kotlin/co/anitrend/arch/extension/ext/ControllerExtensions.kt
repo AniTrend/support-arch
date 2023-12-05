@@ -33,17 +33,18 @@ import timber.log.Timber
 inline fun <reified T> SavedStateHandle.extra(
     key: String,
     default: T,
-): Lazy<T> = lazy(PUBLICATION) {
-    try {
-        if (contains(key)) {
-            requireNotNull(get(key) as? T)
-        } else {
-            default
+): Lazy<T> =
+    lazy(PUBLICATION) {
+        try {
+            if (contains(key)) {
+                requireNotNull(get(key) as? T)
+            } else {
+                default
+            }
+        } catch (e: Exception) {
+            error(e)
         }
-    } catch (e: Exception) {
-        error(e)
     }
-}
 
 /**
  * Lazy intent parameters for saved state handle
@@ -52,19 +53,18 @@ inline fun <reified T> SavedStateHandle.extra(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> SavedStateHandle.extra(
-    key: String,
-): Lazy<T?> = lazy(PUBLICATION) {
-    try {
-        if (contains(key)) {
-            get(key) as? T
-        } else {
-            null
+inline fun <reified T> SavedStateHandle.extra(key: String): Lazy<T?> =
+    lazy(PUBLICATION) {
+        try {
+            if (contains(key)) {
+                get(key) as? T
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            error(e)
         }
-    } catch (e: Exception) {
-        error(e)
     }
-}
 
 /**
  * Lazy intent parameters for fragment activities
@@ -77,23 +77,24 @@ inline fun <reified T> SavedStateHandle.extra(
 inline fun <reified T> FragmentActivity.extra(
     key: String,
     default: T,
-): Lazy<T> = lazy(PUBLICATION) {
-    try {
-        if (intent?.extras?.containsKey(key) == true) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent?.extras?.getParcelable(key, T::class.java) as T
+): Lazy<T> =
+    lazy(PUBLICATION) {
+        try {
+            if (intent?.extras?.containsKey(key) == true) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent?.extras?.getParcelable(key, T::class.java) as T
+                } else {
+                    @Suppress("DEPRECATION")
+                    intent?.extras?.get(key) as T
+                }
             } else {
-                @Suppress("DEPRECATION")
-                intent?.extras?.get(key) as T
+                Timber.w("$this does not have an argument with key: $key")
+                default
             }
-        } else {
-            Timber.w("$this does not have an argument with key: $key")
-            default
+        } catch (e: Exception) {
+            error(e)
         }
-    } catch (e: Exception) {
-        error(e)
     }
-}
 
 /**
  * Lazy intent parameters for fragment activities
@@ -102,25 +103,24 @@ inline fun <reified T> FragmentActivity.extra(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> FragmentActivity.extra(
-    key: String,
-): Lazy<T?> = lazy(PUBLICATION) {
-    try {
-        if (intent?.extras?.containsKey(key) == true) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent?.extras?.getParcelable(key, T::class.java) as T
+inline fun <reified T> FragmentActivity.extra(key: String): Lazy<T?> =
+    lazy(PUBLICATION) {
+        try {
+            if (intent?.extras?.containsKey(key) == true) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent?.extras?.getParcelable(key, T::class.java) as T
+                } else {
+                    @Suppress("DEPRECATION")
+                    intent?.extras?.get(key) as T
+                }
             } else {
-                @Suppress("DEPRECATION")
-                intent?.extras?.get(key) as T
+                Timber.w("$this does not have an argument with key: $key")
+                null
             }
-        } else {
-            Timber.w("$this does not have an argument with key: $key")
-            null
+        } catch (e: Exception) {
+            error(e)
         }
-    } catch (e: Exception) {
-        error(e)
     }
-}
 
 /**
  * Lazy intent parameters for fragments
@@ -133,23 +133,24 @@ inline fun <reified T> FragmentActivity.extra(
 inline fun <reified T> Fragment.argument(
     key: String,
     default: T,
-): Lazy<T> = lazy(PUBLICATION) {
-    try {
-        if (arguments?.containsKey(key) == true) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arguments?.getParcelable(key, T::class.java) as T
+): Lazy<T> =
+    lazy(PUBLICATION) {
+        try {
+            if (arguments?.containsKey(key) == true) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    arguments?.getParcelable(key, T::class.java) as T
+                } else {
+                    @Suppress("DEPRECATION")
+                    arguments?.get(key) as T
+                }
             } else {
-                @Suppress("DEPRECATION")
-                arguments?.get(key) as T
+                Timber.w("$this does not have an argument with key: $key")
+                default
             }
-        } else {
-            Timber.w("$this does not have an argument with key: $key")
-            default
+        } catch (e: Exception) {
+            error(e)
         }
-    } catch (e: Exception) {
-        error(e)
     }
-}
 
 /**
  * Lazy intent parameters for fragments
@@ -158,22 +159,21 @@ inline fun <reified T> Fragment.argument(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> Fragment.argument(
-    key: String,
-): Lazy<T?> = lazy(PUBLICATION) {
-    try {
-        if (arguments?.containsKey(key) == true) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arguments?.getParcelable(key, T::class.java) as T
+inline fun <reified T> Fragment.argument(key: String): Lazy<T?> =
+    lazy(PUBLICATION) {
+        try {
+            if (arguments?.containsKey(key) == true) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    arguments?.getParcelable(key, T::class.java) as T
+                } else {
+                    @Suppress("DEPRECATION")
+                    arguments?.get(key) as T
+                }
             } else {
-                @Suppress("DEPRECATION")
-                arguments?.get(key) as T
+                Timber.w("$this does not have an argument with key: $key")
+                null
             }
-        } else {
-            Timber.w("$this does not have an argument with key: $key")
-            null
+        } catch (e: Exception) {
+            error(e)
         }
-    } catch (e: Exception) {
-        error(e)
     }
-}

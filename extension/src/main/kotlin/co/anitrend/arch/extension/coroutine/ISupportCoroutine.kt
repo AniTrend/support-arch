@@ -28,7 +28,6 @@ import kotlin.coroutines.CoroutineContext
  * @since v1.1.0
  */
 interface ISupportCoroutine : CoroutineScope {
-
     /**
      * Requires an instance of [kotlinx.coroutines.Job] or [kotlinx.coroutines.SupervisorJob]
      */
@@ -62,6 +61,5 @@ interface ISupportCoroutine : CoroutineScope {
      *
      * @see [kotlinx.coroutines.Job.cancelChildren]
      */
-    fun cancelAllChildren() =
-        scope.coroutineContext.cancelChildren()
+    fun cancelAllChildren() = scope.coroutineContext.cancelChildren()
 }

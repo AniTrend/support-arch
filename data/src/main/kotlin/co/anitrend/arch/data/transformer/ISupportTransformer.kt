@@ -22,7 +22,6 @@ package co.anitrend.arch.data.transformer
  * @since v1.2.0
  */
 interface ISupportTransformer<in S, out D> {
-
     /**
      * Transforms the the [source] to the target type
      */

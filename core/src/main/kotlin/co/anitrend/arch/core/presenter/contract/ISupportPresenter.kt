@@ -22,7 +22,6 @@ import co.anitrend.arch.extension.preference.SupportPreference
  * Contract for presenters
  */
 interface ISupportPresenter {
-
     /**
      * Contract for settings with base properties
      */

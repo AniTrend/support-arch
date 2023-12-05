@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.Flow
  * Builder for `Flow<PagedList>` given a [DataSource.Factory] and a [PagedList.Config].
  */
 abstract class AbstractFlowPagedListBuilder<K, V> {
-
     /**
      * First loading key passed to the first PagedList/DataSource.
      *

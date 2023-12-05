@@ -45,19 +45,19 @@ class EnumSetting<T : Enum<*>>(
     resources: Resources,
     preference: SharedPreferences,
 ) : AbstractSetting<T>(preference, default) {
-
     override val identifier = resources.getString(key)
 
     override var value by EnumPreference(identifier, default)
 
     override val flow by lazy(UNSAFE) {
         callbackFlow {
-            val listener = SettingsListener { _, id ->
-                if (id == identifier) {
-                    trySendBlocking(value)
-                        .onFailure { Timber.e(it) }
+            val listener =
+                SettingsListener { _, id ->
+                    if (id == identifier) {
+                        trySendBlocking(value)
+                            .onFailure { Timber.e(it) }
+                    }
                 }
-            }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
@@ -74,19 +74,19 @@ class BooleanSetting(
     resources: Resources,
     preference: SharedPreferences,
 ) : AbstractSetting<Boolean>(preference, default) {
-
     override val identifier = resources.getString(key)
 
     override var value by BooleanPreference(identifier, default)
 
     override val flow by lazy(UNSAFE) {
         callbackFlow {
-            val listener = SettingsListener { _, id ->
-                if (id == identifier) {
-                    trySendBlocking(value)
-                        .onFailure { Timber.e(it) }
+            val listener =
+                SettingsListener { _, id ->
+                    if (id == identifier) {
+                        trySendBlocking(value)
+                            .onFailure { Timber.e(it) }
+                    }
                 }
-            }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
@@ -103,19 +103,19 @@ class IntSetting(
     resources: Resources,
     preference: SharedPreferences,
 ) : AbstractSetting<Int>(preference, default) {
-
     override val identifier = resources.getString(key)
 
     override var value by IntPreference(identifier, default)
 
     override val flow by lazy(UNSAFE) {
         callbackFlow {
-            val listener = SettingsListener { _, id ->
-                if (id == identifier) {
-                    trySendBlocking(value)
-                        .onFailure { Timber.e(it) }
+            val listener =
+                SettingsListener { _, id ->
+                    if (id == identifier) {
+                        trySendBlocking(value)
+                            .onFailure { Timber.e(it) }
+                    }
                 }
-            }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
@@ -132,19 +132,19 @@ class FloatSetting(
     resources: Resources,
     preference: SharedPreferences,
 ) : AbstractSetting<Float>(preference, default) {
-
     override val identifier = resources.getString(key)
 
     override var value by FloatPreference(identifier, default)
 
     override val flow by lazy(UNSAFE) {
         callbackFlow {
-            val listener = SettingsListener { _, id ->
-                if (id == identifier) {
-                    trySendBlocking(value)
-                        .onFailure { Timber.e(it) }
+            val listener =
+                SettingsListener { _, id ->
+                    if (id == identifier) {
+                        trySendBlocking(value)
+                            .onFailure { Timber.e(it) }
+                    }
                 }
-            }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
@@ -161,19 +161,19 @@ class LongSetting(
     resources: Resources,
     preference: SharedPreferences,
 ) : AbstractSetting<Long>(preference, default) {
-
     override val identifier = resources.getString(key)
 
     override var value by LongPreference(identifier, default)
 
     override val flow by lazy(UNSAFE) {
         callbackFlow {
-            val listener = SettingsListener { _, id ->
-                if (id == identifier) {
-                    trySendBlocking(value)
-                        .onFailure { Timber.e(it) }
+            val listener =
+                SettingsListener { _, id ->
+                    if (id == identifier) {
+                        trySendBlocking(value)
+                            .onFailure { Timber.e(it) }
+                    }
                 }
-            }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
@@ -190,19 +190,19 @@ class StringSetting(
     resources: Resources,
     preference: SharedPreferences,
 ) : AbstractSetting<String>(preference, default) {
-
     override val identifier = resources.getString(key)
 
     override var value by StringPreference(identifier, default)
 
     override val flow by lazy(UNSAFE) {
         callbackFlow {
-            val listener = SettingsListener { _, id ->
-                if (id == identifier) {
-                    trySendBlocking(value)
-                        .onFailure { Timber.e(it) }
+            val listener =
+                SettingsListener { _, id ->
+                    if (id == identifier) {
+                        trySendBlocking(value)
+                            .onFailure { Timber.e(it) }
+                    }
                 }
-            }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }
@@ -219,19 +219,19 @@ class NullableStringSetting(
     resources: Resources,
     preference: SharedPreferences,
 ) : AbstractSetting<String?>(preference, default) {
-
     override val identifier = resources.getString(key)
 
     override var value by NullableStringPreference(identifier, default)
 
     override val flow by lazy(UNSAFE) {
         callbackFlow {
-            val listener = SettingsListener { _, id ->
-                if (id == identifier) {
-                    trySendBlocking(value)
-                        .onFailure { Timber.e(it) }
+            val listener =
+                SettingsListener { _, id ->
+                    if (id == identifier) {
+                        trySendBlocking(value)
+                            .onFailure { Timber.e(it) }
+                    }
                 }
-            }
             preference.registerOnSharedPreferenceChangeListener(listener)
             awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
         }

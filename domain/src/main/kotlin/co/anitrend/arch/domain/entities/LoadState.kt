@@ -22,7 +22,6 @@ package co.anitrend.arch.domain.entities
  * @property position Where the loader should be placed
  */
 sealed class LoadState {
-
     abstract val position: Position
 
     /**

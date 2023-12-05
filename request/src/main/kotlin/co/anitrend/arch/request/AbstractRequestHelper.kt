@@ -29,7 +29,6 @@ import java.util.concurrent.CopyOnWriteArrayList
  * @since v1.3.0
  */
 abstract class AbstractRequestHelper : IRequestHelper {
-
     protected val requestQueue: MutableList<RequestQueue> = mutableListOf()
 
     protected val listeners = CopyOnWriteArrayList<IRequestHelper.Listener>()
@@ -49,9 +48,7 @@ abstract class AbstractRequestHelper : IRequestHelper {
      * @param listener The listener that will be notified each time a request's status changes.
      * @return True if it is added, false otherwise (e.g. it already exists in the list).
      */
-    override fun addListener(
-        listener: IRequestHelper.Listener,
-    ) = listeners.add(listener)
+    override fun addListener(listener: IRequestHelper.Listener) = listeners.add(listener)
 
     /**
      * Removes the given listener from the listeners list.
@@ -59,9 +56,7 @@ abstract class AbstractRequestHelper : IRequestHelper {
      * @param listener The listener that will be removed.
      * @return True if the listener is removed, false otherwise (e.g. it never existed)
      */
-    override fun removeListener(
-        listener: IRequestHelper.Listener,
-    ) = listeners.remove(listener)
+    override fun removeListener(listener: IRequestHelper.Listener) = listeners.remove(listener)
 
     /*
      * Helper extension to dispatch changes to all listeners

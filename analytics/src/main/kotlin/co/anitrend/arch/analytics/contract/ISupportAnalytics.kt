@@ -25,11 +25,13 @@ import android.util.Log
  * @since v1.0.X
  */
 interface ISupportAnalytics {
-
     /**
      * Handles logging the current state of a visited screen using an explicit [bundle]
      */
-    fun logCurrentState(tag: String, bundle: Bundle?)
+    fun logCurrentState(
+        tag: String,
+        bundle: Bundle?,
+    )
 
     /**
      * Handles logging of exceptions to an analytic service
@@ -39,7 +41,11 @@ interface ISupportAnalytics {
     /**
      * Handles logging of an analytic service with the [priority] defaulted to [Log.WARN]
      */
-    fun log(priority: Int = Log.WARN, tag: String?, message: String)
+    fun log(
+        priority: Int = Log.WARN,
+        tag: String?,
+        message: String,
+    )
 
     /**
      * Clears any set parameters used for logging

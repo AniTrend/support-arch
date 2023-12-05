@@ -37,7 +37,6 @@ abstract class SupportActivity :
     AppCompatActivity(),
     ILifecycleController,
     CoroutineScope by MainScope() {
-
     /** Current fragment in view tag which will be used by [getSupportFragmentManager] */
     protected var currentFragmentTag: String? = null
 

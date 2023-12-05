@@ -31,7 +31,6 @@ abstract class AbstractPagingDataSource<T> :
     IDataSource,
     ISource,
     ISupportCoroutine by Default() {
-
     /**
      * Contract for multiple types of [coroutineDispatcher]
      */

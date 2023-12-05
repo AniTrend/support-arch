@@ -43,7 +43,6 @@ abstract class SupportPageAdapter(
     fragmentManager: FragmentManager,
     defaultBehavior: Int = BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
 ) : FragmentStatePagerAdapter(fragmentManager, defaultBehavior) {
-
     val titles = ArrayList<String>()
 
     /**
@@ -51,7 +50,10 @@ abstract class SupportPageAdapter(
      *
      * @param titleRes array resource of which titles to use
      */
-    open fun setPagerTitles(context: Context, @ArrayRes titleRes: Int) {
+    open fun setPagerTitles(
+        context: Context,
+        @ArrayRes titleRes: Int,
+    ) {
         if (titles.isNotEmpty()) {
             titles.clear()
         }

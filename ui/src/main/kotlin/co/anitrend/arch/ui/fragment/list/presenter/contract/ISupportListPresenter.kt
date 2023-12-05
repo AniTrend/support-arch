@@ -26,14 +26,16 @@ import co.anitrend.arch.ui.view.widget.contract.ISupportStateLayout
  * List fragment presenter contract
  */
 interface ISupportListPresenter<T> : SupportLifecycle {
-
     /**
      * Mirrors controller lifecycle state for creating view
      *
      * @param fragmentList The current controller attached
      * @param view Created view or null
      */
-    fun onCreateView(fragmentList: ISupportFragmentList<T>, view: View?)
+    fun onCreateView(
+        fragmentList: ISupportFragmentList<T>,
+        view: View?,
+    )
 
     /**
      * Responds to load state changes when refreshing
@@ -48,7 +50,10 @@ interface ISupportListPresenter<T> : SupportLifecycle {
      * @param fragmentList Current list controller attached
      * @param loadState New state from the application
      */
-    fun onNetworkObserverChanged(fragmentList: ISupportFragmentList<T>, loadState: LoadState)
+    fun onNetworkObserverChanged(
+        fragmentList: ISupportFragmentList<T>,
+        loadState: LoadState,
+    )
 
     /**
      * Checks and resets swipe refresh layout and snack bar states

@@ -29,7 +29,6 @@ import timber.log.Timber
  * @since v1.2.0
  */
 interface SupportLifecycle : DefaultLifecycleObserver {
-
     /**
      * Notifies that `ON_CREATE` event occurred.
      *

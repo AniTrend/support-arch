@@ -30,7 +30,6 @@ import co.anitrend.arch.recycler.R
  * @since v1.3.0
  */
 interface ISelectionDecorator {
-
     /**
      * Applies decorations on the selected or deselected item.
      *
@@ -43,13 +42,15 @@ interface ISelectionDecorator {
         isSelected: Boolean,
         @DrawableRes drawableRes: Int = co.anitrend.arch.theme.R.drawable.selection_frame,
     ) = when (isSelected) {
-        true -> when (view) {
-            is CheckBox -> view.isChecked = true
-            else -> view.setBackgroundResource(drawableRes)
-        }
-        else -> when (view) {
-            is CheckBox -> view.isChecked = false
-            else -> view.setBackgroundResource(0)
-        }
+        true ->
+            when (view) {
+                is CheckBox -> view.isChecked = true
+                else -> view.setBackgroundResource(drawableRes)
+            }
+        else ->
+            when (view) {
+                is CheckBox -> view.isChecked = false
+                else -> view.setBackgroundResource(0)
+            }
     }
 }

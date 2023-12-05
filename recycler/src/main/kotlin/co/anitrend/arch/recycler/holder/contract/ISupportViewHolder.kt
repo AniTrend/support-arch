@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * @since 1.3.0
  */
 interface ISupportViewHolder {
-
     /**
      * Load images, text, buttons, etc. in this method from the given parameter
      */
