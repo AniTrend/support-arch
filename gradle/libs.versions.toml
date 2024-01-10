@@ -4,7 +4,7 @@ ktlint = "1.0.1"
 gradle-plugin = "8.2.1"
 
 androidx-core = "1.12.0"
-androix-lifecycle = "2.6.2"
+androix-lifecycle = "2.7.0"
 androidx-paging = "2.1.2"
 androidx-preference = "1.2.1"
 androidx-recycler = "1.3.2"
