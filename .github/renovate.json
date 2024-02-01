@@ -3,9 +3,6 @@
   "extends": [
     "config:base"
   ],
-  "addLabels": [
-    "dependencies"
-  ],
   "branchPrefix": "dependencies/",
   "reviewers": ["wax911"],
   "baseBranches": [
