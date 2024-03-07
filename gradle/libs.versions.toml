@@ -12,7 +12,7 @@ androidx-test-ext = "1.1.5"
 androidx-work = "2.9.0"
 
 jetbrains-dokka = "1.9.20"
-jetbrains-kotlin = "1.9.22"
+jetbrains-kotlin = "1.9.23"
 jetbrains-kotlinx-coroutines = "1.8.0"
 
 io-mockk = "1.13.10"
