@@ -10,6 +10,7 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.named
+import org.jetbrains.dokka.Platform
 import java.net.URL
 
 private fun Project.dependenciesOfProject(): List<Modules.Module> {
@@ -168,7 +169,9 @@ private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtm
             }
 
             // Used for linking to JDK documentation
-            jdkVersion.set(8)
+            jdkVersion.set(17)
+
+            platform.set(Platform.jvm)
 
             // Disable linking to online kotlin-stdlib documentation
             noStdlibLink.set(false)
@@ -208,14 +211,13 @@ private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtm
     }
 }
 
-@Suppress("UnstableApiUsage")
 internal fun Project.configureOptions() {
     if (containsBasePlugin()) {
-        logger.lifecycle("Applying extension options for ${path}")
+        logger.lifecycle("Applying extension options for ${project.path}")
 
         val baseExt = baseExtension()
 
-        logger.lifecycle("Applying additional tasks options for dokka and javadoc on ${path}")
+        logger.lifecycle("Applying additional tasks options for dokka and javadoc on ${project.path}")
 
         createDokkaTaskProvider()
 
@@ -225,7 +227,7 @@ internal fun Project.configureOptions() {
         }
 
         val classesJar by tasks.register("classesJar", Jar::class.java) {
-            from("${project.buildDir}/intermediates/classes/release")
+            from("${project.layout.buildDirectory}/intermediates/classes/release")
         }
 
         artifacts {
