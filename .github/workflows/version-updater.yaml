@@ -1,4 +1,4 @@
- name: version-update
+name: version-update
 
 on:
   repository_dispatch:
