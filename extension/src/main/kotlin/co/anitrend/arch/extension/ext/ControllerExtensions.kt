@@ -25,14 +25,14 @@ import timber.log.Timber
 /**
  * Lazy intent parameters for saved state handle
  *
- * @param key lookup key for the embedded item in the [SavedStateHandle.get]
  * @param default default value to use when key does not exist
+ * @param key lookup key for the embedded item in the [SavedStateHandle.get]
  *
  * @return [Lazy] of the target type
  */
 inline fun <reified T> SavedStateHandle.extra(
-    key: String,
     default: T,
+    key: String = T::class.java.simpleName,
 ): Lazy<T> =
     lazy(PUBLICATION) {
         try {
@@ -53,30 +53,19 @@ inline fun <reified T> SavedStateHandle.extra(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> SavedStateHandle.extra(key: String): Lazy<T?> =
-    lazy(PUBLICATION) {
-        try {
-            if (contains(key)) {
-                get(key) as? T
-            } else {
-                null
-            }
-        } catch (e: Exception) {
-            error(e)
-        }
-    }
+inline fun <reified T> SavedStateHandle.extra(key: String = T::class.java.simpleName): Lazy<T?> = extra(key = key, default = null)
 
 /**
  * Lazy intent parameters for fragment activities
  *
- * @param key lookup key for the embedded item in the [FragmentActivity.getIntent]
  * @param default default value to use when key does not exist
+ * @param key lookup key for the embedded item in the [FragmentActivity.getIntent]
  *
  * @return [Lazy] of the target type
  */
 inline fun <reified T> FragmentActivity.extra(
-    key: String,
     default: T,
+    key: String = T::class.java.simpleName,
 ): Lazy<T> =
     lazy(PUBLICATION) {
         try {
@@ -103,36 +92,19 @@ inline fun <reified T> FragmentActivity.extra(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> FragmentActivity.extra(key: String): Lazy<T?> =
-    lazy(PUBLICATION) {
-        try {
-            if (intent?.extras?.containsKey(key) == true) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    intent?.extras?.getParcelable(key, T::class.java) as T
-                } else {
-                    @Suppress("DEPRECATION")
-                    intent?.extras?.get(key) as T
-                }
-            } else {
-                Timber.w("$this does not have an argument with key: $key")
-                null
-            }
-        } catch (e: Exception) {
-            error(e)
-        }
-    }
+inline fun <reified T> FragmentActivity.extra(key: String = T::class.java.simpleName): Lazy<T?> = extra(key = key, default = null)
 
 /**
  * Lazy intent parameters for fragments
  *
- * @param key lookup key for the embedded item in the [Fragment.getArguments]
  * @param default default value to use when key does not exist
+ * @param key lookup key for the embedded item in the [Fragment.getArguments]
  *
  * @return [Lazy] of the target type
  */
 inline fun <reified T> Fragment.argument(
-    key: String,
     default: T,
+    key: String = T::class.java.simpleName,
 ): Lazy<T> =
     lazy(PUBLICATION) {
         try {
@@ -159,21 +131,4 @@ inline fun <reified T> Fragment.argument(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> Fragment.argument(key: String): Lazy<T?> =
-    lazy(PUBLICATION) {
-        try {
-            if (arguments?.containsKey(key) == true) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    arguments?.getParcelable(key, T::class.java) as T
-                } else {
-                    @Suppress("DEPRECATION")
-                    arguments?.get(key) as T
-                }
-            } else {
-                Timber.w("$this does not have an argument with key: $key")
-                null
-            }
-        } catch (e: Exception) {
-            error(e)
-        }
-    }
+inline fun <reified T> Fragment.argument(key: String = T::class.java.simpleName): Lazy<T?> = argument(key = key, default = null)
