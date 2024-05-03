@@ -59,7 +59,7 @@ androidx-test = { module = "androidx.work:work-test", version.ref = "androidx-wo
 
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
 androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "androidx-work" }
-androidx-work-test = { module = "androidx.work:work-test", version.ref = "androidx-work" }
+androidx-work-test = { module = "androidx.work:work-testing", version.ref = "androidx-work" }
 
 cash-turbine = "app.cash.turbine:turbine:1.1.0"
 
