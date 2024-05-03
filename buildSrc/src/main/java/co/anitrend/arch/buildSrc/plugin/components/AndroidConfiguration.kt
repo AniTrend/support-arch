@@ -27,7 +27,7 @@ internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
     kotlin {
         target("**/*.kt")
         targetExclude(
-            "$buildDir/**/*.kt",
+            "${layout.buildDirectory.get()}/**/*.kt",
             "**/androidTest/**/*.kt",
             "**/test/**/*.kt",
             "bin/**/*.kt"

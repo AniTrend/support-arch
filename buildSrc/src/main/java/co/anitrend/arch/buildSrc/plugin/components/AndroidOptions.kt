@@ -72,7 +72,7 @@ private fun Project.createMavenPublicationUsing(sources: Jar) {
             version = props[PropertyTypes.VERSION]
 
             artifact(sources)
-            artifact("${buildDir}/outputs/aar/${projectName}-release.aar")
+            artifact("${layout.buildDirectory.get()}/outputs/aar/${projectName}-release.aar")
             from(component)
 
             pom {
@@ -98,7 +98,7 @@ private fun Project.createMavenPublicationUsing(sources: Jar) {
 }
 
 private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtml") {
-    outputDirectory.set(buildDir.resolve("docs/dokka"))
+    outputDirectory.set(layout.buildDirectory.dir("docs/dokka"))
 
     // Set module name displayed in the final output
     moduleName.set(this@createDokkaTaskProvider.name)
@@ -227,7 +227,7 @@ internal fun Project.configureOptions() {
         }
 
         val classesJar by tasks.register("classesJar", Jar::class.java) {
-            from("${project.layout.buildDirectory}/intermediates/classes/release")
+            from("${project.layout.buildDirectory.get()}/intermediates/classes/release")
         }
 
         artifacts {
