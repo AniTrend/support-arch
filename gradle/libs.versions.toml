@@ -1,5 +1,5 @@
 [versions]
-ktlint = "1.0.1"
+ktlint = "1.1.1"
 
 gradle-plugin = "8.4.0"
 
@@ -77,6 +77,6 @@ jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-co
 mockk = { module = "io.mockk:mockk", version.ref = "io-mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "io-mockk" }
 
-gradle-versions = "com.github.ben-manes:gradle-versions-plugin:0.51.0"
+spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "6.25.0" }
 
-spotless-gradle = "com.diffplug.spotless:spotless-plugin-gradle:6.25.0"
+pintrest-ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }

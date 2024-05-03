@@ -23,9 +23,6 @@ dependencies {
     /** Depend on the dokka plugin, since we want to access it in our plugin */
     implementation(libs.jetbrains.dokka.gradle)
 
-    /** Dependency management */
-    implementation(libs.gradle.versions)
-
     /** Spotless */
     implementation(libs.spotless.gradle)
 
