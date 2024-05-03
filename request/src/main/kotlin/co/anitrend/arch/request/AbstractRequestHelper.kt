@@ -43,10 +43,11 @@ abstract class AbstractRequestHelper : IRequestHelper {
     }
 
     /**
-     * Adds a new listener that will be notified when any request changes [IRequestHelper.Status].
+     * Adds a new listener that will be notified when any request load state changes: [co.anitrend.arch.domain.entities.LoadState].
      *
      * @param listener The listener that will be notified each time a request's status changes.
-     * @return True if it is added, false otherwise (e.g. it already exists in the list).
+     *
+     * @return [Boolean] indicating whether or not [listener] has been added
      */
     override fun addListener(listener: IRequestHelper.Listener) = listeners.add(listener)
 
@@ -54,11 +55,12 @@ abstract class AbstractRequestHelper : IRequestHelper {
      * Removes the given listener from the listeners list.
      *
      * @param listener The listener that will be removed.
-     * @return True if the listener is removed, false otherwise (e.g. it never existed)
+     *
+     * @return [Boolean] indicating whether or not [listener] has been removed
      */
     override fun removeListener(listener: IRequestHelper.Listener) = listeners.remove(listener)
 
-    /*
+    /**
      * Helper extension to dispatch changes to all listeners
      */
     protected fun IRequestStatusReport.dispatchReport() {

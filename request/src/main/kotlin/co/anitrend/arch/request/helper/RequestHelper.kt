@@ -32,7 +32,8 @@ import java.util.concurrent.atomic.AtomicReference
 /**
  * A request helper that manages requests, retrying and blocking duplication
  *
- * @param dispatcher Coroutine dispatchers
+ * @param main Coroutine dispatchers for main thread operations
+ * @param io Coroutine dispatcher for IO operations
  *
  * @since v1.3.0
  */
@@ -56,7 +57,7 @@ class RequestHelper(
      * @param request The type of the request.
      * @param handleCallback The request to run.
      *
-     * @return True if the request is run, false otherwise.
+     * @return [Boolean] indicating the [request] execution run status.
      */
     override suspend fun runIfNotRunning(
         request: Request,
@@ -134,9 +135,9 @@ class RequestHelper(
      * Retries all request types for a given [status].
      *
      * @param status Status for request to retry
-     * @param action Action to run when [status is satisfied]
+     * @param action Action to run when [status] is satisfied
      *
-     * @return True if any request is retried, false otherwise.
+     * @return [Boolean] indicating the run status of [action]
      */
     override suspend fun retryWithStatus(
         status: Request.Status,
@@ -180,7 +181,7 @@ class RequestHelper(
     /**
      * Check if request handler has any finished request with [status]
      *
-     * @return True if a match is found, false otherwise.
+     * @return [Boolean] to represent the existence [status] within the internal request queue
      */
     override suspend fun hasAnyWithStatus(status: Request.Status): Boolean {
         return withContext(main) {

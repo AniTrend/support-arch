@@ -31,7 +31,7 @@ import timber.log.Timber
  * @return [Lazy] of the target type
  */
 inline fun <reified T> SavedStateHandle.extra(
-    default: T,
+    crossinline default: () -> T,
     key: String = T::class.java.simpleName,
 ): Lazy<T> =
     lazy(PUBLICATION) {
@@ -39,7 +39,7 @@ inline fun <reified T> SavedStateHandle.extra(
             if (contains(key)) {
                 requireNotNull(get(key) as? T)
             } else {
-                default
+                default()
             }
         } catch (e: Exception) {
             error(e)
@@ -53,7 +53,7 @@ inline fun <reified T> SavedStateHandle.extra(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> SavedStateHandle.extra(key: String = T::class.java.simpleName): Lazy<T?> = extra(key = key, default = null)
+inline fun <reified T> SavedStateHandle.extra(key: String = T::class.java.simpleName): Lazy<T?> = extra(key = key, default = { null })
 
 /**
  * Lazy intent parameters for fragment activities
@@ -64,7 +64,7 @@ inline fun <reified T> SavedStateHandle.extra(key: String = T::class.java.simple
  * @return [Lazy] of the target type
  */
 inline fun <reified T> FragmentActivity.extra(
-    default: T,
+    crossinline default: () -> T,
     key: String = T::class.java.simpleName,
 ): Lazy<T> =
     lazy(PUBLICATION) {
@@ -78,7 +78,7 @@ inline fun <reified T> FragmentActivity.extra(
                 }
             } else {
                 Timber.w("$this does not have an argument with key: $key")
-                default
+                default()
             }
         } catch (e: Exception) {
             error(e)
@@ -92,7 +92,7 @@ inline fun <reified T> FragmentActivity.extra(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> FragmentActivity.extra(key: String = T::class.java.simpleName): Lazy<T?> = extra(key = key, default = null)
+inline fun <reified T> FragmentActivity.extra(key: String = T::class.java.simpleName): Lazy<T?> = extra(key = key, default = { null })
 
 /**
  * Lazy intent parameters for fragments
@@ -103,7 +103,7 @@ inline fun <reified T> FragmentActivity.extra(key: String = T::class.java.simple
  * @return [Lazy] of the target type
  */
 inline fun <reified T> Fragment.argument(
-    default: T,
+    crossinline default: () -> T,
     key: String = T::class.java.simpleName,
 ): Lazy<T> =
     lazy(PUBLICATION) {
@@ -117,7 +117,7 @@ inline fun <reified T> Fragment.argument(
                 }
             } else {
                 Timber.w("$this does not have an argument with key: $key")
-                default
+                default()
             }
         } catch (e: Exception) {
             error(e)
@@ -131,4 +131,4 @@ inline fun <reified T> Fragment.argument(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> Fragment.argument(key: String = T::class.java.simpleName): Lazy<T?> = argument(key = key, default = null)
+inline fun <reified T> Fragment.argument(key: String = T::class.java.simpleName): Lazy<T?> = argument(key = key, default = { null })

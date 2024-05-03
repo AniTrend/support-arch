@@ -20,14 +20,15 @@ import co.anitrend.arch.domain.entities.LoadState
 import co.anitrend.arch.domain.entities.RequestError
 import co.anitrend.arch.request.AbstractRequestHelper
 import co.anitrend.arch.request.listener.RequestHelperListener
+import co.anitrend.arch.request.model.Request
 import co.anitrend.arch.request.report.contract.IRequestStatusReport
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
 internal fun IRequestStatusReport.getRequestError(): RequestError {
-    return co.anitrend.arch.request.model.Request.Type.values().mapNotNull {
+    return Request.Type.entries.firstNotNullOf {
         getErrorFor(it)
-    }.first()
+    }
 }
 
 internal fun IRequestStatusReport.getTypeLoadPosition() =
