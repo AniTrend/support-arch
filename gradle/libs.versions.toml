@@ -32,7 +32,8 @@ androidx-lifecycle-liveData-ktx = { module = "androidx.lifecycle:lifecycle-lived
 androidx-lifecycle-viewModel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androix-lifecycle" }
 androidx-lifecycle-liveDataCore-ktx = { module = "androidx.lifecycle:lifecycle-livedata-core-ktx", version.ref = "androix-lifecycle" }
 
-androidx-paging-common = { module = "androidx.paging:paging-common-ktx", version.ref = "androidx-paging" }
+androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "androidx-paging" }
+androidx-paging-common-ktx = { module = "androidx.paging:paging-common-ktx", version.ref = "androidx-paging" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "androidx-paging" }
 androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "androidx-paging" }
 
