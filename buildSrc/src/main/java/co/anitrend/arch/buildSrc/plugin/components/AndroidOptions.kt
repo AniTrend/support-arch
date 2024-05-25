@@ -171,8 +171,6 @@ private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtm
             // Used for linking to JDK documentation
             jdkVersion.set(17)
 
-            platform.set(Platform.jvm)
-
             // Disable linking to online kotlin-stdlib documentation
             noStdlibLink.set(false)
 
