@@ -10,9 +10,7 @@ import co.anitrend.arch.buildSrc.plugin.extensions.props
 import co.anitrend.arch.buildSrc.plugin.extensions.libs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
-import org.jetbrains.kotlin.gradle.model.KotlinAndroidExtension
-import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import java.io.File
 
 private fun Project.configureLint() = libraryExtension().run {
@@ -92,18 +90,18 @@ internal fun Project.configureAndroid(): Unit = baseExtension().run {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    tasks.withType(KotlinCompile::class.java) {
-        kotlinOptions {
-            allWarningsAsErrors = false
+    tasks.withType(KotlinCompilationTask::class.java) {
+        compilerOptions {
+            allWarningsAsErrors.set(false)
             // Filter out modules that won't be using coroutines
-            freeCompilerArgs = if (!project.isThemeModule() || !project.isDomainModule()) {
-                listOf(
+            if (!project.isThemeModule() || !project.isDomainModule()) {
+                freeCompilerArgs.addAll(
                     "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
                     "-opt-in=kotlinx.coroutines.FlowPreview",
                     "-opt-in=kotlin.time.ExperimentalTime",
                 )
             } else {
-                listOf(
+                freeCompilerArgs.addAll(
                     "-opt-in=kotlin.Experimental"
                 )
             }
