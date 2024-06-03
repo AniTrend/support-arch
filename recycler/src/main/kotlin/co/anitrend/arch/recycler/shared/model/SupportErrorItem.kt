@@ -59,7 +59,7 @@ class SupportErrorItem(
         if (configuration.retryAction != null) {
             binding?.stateErrorAction?.visible()
             binding?.stateErrorAction?.setOnClickListener {
-                stateFlow.value = ClickableItem.State(loadState, it)
+                stateFlow.value = ClickableItem.State(loadState)
             }
             binding?.stateErrorAction?.setText(configuration.retryAction!!)
         } else {

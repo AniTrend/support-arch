@@ -24,11 +24,9 @@ import co.anitrend.arch.request.model.Request
 /**
  * A data source that is targeted for [androidx.paging.PagedList]
  *
- * @param dispatcher Dispatchers that are currently available
- *
  * @since v1.1.0
  */
-abstract class SupportPagingDataSource<T> : AbstractPagingDataSource<T>() {
+abstract class SupportPagingDataSource<T : Any> : AbstractPagingDataSource<T>() {
     /**
      * Representation of the paging state
      */

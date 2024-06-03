@@ -25,14 +25,13 @@ import co.anitrend.arch.domain.entities.LoadState
 sealed class ClickableItem {
     open val clickType: ClickType = ClickType.SHORT
 
-    object None : ClickableItem()
+    data object None : ClickableItem()
 
     /**
      * A data clickable item with a click type of [ClickType]
      */
     data class Data<T>(
         val data: T,
-        val view: View,
         override val clickType: ClickType = ClickType.SHORT,
     ) : ClickableItem()
 
@@ -49,7 +48,6 @@ sealed class ClickableItem {
      */
     data class State(
         val state: LoadState,
-        val view: View,
     ) : ClickableItem()
 
     enum class ClickType {

@@ -26,7 +26,7 @@ import co.anitrend.arch.request.AbstractRequestHelper
 import co.anitrend.arch.request.extension.createStatusFlow
 import co.anitrend.arch.request.helper.RequestHelper
 
-abstract class AbstractPagingDataSource<T> :
+abstract class AbstractPagingDataSource<T : Any> :
     PagedList.BoundaryCallback<T>(),
     IDataSource,
     ISource,

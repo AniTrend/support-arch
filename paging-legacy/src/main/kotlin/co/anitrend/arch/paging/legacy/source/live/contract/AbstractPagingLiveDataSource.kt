@@ -25,15 +25,10 @@ import co.anitrend.arch.request.AbstractRequestHelper
 import co.anitrend.arch.request.extension.createStatusFlow
 import co.anitrend.arch.request.helper.RequestHelper
 
-abstract class AbstractPagingLiveDataSource<K, V> :
+abstract class AbstractPagingLiveDataSource<K : Any, V : Any> :
     PageKeyedDataSource<K, V>(),
     IDataSource,
     ISupportCoroutine by Default() {
-    /**
-     * Module tag for the current context
-     */
-    protected val moduleTag: String = javaClass.simpleName
-
     /**
      * Contract for multiple types of [coroutineDispatcher]
      */

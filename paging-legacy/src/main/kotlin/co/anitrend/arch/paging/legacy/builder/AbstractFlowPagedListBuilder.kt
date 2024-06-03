@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Builder for `Flow<PagedList>` given a [DataSource.Factory] and a [PagedList.Config].
  */
-abstract class AbstractFlowPagedListBuilder<K, V> {
+abstract class AbstractFlowPagedListBuilder<K : Any, V : Any> {
     /**
      * First loading key passed to the first PagedList/DataSource.
      *
@@ -51,7 +51,7 @@ abstract class AbstractFlowPagedListBuilder<K, V> {
      * pair. If loading network data from a BoundaryCallback, you should prevent multiple
      * dispatches of the same method from triggering multiple simultaneous network loads.
      */
-    abstract var boundaryCallback: PagedList.BoundaryCallback<*>?
+    abstract var boundaryCallback: PagedList.BoundaryCallback<V>?
 
     protected abstract val dataSourceFactory: DataSource.Factory<K, V>
     protected abstract val config: PagedList.Config

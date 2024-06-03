@@ -145,11 +145,7 @@ class SupportStateLayout
             }
 
             errorBinding.stateLayoutErrorRetryAction.setOnClickListener {
-                interactionFlow.value =
-                    ClickableItem.State(
-                        state = loadStateFlow.value,
-                        view = it,
-                    )
+                interactionFlow.value = ClickableItem.State(state = loadStateFlow.value)
             }
         }
 

@@ -44,11 +44,11 @@ import timber.log.Timber
  * you're using PositionalDataSource.
  * @param V Item type being presented.
  */
-class FlowPagedListBuilder<K, V>(
+class FlowPagedListBuilder<K : Any, V : Any>(
     override val dataSourceFactory: DataSource.Factory<K, V>,
     override val config: PagedList.Config,
     override var initialLoadKey: K? = null,
-    override var boundaryCallback: PagedList.BoundaryCallback<*>? = null,
+    override var boundaryCallback: PagedList.BoundaryCallback<V>? = null,
     override var notifyDispatcher: CoroutineDispatcher = Dispatchers.Main,
     override var fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AbstractFlowPagedListBuilder<K, V>() {
@@ -68,20 +68,6 @@ class FlowPagedListBuilder<K, V>(
 
                     override fun clear() {
                         dataSource?.removeInvalidatedCallback(this)
-                    }
-
-                    private fun sendNewList() {
-                        launch(fetchDispatcher) {
-                            // Compute on the fetch dispatcher
-                            val list = createPagedList()
-
-                            withContext(notifyDispatcher) {
-                                // Send on the notify dispatcher
-                                trySend(list).onFailure {
-                                    Timber.w(it)
-                                }
-                            }
-                        }
                     }
 
                     private fun createPagedList(): PagedList<V> {
@@ -104,6 +90,20 @@ class FlowPagedListBuilder<K, V>(
                         } while (list.isDetached)
 
                         return requireNotNull(prevList)
+                    }
+
+                    private fun sendNewList() {
+                        launch(fetchDispatcher) {
+                            // Compute on the fetch dispatcher
+                            val list = createPagedList()
+
+                            withContext(notifyDispatcher) {
+                                // Send on the notify dispatcher
+                                trySend(list).onFailure {
+                                    Timber.w(it)
+                                }
+                            }
+                        }
                     }
                 }
 
