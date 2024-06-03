@@ -26,7 +26,7 @@ import co.anitrend.arch.request.model.Request
  *
  * @since v1.1.0
  */
-abstract class SupportPagingDataSource<T> : AbstractPagingDataSource<T>() {
+abstract class SupportPagingDataSource<T : Any> : AbstractPagingDataSource<T>() {
     /**
      * Representation of the paging state
      */

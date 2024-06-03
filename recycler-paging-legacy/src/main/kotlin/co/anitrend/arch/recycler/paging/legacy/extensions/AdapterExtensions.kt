@@ -17,20 +17,21 @@
 package co.anitrend.arch.recycler.paging.legacy.extensions
 
 import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import co.anitrend.arch.recycler.adapter.contract.ISupportAdapter
 
 /**
  * Check if [ISupportAdapter] -> [PagedListAdapter] contains any list items
  *
+ * @param emptyCount numerical representation of what an empty adapter should be
+ *
  * @return [Boolean] indicating if internal list is empty
  */
-fun ISupportAdapter<*>.isEmpty(): Boolean {
-    val count =
-        when (this) {
-            is PagedListAdapter<*, *> -> itemCount
-            else -> throw NotImplementedError(
-                "Not sure how to request item count from: $this",
-            )
-        }
-    return count < 1
-}
+fun ISupportAdapter<*>.isEmpty(emptyCount: Int = 0): Boolean =
+    when (this) {
+        is PagedListAdapter<*, *> -> itemCount == emptyCount
+        is PagingDataAdapter<*, *> -> itemCount == emptyCount
+        else -> throw NotImplementedError(
+            "Not sure how to request item count from: $this",
+        )
+    }
