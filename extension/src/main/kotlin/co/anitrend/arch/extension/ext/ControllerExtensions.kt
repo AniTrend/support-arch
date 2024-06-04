@@ -30,9 +30,9 @@ import timber.log.Timber
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> SavedStateHandle.extra(
-    crossinline default: () -> T,
-    key: String = T::class.java.simpleName,
+fun <T> SavedStateHandle.extra(
+    key: String,
+    default: () -> T,
 ): Lazy<T> =
     lazy(PUBLICATION) {
         try {
@@ -53,7 +53,7 @@ inline fun <reified T> SavedStateHandle.extra(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> SavedStateHandle.extra(key: String = T::class.java.simpleName): Lazy<T?> = extra(key = key, default = { null })
+fun <T> SavedStateHandle.extra(key: String): Lazy<T?> = extra(key = key, default = { null })
 
 /**
  * Lazy intent parameters for fragment activities
@@ -64,8 +64,8 @@ inline fun <reified T> SavedStateHandle.extra(key: String = T::class.java.simple
  * @return [Lazy] of the target type
  */
 inline fun <reified T> FragmentActivity.extra(
+    key: String,
     crossinline default: () -> T,
-    key: String = T::class.java.simpleName,
 ): Lazy<T> =
     lazy(PUBLICATION) {
         try {
@@ -92,7 +92,7 @@ inline fun <reified T> FragmentActivity.extra(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> FragmentActivity.extra(key: String = T::class.java.simpleName): Lazy<T?> = extra(key = key, default = { null })
+inline fun <reified T> FragmentActivity.extra(key: String): Lazy<T?> = extra(key = key, default = { null })
 
 /**
  * Lazy intent parameters for fragments
@@ -104,7 +104,7 @@ inline fun <reified T> FragmentActivity.extra(key: String = T::class.java.simple
  */
 inline fun <reified T> Fragment.argument(
     crossinline default: () -> T,
-    key: String = T::class.java.simpleName,
+    key: String,
 ): Lazy<T> =
     lazy(PUBLICATION) {
         try {
@@ -131,4 +131,4 @@ inline fun <reified T> Fragment.argument(
  *
  * @return [Lazy] of the target type
  */
-inline fun <reified T> Fragment.argument(key: String = T::class.java.simpleName): Lazy<T?> = argument(key = key, default = { null })
+inline fun <reified T> Fragment.argument(key: String): Lazy<T?> = argument(key = key, default = { null })
