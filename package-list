@@ -3,6 +3,8 @@ $dokka.linkExtension:html
 
 module:analytics
 co.anitrend.arch.analytics.contract
+module:annotation
+co.anitrend.arch.annotation
 module:core
 co.anitrend.arch.core.model
 co.anitrend.arch.core.presenter
@@ -57,6 +59,13 @@ co.anitrend.arch.paging.legacy.source.contract
 co.anitrend.arch.paging.legacy.source.live
 co.anitrend.arch.paging.legacy.source.live.contract
 co.anitrend.arch.paging.legacy.util
+module:processor
+co.anitrend.arch.processor
+co.anitrend.arch.processor.codegen
+co.anitrend.arch.processor.codegen.contract
+co.anitrend.arch.processor.codegen.extension
+co.anitrend.arch.processor.model
+co.anitrend.arch.processor.provider
 module:recycler
 co.anitrend.arch.recycler
 co.anitrend.arch.recycler.action.contract
