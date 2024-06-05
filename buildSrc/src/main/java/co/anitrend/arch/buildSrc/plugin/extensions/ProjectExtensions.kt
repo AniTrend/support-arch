@@ -16,6 +16,7 @@ import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
 import org.jetbrains.kotlin.gradle.testing.internal.KotlinTestsRegistry
 
@@ -28,6 +29,9 @@ fun Project.hasDependencies() =
             name == Modules.Support.Request.id ||
             name == Modules.Support.PagingLegacy.id ||
             name == Modules.Support.RecyclerPagingLegacy.id
+
+fun Project.isAnnotationModule() =
+    name == Modules.Support.Annotation.id
 
 fun Project.isCoreModule() =
     name == Modules.Support.Core.id
@@ -58,6 +62,11 @@ fun Project.isRequestModule() =
 
 fun Project.isRecyclerPagingLegacyModule() =
     name == Modules.Support.RecyclerPagingLegacy.id
+
+fun Project.isProcessorModule() =
+    name == Modules.Support.Processor.id
+
+fun Project.isKotlinLibraryGroup() = isProcessorModule() || isAnnotationModule()
 
 internal val Project.props: PropertiesReader
     get() = PropertiesReader(this)
@@ -92,6 +101,7 @@ internal fun Project.kotlinAndroidProjectExtension() =
 internal fun Project.kotlinTestsRegistry() =
     extensions.getByType<KotlinTestsRegistry>()
 
+
 internal fun Project.androidExtensionsExtension() =
     extensions.getByType<AndroidExtensionsExtension>()
 
@@ -100,6 +110,9 @@ internal fun Project.publishingExtension() =
 
 internal fun Project.spotlessExtension() =
     extensions.getByType<SpotlessExtension>()
+
+internal fun Project.kotlinJvmProjectExtension() =
+    extensions.getByType<KotlinJvmProjectExtension>()
 
 internal fun Project.containsBasePlugin(): Boolean {
     return project.plugins.toList().any { plugin ->

@@ -5,27 +5,20 @@ import co.anitrend.arch.buildSrc.plugin.components.configureSpotless
 import co.anitrend.arch.buildSrc.plugin.components.configureDependencies
 import co.anitrend.arch.buildSrc.plugin.components.configureOptions
 import co.anitrend.arch.buildSrc.plugin.components.configurePlugins
+import co.anitrend.arch.buildSrc.plugin.extensions.isKotlinLibraryGroup
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 open class CorePlugin : Plugin<Project> {
 
-    /**
-     * Inspecting available extensions
-     */
-    @Suppress("UnstableApiUsage")
-    internal fun Project.availableExtensions() {
+    private fun Project.availableExtensions() {
         val extensionSchema = project.extensions.extensionsSchema
         extensionSchema.forEach {
             logger.lifecycle("Available extension for module ${project.path}: ${it.name} -> ${it.publicType}")
         }
     }
 
-    /**
-     * Inspecting available components
-     */
-    @Suppress("UnstableApiUsage")
-    internal fun Project.availableComponents() {
+    private fun Project.availableComponents() {
         val collectionSchema = project.components.asMap
         collectionSchema.forEach {
             logger.lifecycle("Available component for module ${project.path}: ${it.key} -> ${it.value}")
@@ -34,7 +27,9 @@ open class CorePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.configurePlugins()
-        project.configureAndroid()
+        if (!project.isKotlinLibraryGroup()) {
+            project.configureAndroid()
+        }
         project.configureOptions()
         project.configureDependencies()
         project.configureSpotless()

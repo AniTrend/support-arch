@@ -1,5 +1,6 @@
 include(
     ":analytics",
+    ":annotation",
     ":core",
     ":extension",
     ":ui",
@@ -7,6 +8,7 @@ include(
     ":domain",
     ":theme",
     ":recycler",
+    ":processor",
     ":paging-legacy",
     ":request",
     ":recycler-paging-legacy",
