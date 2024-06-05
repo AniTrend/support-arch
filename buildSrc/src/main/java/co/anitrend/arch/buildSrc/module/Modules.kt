@@ -13,11 +13,13 @@ internal object Modules {
 
     enum class Support(override val id: String) : Module {
         Analytics("analytics"),
+        Annotation("annotation"),
         Core("core"),
         Data("data"),
         Domain("domain"),
         Extensions("extension"),
         PagingLegacy("paging-legacy"),
+        Processor("processor"),
         Recycler("recycler"),
         Request("request"),
         Theme("theme"),

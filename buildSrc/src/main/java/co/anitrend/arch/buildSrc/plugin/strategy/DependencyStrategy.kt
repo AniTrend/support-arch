@@ -4,6 +4,7 @@ import co.anitrend.arch.buildSrc.plugin.extensions.hasDependencies
 import co.anitrend.arch.buildSrc.plugin.extensions.isUiModule
 import co.anitrend.arch.buildSrc.plugin.extensions.implementation
 import co.anitrend.arch.buildSrc.plugin.extensions.androidTest
+import co.anitrend.arch.buildSrc.plugin.extensions.isKotlinLibraryGroup
 import co.anitrend.arch.buildSrc.plugin.extensions.test
 import co.anitrend.arch.buildSrc.plugin.extensions.libs
 import org.gradle.api.Project
@@ -22,7 +23,9 @@ internal class DependencyStrategy(private val project: Project) {
         // Testing libraries
         test(project.libs.junit)
         test(project.libs.mockk)
-        androidTest(project.libs.mockk.android)
+        if (!project.isKotlinLibraryGroup()) {
+            androidTest(project.libs.mockk.android)
+        }
     }
 
     private fun DependencyHandler.applyTestDependencies() {

@@ -10,7 +10,7 @@ import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.named
-import org.jetbrains.dokka.Platform
+import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import java.net.URL
 
 private fun Project.dependenciesOfProject(): List<Modules.Module> {
@@ -213,7 +213,10 @@ internal fun Project.configureOptions() {
     if (containsBasePlugin()) {
         logger.lifecycle("Applying extension options for ${project.path}")
 
-        val baseExt = baseExtension()
+        val mainSourceSets = when {
+            !isKotlinLibraryGroup() -> baseExtension().sourceSets["main"].java.srcDirs
+            else -> kotlinJvmProjectExtension().sourceSets["main"].kotlin.srcDirs()
+        }
 
         logger.lifecycle("Applying additional tasks options for dokka and javadoc on ${project.path}")
 
@@ -221,7 +224,7 @@ internal fun Project.configureOptions() {
 
         val sourcesJar by tasks.register("sourcesJar", Jar::class.java) {
             archiveClassifier.set("sources")
-            from(baseExt.sourceSets["main"].java.srcDirs)
+            from(mainSourceSets)
         }
 
         val classesJar by tasks.register("classesJar", Jar::class.java) {
