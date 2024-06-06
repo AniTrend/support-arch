@@ -18,7 +18,7 @@ jetbrains-kotlinx-coroutines = "1.8.1"
 
 io-mockk = "1.13.11"
 
-google-devtools-ksp = "2.0.0-1.0.21"
+google-devtools-ksp = "2.0.0-1.0.22"
 
 [plugins]
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "google-devtools-ksp" }
