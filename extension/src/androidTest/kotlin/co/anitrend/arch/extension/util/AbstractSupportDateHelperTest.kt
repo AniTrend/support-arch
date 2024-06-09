@@ -23,9 +23,9 @@ import co.anitrend.arch.extension.util.date.contract.AbstractSupportDateHelper
 import com.jakewharton.threetenabp.AndroidThreeTen
 import java.util.Locale
 import java.util.TimeZone
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import kotlin.test.Test
 import org.junit.runner.RunWith
 import org.threeten.bp.format.DateTimeFormatter
 
@@ -44,7 +44,7 @@ class AbstractSupportDateHelperTest {
         InstrumentationRegistry.getInstrumentation().context
     }
 
-    @Before
+    @BeforeEach
     fun setUp() {
         AndroidThreeTen.init(context)
     }

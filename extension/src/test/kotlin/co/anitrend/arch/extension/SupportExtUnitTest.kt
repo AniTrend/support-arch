@@ -17,8 +17,8 @@
 package co.anitrend.arch.extension
 
 import co.anitrend.arch.extension.ext.capitalizeWords
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import kotlin.test.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).

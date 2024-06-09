@@ -21,8 +21,8 @@ internal class DependencyStrategy(private val project: Project) {
         implementation(project.libs.jetbrains.kotlin.reflect)
 
         // Testing libraries
-        test(project.libs.junit)
         test(project.libs.mockk)
+        test(project.libs.jetbrains.kotlin.test)
         if (!project.isKotlinLibraryGroup()) {
             androidTest(project.libs.mockk.android)
         }

@@ -14,10 +14,10 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.After
-import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import kotlin.test.Test
 
 class DataStateTest : ISupportCoroutine by Main() {
 
@@ -25,12 +25,12 @@ class DataStateTest : ISupportCoroutine by Main() {
 
     private val dispatcher = StandardTestDispatcher()
 
-    @Before
+    @BeforeEach
     fun setUp() {
         Dispatchers.setMain(dispatcher)
     }
 
-    @After
+    @AfterEach
     fun tearDown() {
         Dispatchers.resetMain()
     }

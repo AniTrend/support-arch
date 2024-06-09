@@ -8,11 +8,11 @@ import co.anitrend.arch.request.helper.RequestHelper
 import co.anitrend.arch.request.model.Request
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.*
-import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.AfterEach
+import kotlin.test.Test
 import java.util.concurrent.atomic.AtomicBoolean
 
 class RequestHelperListenerTest : ISupportCoroutine by Main() {
@@ -21,13 +21,13 @@ class RequestHelperListenerTest : ISupportCoroutine by Main() {
 
     private lateinit var request: AbstractRequestHelper
 
-    @Before
+    @BeforeEach
     fun setup() {
         Dispatchers.setMain(dispatcher)
         request = RequestHelper(main = dispatcher, io = dispatcher)
     }
 
-    @After
+    @AfterEach
     fun tearDown() {
         Dispatchers.resetMain()
     }

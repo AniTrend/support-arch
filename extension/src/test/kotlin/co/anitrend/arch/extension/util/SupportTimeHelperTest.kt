@@ -20,9 +20,9 @@ import co.anitrend.arch.extension.annotation.SupportExperimental
 import co.anitrend.arch.extension.util.time.SupportDateTimeUnit
 import co.anitrend.arch.extension.util.time.SupportTimeHelper
 import co.anitrend.arch.extension.util.time.SupportTimeInstant
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
+import kotlin.test.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).
