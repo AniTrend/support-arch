@@ -1,13 +1,11 @@
 package co.anitrend.arch.buildSrc.plugin.components
 
-import co.anitrend.arch.buildSrc.plugin.extensions.spotlessExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.libraryExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.isDomainModule
 import co.anitrend.arch.buildSrc.plugin.extensions.isThemeModule
 import co.anitrend.arch.buildSrc.plugin.extensions.kotlinAndroidProjectExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.props
-import co.anitrend.arch.buildSrc.plugin.extensions.libs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
@@ -19,20 +17,6 @@ private fun Project.configureLint() = libraryExtension().run {
         abortOnError = false
         ignoreWarnings = false
         ignoreTestSources = true
-    }
-}
-
-internal fun Project.configureSpotless(): Unit = spotlessExtension().run {
-    kotlin {
-        target("**/*.kt")
-        targetExclude(
-            "${layout.buildDirectory.get()}/**/*.kt",
-            "**/androidTest/**/*.kt",
-            "**/test/**/*.kt",
-            "bin/**/*.kt"
-        )
-        ktlint(libs.pintrest.ktlint.get().version)
-        licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
     }
 }
 

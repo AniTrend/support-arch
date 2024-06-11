@@ -38,13 +38,6 @@ interface ISupportListPresenter<T> : SupportLifecycle {
     )
 
     /**
-     * Responds to load state changes when refreshing
-     *
-     * @param loadState Load state or null
-     */
-    fun onRefreshObserverChanged(loadState: LoadState?)
-
-    /**
      * Informs the underlying [ISupportStateLayout] of changes to the [LoadState]
      *
      * @param fragmentList Current list controller attached

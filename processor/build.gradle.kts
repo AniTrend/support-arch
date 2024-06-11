@@ -12,6 +12,10 @@ dependencies {
     testImplementation(libs.kotlin.compile.testing.ksp)
 }
 
+tasks.withType(Test::class.java) {
+    dependsOn(":annotation:classesJar")
+}
+
 tasks.test {
     useJUnitPlatform()
 }

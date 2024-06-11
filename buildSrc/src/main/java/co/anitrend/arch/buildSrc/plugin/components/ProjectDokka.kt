@@ -1,16 +1,11 @@
 package co.anitrend.arch.buildSrc.plugin.components
 
 import org.gradle.api.Project
-import org.gradle.api.tasks.bundling.Jar
-import org.gradle.kotlin.dsl.get
 import org.jetbrains.dokka.gradle.DokkaTask
 import co.anitrend.arch.buildSrc.module.Modules
 import co.anitrend.arch.buildSrc.plugin.extensions.*
-import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.named
-import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import java.net.URL
 
 private fun Project.dependenciesOfProject(): List<Modules.Module> {
@@ -59,49 +54,11 @@ private fun Project.dependenciesOfProject(): List<Modules.Module> {
     }
 }
 
-private fun Project.createMavenPublicationUsing(sources: Jar) {
-    publishingExtension().publications {
-        val component = components.findByName("android")
-
-        val projectName = this@createMavenPublicationUsing.name
-
-        logger.lifecycle("Configuring maven publication options for ${path}:maven with component -> ${component?.name}")
-        create("maven", MavenPublication::class.java) {
-            groupId = "co.anitrend.arch"
-            artifactId = projectName
-            version = props[PropertyTypes.VERSION]
-
-            artifact(sources)
-            artifact("${layout.buildDirectory.get()}/outputs/aar/${projectName}-release.aar")
-            from(component)
-
-            pom {
-                name.set("support-arch")
-                description.set("A multi-module template library that attempts to make clean arch apps easier to build")
-                url.set("https://github.com/anitrend/support-arch")
-                licenses {
-                    license {
-                        name.set("Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("wax911")
-                        name.set("Maxwell Mapako")
-                        organizationUrl.set("https://github.com/anitrend")
-                    }
-                }
-            }
-        }
-    }
-}
-
-private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtml") {
+internal fun Project.configureDokka() = tasks.named<DokkaTask>("dokkaHtml") {
     outputDirectory.set(layout.buildDirectory.dir("docs/dokka"))
 
     // Set module name displayed in the final output
-    moduleName.set(this@createDokkaTaskProvider.name)
+    moduleName.set(project.name)
 
     // Use default or set to custom path to cache directory
     // to enable package-list caching
@@ -206,36 +163,5 @@ private fun Project.createDokkaTaskProvider() = tasks.named<DokkaTask>("dokkaHtm
                 suppress.set(true)
             }
         }
-    }
-}
-
-internal fun Project.configureOptions() {
-    if (containsBasePlugin()) {
-        logger.lifecycle("Applying extension options for ${project.path}")
-
-        val mainSourceSets = when {
-            !isKotlinLibraryGroup() -> baseExtension().sourceSets["main"].java.srcDirs
-            else -> kotlinJvmProjectExtension().sourceSets["main"].kotlin.srcDirs()
-        }
-
-        logger.lifecycle("Applying additional tasks options for dokka and javadoc on ${project.path}")
-
-        createDokkaTaskProvider()
-
-        val sourcesJar by tasks.register("sourcesJar", Jar::class.java) {
-            archiveClassifier.set("sources")
-            from(mainSourceSets)
-        }
-
-        val classesJar by tasks.register("classesJar", Jar::class.java) {
-            from("${project.layout.buildDirectory.get()}/intermediates/classes/release")
-        }
-
-        artifacts {
-            add("archives", classesJar)
-            add("archives", sourcesJar)
-        }
-
-        createMavenPublicationUsing(sourcesJar)
     }
 }

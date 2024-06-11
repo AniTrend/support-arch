@@ -219,3 +219,5 @@ fabric.properties
 
 # Exclude client credentail files
 secrets.properties
+
+.kotlin/sessions/

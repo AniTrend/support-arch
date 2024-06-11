@@ -22,8 +22,6 @@ import co.anitrend.arch.request.model.Request
 /**
  * A data source that depends on [kotlinx.coroutines.flow.Flow] to publish results.
  *
- * @param dispatcher Dispatchers that are currently available
- *
  * @since v1.1.0
  */
 abstract class SupportCoreDataSource : AbstractDataSource() {

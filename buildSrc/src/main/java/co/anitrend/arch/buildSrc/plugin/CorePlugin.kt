@@ -3,8 +3,10 @@ package co.anitrend.arch.buildSrc.plugin
 import co.anitrend.arch.buildSrc.plugin.components.configureAndroid
 import co.anitrend.arch.buildSrc.plugin.components.configureSpotless
 import co.anitrend.arch.buildSrc.plugin.components.configureDependencies
-import co.anitrend.arch.buildSrc.plugin.components.configureOptions
 import co.anitrend.arch.buildSrc.plugin.components.configurePlugins
+import co.anitrend.arch.buildSrc.plugin.components.configureSources
+import co.anitrend.arch.buildSrc.plugin.components.configureDokka
+import co.anitrend.arch.buildSrc.plugin.extensions.containsBasePlugin
 import co.anitrend.arch.buildSrc.plugin.extensions.isKotlinLibraryGroup
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -30,7 +32,8 @@ open class CorePlugin : Plugin<Project> {
         if (!project.isKotlinLibraryGroup()) {
             project.configureAndroid()
         }
-        project.configureOptions()
+        project.configureDokka()
+        project.configureSources()
         project.configureDependencies()
         project.configureSpotless()
         project.availableExtensions()

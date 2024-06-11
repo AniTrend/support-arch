@@ -33,19 +33,19 @@ sealed class NetworkState {
      * Represents a state of idle
      */
     @Suppress("DEPRECATION")
-    object Idle : NetworkState()
+    data object Idle : NetworkState()
 
     /**
      * Represents a network state of loading
      */
     @Suppress("DEPRECATION")
-    object Loading : NetworkState()
+    data object Loading : NetworkState()
 
     /**
      * Represents a network state that has succeeded
      */
     @Suppress("DEPRECATION")
-    object Success : NetworkState()
+    data object Success : NetworkState()
 
     /**
      * Network state for failed requests with an optional message or code

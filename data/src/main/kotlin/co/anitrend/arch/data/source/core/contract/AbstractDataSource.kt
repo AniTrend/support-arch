@@ -18,8 +18,6 @@ package co.anitrend.arch.data.source.core.contract
 
 import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.data.source.contract.ISource
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.arch.extension.coroutine.extension.Default
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.AbstractRequestHelper
 import co.anitrend.arch.request.extension.createStatusFlow
@@ -30,9 +28,9 @@ import co.anitrend.arch.request.helper.RequestHelper
  *
  * @since v1.1.0
  */
-abstract class AbstractDataSource : IDataSource, ISource, ISupportCoroutine by Default() {
+abstract class AbstractDataSource : IDataSource, ISource {
     /**
-     * Contract for multiple types of [coroutineDispatcher]
+     * Contract for multiple types of [kotlinx.coroutines.CoroutineDispatcher]
      */
     protected abstract val dispatcher: ISupportDispatcher
 

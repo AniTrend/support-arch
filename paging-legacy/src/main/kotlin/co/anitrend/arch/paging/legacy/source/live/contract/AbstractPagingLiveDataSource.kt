@@ -18,8 +18,6 @@ package co.anitrend.arch.paging.legacy.source.live.contract
 
 import androidx.paging.PageKeyedDataSource
 import co.anitrend.arch.data.source.contract.IDataSource
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.arch.extension.coroutine.extension.Default
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.AbstractRequestHelper
 import co.anitrend.arch.request.extension.createStatusFlow
@@ -27,10 +25,9 @@ import co.anitrend.arch.request.helper.RequestHelper
 
 abstract class AbstractPagingLiveDataSource<K : Any, V : Any> :
     PageKeyedDataSource<K, V>(),
-    IDataSource,
-    ISupportCoroutine by Default() {
+    IDataSource {
     /**
-     * Contract for multiple types of [coroutineDispatcher]
+     * Contract for multiple types of [kotlinx.coroutines.CoroutineDispatcher]
      */
     protected abstract val dispatcher: ISupportDispatcher
 
