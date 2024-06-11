@@ -4,11 +4,12 @@ import co.anitrend.arch.buildSrc.plugin.extensions.props
 import co.anitrend.arch.buildSrc.plugin.extensions.publishingExtension
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.tasks.bundling.Jar
 
 
-internal fun Project.configureMaven() {
+internal fun Project.configureMaven(sourcesJar: Jar) {
     publishingExtension().publications {
-        val component = components.findByName("java")
+        val component = components.findByName("kotlin") ?: components.findByName("java")
 
         logger.lifecycle("Configuring maven publication options for ${path}:maven with component -> ${component?.name}")
         create("maven", MavenPublication::class.java) {
@@ -16,7 +17,14 @@ internal fun Project.configureMaven() {
             artifactId = project.name
             version = props[PropertyTypes.VERSION]
 
-            from(component)
+            val releaseFile = "${layout.buildDirectory.get()}/outputs/aar/${project.name}-release.aar"
+            if (file(releaseFile).exists()) {
+                artifact(releaseFile)
+            }
+            artifact(sourcesJar)
+            if (component != null) {
+                from(component)
+            }
 
             pom {
                 name.set("support-arch")

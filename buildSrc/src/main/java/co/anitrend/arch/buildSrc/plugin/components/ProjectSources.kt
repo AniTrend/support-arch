@@ -30,6 +30,6 @@ internal fun Project.configureSources() {
     }
 
     afterEvaluate {
-        configureMaven()
+        configureMaven(sourcesJar)
     }
 }
