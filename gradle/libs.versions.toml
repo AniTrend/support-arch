@@ -61,7 +61,6 @@ androidx-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "an
 
 androidx-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
 androidx-runtime = { module = "androidx.work:work-runtime", version.ref = "androidx-work" }
-androidx-test = { module = "androidx.work:work-test", version.ref = "androidx-work" }
 
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
 androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "androidx-work" }
