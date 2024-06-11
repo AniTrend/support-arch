@@ -17,15 +17,12 @@ co.anitrend.arch.data.converter
 co.anitrend.arch.data.converter.contract
 co.anitrend.arch.data.mapper
 co.anitrend.arch.data.mapper.contract
-co.anitrend.arch.data.repository
-co.anitrend.arch.data.repository.contract
 co.anitrend.arch.data.source.contract
 co.anitrend.arch.data.source.core
 co.anitrend.arch.data.source.core.contract
 co.anitrend.arch.data.state
 co.anitrend.arch.data.transformer
 module:domain
-co.anitrend.arch.domain.common
 co.anitrend.arch.domain.entities
 co.anitrend.arch.domain.state
 module:extension
