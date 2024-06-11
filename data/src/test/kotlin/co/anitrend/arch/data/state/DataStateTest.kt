@@ -49,9 +49,6 @@ class DataStateTest : ISupportCoroutine by Main() {
 
         val loadState = state.loadState.first()
         assertEquals(LoadState.Loading(), loadState)
-
-        val retryState = state.refreshState.first()
-        assertEquals(LoadState.Idle(), retryState)
     }
 
     @Test
@@ -68,8 +65,5 @@ class DataStateTest : ISupportCoroutine by Main() {
 
         val loadState = state.loadState.first()
         assertEquals(LoadState.Idle(), loadState)
-
-        val retryState = state.refreshState.first()
-        assertEquals(LoadState.Idle(), retryState)
     }
 }

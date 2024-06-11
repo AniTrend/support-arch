@@ -59,10 +59,6 @@ abstract class SupportListPresenter<T> : ISupportListPresenter<T> {
         }
     }
 
-    override fun onRefreshObserverChanged(loadState: LoadState?) {
-        swipeRefreshLayout?.isRefreshing = loadState is LoadState.Loading
-    }
-
     /**
      * Informs the underlying [ISupportStateLayout] of changes to the [LoadState]
      *

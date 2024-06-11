@@ -43,7 +43,6 @@ import co.anitrend.arch.ui.fragment.SupportFragment
 import co.anitrend.arch.ui.fragment.list.contract.ISupportFragmentList
 import co.anitrend.arch.ui.fragment.list.presenter.SupportListPresenter
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -78,11 +77,6 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
      */
     abstract fun onFetchDataInitialize()
 
-    override val onRefreshObserver =
-        Observer<LoadState> { loadState ->
-            listPresenter.onRefreshObserverChanged(loadState)
-        }
-
     override val onNetworkObserver =
         Observer<LoadState> { loadState ->
             listPresenter.onNetworkObserverChanged(this, loadState)
@@ -92,7 +86,6 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 clickableFlow
-                    .debounce(16)
                     .filterIsInstance<ClickableItem.State>()
                     .onEach {
                         if (it.state !is LoadState.Loading) {
@@ -163,7 +156,6 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 listPresenter.stateLayout.interactionFlow
-                    .debounce(16)
                     .filterIsInstance<ClickableItem.State>()
                     .onEach {
                         if (it.state !is LoadState.Loading) {
@@ -230,7 +222,6 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
         super.onViewCreated(view, savedInstanceState)
         setUpViewModelObserver()
         viewModelState()?.loadState?.observe(viewLifecycleOwner, onNetworkObserver)
-        viewModelState()?.refreshState?.observe(viewLifecycleOwner, onRefreshObserver)
     }
 
     /**
@@ -253,11 +244,6 @@ abstract class SupportFragmentList<M> : SupportFragment(), ISupportFragmentList<
     }
 
     protected open fun afterPostModelChange(data: Collection<*>?) {
-        /*if (data.isNullOrEmpty())
-            supportViewAdapter.networkState = NetworkState.Loading
-        else
-            supportStateLayout?.networkMutableStateFlow?.value = NetworkState.Idle*/
-
         listPresenter.resetWidgetStates()
     }
 

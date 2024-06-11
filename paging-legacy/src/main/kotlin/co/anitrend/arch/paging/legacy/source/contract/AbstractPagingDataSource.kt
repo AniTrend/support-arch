@@ -19,8 +19,6 @@ package co.anitrend.arch.paging.legacy.source.contract
 import androidx.paging.PagedList
 import co.anitrend.arch.data.source.contract.IDataSource
 import co.anitrend.arch.data.source.contract.ISource
-import co.anitrend.arch.extension.coroutine.ISupportCoroutine
-import co.anitrend.arch.extension.coroutine.extension.Default
 import co.anitrend.arch.extension.dispatchers.contract.ISupportDispatcher
 import co.anitrend.arch.request.AbstractRequestHelper
 import co.anitrend.arch.request.extension.createStatusFlow
@@ -29,10 +27,9 @@ import co.anitrend.arch.request.helper.RequestHelper
 abstract class AbstractPagingDataSource<T : Any> :
     PagedList.BoundaryCallback<T>(),
     IDataSource,
-    ISource,
-    ISupportCoroutine by Default() {
+    ISource {
     /**
-     * Contract for multiple types of [coroutineDispatcher]
+     * Contract for multiple types of [kotlinx.coroutines.CoroutineDispatcher]
      */
     protected abstract val dispatcher: ISupportDispatcher
 

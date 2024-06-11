@@ -22,6 +22,8 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 class SupportCoreDataSourceTest : ISupportCoroutine by Main() {
     
@@ -63,21 +65,7 @@ class SupportCoreDataSourceTest : ISupportCoroutine by Main() {
     }
 
     @Test
-    fun `verify data source behavior on refresh remains unchanged when no request needs to be retried`() = runTest {
-        val state = dataSource.create(
-            flow {
-                emit("Test event")
-            }
-        )
-
-        dataSource.refresh()
-
-        val retryState = state.refreshState.first()
-        assertEquals(LoadState.Idle(), retryState)
-    }
-
-    @Test
-    fun `verify data source behavior on retry changes when request fails`() = runTest {
+    fun `verify data source behavior on retry changes when request fails`() = runTest(timeout = 5.seconds) {
         val expected = Throwable("Request id: `test_request_1` simulated failure due")
 
         val requestHelper = dataSource.requestHelper
@@ -94,7 +82,7 @@ class SupportCoreDataSourceTest : ISupportCoroutine by Main() {
     }
 
     @Test
-    fun `verify data source behavior on failure reports existing status of failed`() = runTest {
+    fun `verify data source behavior on failure reports existing status of failed`() = runTest(timeout = 5.seconds) {
         val error = Throwable("Request id: `test_request_1` simulated failure due")
 
         val requestHelper = dataSource.requestHelper
@@ -109,7 +97,7 @@ class SupportCoreDataSourceTest : ISupportCoroutine by Main() {
     }
 
     @Test
-    fun `verify data source behavior on retry failed changes when request fails`() = runTest {
+    fun `verify data source behavior on retry failed changes when request fails`() = runTest(timeout = 5.seconds) {
         val error = Throwable("Request id: `test_request_1` simulated failure due")
 
         val requestHelper = dataSource.requestHelper
