@@ -4,7 +4,7 @@ ktlint = "1.1.1"
 gradle-plugin = "8.5.0"
 
 androidx-core = "1.13.1"
-androix-lifecycle = "2.8.2"
+androix-lifecycle = "2.8.3"
 androix-lifecycle-extensions = "2.2.0"
 androidx-paging = "3.3.0"
 androidx-preference = "1.2.1"
