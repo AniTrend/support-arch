@@ -87,6 +87,6 @@ spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", ver
 
 pintrest-ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
 
-squareup-kotlinpoet = { module = "com.squareup:kotlinpoet", version = "1.18.0" }
+squareup-kotlinpoet = { module = "com.squareup:kotlinpoet", version = "1.18.1" }
 google-devtools-ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "google-devtools-ksp" }
 kotlin-compile-testing-ksp = { module = "com.github.tschuchortdev:kotlin-compile-testing-ksp", version = "1.6.0" }
