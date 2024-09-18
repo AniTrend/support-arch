@@ -48,7 +48,7 @@ androidx-preference-ktx = { module = "androidx.preference:preference-ktx", versi
 androidx-recyclerView = { module = "androidx.recyclerview:recyclerview", version.ref = "androidx-recycler" }
 androidx-recyclerViewSelection = { module = "androidx.recyclerview:recyclerview-selection", version.ref = "androidx-recycler" }
 
-androidx-startupRuntime = { module = "androidx.startup:startup-runtime", version = "1.1.1" }
+androidx-startupRuntime = { module = "androidx.startup:startup-runtime", version = "1.2.0" }
 
 androidx-swipeRefreshLayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.2.0-alpha01" }
 
