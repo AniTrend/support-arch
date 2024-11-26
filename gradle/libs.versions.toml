@@ -24,7 +24,7 @@ google-devtools-ksp = "2.0.21-1.0.28"
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "google-devtools-ksp" }
 
 [libraries]
-threeTenBp = { module = "com.jakewharton.threetenabp:threetenabp", version = "1.4.7" }
+threeTenBp = { module = "com.jakewharton.threetenabp:threetenabp", version = "1.4.8" }
 timber = { module = "com.jakewharton.timber:timber", version = "5.0.1" }
 
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "gradle-plugin" }
