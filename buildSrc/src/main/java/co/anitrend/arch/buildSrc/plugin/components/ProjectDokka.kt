@@ -126,7 +126,7 @@ internal fun Project.configureDokka() = tasks.named<DokkaTask>("dokkaHtml") {
             }
 
             // Used for linking to JDK documentation
-            jdkVersion.set(17)
+            jdkVersion.set(21)
 
             // Disable linking to online kotlin-stdlib documentation
             noStdlibLink.set(false)
