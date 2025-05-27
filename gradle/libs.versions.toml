@@ -83,7 +83,7 @@ jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-co
 mockk = { module = "io.mockk:mockk", version.ref = "io-mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "io-mockk" }
 
-spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "7.0.3" }
+spotless-gradle = { module = "com.diffplug.spotless:spotless-plugin-gradle", version = "7.0.4" }
 
 pintrest-ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
 
