@@ -221,3 +221,8 @@ fabric.properties
 secrets.properties
 
 .kotlin/sessions/
+
+.idea/AndroidProjectSystem.xml
+.idea/runConfigurations.xml
+.idea/studiobot.xml
+.idea/kotlinc.xml
