@@ -93,3 +93,7 @@ The library is built on top of:
 - **OkHttp/Retrofit** for networking (in applicable modules)
 
 The library is designed to be framework-agnostic where possible, allowing integration with various dependency injection frameworks, networking libraries, and UI frameworks.
+
+## Getting Started
+
+To use this library in your Android project, add the JitPack repository and include the desired modules as dependencies in your `build.gradle` files.
