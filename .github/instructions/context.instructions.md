@@ -5,7 +5,7 @@ description: This file describes the overall architecture and module structure o
 
 # Support Arch Library Overview
 
-The support-arch library is a **reusable mobile architecture framework** that follows some of the aspects of [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html), [Guide to App Architecture](https://developer.android.com/jetpack/docs/guide) and is mostly written in Kotlin and makes use of [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/).
+The support-arch library is a **reusable mobile architecture framework**. It follows some aspects of [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and the [Guide to App Architecture](https://developer.android.com/jetpack/docs/guide). The library is mostly written in Kotlin and makes use of [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/).
 
 This is a **multi-module library project** designed to provide architectural components and patterns for Android applications following clean architecture principles. The project is organized into distinct modules, each serving specific architectural layers and functionalities.
 
