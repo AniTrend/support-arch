@@ -50,7 +50,7 @@ androidx-recyclerViewSelection = { module = "androidx.recyclerview:recyclerview-
 
 androidx-startupRuntime = { module = "androidx.startup:startup-runtime", version = "1.2.0" }
 
-androidx-swipeRefreshLayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.2.0-rc01" }
+androidx-swipeRefreshLayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version = "1.2.0" }
 
 androidx-test-core-ktx = { module = "androidx.test:core-ktx", version = "1.7.0" }
 androidx-test-runner = { module = "androidx.test:runner", version = "1.7.0" }
