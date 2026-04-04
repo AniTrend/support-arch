@@ -69,6 +69,8 @@ class NavParamCodeGenerator(
     ) {
         val fileSpec = generateContent(classes = classes, spec = spec)
 
+        logger.logging("[NavParamCodeGenerator] Generating file: ${spec.packageName}.${spec.fileName}.kt for ${classes.size} classes")
+
         val file =
             codeGenerator.createNewFile(
                 dependencies =
@@ -92,12 +94,17 @@ class NavParamCodeGenerator(
     }
 
     override operator fun invoke(classes: List<KSClassDeclaration>) {
-        val packageName = classes.first().packageName.asString()
+        val classDeclaration = classes.first()
+        val packageName = classDeclaration.packageName.asString()
         val parentClassName =
-            classes.first().parentDeclaration?.simpleName?.asString()
-                ?: throw UnsupportedOperationException(
-                    "The annotated item in `$packageName` should belong in a parent class",
-                )
+            classDeclaration.parentDeclaration?.simpleName?.asString()
+                ?: run {
+                    logger.error(
+                        "The annotated item in `$packageName` should belong in a parent class",
+                        classDeclaration,
+                    )
+                    return
+                }
 
         val spec =
             Spec(
