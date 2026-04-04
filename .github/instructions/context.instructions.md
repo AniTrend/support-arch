@@ -1,99 +1,60 @@
 ---
 applyTo: **
-description: This file describes the overall architecture and module structure of the AniTrend support-arch library project.
+description: Use when understanding support-arch architecture, module boundaries, Dokka documentation, consumer-facing APIs, or shared Gradle/buildSrc behavior.
 ---
 
-# Support Arch Library Overview
+# Support Arch Context
 
-The support-arch library is a **reusable mobile architecture framework**. It follows some aspects of [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) and the [Guide to App Architecture](https://developer.android.com/jetpack/docs/guide). The library is mostly written in Kotlin and makes use of [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/).
+- `support-arch` is a reusable Android and Kotlin architecture library, not an app. Favor reusable abstractions, extension points, and stable consumer-facing APIs over app-specific behavior.
+- The main downstream consumer today is `anitrend-v2`, so changes should help an external app understand what to import, extend, override, observe, or wire together.
+- Treat the published Dokka site as part of the product surface: `https://anitrend.github.io/support-arch/<module>/index.html`.
 
-This is a **multi-module library project** designed to provide architectural components and patterns for Android applications following clean architecture principles. The project is organized into distinct modules, each serving specific architectural layers and functionalities.
+## Module Groups
 
-## Module Organization and Structure
+- Foundation modules: `:extension`, `:domain`, `:request`, `:data`
+- UI scaffolding modules: `:theme`, `:core`, `:recycler`, `:recycler-paging-legacy`, `:ui`
+- Legacy paging modules: `:paging-legacy`, `:recycler-paging-legacy`
+- Code generation modules: `:annotation`, `:processor`
+- Integration module: `:analytics`
 
-The library is divided into several Gradle modules, each with specific responsibilities:
+## Dependency Direction
 
-### Core Modules
-- **`:core`** - Core architectural components and base classes used across other modules
-- **`:domain`** - Domain layer components including entities, interactors/use cases, and repository interfaces  
-- **`:data`** - Data layer abstractions including data sources, states, and repository base implementations
-- **`:ui`** - UI layer components including base fragments, activities, and view models
-- **`:theme`** - Theming and styling components for consistent UI design
+- `:domain` is the lowest Android module and should remain stable, light, and broadly reusable.
+- `:request` builds request tracking and reporting on top of `:domain` and `:extension`.
+- `:data` adds converters, mappers, sources, and data-state helpers on top of `:domain`, `:extension`, and `:request`.
+- `:core` provides reusable workers, presenters, providers, and model helpers on top of `:extension`, `:data`, and `:domain`.
+- `:recycler` and `:ui` provide consumer-facing UI infrastructure and already depend on lower layers; prefer placing reusable presentation scaffolding there instead of pushing UI concerns downward.
+- `:annotation` exposes public annotations, while `:processor` contains the KSP implementation. Keep annotation API changes coordinated with processor changes.
+- Avoid introducing new dependency cycles. If a feature can live in a lower module, place it there instead of adding upward leakage.
 
-### Feature-Specific Modules
-- **`:recycler`** - RecyclerView related components and adapters following clean architecture
-- **`:recycler-paging-legacy`** - Legacy paging support for RecyclerView components
-- **`:paging-legacy`** - Legacy Android Paging library integration components
-- **`:analytics`** - Analytics integration and tracking components
-- **`:request`** - Network request handling and state management
-- **`:extension`** - Kotlin extensions and utility functions
+## Package Expectations
 
-### Build System Modules
-- **`:annotation`** - Custom annotations used throughout the library
-- **`:processor`** - Annotation processors for code generation
-- **`buildSrc/`** - Custom Gradle plugins and build configuration
+- `:domain` mainly exposes `entities/` and `state/`.
+- `:data` mainly exposes `common/`, `converter/`, `mapper/`, `source/`, `state/`, and `transformer/`.
+- `:request` mainly exposes request helpers, listeners, models, wrappers, queues, and reports.
+- `:core` mainly exposes reusable `model/`, `presenter/`, `provider/`, and `worker/` abstractions.
+- `:recycler` mainly exposes adapters, holders, recycler widgets, load-state items, helpers, and extensions.
+- `:ui` mainly exposes base activities, fragments, pagers, widgets, and presentation helpers.
+- `:extension` is the cross-cutting utility module for coroutine, lifecycle, preference, network, and generic extension helpers.
 
-## Key Architectural Patterns
+## Build And Tooling Facts
 
-### Clean Architecture Implementation
-The library implements clean architecture patterns with clear separation of concerns:
-- **Domain Layer** (`:domain`) - Contains business logic, entities, and repository interfaces
-- **Data Layer** (`:data`) - Implements repository interfaces and handles data sources
-- **Presentation Layer** (`:ui`) - Handles UI logic and user interactions
+- Most modules apply the shared `co.anitrend.arch` Gradle plugin from `buildSrc`.
+- Shared Android defaults live in `buildSrc`, including `compileSdk = 35`, `minSdk = 23`, `targetSdk = 35`, view binding, JUnit Platform, Kotlin toolchain 21, and compiler opt-ins.
+- The repo Java pin is `.java-version = 21.0.8`.
+- Dependency versions belong in `gradle/libs.versions.toml` before they are referenced from module build files.
+- Spotless and ktlint are enforced centrally via `buildSrc`, with the license header sourced from `spotless/copyright.kt`.
 
-### State Management
-The library provides robust state management through:
-- `DataState<T>` classes for representing loading, success, and error states
-- Flow-based reactive programming patterns
-- Unified error handling across all layers
+## Documentation Contract
 
-### Modular Design
-Each module is designed to be:
-- **Independent** - Can be used standalone or in combination with other modules
-- **Testable** - Clear interfaces and dependency injection support
-- **Extensible** - Base classes and interfaces for easy customization
+- Dokka is configured centrally in `buildSrc` and the root build script; CI publishes `./gradlew dokkaHtmlMultiModule` output from `dokka-docs` to the `docs` branch.
+- Dokka has `reportUndocumented = true`, so undocumented public APIs are a quality problem, not an optional cleanup task.
+- Packages matching `.internal` are intentionally suppressed from published docs. Do not hide consumer-facing APIs in internal packages.
+- When changing public behavior, update KDoc in the same change. Document what the API does, when to use it, and what a consumer must provide or expect.
 
-## Build System and Configuration
+## Working Heuristics
 
-The project uses a sophisticated build system with:
-- **Custom Gradle plugins** defined in `buildSrc/` for consistent configuration
-- **Kotlin DSL** for build scripts
-- **Spotless** for code formatting
-- **Dokka** for API documentation generation
-- **JitPack** for library distribution
-
-### Key Build Components
-- `AndroidConfiguration.kt` - Android-specific build configuration
-- `ProjectDokka.kt` - Documentation generation setup  
-- `ProjectSources.kt` - Source JAR generation and publishing
-- `CorePlugin.kt` - Main plugin applying all build configurations
-
-## Documentation and Testing
-
-- **API Documentation** - Generated by Dokka and published on GitHub Pages
-- **Unit Testing** - Each module includes comprehensive unit tests
-- **Integration Testing** - Cross-module integration tests
-- **Code Quality** - Automated checks via GitHub Actions
-
-## Usage Patterns
-
-The library is designed to be consumed by Android applications that want to implement clean architecture patterns. Key usage scenarios include:
-
-1. **Base Classes** - Extend provided base fragments, activities, and view models
-2. **State Management** - Use DataState for consistent loading/error states
-3. **Repository Pattern** - Implement domain repository interfaces using data layer components
-4. **Reactive Programming** - Leverage Flow-based patterns for data streams
-
-## Dependencies and Integration
-
-The library is built on top of:
-- **Android Jetpack** components (Architecture Components, etc.)
-- **Kotlin Coroutines** for asynchronous programming
-- **Material Design** components for UI consistency
-- **OkHttp/Retrofit** for networking (in applicable modules)
-
-The library is designed to be framework-agnostic where possible, allowing integration with various dependency injection frameworks, networking libraries, and UI frameworks.
-
-## Getting Started
-
-To use this library in your Android project, add the JitPack repository and include the desired modules as dependencies in your `build.gradle` files.
+- Put abstractions in the lowest module that can own them without depending on higher-level UI code.
+- Preserve the existing legacy paging split unless the task explicitly migrates away from it.
+- Prefer shared build logic changes in `buildSrc` over copy-pasting Gradle configuration into individual modules.
+- When unsure where code belongs, start from the Dokka module page, inspect neighboring package roots, and confirm the dependency direction before editing.
