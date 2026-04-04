@@ -18,7 +18,7 @@ jetbrains-kotlinx-coroutines = "1.10.2"
 
 io-mockk = "1.14.2"
 
-google-devtools-ksp = "2.1.20-1.0.32"
+google-devtools-ksp = "2.0.21-1.0.27"
 
 [plugins]
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "google-devtools-ksp" }
@@ -89,4 +89,4 @@ pintrest-ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlint" }
 
 squareup-kotlinpoet = { module = "com.squareup:kotlinpoet", version = "2.0.0" }
 google-devtools-ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "google-devtools-ksp" }
-kotlin-compile-testing-ksp = { module = "com.github.tschuchortdev:kotlin-compile-testing-ksp", version = "1.6.0" }
+kotlin-compile-testing-ksp = { module = "dev.zacsweers.kctfork:ksp", version = "0.6.0" }

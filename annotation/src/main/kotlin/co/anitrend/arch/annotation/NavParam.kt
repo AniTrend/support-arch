@@ -24,7 +24,7 @@ package co.anitrend.arch.annotation
  * @since 1.8.0
  */
 @Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.BINARY)
 annotation class NavParam(
     val enabled: Boolean = true,
 )
