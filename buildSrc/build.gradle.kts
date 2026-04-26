@@ -20,7 +20,7 @@ dependencies {
     /* Depend on the kotlin plugin, since we want to access it in our plugin */
     implementation(libs.jetbrains.kotlin.gradle)
 
-    /* Depend on the dokka plugin, since we want to access it in our plugin */
+    /** Depend on the dokka plugin, since we want to access it in our plugin */
     implementation(libs.jetbrains.dokka.gradle)
 
     /* Spotless */

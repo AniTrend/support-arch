@@ -1,11 +1,14 @@
 package co.anitrend.arch.buildSrc.plugin.components
 
 import org.gradle.api.Project
-import org.jetbrains.dokka.gradle.DokkaTask
 import co.anitrend.arch.buildSrc.module.Modules
 import co.anitrend.arch.buildSrc.plugin.extensions.*
 import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.named
+import org.jetbrains.dokka.DokkaDefaults.includeNonPublic
+import org.jetbrains.dokka.DokkaDefaults.offlineMode
+import org.jetbrains.dokka.gradle.engine.parameters.KotlinPlatform
+import java.net.URI
 import java.net.URL
 
 private fun Project.dependenciesOfProject(): List<Modules.Module> {
@@ -54,8 +57,8 @@ private fun Project.dependenciesOfProject(): List<Modules.Module> {
     }
 }
 
-internal fun Project.configureDokka() = tasks.named<DokkaTask>("dokkaHtml") {
-    outputDirectory.set(layout.buildDirectory.dir("docs/dokka"))
+internal fun Project.configureDokka() = dokkaExtension().run {
+    basePublicationsDirectory.set(layout.buildDirectory.dir("docs/dokka"))
 
     // Set module name displayed in the final output
     moduleName.set(project.name)
@@ -73,12 +76,6 @@ internal fun Project.configureDokka() = tasks.named<DokkaTask>("dokkaHtml") {
             // Used to remove a source set from documentation, test source sets are suppressed by default
             suppress.set(false)
 
-            // Used to prevent resolving package-lists online. When this option is set to true, only local files are resolved
-            offlineMode.set(false) // this is failing in the ci env
-
-            // Use to include or exclude non public members
-            includeNonPublic.set(false)
-
             // Do not output deprecated members. Applies globally, can be overridden by packageOptions
             skipDeprecated.set(false)
 
@@ -92,7 +89,7 @@ internal fun Project.configureDokka() = tasks.named<DokkaTask>("dokkaHtml") {
             //displayName.set("JVM")
 
             // Platform used for code analysis. See the "Platforms" section of this readme
-            platform.set(org.jetbrains.dokka.Platform.jvm)
+            analysisPlatform.set(KotlinPlatform.AndroidJVM)
 
             // Property used for manual addition of files to the classpath
             // This property does not override the classpath collected automatically but appends to it
@@ -105,9 +102,17 @@ internal fun Project.configureDokka() = tasks.named<DokkaTask>("dokkaHtml") {
             // List of files or directories containing sample code (referenced with @sample tags)
             //samples.from("samples/basic.kt", "samples/advanced.kt")
 
-            // By default, sourceRoots are taken from Kotlin Plugin and kotlinTasks, following roots will be appended to them
-            // Repeat for multiple sourceRoots
-            sourceRoot(file("src"))
+            // Used for linking to JDK documentation
+            jdkVersion.set(21)
+
+            // Disable linking to online kotlin-stdlib documentation
+            enableKotlinStdLibDocumentationLink.set(false)
+
+            // Disable linking to online JDK documentation
+            enableJdkDocumentationLink.set(false)
+
+            // Disable linking to online Android documentation (only applicable for Android projects)
+            enableAndroidDocumentationLink.set(false)
 
             dependenciesOfProject().forEach { module ->
                 // Specifies the location of the project source code on the Web.
@@ -119,32 +124,20 @@ internal fun Project.configureDokka() = tasks.named<DokkaTask>("dokkaHtml") {
 
                     val repository = "https://github.com/anitrend/support-arch/tree/develop"
                     // URL showing where the source code can be accessed through the web browser
-                    remoteUrl.set(URL("$repository/${module.id}/src/main/kotlin"))
+                    remoteUrl.set(URI("$repository/${module.id}/src/main/kotlin"))
                     // Suffix which is used to append the line number to the URL. Use #L for GitHub
                     remoteLineSuffix.set("#L")
                 }
             }
 
-            // Used for linking to JDK documentation
-            jdkVersion.set(21)
-
-            // Disable linking to online kotlin-stdlib documentation
-            noStdlibLink.set(false)
-
-            // Disable linking to online JDK documentation
-            noJdkLink.set(false)
-
-            // Disable linking to online Android documentation (only applicable for Android projects)
-            noAndroidSdkLink.set(false)
-
             // Allows linking to documentation of the project"s dependencies (generated with Javadoc or Dokka)
             // Repeat for multiple links
-            externalDocumentationLink {
+            externalDocumentationLinks.forEach { externalDocumentLink ->
                 // Root URL of the generated documentation to link with. The trailing slash is required!
-                url.set(URL("https://developer.android.com/reference/kotlin/"))
+                externalDocumentLink.url("https://developer.android.com/reference/kotlin/")
 
                 // If package-list file is located in non-standard location
-                packageListUrl.set(URL("https://developer.android.com/reference/androidx/package-list"))
+                externalDocumentLink.packageListUrl.set(URI("https://developer.android.com/reference/androidx/package-list"))
             }
 
             // Allows to customize documentation generation options on a per-package basis
@@ -155,7 +148,6 @@ internal fun Project.configureDokka() = tasks.named<DokkaTask>("dokkaHtml") {
                 // All options are optional, default values are below:
                 skipDeprecated.set(false)
                 reportUndocumented.set(true) // Emit warnings about not documented members
-                includeNonPublic.set(false)
             }
             // Suppress a package
             perPackageOption {

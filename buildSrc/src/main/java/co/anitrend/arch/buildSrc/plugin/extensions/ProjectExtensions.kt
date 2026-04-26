@@ -7,7 +7,6 @@ import com.android.build.gradle.LibraryExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
-import org.gradle.api.internal.plugins.DefaultArtifactPublicationSet
 import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.JavaPluginExtension
@@ -15,6 +14,7 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.reporting.ReportingExtension
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.getByType
+import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
@@ -80,9 +80,6 @@ internal fun Project.baseExtension() =
 internal fun Project.extraPropertiesExtension() =
     extensions.getByType<ExtraPropertiesExtension>()
 
-internal fun Project.defaultArtifactPublicationSet() =
-    extensions.getByType<DefaultArtifactPublicationSet>()
-
 internal fun Project.reportingExtension() =
     extensions.getByType<ReportingExtension>()
 
@@ -98,9 +95,11 @@ internal fun Project.libraryExtension() =
 internal fun Project.kotlinAndroidProjectExtension() =
     extensions.getByType<KotlinAndroidProjectExtension>()
 
+internal fun Project.dokkaExtension() =
+    extensions.getByType<DokkaExtension>()
+
 internal fun Project.kotlinTestsRegistry() =
     extensions.getByType<KotlinTestsRegistry>()
-
 
 internal fun Project.androidExtensionsExtension() =
     extensions.getByType<AndroidExtensionsExtension>()
