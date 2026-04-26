@@ -226,3 +226,5 @@ secrets.properties
 .idea/runConfigurations.xml
 .idea/studiobot.xml
 .idea/kotlinc.xml
+# Added by code-review-graph
+.code-review-graph/
