@@ -45,11 +45,25 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           signoff: true
           delete-branch: true
-          commit-message: "automation: update version.properties"
+          commit-message: "automation: bump version to ${{ github.event.client_payload.version }}"
           author: "Author <actions@github.com>"
-          title: "platform: automated version update"
+          title: "platform: bump version to v${{ github.event.client_payload.version }}"
           body: |
-            This PR was automatically generated to update `version.properties`
+            ## Version Bump
+
+            This PR was automatically generated to update `gradle/version.properties` to version **v${{ github.event.client_payload.version }}**.
+
+            ### Changes
+
+            | Property | Value |
+            |----------|-------|
+            | `version` | `${{ github.event.client_payload.version }}` |
+            | `name`    | `v${{ github.event.client_payload.version }}` |
+
+            ### Notes
+
+            - Triggered by a `version-update-and-push` repository dispatch event from the release drafter workflow.
+            - Merge this PR into `develop` to record the new version in the repository.
           branch: platform/update-version-meta-data
           labels: "skip-changelog"
           assignees: "wax911"
