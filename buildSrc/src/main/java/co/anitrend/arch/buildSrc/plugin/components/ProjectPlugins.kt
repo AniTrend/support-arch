@@ -8,7 +8,6 @@ internal fun Project.configurePlugins() {
         plugins.apply("kotlin")
     } else {
         plugins.apply("com.android.library")
-        plugins.apply("kotlin-android")
     }
     plugins.apply("com.diffplug.spotless")
     plugins.apply("org.jetbrains.dokka")

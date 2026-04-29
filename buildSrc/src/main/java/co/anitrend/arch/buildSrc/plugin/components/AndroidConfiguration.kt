@@ -1,6 +1,5 @@
 package co.anitrend.arch.buildSrc.plugin.components
 
-import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.libraryExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.isDomainModule
 import co.anitrend.arch.buildSrc.plugin.extensions.isThemeModule
@@ -20,37 +19,30 @@ private fun Project.configureLint() = libraryExtension().run {
     }
 }
 
-internal fun Project.configureAndroid(): Unit = baseExtension().run {
-    compileSdkVersion(35)
+internal fun Project.configureAndroid(): Unit = libraryExtension().run {
+    compileSdk = 36
     defaultConfig {
         minSdk = 23
-        targetSdk = 35
-        versionCode = props[PropertyTypes.CODE].toInt()
-        versionName = props[PropertyTypes.VERSION]
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles.add(File("consumer-rules.pro"))
     }
 
-    libraryExtension().run {
-        buildFeatures {
-            viewBinding = true
-        }
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            isTestCoverageEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
 
         getByName("debug") {
             isMinifyEnabled = false
-            isTestCoverageEnabled = false
         }
     }
 
-    packagingOptions {
+    packaging {
         resources.excludes.add("META-INF/NOTICE.*")
         resources.excludes.add("META-INF/LICENSE*")
     }

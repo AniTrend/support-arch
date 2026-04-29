@@ -1,6 +1,6 @@
 package co.anitrend.arch.buildSrc.plugin.components
 
-import co.anitrend.arch.buildSrc.plugin.extensions.baseExtension
+import co.anitrend.arch.buildSrc.plugin.extensions.libraryExtension
 import co.anitrend.arch.buildSrc.plugin.extensions.isKotlinLibraryGroup
 import co.anitrend.arch.buildSrc.plugin.extensions.kotlinJvmProjectExtension
 import org.gradle.api.Project
@@ -11,7 +11,7 @@ import org.gradle.kotlin.dsl.provideDelegate
 
 internal fun Project.configureSources() {
     val mainSourceSets = when {
-        !isKotlinLibraryGroup() -> baseExtension().sourceSets["main"].java.srcDirs
+        !isKotlinLibraryGroup() -> libraryExtension().sourceSets["main"].java.srcDirs()
         else -> kotlinJvmProjectExtension().sourceSets["main"].kotlin.srcDirs()
     }
 
