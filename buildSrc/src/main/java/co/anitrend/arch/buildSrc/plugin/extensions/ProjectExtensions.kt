@@ -2,8 +2,7 @@ package co.anitrend.arch.buildSrc.plugin.extensions
 
 import co.anitrend.arch.buildSrc.module.Modules
 import co.anitrend.arch.buildSrc.plugin.components.PropertiesReader
-import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import com.diffplug.gradle.spotless.SpotlessExtension
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Project
@@ -17,8 +16,6 @@ import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
-import org.jetbrains.kotlin.gradle.internal.AndroidExtensionsExtension
-import org.jetbrains.kotlin.gradle.testing.internal.KotlinTestsRegistry
 
 fun Project.hasDependencies() =
     name == Modules.Support.Core.id ||
@@ -74,9 +71,6 @@ internal val Project.props: PropertiesReader
 internal val Project.libs: LibrariesForLibs
     get() = extensions.getByType<LibrariesForLibs>()
 
-internal fun Project.baseExtension() =
-    extensions.getByType<BaseExtension>()
-
 internal fun Project.extraPropertiesExtension() =
     extensions.getByType<ExtraPropertiesExtension>()
 
@@ -97,12 +91,6 @@ internal fun Project.kotlinAndroidProjectExtension() =
 
 internal fun Project.dokkaExtension() =
     extensions.getByType<DokkaExtension>()
-
-internal fun Project.kotlinTestsRegistry() =
-    extensions.getByType<KotlinTestsRegistry>()
-
-internal fun Project.androidExtensionsExtension() =
-    extensions.getByType<AndroidExtensionsExtension>()
 
 internal fun Project.publishingExtension() =
     extensions.getByType<PublishingExtension>()
