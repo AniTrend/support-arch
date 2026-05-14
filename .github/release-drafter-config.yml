@@ -35,12 +35,14 @@ autolabeler:
   - label: 'feature'
     branch:
       - '/feature\/.+/'
+      - '/feat\/.+/'
   - label: 'enhancement'
     branch:
       - '/enhancement\/.+/'
   - label: 'refactor'
     branch:
       - '/refactor\/.+/'
+      - '/chore\/.+/'
   - label: 'dependencies'
     branch:
       - '/dependencies\/.+/'
