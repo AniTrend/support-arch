@@ -25,6 +25,7 @@ import co.anitrend.arch.extension.preference.FloatPreference
 import co.anitrend.arch.extension.preference.IntPreference
 import co.anitrend.arch.extension.preference.LongPreference
 import co.anitrend.arch.extension.preference.NullableStringPreference
+import co.anitrend.arch.extension.preference.SetPreference
 import co.anitrend.arch.extension.preference.StringPreference
 import co.anitrend.arch.extension.settings.contract.AbstractSetting
 import kotlinx.coroutines.channels.awaitClose
@@ -222,6 +223,35 @@ class NullableStringSetting(
     override val identifier = resources.getString(key)
 
     override var value by NullableStringPreference(identifier, default)
+
+    override val flow by lazy(UNSAFE) {
+        callbackFlow {
+            val listener =
+                SettingsListener { _, id ->
+                    if (id == identifier) {
+                        trySendBlocking(value)
+                            .onFailure { Timber.e(it) }
+                    }
+                }
+            preference.registerOnSharedPreferenceChangeListener(listener)
+            awaitClose { preference.unregisterOnSharedPreferenceChangeListener(listener) }
+        }
+    }
+}
+
+/**
+ * @since v1.9.0
+ * @see AbstractSetting
+ */
+class SetSetting(
+    key: Int,
+    default: Set<String>,
+    resources: Resources,
+    preference: SharedPreferences,
+) : AbstractSetting<Set<String>>(preference, default) {
+    override val identifier = resources.getString(key)
+
+    override var value by SetPreference(identifier, default)
 
     override val flow by lazy(UNSAFE) {
         callbackFlow {

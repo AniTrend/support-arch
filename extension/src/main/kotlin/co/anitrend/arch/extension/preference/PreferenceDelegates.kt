@@ -211,3 +211,30 @@ internal class NullableStringPreference(
         }
     }
 }
+
+/**
+ * [Set<String>] preference delegate
+ *
+ * @see ISupportPreferenceDelegate
+ */
+internal class SetPreference(
+    override val key: String,
+    override val default: Set<String> = emptySet(),
+) : ISupportPreferenceDelegate<Set<String>> {
+    override fun getValue(
+        thisRef: AbstractSetting<Set<String>>,
+        property: KProperty<*>,
+    ): Set<String> {
+        return thisRef.preference.getStringSet(key, default) ?: default
+    }
+
+    override fun setValue(
+        thisRef: AbstractSetting<Set<String>>,
+        property: KProperty<*>,
+        value: Set<String>,
+    ) {
+        thisRef.preference.edit {
+            putStringSet(key, value)
+        }
+    }
+}
