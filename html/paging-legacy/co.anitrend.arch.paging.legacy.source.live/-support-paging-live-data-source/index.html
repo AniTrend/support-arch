@@ -1,0 +1,344 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>SupportPagingLiveDataSource</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
+                    support-arch
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":paging-legacy/release">release</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":paging-legacy/release" data-filter=":paging-legacy/release">
+                                <span class="checkbox--icon"></span>
+                                release
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    support-arch
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="paging-legacy::co.anitrend.arch.paging.legacy.source.live/SupportPagingLiveDataSource///PointingToDeclaration//1498586592">
+  <div class="breadcrumbs"><a href="../../index.html">paging-legacy</a><span class="delimiter">/</span><a href="../index.html">co.anitrend.arch.paging.legacy.source.live</a><span class="delimiter">/</span><span class="current">SupportPagingLiveDataSource</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Support</span><wbr><span>Paging</span><wbr><span>Live</span><wbr><span>Data</span><wbr><span><span>Source</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="index.html">SupportPagingLiveDataSource</a><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token operator"> : </span><span data-unresolved-link="kotlin/Any///PointingToDeclaration/">Any</span><span class="token punctuation">, </span><a href="index.html">V</a><span class="token operator"> : </span><span data-unresolved-link="kotlin/Any///PointingToDeclaration/">Any</span><span class="token operator">&gt;</span> : <a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html">AbstractPagingLiveDataSource</a><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token punctuation">, </span><a href="index.html">V</a><span class="token operator">&gt; </span><span class="source-link-wrapper"><span class="source-link" data-element-type="source-link">(<a href="https://github.com/anitrend/support-arch/tree/develop/extension/src/main/kotlin/co/anitrend/arch/paging/legacy/source/live/SupportPagingLiveDataSource.kt#L29">source</a>)</span></span></div><p class="paragraph">A data source that is targeted for <span data-unresolved-link="androidx.paging/PagedList///PointingToDeclaration/">androidx.paging.PagedList</span> without a backing source</p><span class="kdoc-tag"><h4 class="">Since</h4><p class="paragraph">v1.3.0</p></span></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-1567135340%2FConstructors%2F1498586592" anchor-label="SupportPagingLiveDataSource" id="-1567135340%2FConstructors%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-support-paging-live-data-source.html"><span>Support</span><wbr><span>Paging</span><wbr><span>Live</span><wbr><span>Data</span><wbr><span><span>Source</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1567135340%2FConstructors%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="147383388%2FProperties%2F1498586592" anchor-label="isInvalid" id="147383388%2FProperties%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#147383388%2FProperties%2F1498586592"><span>is</span><wbr><span><span>Invalid</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="147383388%2FProperties%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@get:</span><span data-unresolved-link="androidx.annotation/WorkerThread///PointingToDeclaration/"><span class="token annotation builtin">WorkerThread</span></span></div></div><span class="token keyword">open </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#147383388%2FProperties%2F1498586592">isInvalid</a><span class="token operator">: </span><span data-unresolved-link="kotlin/Boolean///PointingToDeclaration/">Boolean</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="537851748%2FProperties%2F1498586592" anchor-label="loadState" id="537851748%2FProperties%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/load-state.html"><span>load</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="537851748%2FProperties%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/load-state.html">loadState</a><span class="token operator">: </span><span data-unresolved-link="kotlinx.coroutines.flow/Flow///PointingToDeclaration/">Flow</span><span class="token operator">&lt;</span><a href="../../../domain/co.anitrend.arch.domain.entities/-load-state/index.html">LoadState</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Observable for network state during requests that the UI can monitor and act based on state changes</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-302442798%2FProperties%2F1498586592" anchor-label="requestHelper" id="-302442798%2FProperties%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/request-helper.html"><span>request</span><wbr><span><span>Helper</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-302442798%2FProperties%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">val </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/request-helper.html">requestHelper</a><span class="token operator">: </span><a href="../../../request/co.anitrend.arch.request.helper/-request-helper/index.html">RequestHelper</a></div><div class="brief "><p class="paragraph">Request helper that controls the flow of requests to the implementing data source to avoid multiple requests of the same type before others are completed for this instance</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="368055330%2FFunctions%2F1498586592" anchor-label="addInvalidatedCallback" id="368055330%2FFunctions%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#368055330%2FFunctions%2F1498586592"><span>add</span><wbr><span>Invalidated</span><wbr><span><span>Callback</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="368055330%2FFunctions%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="androidx.annotation/AnyThread///PointingToDeclaration/"><span class="token annotation builtin">AnyThread</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#368055330%2FFunctions%2F1498586592"><span class="token function">addInvalidatedCallback</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">onInvalidatedCallback<span class="token operator">: </span><span data-unresolved-link="androidx.paging/DataSource.InvalidatedCallback///PointingToDeclaration/">DataSource.InvalidatedCallback</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1095095105%2FFunctions%2F1498586592" anchor-label="invalidate" id="-1095095105%2FFunctions%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="invalidate.html"><span><span>invalidate</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1095095105%2FFunctions%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="invalidate.html"><span class="token function">invalidate</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Signal the data source to stop loading, and notify its callback.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="914037255%2FFunctions%2F1498586592" anchor-label="loadAfter" id="914037255%2FFunctions%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#914037255%2FFunctions%2F1498586592"><span>load</span><wbr><span><span>After</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="914037255%2FFunctions%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#914037255%2FFunctions%2F1498586592"><span class="token function">loadAfter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">params<span class="token operator">: </span><span data-unresolved-link="androidx.paging/PageKeyedDataSource.LoadParams///PointingToDeclaration/">PageKeyedDataSource.LoadParams</span><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">callback<span class="token operator">: </span><span data-unresolved-link="androidx.paging/PageKeyedDataSource.LoadCallback///PointingToDeclaration/">PageKeyedDataSource.LoadCallback</span><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token punctuation">, </span><a href="index.html">V</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="131413606%2FFunctions%2F1498586592" anchor-label="loadBefore" id="131413606%2FFunctions%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#131413606%2FFunctions%2F1498586592"><span>load</span><wbr><span><span>Before</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="131413606%2FFunctions%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#131413606%2FFunctions%2F1498586592"><span class="token function">loadBefore</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">params<span class="token operator">: </span><span data-unresolved-link="androidx.paging/PageKeyedDataSource.LoadParams///PointingToDeclaration/">PageKeyedDataSource.LoadParams</span><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">callback<span class="token operator">: </span><span data-unresolved-link="androidx.paging/PageKeyedDataSource.LoadCallback///PointingToDeclaration/">PageKeyedDataSource.LoadCallback</span><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token punctuation">, </span><a href="index.html">V</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1639714865%2FFunctions%2F1498586592" anchor-label="loadInitial" id="1639714865%2FFunctions%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#1639714865%2FFunctions%2F1498586592"><span>load</span><wbr><span><span>Initial</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1639714865%2FFunctions%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#1639714865%2FFunctions%2F1498586592"><span class="token function">loadInitial</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">params<span class="token operator">: </span><span data-unresolved-link="androidx.paging/PageKeyedDataSource.LoadInitialParams///PointingToDeclaration/">PageKeyedDataSource.LoadInitialParams</span><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">callback<span class="token operator">: </span><span data-unresolved-link="androidx.paging/PageKeyedDataSource.LoadInitialCallback///PointingToDeclaration/">PageKeyedDataSource.LoadInitialCallback</span><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token punctuation">, </span><a href="index.html">V</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1383432144%2FFunctions%2F1498586592" anchor-label="map" id="-1383432144%2FFunctions%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#-1606911580%2FFunctions%2F1498586592"><span><span>map</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1383432144%2FFunctions%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#-1606911580%2FFunctions%2F1498586592">ToValue</a><span class="token operator"> : </span><span data-unresolved-link="kotlin/Any///PointingToDeclaration/">Any</span><span class="token operator">&gt; </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#-1606911580%2FFunctions%2F1498586592"><span class="token function">map</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">function<span class="token operator">: </span><span data-unresolved-link="androidx.arch.core.util/Function///PointingToDeclaration/">Function</span><span class="token operator">&lt;</span><a href="index.html">V</a><span class="token punctuation">, </span><a href="../../../paging-legacy/co.anitrend.arch.paging.legacy.source.live/-support-paging-live-data-source/map.html">ToValue</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="androidx.paging/PageKeyedDataSource///PointingToDeclaration/">PageKeyedDataSource</span><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token punctuation">, </span><a href="../../../paging-legacy/co.anitrend.arch.paging.legacy.source.live/-support-paging-live-data-source/map.html">ToValue</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#492149064%2FFunctions%2F1498586592">ToValue</a><span class="token operator"> : </span><span data-unresolved-link="kotlin/Any///PointingToDeclaration/">Any</span><span class="token operator">&gt; </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#492149064%2FFunctions%2F1498586592"><span class="token function">map</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">function<span class="token operator">: </span><span class="token punctuation">(</span><a href="index.html">V</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="../../../paging-legacy/co.anitrend.arch.paging.legacy.source.live/-support-paging-live-data-source/map.html">ToValue</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="androidx.paging/PageKeyedDataSource///PointingToDeclaration/">PageKeyedDataSource</span><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token punctuation">, </span><a href="../../../paging-legacy/co.anitrend.arch.paging.legacy.source.live/-support-paging-live-data-source/map.html">ToValue</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="81951152%2FFunctions%2F1498586592" anchor-label="mapByPage" id="81951152%2FFunctions%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#984875960%2FFunctions%2F1498586592"><span>map</span><wbr><span>By</span><wbr><span><span>Page</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="81951152%2FFunctions%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#984875960%2FFunctions%2F1498586592">ToValue</a><span class="token operator"> : </span><span data-unresolved-link="kotlin/Any///PointingToDeclaration/">Any</span><span class="token operator">&gt; </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#984875960%2FFunctions%2F1498586592"><span class="token function">mapByPage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">function<span class="token operator">: </span><span data-unresolved-link="androidx.arch.core.util/Function///PointingToDeclaration/">Function</span><span class="token operator">&lt;</span><span data-unresolved-link="kotlin.collections/List///PointingToDeclaration/">List</span><span class="token operator">&lt;</span><a href="index.html">V</a><span class="token operator">&gt;</span><span class="token punctuation">, </span><span data-unresolved-link="kotlin.collections/List///PointingToDeclaration/">List</span><span class="token operator">&lt;</span><a href="../../../paging-legacy/co.anitrend.arch.paging.legacy.source.live/-support-paging-live-data-source/map-by-page.html">ToValue</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="androidx.paging/PageKeyedDataSource///PointingToDeclaration/">PageKeyedDataSource</span><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token punctuation">, </span><a href="../../../paging-legacy/co.anitrend.arch.paging.legacy.source.live/-support-paging-live-data-source/map-by-page.html">ToValue</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">override </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#-1918960036%2FFunctions%2F1498586592">ToValue</a><span class="token operator"> : </span><span data-unresolved-link="kotlin/Any///PointingToDeclaration/">Any</span><span class="token operator">&gt; </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#-1918960036%2FFunctions%2F1498586592"><span class="token function">mapByPage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">function<span class="token operator">: </span><span class="token punctuation">(</span><span data-unresolved-link="kotlin.collections/List///PointingToDeclaration/">List</span><span class="token operator">&lt;</span><a href="index.html">V</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><span data-unresolved-link="kotlin.collections/List///PointingToDeclaration/">List</span><span class="token operator">&lt;</span><a href="../../../paging-legacy/co.anitrend.arch.paging.legacy.source.live/-support-paging-live-data-source/map-by-page.html">ToValue</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><span data-unresolved-link="androidx.paging/PageKeyedDataSource///PointingToDeclaration/">PageKeyedDataSource</span><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token punctuation">, </span><a href="../../../paging-legacy/co.anitrend.arch.paging.legacy.source.live/-support-paging-live-data-source/map-by-page.html">ToValue</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1670090885%2FFunctions%2F1498586592" anchor-label="refresh" id="1670090885%2FFunctions%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="refresh.html"><span><span>refresh</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1670090885%2FFunctions%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="refresh.html"><span class="token function">refresh</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Invalidate data source and, re-run the last successful or last failed request if applicable</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1838702493%2FFunctions%2F1498586592" anchor-label="removeInvalidatedCallback" id="1838702493%2FFunctions%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#1838702493%2FFunctions%2F1498586592"><span>remove</span><wbr><span>Invalidated</span><wbr><span><span>Callback</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1838702493%2FFunctions%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="androidx.annotation/AnyThread///PointingToDeclaration/"><span class="token annotation builtin">AnyThread</span></span></div></div><span class="token keyword">open </span><span class="token keyword">fun </span><a href="../../co.anitrend.arch.paging.legacy.source.live.contract/-abstract-paging-live-data-source/index.html#1838702493%2FFunctions%2F1498586592"><span class="token function">removeInvalidatedCallback</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">onInvalidatedCallback<span class="token operator">: </span><span data-unresolved-link="androidx.paging/DataSource.InvalidatedCallback///PointingToDeclaration/">DataSource.InvalidatedCallback</span></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2073450469%2FFunctions%2F1498586592" anchor-label="retryFailed" id="-2073450469%2FFunctions%2F1498586592" data-filterable-set=":paging-legacy/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":paging-legacy/release" data-filterable-set=":paging-legacy/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="retry-failed.html"><span>retry</span><wbr><span><span>Failed</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2073450469%2FFunctions%2F1498586592"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":paging-legacy/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="retry-failed.html"><span class="token function">retryFailed</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Performs the necessary operation to invoke a network retry request</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
