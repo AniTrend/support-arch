@@ -9,7 +9,7 @@
 ## High-Signal Repo Facts
 
 - Public API docs are generated with Dokka and published to `https://anitrend.github.io/support-arch/`.
-- CI publishes docs by running `./gradlew dokkaHtmlMultiModule` on `develop` and deploying `dokka-docs` to the `docs` branch.
+- CI publishes docs by running `./gradlew dokkaGenerate` on `develop` and deploying `dokka-docs` to the `docs` branch.
 - Most modules use the shared `co.anitrend.arch` Gradle plugin from `buildSrc`.
 - Shared Android and Kotlin defaults live in `buildSrc`, not in individual module build files.
 - The pinned Java version is `.java-version = 21.0.8` and the shared toolchain is Java 21.
@@ -69,7 +69,7 @@
 ## Validation
 
 - Formatting: `./gradlew spotlessCheck` or `./gradlew spotlessApply`
-- Docs: `./gradlew dokkaHtmlMultiModule`
+- Docs: `./gradlew dokkaGenerate`
 - Tests: prefer targeted module tests before full-project runs
 - If Gradle or Java alignment is unstable, use the existing `jenv-gradle-low-ram` skill
 

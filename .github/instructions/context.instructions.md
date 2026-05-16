@@ -47,7 +47,7 @@ description: Use when understanding support-arch architecture, module boundaries
 
 ## Documentation Contract
 
-- Dokka is configured centrally in `buildSrc` and the root build script; CI publishes `./gradlew dokkaHtmlMultiModule` output from `dokka-docs` to the `docs` branch.
+- Dokka is configured centrally in `buildSrc` and the root build script; CI publishes `./gradlew dokkaGenerate` output from `dokka-docs` to the `docs` branch.
 - Dokka has `reportUndocumented = true`, so undocumented public APIs are a quality problem, not an optional cleanup task.
 - Packages matching `.internal` are intentionally suppressed from published docs. Do not hide consumer-facing APIs in internal packages.
 - When changing public behavior, update KDoc in the same change. Document what the API does, when to use it, and what a consumer must provide or expect.

@@ -59,6 +59,7 @@ private fun Project.dependenciesOfProject(): List<Modules.Module> {
 
 internal fun Project.configureDokka() = dokkaExtension().run {
     basePublicationsDirectory.set(layout.buildDirectory.dir("docs/dokka"))
+    val androidPublicationVariant = "release"
 
     // Set module name displayed in the final output
     moduleName.set(project.name)
@@ -74,7 +75,8 @@ internal fun Project.configureDokka() = dokkaExtension().run {
             //dependsOn(dependenciesOfProject().map(Modules.Module::path))
 
             // Used to remove a source set from documentation, test source sets are suppressed by default
-            suppress.set(false)
+            // Dokka V2 only supports one Android variant when debug/release share src/main roots.
+            suppress.set(!project.isKotlinLibraryGroup() && name != androidPublicationVariant)
 
             // Do not output deprecated members. Applies globally, can be overridden by packageOptions
             skipDeprecated.set(false)
