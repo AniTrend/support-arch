@@ -5,7 +5,7 @@ Use this map to choose the right build file before editing.
 | Concern | Primary files | Notes |
 | --- | --- | --- |
 | Module includes | `settings.gradle.kts` | Declares every published module in the repo |
-| Root repositories and multi-module Dokka output | `build.gradle.kts` | `dokkaHtmlMultiModule` writes to `dokka-docs` |
+| Root repositories and multi-module Dokka output | `build.gradle.kts` | Root `dokkaGenerate` writes the aggregate Dokka V2 site to `dokka-docs` |
 | Shared plugin entry point | `buildSrc/.../plugin/CorePlugin.kt` | Applies Android or Kotlin plugin, Dokka, publishing, Spotless, sources, dependencies |
 | Shared plugin application | `buildSrc/.../components/ProjectPlugins.kt` | Most modules use `co.anitrend.arch` |
 | Shared Android defaults | `buildSrc/.../components/AndroidConfiguration.kt` | SDK levels, view binding, tests, compiler options, toolchain 21 |
