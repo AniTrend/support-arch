@@ -14,4 +14,4 @@ Consumers depend on the Gradle module, then call Kotlin APIs or reference genera
 
 ## Integration Points
 
-See child codemaps for source packages, resources, and module specific dependency notes.
+See child codemaps for source packages and module specific dependency notes. Android resources are summarized here rather than mapped inside `src/main/res`, because non-XML files under resource directories are rejected by the Android resource merger.
