@@ -28,7 +28,7 @@ jobs:
         run: ./gradlew --no-daemon dokkaGenerate
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.8.0
+        uses: JamesIves/github-pages-deploy-action@v4.9.0
         with:
           branch: docs # The branch the action should deploy to.
           folder: dokka-docs # The root Dokka V2 publication output.
