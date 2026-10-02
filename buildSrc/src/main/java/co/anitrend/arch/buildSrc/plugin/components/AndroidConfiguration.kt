@@ -20,7 +20,7 @@ private fun Project.configureLint() = libraryExtension().run {
 }
 
 internal fun Project.configureAndroid(): Unit = libraryExtension().run {
-    compileSdk = 36
+    compileSdk = 37
     defaultConfig {
         minSdk = 23
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
